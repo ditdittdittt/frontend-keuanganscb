@@ -1,92 +1,350 @@
 <template>
-  <v-layout
-    column
-    justify-center
-    align-center
-  >
-    <v-flex
-      xs12
-      sm8
-      md6
-    >
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
+  <v-container>
+    <!-- First Row -->
+    <v-row justify="space-between">
+      <!-- First Column -->
+      <v-col
+        lg="6"
+        md="6"
+        cols="12"
+      >
+        <v-card
+          class="rounded white--text"
+          img="https://images.unsplash.com/photo-1429991889170-afd56b2a1210?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1334&q=80"
+        >
+          <v-card-subtitle
+            class="white--text font-weight-bold text-uppercase"
           >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
+            Jumat , 10 Januari 2020
+          </v-card-subtitle>
+          <v-card-title
+            class="font-weight-medium display-1"
           >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
+            Hi, Jane Doe
+          </v-card-title>
+
+          <v-card-text
+            class="white--text"
           >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+            Lorem ipsum sir dolor amet humbada humbada
+          </v-card-text>
+
+          <v-card-actions
+            class="pa-5"
+          >
+            <v-icon
+              class="deep-orange--text"
+            >
+              mdi-plus-circle
+            </v-icon>
+            <p
+              class="ma-0 px-3 font-weight-bold overline"
+            >
+              BUAT ORDER BARU
+            </p>
+          </v-card-actions>
+
+        </v-card>
+
+      </v-col>
+
+      <!-- Second Column -->
+      <v-col
+        lg="2"
+        md="2"
+        cols="6"
+      >
+        <v-card
+          class="rounded white--text orange-grad"
+          height="100%"
+        >
+          <v-card-title
+            class="text-justify font-weight-light"
+          >
+            <p>New Sales</p>
+          </v-card-title>
+          <v-card-text
+            class="display-3 white--text font-weight-black"
+          >
+            13
+          </v-card-text>
+          <v-card-actions
+            class="pa-5"
+          >
+            <p class="ma-0">Total</p>
+            <v-spacer></v-spacer>
+            <v-icon
+              class="white--text"
+            >
+              mdi-cart-outline
+            </v-icon>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+
+      <!-- Third Column -->
+      <v-col
+        lg="2"
+        md="2"
+        cols="6"
+      >
+        <v-card
+          class="rounded white--text purple-grad"
+          height="100%"
+        >
+          <v-card-title
+            class="text-justify font-weight-light"
+          >
+            <p>On Schedule</p>
+          </v-card-title>
+          <v-card-text
+            class="display-3 white--text font-weight-black"
+          >
+            4
+          </v-card-text>
+          <v-card-actions
+            class="pa-5"
+          >
+            <p class="ma-0">Total</p>
+            <v-spacer></v-spacer>
+            <v-icon
+              class="white--text"
+            >
+              mdi-calendar-month-outline
+            </v-icon>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+
+      <!-- Fourth Column -->
+      <v-col
+        lg="2"
+        md="2"
+        sm="12"
+        cols="12"
+      >
+        <v-card
+          class="rounded white--text blue-grad"
+          height="100%"
+        >
+          <v-card-title
+            class="text-justify font-weight-light"
+          >
+            <p>Watchlist</p>
+          </v-card-title>
+          <v-card-text
+            class="display-3 white--text font-weight-black"
+          >
+            1
+          </v-card-text>
+          <v-card-actions
+            class="pa-5"
+          >
+            <p class="ma-0">Total</p>
+            <v-spacer></v-spacer>
+            <v-icon
+              class="white--text"
+            >
+              mdi-format-list-bulleted
+            </v-icon>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Second Row -->
+    <v-row justify="space-between">
+      <v-col
+        xl="8"
+        md="8"
+        sm="12"
+        cols="12"
+      >
+        <v-row>
+          <v-col><h6 class="pl-2 caption font-weight-bold text-uppercase">Pembayaran Terakhir</h6></v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-card
+              class="rounded"
+            >
+              <v-card-title class="caption">PO-K19000016 <v-spacer/> <span class="red--text font-weight-bold">Belum Lunas</span></v-card-title>
+              <v-card-text>
+                <h6 class="body-2 black--text font-weight-medium">Nominal SO</h6>
+                <h6 class="green--text font-weight-bold display-1 pb-2">Rp. 1.000.000</h6>
+                <h6 class="body-2 black--text font-weight-medium">Dana Tertunda</h6>
+                <h6 class="font-weight-bold headline">Rp. 1.000.000</h6>
+              </v-card-text>
+              <v-card-actions>
+                <v-icon small>mdi-clock-outline</v-icon>
+                <span class="pl-2 pr-2 caption font-weight-bold">2019-10-02</span>
+                <v-spacer/>
+                <v-btn
+                  text
+                  color="blue"
+                  class="caption font-weight-bold"
+                >
+                  Lihat SO
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+
+          <v-col>
+            <v-card
+              class="rounded"
+            >
+              <v-card-title class="caption">PO-K19000016 <v-spacer/> <span class="red--text font-weight-bold">Belum Lunas</span></v-card-title>
+              <v-card-text>
+                <h6 class="body-2 black--text font-weight-medium">Nominal SO</h6>
+                <h6 class="green--text font-weight-bold display-1 pb-2">Rp. 1.000.000</h6>
+                <h6 class="body-2 black--text font-weight-medium">Dana Tertunda</h6>
+                <h6 class="font-weight-bold headline">Rp. 1.000.000</h6>
+              </v-card-text>
+              <v-card-actions>
+                <v-icon small>mdi-clock-outline</v-icon>
+                <span class="pl-2 pr-2 caption font-weight-bold">2019-10-02</span>
+                <v-spacer/>
+                <v-btn
+                  text
+                  color="blue"
+                  class="caption font-weight-bold"
+                >
+                  Lihat SO
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+
+      <v-col
+        xl="4"
+        md="4"
+        sm="12"
+        cols="12"
+      >
+        <v-row>
+          <v-col><h6 class="pl-2 caption font-weight-bold text-uppercase">Total Pembayaran</h6></v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-card class="grad-pink rounded" height="240px">
+              <v-card-subtitle class="pa-5caption white--text text-uppercase font-weight-medium">Keuntungan minggu ini</v-card-subtitle>
+              <v-card-text class="pa-5 white--text font-weight-bold display-1">Rp. 121.000.000</v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+
+    </v-row>
+
+    <!-- Third Row -->
+    <v-row>
+      <v-col cols="12">
+        <h6 class="pl-2 caption font-weight-bold text-uppercase">Penjualan Terbaru</h6>
+      </v-col>
+      <v-col cols="12">
+        <v-data-table
+          :headers="headers"
+          :items="items"
+          :hide-default-footer="true"
+          disable-pagination
+          class="elevation-1 rounded-table"
+        >
+          <template v-slot:item.id="{}">
+            <v-btn
+              text
+              small
+              color="primary"
+            >
+              Lihat Histori
+            </v-btn>
+          </template>
+
+        </v-data-table>
+      </v-col>
+    </v-row>
+
+  </v-container>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
 
-export default {
-  components: {
-    Logo,
-    VuetifyLogo
+  export default {
+    data () {
+      return {
+        title:"Dashboard",
+        headers: [
+          {
+            text: 'Nomor SO',
+            align: 'left',
+            value: 'nomor',
+          },
+          { text: 'Tanggal SO', value: 'tanggal' },
+          { text: 'Nama Konsumen', value: 'nama' },
+          { text: 'Jenis SO', value: 'jenis' },
+          { text: 'Status', value: 'status' },
+          {
+            text: 'Histori',
+            value:'id',
+            align: 'center',
+            sortable: false
+          },
+        ],
+        items: [
+          {
+            nomor: 'SO-D19000016',
+            tanggal: '2019-10-02',
+            nama: 'Kedai Sayur',
+            jenis: 'Pembelian Umum',
+            status: 'Baru',
+            id: 1,
+          },
+          {
+            nomor: 'SO-D19000016',
+            tanggal: '2019-10-02',
+            nama: 'Kedai Sayur',
+            jenis: 'Pembelian Umum',
+            status: 'Dinego',
+            id : 2,
+          },
+          {
+            nomor: 'SO-D19000016',
+            tanggal: '2019-10-02',
+            nama: 'Kedai Sayur',
+            jenis: 'Pembelian Umum',
+            status: 'Draft',
+            id : 3,
+          },
+          {
+            nomor: 'SO-D19000016',
+            tanggal: '2019-10-02',
+            nama: 'Hotel Kembar',
+            jenis: 'Pembelian Umum',
+            status: 'Baru',
+            id: 4,
+          },
+        ],
+      }
+    },
+    mounted(){
+      this.$store.commit('setCurrentPageTitle', this.title)
+    }
   }
-}
 </script>
+
+<style scoped>
+  .rounded {
+    border-radius: 20px !important;
+  }
+  .orange-grad {
+    background: linear-gradient(90deg, rgba(255,110,80,1) 0%, rgba(235,61,96,1) 100%);
+  }
+  .purple-grad {
+    background: linear-gradient(90deg, rgba(101,61,235,1) 0%, rgba(128,8,181,1) 100%);
+  }
+  .blue-grad {
+    background: linear-gradient(90deg, rgba(61,181,235,1) 0%, rgba(8,108,181,1) 100%);
+  }
+</style>

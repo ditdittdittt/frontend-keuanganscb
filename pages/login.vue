@@ -9,7 +9,7 @@
         md="4"
       >
         <v-container text-center>
-<!--          <img src="~assets/img/logo-putih.png" style="height:60px" class="mb-4 mt-2">-->
+          <img src="~assets/img/Logo-SCB_Hitam.png" style="height:60px" class="mb-4 mt-2">
           <h2 class="mb-1 headline font-weight-medium" style="color:white">Welcome to <span class="font-weight-bold" style="color : #F70032">SCB</span> </h2>
           <p class="mb-5" style="color:white">Please LogIn with your account</p>
         </v-container>
