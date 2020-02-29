@@ -30,15 +30,16 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/axios'
   ],
   /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module',
+    // '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
   ],
   /*
@@ -50,12 +51,21 @@ export default {
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
+    '@nuxtjs/proxy',
+    '@nuxtjs/auth',
+    'nuxt-leaflet',
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    proxy: true
+    // baseURL: 'http://127.0.0.1:8000/api/v1'
+
+  },
+  proxy: {
+    '/api/' : 'http://127.0.0.1:8000/'
   },
   /*
   ** vuetify module configuration
@@ -75,6 +85,27 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
         }
+      }
+    }
+  },
+  router: {
+    middleware: 'auth'
+  },
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      home: '/'
+    },
+    strategies: {
+      local:{
+        endpoints:{
+          login:  {url:'api/v1/auth/login', method: 'post', propertyName: 'success.token'},
+          user:   { url: 'api/v1/auth/getUser', method: 'post', propertyName: 'success' },
+          logout:   { url: 'api/v1/auth/logout', method: 'post'}
+        },
+        // tokenRequired: true,
+        // tokenType: 'bearer'
       }
     }
   },
