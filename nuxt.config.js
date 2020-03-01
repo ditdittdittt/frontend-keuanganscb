@@ -65,7 +65,7 @@ export default {
 
   },
   proxy: {
-    '/api/' : 'http://127.0.0.1:8000/'
+    '/api/' : 'http://localhost/'
   },
   /*
   ** vuetify module configuration
@@ -100,9 +100,9 @@ export default {
     strategies: {
       local:{
         endpoints:{
-          login:  {url:'api/v1/auth/login', method: 'post', propertyName: 'success.token'},
-          user:   { url: 'api/v1/auth/getUser', method: 'post', propertyName: 'success' },
-          logout:   { url: 'api/v1/auth/logout', method: 'post'}
+          login:  {url:'/api/v1/auth/login', method: 'post', propertyName: 'success.token'},
+          user:   { url: '/api/v1/auth/getUser', method: 'post', propertyName: 'success' },
+          logout:   { url: '/api/v1auth/logout', method: 'post'}
         },
         // tokenRequired: true,
         // tokenType: 'bearer'
