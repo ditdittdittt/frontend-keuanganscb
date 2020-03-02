@@ -9,5 +9,6 @@ ADD . ${APP_ROOT}
 #RUN npm ci
 RUN npm install
 RUN npm run build
+COPY deploy.php /dist/deploy.php
 
 ENV HOST 0.0.0.0
