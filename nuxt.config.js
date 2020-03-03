@@ -101,7 +101,7 @@ export default {
       local:{
         endpoints:{
           login:  {url:'/auth/login', method: 'post', propertyName: 'success.token'},
-          user:   { url: '/auth/getUser', method: 'post', propertyName: 'data' },
+          user:   { url: '/auth/getUser', method: 'post', propertyName: 'success' },
           logout:   { url: '/auth/logout', method: 'post'}
         },
         // tokenRequired: true,
