@@ -110,7 +110,7 @@
         body.append('division', this.division)
         this.$axios({
           method: 'post',
-          url: 'api/v1/auth/register',
+          url: 'auth/register',
           data: body
         })
         .then( response => {
