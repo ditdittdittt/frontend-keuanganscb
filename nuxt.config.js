@@ -60,8 +60,8 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    proxy: true
-    // baseURL: 'http://127.0.0.1:8000/api/v1'
+    // proxy: true
+    baseURL: 'http://18.141.140.18/api/v1'
 
   },
   proxy: {
@@ -100,9 +100,9 @@ export default {
     strategies: {
       local:{
         endpoints:{
-          login:  {url:'/api/v1/auth/login', method: 'post', propertyName: 'success.token'},
-          user:   { url: '/api/v1/auth/getUser', method: 'post', propertyName: 'success' },
-          logout:   { url: '/api/v1auth/logout', method: 'post'}
+          login:  {url:'/auth/login', method: 'post', propertyName: 'success.token'},
+          user:   { url: '/auth/getUser', method: 'post', propertyName: 'data' },
+          logout:   { url: '/auth/logout', method: 'post'}
         },
         // tokenRequired: true,
         // tokenType: 'bearer'
