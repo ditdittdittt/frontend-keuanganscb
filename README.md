@@ -1,4 +1,4 @@
-# frontend-keuanganscb
+# Frontend Keuangan SCB
 
 > Frontend using Nuxt
 
