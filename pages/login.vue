@@ -10,8 +10,8 @@
       >
         <v-container text-center>
           <img src="~assets/img/Logo-SCB_Hitam.png" style="height:60px" class="mb-4 mt-2">
-          <h2 class="mb-1 headline font-weight-medium" style="color:white">Welcome to <span class="font-weight-bold" style="color : #F70032">SCB</span> </h2>
-          <p class="mb-5" style="color:white">Please LogIn with your account</p>
+          <h2 class="mb-1 headline font-weight-medium" style="color:black">Welcome to <span class="font-weight-bold" style="color : #008080">SCB</span> </h2>
+          <p class="mb-5" style="color:black">Please LogIn with your account</p>
         </v-container>
         <v-form>
           <v-row dense>
@@ -47,24 +47,25 @@
                 <v-checkbox
                   class="my-0 py-0"
                   label="Ingat saya"
-                  dense
-                  dark
+                  value="Ingat Saya"
                   color="primary"
+                  hide-details
                 ></v-checkbox>
               </v-flex>
               <v-spacer></v-spacer>
               <v-flex class="text-right">
-                <nuxt-link to="/" disable style="color:white !important">Lupa Kata Sandi ?</nuxt-link>
+                <nuxt-link to="/" disable style="color:black !important">Lupa Kata Sandi ?</nuxt-link>
               </v-flex>
             </v-layout>
+            <v-col cols="12">
+              <v-btn height="50px" block big dark @click="login()" class="grad" color="#008080">Masuk</v-btn>
+            </v-col>
+            <v-col cols="12">
+              <nuxt-link to="/register" style="text-decoration: none">
+                <v-btn height="50px" block big outlined class="grad" color="#008080">Register</v-btn>
+              </nuxt-link>
+            </v-col>
           </v-row>
-          <!-- <p style="color:white">
-            Email: kipli@gmail.com
-            <br>
-            Kata Sandi: password
-          </p> -->
-
-          <v-btn height="50px" block big dark @click="login()" class="grad">Masuk</v-btn>
         </v-form>
       </v-col>
     </v-layout>
@@ -97,7 +98,6 @@
           console.log('Ini Error: ' + e)
           this.errorm = true
         }
-
       }
     }
   }
@@ -110,4 +110,5 @@
   body{
     overflow: hidden;
   }
+
 </style>

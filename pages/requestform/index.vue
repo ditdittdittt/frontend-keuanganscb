@@ -1,160 +1,361 @@
 <template>
-  <card>
-    <v-container fluid fill-height grid-list-md text-xs-center class="bg">
-      <v-layout row wrap align-center justify-center>
-        <v-form>
-          <h1 slot="header" class="title">Request Form</h1>
-          <v-col>
-            <v-row>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-account"
-                v-model="pic_id"
-                hide-details
-                label="PIC"
-                class="col-md-4 pr-md-1"
-              ></v-text-field>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-account-multiple"
-                v-model="user_division"
-                hide-details
-                label="Division"
-                class="col-md-4 px-md-1"
-              ></v-text-field>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-calendar"
-                v-model="request_date"
-                hide-details
-                label="Date"
-                class="col-md-4 pl-md-1"
-              ></v-text-field>
-            </v-row>
-          </v-col>
-          <v-col>
-            <v-row>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-numeric"
-                v-model="request_id"
-                hide-details
-                label="Budget Code"
-                class="col-md-6 pr-md-1"
-              ></v-text-field>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-alphabetical"
-                v-model="request_name"
-                hide-details
-                label="Budget Name"
-                class="col-md-6 px-md-1"
-              ></v-text-field>
-            </v-row>
-          </v-col>
-          <v-col>
-            <v-row>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-home-map-marker"
-                v-model="request_allocation"
-                hide-details
-                label="Allocation / Peruntukan"
-                class="col-md-12"
-              ></v-text-field>
-            </v-row>
-          </v-col>
-          <v-col>
-            <v-row>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-cash-multiple"
-                v-model="request_ammount"
-                hide-details
-                label="Ammount / Jumlah"
-                class="col-md-6 pr-md-1"
-              ></v-text-field>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-cube-send"
-                v-model="cash_OR_transfer"
-                hide-details
-                label="Cash / Transfer"
-                class="col-md-6 px-md-1"
-              ></v-text-field>
-            </v-row>
-          </v-col>
-          <v-col>
-            <v-row>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-format-quote-close"
-                v-model="inWords"
-                hide-details
-                label="In Words / Terbilang"
-                class="col-md-12"
-              ></v-text-field>
-            </v-row>
-          </v-col>
-          <v-vcol>
-            <v-text-field
-              solo
-              prepend-inner-icon="mdi-cash"
-              v-model="saldoAnggaran"
-              hide-details
-              label="Saldo Anggaran"
-              class="col-md-12"
-            ></v-text-field>
-          </v-vcol>
-          <v-col>
-            <v-row>
-              <v-textarea
-                rows="4"
-                cols="80"
-                placeholder="Here can be your description"
-                solo
-                prepend-inner-icon="mdi-file-delimited"
-                v-model="request_notes"
-                hide-details
-                label="Notes"
-                class="col-md-12"
-              ></v-textarea>
-            </v-row>
-            <v-row>
-              <div id="example-3">
-                <h4>Attachment</h4>
-                <input type="checkbox" id="proker" value="Proker" v-model="attachment" />
-                <label for="proker">Program Kerja</label>
-                <input type="checkbox" id="invoice" value="Invoice" v-model="attachment" />
-                <label for="invoice">Invoice</label>
-                <input type="checkbox" id="fpbj" value="FPBJ" v-model="attachment" />
-                <label for="fpbj">FPBJ</label>
-                <input type="checkbox" id="exsum" value="Exsum" v-model="attachment" />
-                <label for="exsum">Expense Summary</label>
-              </div>
-            </v-row>
-          </v-col>
-          <v-col v-show="errorm" cols="12">
-            <v-alert type="error">Error alert</v-alert>
-          </v-col>
-          <v-btn height="50px" block big dark @click="requestform()" class="grad">Submit</v-btn>
-        </v-form>
-      </v-layout>
+  <div>
+    <!--Konten-->
+    <v-container>
+
+      <!--Search-->
+      <v-text-field
+        v-model="search"
+        label="Cari Request Form"
+        prepend-inner-icon="mdi-magnify"
+        single-line
+        solo
+        hide-details
+        class="pb=2"
+      />
+
+      <!--Table-->
+      <v-data-table
+        :headers="headers"
+        :items="request_forms"
+        :items-per-page="10"
+        class="rounded-table"
+      >
+
+        <!--data table-->
+        <template v-slot:item.date="{item}">
+          <div>
+            {{ item.date }}
+          </div>
+        </template>
+        <template v-slot:item.user="{item}">
+          <div>
+            {{ item.user.name }}
+          </div>
+        </template>
+        <template v-slot:item.method="{item}">
+          <div>
+            {{ item.method }}
+          </div>
+        </template>
+        <template v-slot:item.amount="{item}">
+          <div>
+            Rp. {{ item.amount.toLocaleString('id-ID') }}
+          </div>
+        </template>
+
+        <template v-slot:item.id="{item}">
+          <nuxt-link :to="'/requestform/'+item.id" id="nuxt-link">
+            <v-btn  class="my-2" dark small  color="teal">
+              Detail Form
+            </v-btn>
+          </nuxt-link>
+          <v-btn v-model="deleteForm" class="my-2"  dark small fab color="indigo" @click="confirmDeleteRequestForm(item)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </template>
+
+      </v-data-table>
     </v-container>
-  </card>
+    <!-- End Konten -->
+
+    <!-- Floating button nambah -->
+    <v-btn
+      id="tambah"
+      @click="dialogTambahRequestForm = true"
+      class="mx-2"
+      dark
+      color="#008080"
+      fab
+    >
+      <v-icon dark>
+        mdi-plus
+      </v-icon>
+    </v-btn>
+
+    <!-- Modal Dialog -->
+    <v-dialog v-model="dialogTambahRequestForm" width="640px" persistent>
+      <v-card flat>
+        <v-container fluid fill-height grid-list-md text-xs-center class="bg">
+          <v-layout row wrap align-center justify-center>
+            <v-card-title>
+              <h1 slot="header" class="title">Buat Form Request</h1>
+            </v-card-title>
+            <v-form
+              ref="formRequestForm"
+              v-model="formRequestFormData"
+              lazy-validation
+            >
+              <v-row>
+                <v-col cols="12">
+                  <v-menu
+                    ref="datePicker"
+                    v-model="datePicker"
+                    :close-on-content-click="false"
+                    :return-value="storeRequestFormData.date"
+                    transition="scale-transition"
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{on}">
+                      <v-text-field
+                        v-model="storeRequestFormData.date"
+                        :rules="[rules.required]"
+                        v-on="on"
+                        solo
+                        prepend-inner-icon="mdi-calendar"
+                        label="Date"
+                      />
+                    </template>
+                    <v-date-picker v-model="storeRequestFormData.date" no-title scrollable>
+                      <v-btn @click="datePicker = false" text color="primary">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        @click="$refs.datePicker.save(storeRequestFormData.date)"
+                        text
+                        color="primary"
+                      >
+                        OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    solo
+                    prepend-inner-icon="mdi-home-map-marker"
+                    v-model="storeRequestFormData.allocation"
+                    hide-details
+                    label="Allocation / Peruntukan"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="6">
+                  <v-text-field
+                    solo
+                    prepend-inner-icon="mdi-cash-multiple"
+                    v-model="storeRequestFormData.amount"
+                    hide-details
+                    label="Ammount / Jumlah"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field
+                    solo
+                    prepend-inner-icon="mdi-cube-send"
+                    v-model="storeRequestFormData.method"
+                    hide-details
+                    label="Cash / Transfer"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="12">
+                  <v-textarea
+                    rows="4"
+                    cols="80"
+                    placeholder="Catatan"
+                    solo
+                    prepend-inner-icon="mdi-file-delimited"
+                    v-model="storeRequestFormData.notes"
+                    hide-details
+                    label="Notes"
+                  ></v-textarea>
+                </v-col>
+              </v-row>
+
+<!--              <v-row>-->
+<!--                <v-col cols="12">-->
+<!--                  <div id="example-3">-->
+<!--                    <h4>Attachment</h4>-->
+<!--                    <input type="checkbox" id="proker" value="Proker" v-model="storeRequestFormData.attachment" />-->
+<!--                    <label for="proker">Program Kerja</label>-->
+<!--                    <input type="checkbox" id="invoice" value="Invoice" v-model="storeRequestFormData.attachment" />-->
+<!--                    <label for="invoice">Invoice</label>-->
+<!--                    <input type="checkbox" id="fpbj" value="FPBJ" v-model="storeRequestFormData.attachment" />-->
+<!--                    <label for="fpbj">FPBJ</label>-->
+<!--                    <input type="checkbox" id="exsum" value="Exsum" v-model="storeRequestFormData.attachment" />-->
+<!--                    <label for="exsum">Expense Summary</label>-->
+<!--                  </div>-->
+<!--                </v-col>-->
+<!--              </v-row>-->
+
+              <v-row>
+                <v-col cols="12" v-show="errorm">
+                  <v-alert type="error">Error alert</v-alert>
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="6">
+                  <v-btn height="50px" block big dark  color="#008080" @click="storeRequestForm()" class="grad">Submit</v-btn>
+                </v-col>
+                <v-col>
+                  <v-btn height="50px" block big  @click.stop="dialogTambahRequestForm = false " class="grad">Batal</v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-layout>
+        </v-container>
+      </v-card>
+    </v-dialog>
+
+    <!--modal yakin atau tidak -->
+    <v-dialog v-model="dialogSure" persistent max-width="310">
+<!--      <template v-slot:activator="{ on }">-->
+<!--        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>-->
+<!--      </template>-->
+      <v-card>
+        <v-card-title class="headline">Yakin akan menghapus?</v-card-title>
+        <v-card-text>Kamu tidak akan dapat mengembalikan form yang sudah dihapus.</v-card-text>
+        <v-card-actions>
+          <v-row>
+            <v-col  cols="6">
+              <v-btn color="green darken-1" text @click="dialogSure = false">Tidak</v-btn>
+            </v-col>
+            <v-col  cols="6">
+              <v-btn color="green darken-1" text @click="deleteRequestForm()">Yakin</v-btn>
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
 export default {
-  props: {
-    model: {
-      type: Object,
-      default: () => {
-        return {}
+  data () {
+    return {
+      dialogSure: false,
+      deletedId : '',
+      search: '',
+      deleteForm: false,
+      dialogTambahRequestForm : false,
+      datePicker: false,
+      formRequestFormData: true,
+      errorm: false,
+      delay: 750,
+      rules: {
+        required: value => !!value || 'Required.',
+      },
+      headers: [
+        { text: 'Tanggal Pembuatan', value: 'created_at'},
+        { text: 'Tanggal Pemakaian', value: 'date' },
+        { text: 'PIC', value: 'user.name'},
+        { text: 'Pembayaran', value: 'method'},
+        { text: 'Jumlah', value: 'amount' },
+        { text: 'Detail', value: 'id', sortable: false}
+      ],
+      request_forms: [],
+      storeRequestFormData: {
+        date: '',
+        method: '',
+        allocation: '',
+        amount: '',
+        attachment: null,
+        notes: '',
       }
+    }
+  },
+
+  methods: {
+    async getRequestForms () {
+      const params = {
+
+      }
+      await this.$axios.$get('/form/request', {params})
+      .then((response) => {
+        console.log(response)
+        this.request_forms = response.form_request
+      })
+    },
+
+    async storeRequestForm () {
+      if (this.$refs.formRequestForm.validate()) {
+        const body = new FormData()
+        body.append('date', this.storeRequestFormData.date)
+        body.append('method', this.storeRequestFormData.method)
+        body.append('allocation', this.storeRequestFormData.allocation)
+        body.append('amount', this.storeRequestFormData.amount)
+        body.append('attachment', this.storeRequestFormData.attachment)
+        body.append('notes', this.storeRequestFormData.notes)
+        this.$axios({
+          method: 'post',
+          url: '/form/request',
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+        this.$refs.formRequestForm.reset()
+        this.dialogTambahRequestForm = false
+      }
+    },
+
+    async deleteRequestForm () {
+      const body = new FormData()
+      body.append('id', this.deletedId)
+      this.$axios({
+        method: 'delete',
+        url: '/form/request/'+this.deletedId,
+        data: body
+      })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch(function(error) {
+        console.log(error)
+      })
+      this.deletedId = ''
+      this.dialogSure = false
+    },
+
+    async confirmDeleteRequestForm(item) {
+      this.dialogSure = true
+      this.deletedId = item.id
+    }
+  },
+
+  mounted() {
+    this.$store.commit('setCurrentPageTitle', 'Request Form')
+    this.getRequestForms()
+  },
+  watch: {
+    search () {
+      this.getRequestForms()
+    },
+    dialogTambahRequestForm: function() {
+      setTimeout(() => this.getRequestForms(), this.delay);
+    },
+    dialogSure: function() {
+      setTimeout(() => this.getRequestForms(), this.delay);
     }
   }
 }
 </script>
 <style>
+  #tambah {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+  }
+  .visited {
+    background-color: #e92048;
+  }
+  .spacer {
+    height: 160px;
+  }
+  #nuxt-link {
+    text-decoration: none;
+  }
 </style>

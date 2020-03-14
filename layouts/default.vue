@@ -26,7 +26,7 @@
       app
       elevate-on-scroll
     >
-      <v-app-bar-nav-icon color="#F70032" @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon color="#008080" @click.stop="drawer = !drawer" />
       <v-spacer/>
 
       <v-toolbar-title class="pa-0 font-weight-light">{{title}}</v-toolbar-title>

@@ -10,8 +10,8 @@
       >
         <v-container text-center>
           <img src="~assets/img/Logo-SCB_Hitam.png" style="height:60px" class="mb-4 mt-2">
-          <h2 class="mb-1 headline font-weight-medium" style="color:white">Welcome to <span class="font-weight-bold" style="color : #F70032">SCB</span> </h2>
-          <p class="mb-5" style="color:white">Please Register</p>
+          <h2 class="mb-1 headline font-weight-medium" style="color:black">Welcome to <span class="font-weight-bold" style="color : #008080">SCB</span> </h2>
+          <p class="mb-5" style="color:black">Please Register</p>
         </v-container>
         <v-form>
           <v-row dense>
@@ -76,7 +76,7 @@
 
           </v-row>
 
-          <v-btn height="50px" block big dark @click="register()" class="grad">Daftar</v-btn>
+          <v-btn height="50px" block big dark @click="register()" class="grad" color="#008080">Daftar</v-btn>
         </v-form>
       </v-col>
     </v-layout>
