@@ -27,7 +27,8 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "axios": "^0.19.2",
     "nuxt": "^2.0.0",
-    "nuxt-leaflet": "0.0.19"
+    "nuxt-leaflet": "0.0.19",
+    "@mdi/font": "^5.0.45"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",
