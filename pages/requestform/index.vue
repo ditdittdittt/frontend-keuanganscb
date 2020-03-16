@@ -14,12 +14,15 @@
         class="pb=2"
       />
 
+      <br>
+
       <!--Table-->
       <v-data-table
         :headers="headers"
         :items="request_forms"
         :items-per-page="10"
         class="rounded-table"
+        color="white"
       >
 
         <!--data table-->
@@ -194,10 +197,10 @@
 
               <v-row>
                 <v-col cols="6">
-                  <v-btn height="50px" block big dark  color="#008080" @click="storeRequestForm()" class="grad">Submit</v-btn>
+                  <v-btn height="50px" block big dark  color="#06beb6" @click="storeRequestForm()" >Submit</v-btn>
                 </v-col>
                 <v-col>
-                  <v-btn height="50px" block big  @click.stop="dialogTambahRequestForm = false " class="grad">Batal</v-btn>
+                  <v-btn height="50px" block big  @click.stop="dialogTambahRequestForm = false ">Batal</v-btn>
                 </v-col>
               </v-row>
             </v-form>
@@ -207,20 +210,17 @@
     </v-dialog>
 
     <!--modal yakin atau tidak -->
-    <v-dialog v-model="dialogSure" persistent max-width="310">
-<!--      <template v-slot:activator="{ on }">-->
-<!--        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>-->
-<!--      </template>-->
+    <v-dialog v-model="dialogSure" persistent max-width="320">
       <v-card>
         <v-card-title class="headline">Yakin akan menghapus?</v-card-title>
         <v-card-text>Kamu tidak akan dapat mengembalikan form yang sudah dihapus.</v-card-text>
         <v-card-actions>
           <v-row>
             <v-col  cols="6">
-              <v-btn color="green darken-1" text @click="dialogSure = false">Tidak</v-btn>
+              <v-btn color="green darken-1" block text @click="dialogSure = false">Tidak</v-btn>
             </v-col>
             <v-col  cols="6">
-              <v-btn color="green darken-1" text @click="deleteRequestForm()">Yakin</v-btn>
+              <v-btn color="green darken-1" text block @click="deleteRequestForm()">Yakin</v-btn>
             </v-col>
           </v-row>
         </v-card-actions>
@@ -357,5 +357,18 @@ export default {
   }
   #nuxt-link {
     text-decoration: none;
+  }
+  .v-data-table-header {
+    color: white;
+    background: transparent linear-gradient(to right, #06beb6, #48b1bf)
+    no-repeat padding-box;
+    box-shadow: 0px 3px 16px #00000029;
+
+  }
+  .rounded-table .v-data-table__wrapper,
+  .rounded-other {
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    box-shadow: 0px 3px 16px #00000029;
   }
 </style>
