@@ -69,21 +69,20 @@
 
               <v-list-item-content>
                 <v-list-item-title>{{this.$auth.user.name}}</v-list-item-title>
-                <v-list-item-subtitle>{{this.$auth.user.role}}</v-list-item-subtitle>
+                <v-list-item-subtitle>{{this.$auth.user.division}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
+            <v-divider></v-divider>
+
+            <v-card-text>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque, pariatur.
+            </v-card-text>
+            <v-card-actions>
+              <v-btn text @click="menu = false" disabled small>Edit Profile</v-btn>
+              <v-btn color="primary" small text @click="$auth.logout()">Logout</v-btn>
+            </v-card-actions>
           </v-list>
 
-          <v-divider></v-divider>
-          <v-card-text>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque, pariatur.
-          </v-card-text>
-
-          <v-card-actions>
-            <v-btn text @click="menu = false" disabled small>Edit Profile</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" small text @click="$auth.logout()">Logout</v-btn>
-          </v-card-actions>
         </v-card>
       </v-menu>
     </v-app-bar>
