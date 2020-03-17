@@ -173,8 +173,8 @@
                 </v-col>
               </v-row>
 
-<!--              <v-row>-->
-<!--                <v-col cols="12">-->
+              <v-row>
+                <v-col cols="12">
 <!--                  <div id="example-3">-->
 <!--                    <h4>Attachment</h4>-->
 <!--                    <input type="checkbox" id="proker" value="Proker" v-model="storeRequestFormData.attachment" />-->
@@ -186,8 +186,9 @@
 <!--                    <input type="checkbox" id="exsum" value="Exsum" v-model="storeRequestFormData.attachment" />-->
 <!--                    <label for="exsum">Expense Summary</label>-->
 <!--                  </div>-->
-<!--                </v-col>-->
-<!--              </v-row>-->
+                  <v-file-input v-model="storeRequestFormData.attachment" chips label="Attachment File"></v-file-input>
+                </v-col>
+              </v-row>
 
               <v-row>
                 <v-col cols="12" v-show="errorm">

@@ -119,7 +119,7 @@
             <h4>Amount</h4>
           </v-col>
           <v-col cols="8">
-            <p>{{ requestForm.amount }}</p>
+            <p>Rp. {{ parseFloat(requestForm.amount).toLocaleString() }}</p>
           </v-col>
         </v-row>
 
@@ -331,21 +331,22 @@
                 </v-col>
               </v-row>
 
-              <!--              <v-row>-->
-              <!--                <v-col cols="12">-->
-              <!--                  <div id="example-3">-->
-              <!--                    <h4>Attachment</h4>-->
-              <!--                    <input type="checkbox" id="proker" value="Proker" v-model="storeRequestFormData.attachment" />-->
-              <!--                    <label for="proker">Program Kerja</label>-->
-              <!--                    <input type="checkbox" id="invoice" value="Invoice" v-model="storeRequestFormData.attachment" />-->
-              <!--                    <label for="invoice">Invoice</label>-->
-              <!--                    <input type="checkbox" id="fpbj" value="FPBJ" v-model="storeRequestFormData.attachment" />-->
-              <!--                    <label for="fpbj">FPBJ</label>-->
-              <!--                    <input type="checkbox" id="exsum" value="Exsum" v-model="storeRequestFormData.attachment" />-->
-              <!--                    <label for="exsum">Expense Summary</label>-->
-              <!--                  </div>-->
-              <!--                </v-col>-->
-              <!--              </v-row>-->
+              <v-row>
+                <v-col cols="12">
+                  <!--                  <div id="example-3">-->
+                  <!--                    <h4>Attachment</h4>-->
+                  <!--                    <input type="checkbox" id="proker" value="Proker" v-model="storeRequestFormData.attachment" />-->
+                  <!--                    <label for="proker">Program Kerja</label>-->
+                  <!--                    <input type="checkbox" id="invoice" value="Invoice" v-model="storeRequestFormData.attachment" />-->
+                  <!--                    <label for="invoice">Invoice</label>-->
+                  <!--                    <input type="checkbox" id="fpbj" value="FPBJ" v-model="storeRequestFormData.attachment" />-->
+                  <!--                    <label for="fpbj">FPBJ</label>-->
+                  <!--                    <input type="checkbox" id="exsum" value="Exsum" v-model="storeRequestFormData.attachment" />-->
+                  <!--                    <label for="exsum">Expense Summary</label>-->
+                  <!--                  </div>-->
+                  <v-file-input v-model="storeRequestFormData.attachment" chips label="Attachment File"></v-file-input>
+                </v-col>
+              </v-row>
 
               <v-row>
                 <v-col cols="12" v-show="errorm">
@@ -528,7 +529,7 @@
         this.getRequestForm()
       },
       checkEdit (item) {
-        if (item.is_confirmed_pic === 0 && item.is_confirmed_verificator === 0 && item.is_confirmed_cashier === 0 && item.is_confirmed_head_dept === 0) {
+        if (item.is_confirmed_pic === 0 && item.is_confirmed_verificator === 0 && item.is_confirmed_cashier === 0 && item.is_confirmed_head_dept === 0 && item.user_id === this.$auth.user.id) {
           return true
         }
       },
