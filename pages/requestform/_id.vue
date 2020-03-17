@@ -49,7 +49,7 @@
           </v-col>
         </v-row>
 
-        <!-- Status SO -->
+        <!-- Tanggal Penggunaan -->
         <v-row>
           <v-col cols="4">
             <h4>Tanggal Penggunaan</h4>
