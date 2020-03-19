@@ -248,7 +248,7 @@
           <v-container fluid fill-height grid-list-md text-xs-center class="bg">
             <v-layout row wrap align-center justify-center>
               <v-card-title>
-                <h1 slot="header" class="title">Buat Form Request</h1>
+                <h1 slot="header" class="title">Update Form Request</h1>
               </v-card-title>
               <v-form ref="formRequestForm" v-model="formRequestFormData" lazy-validation>
                 <v-row>
@@ -448,12 +448,7 @@ export default {
         is_confirmed_verificator: '',
         is_confirmed_head_dept: '',
         is_confirmed_cashier: '',
-        user: {
-          id: '',
-          name: '',
-          email: '',
-          division: ''
-        }
+        user: {}
       },
       storeRequestFormData: {
         date: '',

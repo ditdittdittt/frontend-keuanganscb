@@ -10,23 +10,23 @@
       >
         <v-card
           class="rounded white--text"
-          img="https://images.unsplash.com/photo-1429991889170-afd56b2a1210?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1334&q=80"
+          img="https://images.unsplash.com/photo-1511629091441-ee46146481b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
         >
           <v-card-subtitle
             class="white--text font-weight-bold text-uppercase"
           >
-            Jumat , 10 Januari 2020
+            {{ timestamp }}
           </v-card-subtitle>
           <v-card-title
             class="font-weight-medium display-1"
           >
-            Hi, Jane Doe
+            Hi, {{ this.$auth.user.name }}
           </v-card-title>
 
           <v-card-text
             class="white--text"
           >
-            Lorem ipsum sir dolor amet humbada humbada
+            Bismillah Guys
           </v-card-text>
 
           <v-card-actions
@@ -61,7 +61,7 @@
           <v-card-title
             class="text-justify font-weight-light"
           >
-            <p>New Sales</p>
+            <p>Request Form</p>
           </v-card-title>
           <v-card-text
             class="display-3 white--text font-weight-black"
@@ -95,7 +95,7 @@
           <v-card-title
             class="text-justify font-weight-light"
           >
-            <p>On Schedule</p>
+            <p>Submission Form</p>
           </v-card-title>
           <v-card-text
             class="display-3 white--text font-weight-black"
@@ -130,7 +130,7 @@
           <v-card-title
             class="text-justify font-weight-light"
           >
-            <p>Watchlist</p>
+            <p>Petty Cash</p>
           </v-card-title>
           <v-card-text
             class="display-3 white--text font-weight-black"
@@ -152,119 +152,119 @@
       </v-col>
     </v-row>
 
-    <!-- Second Row -->
-    <v-row justify="space-between">
-      <v-col
-        xl="8"
-        md="8"
-        sm="12"
-        cols="12"
-      >
-        <v-row>
-          <v-col><h6 class="pl-2 caption font-weight-bold text-uppercase">Pembayaran Terakhir</h6></v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-card
-              class="rounded"
-            >
-              <v-card-title class="caption">PO-K19000016 <v-spacer/> <span class="red--text font-weight-bold">Belum Lunas</span></v-card-title>
-              <v-card-text>
-                <h6 class="body-2 black--text font-weight-medium">Nominal SO</h6>
-                <h6 class="green--text font-weight-bold display-1 pb-2">Rp. 1.000.000</h6>
-                <h6 class="body-2 black--text font-weight-medium">Dana Tertunda</h6>
-                <h6 class="font-weight-bold headline">Rp. 1.000.000</h6>
-              </v-card-text>
-              <v-card-actions>
-                <v-icon small>mdi-clock-outline</v-icon>
-                <span class="pl-2 pr-2 caption font-weight-bold">2019-10-02</span>
-                <v-spacer/>
-                <v-btn
-                  text
-                  color="blue"
-                  class="caption font-weight-bold"
-                >
-                  Lihat SO
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
+<!--    &lt;!&ndash; Second Row &ndash;&gt;-->
+<!--    <v-row justify="space-between">-->
+<!--      <v-col-->
+<!--        xl="8"-->
+<!--        md="8"-->
+<!--        sm="12"-->
+<!--        cols="12"-->
+<!--      >-->
+<!--        <v-row>-->
+<!--          <v-col><h6 class="pl-2 caption font-weight-bold text-uppercase">Pembayaran Terakhir</h6></v-col>-->
+<!--        </v-row>-->
+<!--        <v-row>-->
+<!--          <v-col>-->
+<!--            <v-card-->
+<!--              class="rounded"-->
+<!--            >-->
+<!--              <v-card-title class="caption">PO-K19000016 <v-spacer/> <span class="red&#45;&#45;text font-weight-bold">Belum Lunas</span></v-card-title>-->
+<!--              <v-card-text>-->
+<!--                <h6 class="body-2 black&#45;&#45;text font-weight-medium">Nominal SO</h6>-->
+<!--                <h6 class="green&#45;&#45;text font-weight-bold display-1 pb-2">Rp. 1.000.000</h6>-->
+<!--                <h6 class="body-2 black&#45;&#45;text font-weight-medium">Dana Tertunda</h6>-->
+<!--                <h6 class="font-weight-bold headline">Rp. 1.000.000</h6>-->
+<!--              </v-card-text>-->
+<!--              <v-card-actions>-->
+<!--                <v-icon small>mdi-clock-outline</v-icon>-->
+<!--                <span class="pl-2 pr-2 caption font-weight-bold">2019-10-02</span>-->
+<!--                <v-spacer/>-->
+<!--                <v-btn-->
+<!--                  text-->
+<!--                  color="blue"-->
+<!--                  class="caption font-weight-bold"-->
+<!--                >-->
+<!--                  Lihat SO-->
+<!--                </v-btn>-->
+<!--              </v-card-actions>-->
+<!--            </v-card>-->
+<!--          </v-col>-->
 
-          <v-col>
-            <v-card
-              class="rounded"
-            >
-              <v-card-title class="caption">PO-K19000016 <v-spacer/> <span class="red--text font-weight-bold">Belum Lunas</span></v-card-title>
-              <v-card-text>
-                <h6 class="body-2 black--text font-weight-medium">Nominal SO</h6>
-                <h6 class="green--text font-weight-bold display-1 pb-2">Rp. 1.000.000</h6>
-                <h6 class="body-2 black--text font-weight-medium">Dana Tertunda</h6>
-                <h6 class="font-weight-bold headline">Rp. 1.000.000</h6>
-              </v-card-text>
-              <v-card-actions>
-                <v-icon small>mdi-clock-outline</v-icon>
-                <span class="pl-2 pr-2 caption font-weight-bold">2019-10-02</span>
-                <v-spacer/>
-                <v-btn
-                  text
-                  color="blue"
-                  class="caption font-weight-bold"
-                >
-                  Lihat SO
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
+<!--          <v-col>-->
+<!--            <v-card-->
+<!--              class="rounded"-->
+<!--            >-->
+<!--              <v-card-title class="caption">PO-K19000016 <v-spacer/> <span class="red&#45;&#45;text font-weight-bold">Belum Lunas</span></v-card-title>-->
+<!--              <v-card-text>-->
+<!--                <h6 class="body-2 black&#45;&#45;text font-weight-medium">Nominal SO</h6>-->
+<!--                <h6 class="green&#45;&#45;text font-weight-bold display-1 pb-2">Rp. 1.000.000</h6>-->
+<!--                <h6 class="body-2 black&#45;&#45;text font-weight-medium">Dana Tertunda</h6>-->
+<!--                <h6 class="font-weight-bold headline">Rp. 1.000.000</h6>-->
+<!--              </v-card-text>-->
+<!--              <v-card-actions>-->
+<!--                <v-icon small>mdi-clock-outline</v-icon>-->
+<!--                <span class="pl-2 pr-2 caption font-weight-bold">2019-10-02</span>-->
+<!--                <v-spacer/>-->
+<!--                <v-btn-->
+<!--                  text-->
+<!--                  color="blue"-->
+<!--                  class="caption font-weight-bold"-->
+<!--                >-->
+<!--                  Lihat SO-->
+<!--                </v-btn>-->
+<!--              </v-card-actions>-->
+<!--            </v-card>-->
+<!--          </v-col>-->
+<!--        </v-row>-->
+<!--      </v-col>-->
 
-      <v-col
-        xl="4"
-        md="4"
-        sm="12"
-        cols="12"
-      >
-        <v-row>
-          <v-col><h6 class="pl-2 caption font-weight-bold text-uppercase">Total Pembayaran</h6></v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-card class="grad-pink rounded" height="240px">
-              <v-card-subtitle class="pa-5caption white--text text-uppercase font-weight-medium">Keuntungan minggu ini</v-card-subtitle>
-              <v-card-text class="pa-5 white--text font-weight-bold display-1">Rp. 121.000.000</v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
+<!--      <v-col-->
+<!--        xl="4"-->
+<!--        md="4"-->
+<!--        sm="12"-->
+<!--        cols="12"-->
+<!--      >-->
+<!--        <v-row>-->
+<!--          <v-col><h6 class="pl-2 caption font-weight-bold text-uppercase">Total Pembayaran</h6></v-col>-->
+<!--        </v-row>-->
+<!--        <v-row>-->
+<!--          <v-col>-->
+<!--            <v-card class="grad-pink rounded" height="240px">-->
+<!--              <v-card-subtitle class="pa-5caption white&#45;&#45;text text-uppercase font-weight-medium">Keuntungan minggu ini</v-card-subtitle>-->
+<!--              <v-card-text class="pa-5 white&#45;&#45;text font-weight-bold display-1">Rp. 121.000.000</v-card-text>-->
+<!--            </v-card>-->
+<!--          </v-col>-->
+<!--        </v-row>-->
+<!--      </v-col>-->
 
-    </v-row>
+<!--    </v-row>-->
 
-    <!-- Third Row -->
-    <v-row>
-      <v-col cols="12">
-        <h6 class="pl-2 caption font-weight-bold text-uppercase">Penjualan Terbaru</h6>
-      </v-col>
-      <v-col cols="12">
-        <v-data-table
-          :headers="headers"
-          :items="items"
-          :hide-default-footer="true"
-          disable-pagination
-          class="elevation-1 rounded-table"
-        >
-          <template v-slot:item.id="{}">
-            <v-btn
-              text
-              small
-              color="primary"
-            >
-              Lihat Histori
-            </v-btn>
-          </template>
+<!--    &lt;!&ndash; Third Row &ndash;&gt;-->
+<!--    <v-row>-->
+<!--      <v-col cols="12">-->
+<!--        <h6 class="pl-2 caption font-weight-bold text-uppercase">Penjualan Terbaru</h6>-->
+<!--      </v-col>-->
+<!--      <v-col cols="12">-->
+<!--        <v-data-table-->
+<!--          :headers="headers"-->
+<!--          :items="items"-->
+<!--          :hide-default-footer="true"-->
+<!--          disable-pagination-->
+<!--          class="elevation-1 rounded-table"-->
+<!--        >-->
+<!--          <template v-slot:item.id="{}">-->
+<!--            <v-btn-->
+<!--              text-->
+<!--              small-->
+<!--              color="primary"-->
+<!--            >-->
+<!--              Lihat Histori-->
+<!--            </v-btn>-->
+<!--          </template>-->
 
-        </v-data-table>
-      </v-col>
-    </v-row>
+<!--        </v-data-table>-->
+<!--      </v-col>-->
+<!--    </v-row>-->
 
   </v-container>
 </template>
@@ -275,6 +275,7 @@
     data () {
       return {
         title:"Dashboard",
+        timestamp: "",
         headers: [
           {
             text: 'Nomor SO',
@@ -328,8 +329,21 @@
         ],
       }
     },
+    methods: {
+      getNow: function() {
+        const today = new Date();
+        const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        const dateTime = date +' '+ time;
+        this.timestamp = dateTime;
+      }
+    },
     mounted(){
       this.$store.commit('setCurrentPageTitle', this.title)
+      setInterval(this.getNow, 1000);
+
+    },
+    created() {
     }
   }
 </script>

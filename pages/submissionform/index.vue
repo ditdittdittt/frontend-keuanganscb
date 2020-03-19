@@ -246,6 +246,7 @@ export default {
       ],
       submission_forms: [],
       storeSubmissionFormData: {
+        request_id: '',
         date: '',
         used: '',
         balance: '',
@@ -269,6 +270,7 @@ export default {
     async storeSubmissionForm() {
       if (this.$refs.formSubmissionForm.validate()) {
         const body = new FormData()
+        body.append('form_request_id', this.storeSubmissionFormData.request_id)
         body.append('date', this.storeSubmissionFormData.date)
         body.append('used', this.storeSubmissionFormData.used)
         body.append('balance', this.storeSubmissionFormData.balance)
@@ -332,18 +334,30 @@ export default {
 }
 </script>
 <style>
-#tambah {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-}
-.visited {
-  background-color: #e92048;
-}
-.spacer {
-  height: 160px;
-}
-#nuxt-link {
-  text-decoration: none;
-}
+  #tambah {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+  }
+  .visited {
+    background-color: #e92048;
+  }
+  .spacer {
+    height: 160px;
+  }
+  #nuxt-link {
+    text-decoration: none;
+  }
+  .v-data-table-header {
+    color: white;
+    background: transparent linear-gradient(to right, #06beb6, #48b1bf) no-repeat
+    padding-box;
+    box-shadow: 0px 3px 16px #00000029;
+  }
+  .rounded-table .v-data-table__wrapper,
+  .rounded-other {
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    box-shadow: 0px 3px 16px #00000029;
+  }
 </style>
