@@ -13,28 +13,33 @@
           <h2 class="mb-1 headline font-weight-medium" style="color:black">Welcome to <span class="font-weight-bold" style="color : #008080">SCB</span> </h2>
           <p class="mb-5" style="color:black">Please Register</p>
         </v-container>
-        <v-form>
+        <v-form
+          lazy-validation
+          ref="registerForm"
+          v-model="registerFormModel"
+        >
           <v-row dense>
             <v-col class="m-0" cols="12">
               <v-text-field
                 solo
                 prepend-inner-icon="mdi-account"
                 v-model="name"
-                hide-details
+                :rules="nameRules"
                 label="Nama"
                 class="mb-3"
+                required
               ></v-text-field>
               <v-text-field
                 solo
                 prepend-inner-icon="mdi-email"
                 v-model="email"
-                hide-details
                 label="Email"
                 class="mb-3"
+                :rules="emailRules"
+                required
               ></v-text-field>
               <v-text-field
                 v-model="password"
-                hide-details
                 solo
                 prepend-inner-icon="mdi-key"
                 :append-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -43,11 +48,12 @@
                 @click:append="showpassword = !showpassword"
                 v-on:keyup.enter="login()"
                 class="mb-3"
+                required
+                :rules="passwordRules"
               >
               </v-text-field>
               <v-text-field
                 v-model="c_password"
-                hide-details
                 solo
                 prepend-inner-icon="mdi-key"
                 :append-icon="showcpassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -56,21 +62,24 @@
                 @click:append="showcpassword = !showcpassword"
                 v-on:keyup.enter="login()"
                 class="mb-3"
+                :rules="c_passwordRules"
+                required
               >
               </v-text-field>
               <v-text-field
                 solo
                 prepend-inner-icon="mdi-account-multiple"
                 v-model="division"
-                hide-details
                 label="Divisi"
                 class="mb-3"
+                :rules="divisionRules"
+                required
               ></v-text-field>
             </v-col>
 
             <v-col v-show="errorm" cols="12">
               <v-alert type="error">
-                Error alert
+                {{ errorMessage }}
               </v-alert>
             </v-col>
 
@@ -90,11 +99,33 @@
     auth: 'guest',
     data(){
       return{
+        registerFormModel: true,
         name:'',
+        nameRules: [
+          v => !!v || 'Name is required',
+          v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+        ],
         email:'',
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        ],
         password:'',
+        passwordRules: [
+          v => !!v || 'Password is required',
+          v => (v && v.length >= 8) || 'Password must be more than 8 characters',
+        ],
         c_password:'',
+        c_passwordRules: [
+          v => !!v || 'Confirm Password is required',
+          v => (v && v.length >= 8) || 'Confirm Password must be more than 8 characters',
+          v => (v && v === this.password) || 'Confirm Password wrong'
+        ],
+        errorMessage: '',
         division:'',
+        divisionRules: [
+          v => !!v || 'Division is required'
+        ],
         errorm:false,
         showpassword:false,
         showcpassword: false,
@@ -102,26 +133,37 @@
     },
     methods: {
       register() {
-        const body = new FormData();
-        body.append('name', this.name)
-        body.append('email', this.email)
-        body.append('password', this.password)
-        body.append('c_password', this.c_password)
-        body.append('division', this.division)
-        this.$axios({
-          method: 'post',
-          url: 'auth/register',
-          data: body
-        })
-        .then( response => {
-          console.log(response);
-        })
-        .catch( function(error) {
-          console.log(error)
-        })
-        .finally(
-          () => this.$router.push('/')
-        )
+        if(this.$refs.registerForm.validate()){
+          const body = new FormData();
+          body.append('name', this.name)
+          body.append('email', this.email)
+          body.append('password', this.password)
+          body.append('c_password', this.c_password)
+          body.append('division', this.division)
+          this.$axios({
+            method: 'post',
+            url: 'auth/register',
+            data: body
+          })
+            .then( response => {
+              console.log(response);
+
+            })
+            .catch( error => {
+              console.log(error.response)
+              if(error.response.status === 422){
+                if(error.response.data.errors.email) {
+                  this.errorMessage = error.response.data.errors.email[0]
+                }
+              }
+              this.errorm = true
+            })
+          .finally(() => {
+            if (this.errorm === false) {
+              this.$router.push('/')
+            }
+          })
+        }
       }
     },
     mounted() {

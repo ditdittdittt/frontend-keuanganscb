@@ -39,7 +39,7 @@
             </v-col>
             <v-col v-show="errorm" cols="12">
               <v-alert type="error">
-                Email atau password salah
+                {{ errorMessage }}
               </v-alert>
             </v-col>
             <v-layout class="mx-1">
@@ -81,8 +81,9 @@
       return{
         email:'',
         password:'',
-        errorm:false,
-        showpassword:false
+        errorMessage: '',
+        errorm: false,
+        showpassword: false,
       }
     },
     methods:{
@@ -95,7 +96,12 @@
             }
           })
         } catch(e){
-          console.log('Ini Error: ' + e)
+          console.log(e.response)
+          if (e.response.data.error){
+            this.errorMessage = e.response.data.error
+          } else {
+            this.errorMessage = e.response.data.messages
+          }
           this.errorm = true
         }
       }
