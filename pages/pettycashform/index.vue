@@ -165,7 +165,6 @@
                 <v-col cols="12">
                   <v-text-field
                     solo
-                    disabled
                     prepend-inner-icon="mdi-cash-multiple"
                     v-model="storePettyCashFormData.amount"
                     hide-details
