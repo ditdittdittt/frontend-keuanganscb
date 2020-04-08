@@ -66,7 +66,7 @@
           <v-card-text
             class="display-3 white--text font-weight-black"
           >
-            13
+            {{ countFormRequest }}
           </v-card-text>
           <v-card-actions
             class="pa-5"
@@ -100,7 +100,7 @@
           <v-card-text
             class="display-3 white--text font-weight-black"
           >
-            4
+            {{ countFormSubmission }}
           </v-card-text>
           <v-card-actions
             class="pa-5"
@@ -135,7 +135,7 @@
           <v-card-text
             class="display-3 white--text font-weight-black"
           >
-            1
+            {{ countFormPettyCash }}
           </v-card-text>
           <v-card-actions
             class="pa-5"
@@ -274,6 +274,9 @@
   export default {
     data () {
       return {
+        countFormRequest: '',
+        countFormSubmission: '',
+        countFormPettyCash: '',
         title:"Dashboard",
         timestamp: "",
         headers: [
@@ -336,10 +339,26 @@
         const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         const dateTime = date +' '+ time;
         this.timestamp = dateTime;
+      },
+      async getCountEveryForm() {
+        await this.$axios.$get('/form/request/count')
+        .then((response) => {
+          console.log(response)
+          this.countFormRequest = response.jumlah_request_form
+        })
+        await this.$axios.$get('/form/submission/count')
+        .then((response) => {
+          this.countFormSubmission = response.jumlah_submission_form
+        })
+        await this.$axios.$get('/form/petty-cash/count')
+        .then((response) => {
+          this.countFormPettyCash = response.jumlah_petty_cash_form
+        })
       }
     },
     mounted(){
       this.$store.commit('setCurrentPageTitle', this.title)
+      this.getCountEveryForm()
       setInterval(this.getNow, 1000);
 
     },
