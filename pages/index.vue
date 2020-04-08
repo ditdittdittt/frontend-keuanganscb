@@ -32,15 +32,15 @@
           <v-card-actions
             class="pa-5"
           >
-            <v-icon
-              class="deep-orange--text"
-            >
-              mdi-plus-circle
-            </v-icon>
+<!--            <v-icon-->
+<!--              class="deep-orange&#45;&#45;text"-->
+<!--            >-->
+<!--              mdi-plus-circle-->
+<!--            </v-icon>-->
             <p
               class="ma-0 px-3 font-weight-bold overline"
             >
-              BUAT ORDER BARU
+              Tetap semangat
             </p>
           </v-card-actions>
 
@@ -352,7 +352,7 @@
         })
         await this.$axios.$get('/form/petty-cash/count')
         .then((response) => {
-          this.countFormPettyCash = response.jumlah_petty_cash_form
+          this.countFormPettyCash = response.total
         })
       }
     },

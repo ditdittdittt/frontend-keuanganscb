@@ -1,6 +1,5 @@
 <template>
   <v-container class="py-0 my-0">
-    INI HALAMAN DETAIL PETTY CASH
     <!-- Section Detail -->
     <v-row class="pb-5">
       <v-col cols="12">
@@ -114,6 +113,9 @@
             <p>Rp. {{ parseFloat(pettyCashForm.amount).toLocaleString() }}</p>
           </v-col>
         </v-row>
+
+        <!-- Detailnya -->
+
 
         <!-- Confirm as PIC -->
         <v-row>
@@ -354,7 +356,8 @@
           date: '',
           allocation: '',
           amount: ''
-        }
+        },
+        pettyCashDetail: {}
       }
     },
     methods: {
@@ -476,6 +479,9 @@
           this.getPettyCashForm()
         }
       },
+      async getPettyCashDetail() {
+        this.$axios.$get('/')
+      }
     },
     mounted() {
       this.choosenPettyCashFormId = this.$route.params.id

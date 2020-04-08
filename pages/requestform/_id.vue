@@ -126,7 +126,7 @@
               <h4>Attachment</h4>
             </v-col>
             <v-col cols="8">
-              <p>{{ requestForm.attachment }}</p>
+              <a @click="openFile()">Click here!</a>
             </v-col>
           </v-row>
 
@@ -462,6 +462,9 @@ export default {
   },
 
   methods: {
+    async openFile() {
+      window.open(this.requestForm.attachment)
+    },
     async getRequestForm() {
       await this.$axios
         .get('/form/request/' + this.choosenRequestFormId)

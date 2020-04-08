@@ -116,10 +116,10 @@
                 <v-row>
                   <template v-for="(_, i) in budgetList">
                     <v-col cols="4" class="py-1" :key="'code-'+i">
-                      <v-text-field v-model="budgetList[i].code" solo label="Code"></v-text-field>
+                      <v-text-field v-model="budgetList[i].budget_code" solo label="Code"></v-text-field>
                     </v-col>
                     <v-col cols="4" class="py-1" :key="'name-'+i">
-                      <v-text-field v-model="budgetList[i].name" solo label="Name"></v-text-field>
+                      <v-text-field v-model="budgetList[i].budget_name" solo label="Name"></v-text-field>
                     </v-col>
                     <v-col cols="4" class="py-1" :key="'nominal-'+i">
                       <v-text-field v-model="budgetList[i].nominal" solo label="Nominal"></v-text-field>
@@ -251,8 +251,8 @@ export default {
     return {
       budgetList: [
         {
-          code: null,
-          name: null,
+          budget_code: null,
+          budget_name: null,
           nominal: null
         }
       ],
@@ -308,12 +308,17 @@ export default {
     },
     async storePettyCashForm() {
       if (this.$refs.formPettyCashHeaderForm.validate()) {
-        console.log(this.storePettyCashFormData.allocation)
         const body = new FormData()
+        for (let i = 0; i < this.budgetList.length; i++){
+          body.append("details["+i+"][budget_code]",this.budgetList[i]['budget_code']);
+          body.append("details["+i+"][budget_name]",this.budgetList[i]['budget_name']);
+          body.append("details["+i+"][nominal]",this.budgetList[i]['nominal']);
+
+        }
         body.append('date', this.storePettyCashFormData.date)
         body.append('allocation', this.storePettyCashFormData.allocation)
         body.append('amount', this.storePettyCashFormData.amount)
-        body.append('budget', this.budgetList)
+        // body.append('details', testt)
         this.$axios({
           method: 'post',
           url: '/form/petty-cash',
