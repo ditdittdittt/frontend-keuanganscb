@@ -281,21 +281,28 @@ export default {
         date: '',
         allocation: '',
         amount: ''
-      }
+      },
     }
   },
   methods: {
+    updateAmount() {
+      if (this.dialogStorePettyCashForm){
+        var amount = 0
+        for (let i=0; i<this.budgetList.length; i++){
+          amount = amount + Number(this.budgetList[i].nominal)
+        }
+        this.storePettyCashFormData.amount = amount
+      }
+    },
     addBudgetRowList() {
       if (this.budgetList.length <= 10) {
         this.budgetList.push({ code: null, name: null, nominal: null })
       }
-      console.log(this.budgetList)
     },
     removeBudgetRowList() {
       if (this.budgetList.length > 1) {
         this.budgetList.pop()
       }
-      console.log(this.budgetList)
     },
     async getPettyCashForms() {
       const params = {}
@@ -359,6 +366,7 @@ export default {
   mounted() {
     this.$store.commit('setCurrentPageTitle', 'Petty Cash Form')
     this.getPettyCashForms()
+    setInterval(this.updateAmount, 1000)
   },
   watch: {
     search() {
@@ -369,7 +377,7 @@ export default {
     },
     dialogSure: function() {
       setTimeout(() => this.getPettyCashForms(), this.delay)
-    }
+    },
   }
 }
 </script>

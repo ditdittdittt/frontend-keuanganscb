@@ -2,9 +2,6 @@
   <v-container class="py-0 my-0">
     <!-- Section Detail -->
     <v-row class="pb-5">
-      <v-col cols="12">
-        <div class="pa-1"/>
-      </v-col>
 
       <!-- Header -->
       <v-col cols="12">
@@ -115,7 +112,25 @@
         </v-row>
 
         <!-- Detailnya -->
+        <v-data-table
+          :headers="headers"
+          :items="pettyCashForm.detail"
+          :items-per-page="10"
+          class="rounded-table"
+          color="white"
+        >
 
+          <!--data table-->
+          <template v-slot:item.budget_code="{item}">
+            <div>{{ item.budget_code }}</div>
+          </template>
+          <template v-slot:item.budget_name="{item}">
+            <div>{{ item.budget_name }}</div>
+          </template>
+          <template v-slot:item.nominal="{item}">
+            <div>Rp. {{ item.nominal }}</div>
+          </template>
+        </v-data-table>
 
         <!-- Confirm as PIC -->
         <v-row>
@@ -335,29 +350,20 @@
           required: value => !!value || 'Required.',
         },
         pettyCashForm: {
-          id: '',
-          created_at: '',
-          updated_at: '',
-          user_id: '',
-          date: '',
-          allocation: '',
-          amount: '',
-          is_confirmed_pic: '',
-          is_confirmed_manager_ops: '',
-          is_confirmed_cashier: '',
-          user: {
-            id: '',
-            name: '',
-            email: '',
-            division: ''
-          }
+          user: {},
+          detail: []
         },
         storePettyCashFormData: {
           date: '',
           allocation: '',
           amount: ''
         },
-        pettyCashDetail: {}
+        pettyCashDetail: {},
+        headers: [
+          { text: 'Budget Code', value: 'budget_code' },
+          { text: 'Budget Name', value: 'budget_name' },
+          { text: 'Nominal', value: 'nominal' }
+        ],
       }
     },
     methods: {
@@ -479,9 +485,6 @@
           this.getPettyCashForm()
         }
       },
-      async getPettyCashDetail() {
-        this.$axios.$get('/')
-      }
     },
     mounted() {
       this.choosenPettyCashFormId = this.$route.params.id
@@ -490,7 +493,7 @@
     },
     watch: {
 
-    }
+    },
   }
 </script>
 
