@@ -110,6 +110,48 @@
             </v-col>
           </v-row>
 
+          <div v-if="storeRequestFormData.method === 'Transfer'">
+            <!-- Nama Bank -->
+            <v-row>
+              <v-col cols="4">
+                <h4>Bank Name</h4>
+              </v-col>
+              <v-col cols="8">
+                <p>{{ requestForm.bank_name }}</p>
+              </v-col>
+            </v-row>
+
+            <!-- Kode Bank -->
+            <v-row>
+              <v-col cols="4">
+                <h4>Bank Code</h4>
+              </v-col>
+              <v-col cols="8">
+                <p>{{ requestForm.bank_code }}</p>
+              </v-col>
+            </v-row>
+
+            <!-- Nomor Rekening -->
+            <v-row>
+              <v-col cols="4">
+                <h4>Account Number</h4>
+              </v-col>
+              <v-col cols="8">
+                <p>{{ requestForm.account_number }}</p>
+              </v-col>
+            </v-row>
+
+            <!-- Atas Nama -->
+            <v-row>
+              <v-col cols="4">
+                <h4>Account Owner</h4>
+              </v-col>
+              <v-col cols="8">
+                <p>{{ requestForm.account_owner }}</p>
+              </v-col>
+            </v-row>
+          </div>
+
           <!-- Jumlah -->
           <v-row>
             <v-col cols="4">
@@ -303,14 +345,55 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="6">
-                    <v-text-field
+                    <v-select
+                      :items="items"
                       prepend-inner-icon="mdi-cube-send"
                       v-model="storeRequestFormData.method"
                       hide-details
-                      label="Cash / Transfer"
-                    ></v-text-field>
+                      label="Payment Method"
+                    ></v-select>
                   </v-col>
                 </v-row>
+
+                <div v-if="storeRequestFormData.method === 'Transfer'">
+                  <v-row>
+                    <v-col cols="6">
+                      <v-text-field
+                        prepend-inner-icon="mdi-cash-usd"
+                        hide-details
+                        label="Bank Name"
+                        v-model="storeRequestFormData.bank_name"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-text-field
+                        prepend-inner-icon="mdi-cash-100"
+                        hide-details
+                        label="Bank Code"
+                        v-model="storeRequestFormData.bank_code"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="6">
+                      <v-text-field
+                        prepend-inner-icon="mdi-numeric"
+                        hide-details
+                        label="Account Number"
+                        v-model="storeRequestFormData.account_number"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-text-field
+                        prepend-inner-icon="mdi-clipboard-account"
+                        hide-details
+                        label="Account Owner"
+                        v-model="storeRequestFormData.account_owner"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </div>
 
                 <v-row>
                   <v-col cols="12">
@@ -430,6 +513,7 @@ export default {
       datePicker: false,
       choosenRequestFormId: '',
       confirmAs: '',
+      items: ['Cash', 'Transfer'],
       rules: {
         required: (value) => !!value || 'Required.'
       },
@@ -440,6 +524,10 @@ export default {
         user_id: '',
         date: '',
         method: '',
+        bank_name: '',
+        bank_code: '',
+        account_number: '',
+        account_owner: '',
         allocation: '',
         amount: '',
         attachment: null,
@@ -453,6 +541,10 @@ export default {
       storeRequestFormData: {
         date: '',
         method: '',
+        bank_name: '',
+        bank_code: '',
+        account_number: '',
+        account_owner: '',
         allocation: '',
         amount: '',
         attachment: null,
@@ -566,8 +658,12 @@ export default {
       this.dialogUpdateRequestForm = true
       this.storeRequestFormData.date = this.requestForm.date
       this.storeRequestFormData.allocation = this.requestForm.allocation
-      this.storeRequestFormData.amount = this.requestForm.amount
       this.storeRequestFormData.method = this.requestForm.method
+      this.storeRequestFormData.bank_name = this.requestForm.bank_name
+      this.storeRequestFormData.bank_code = this.requestForm.bank_code
+      this.storeRequestFormData.account_number = this.requestForm.account_number
+      this.storeRequestFormData.account_owner = this.requestForm.account_owner
+      this.storeRequestFormData.amount = this.requestForm.amount
       this.storeRequestFormData.notes = this.requestForm.notes
       this.storeRequestFormData.attachment = this.requestForm.attachment
     },
@@ -576,6 +672,12 @@ export default {
         const body = new FormData()
         body.append('date', this.storeRequestFormData.date)
         body.append('method', this.storeRequestFormData.method)
+        body.append('cash', this.storeRequestFormData.method)
+        body.append('transfer', this.storeRequestFormData.method)
+        body.append('bank_name', this.storeRequestFormData.bank_name)
+        body.append('bank_code', this.storeRequestFormData.bank_code)
+        body.append('account_number', this.storeRequestFormData.account_number)
+        body.append('account_owner', this.storeRequestFormData.account_owner)
         body.append('allocation', this.storeRequestFormData.allocation)
         body.append('amount', this.storeRequestFormData.amount)
         body.append('attachment', this.storeRequestFormData.attachment)

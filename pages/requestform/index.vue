@@ -130,14 +130,55 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="6">
-                  <v-text-field
+                  <v-select
+                    :items="items"
                     prepend-inner-icon="mdi-cube-send"
                     v-model="storeRequestFormData.method"
                     hide-details
-                    label="Cash / Transfer"
-                  ></v-text-field>
+                    label="Payment Method"
+                  ></v-select>
                 </v-col>
               </v-row>
+
+              <div v-if="storeRequestFormData.method === 'Transfer'">
+                <v-row>
+                  <v-col cols="6">
+                    <v-text-field
+                      prepend-inner-icon="mdi-cash-usd"
+                      hide-details
+                      label="Bank Name"
+                      v-model="storeRequestFormData.bank_name"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-text-field
+                      prepend-inner-icon="mdi-cash-100"
+                      hide-details
+                      label="Bank Code"
+                      v-model="storeRequestFormData.bank_code"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="6">
+                    <v-text-field
+                      prepend-inner-icon="mdi-numeric"
+                      hide-details
+                      label="Account Number"
+                      v-model="storeRequestFormData.account_number"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-text-field
+                      prepend-inner-icon="mdi-clipboard-account"
+                      hide-details
+                      label="Account Owner"
+                      v-model="storeRequestFormData.account_owner"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </div>
 
               <v-row>
                 <v-col cols="12">
@@ -238,6 +279,7 @@ export default {
       formRequestFormData: true,
       errorm: false,
       delay: 750,
+      items: ['Cash', 'Transfer'],
       rules: {
         required: (value) => !!value || 'Required.'
       },
@@ -253,6 +295,10 @@ export default {
       storeRequestFormData: {
         date: '',
         method: '',
+        bank_name: '',
+        bank_code: '',
+        account_number: '',
+        account_owner: '',
         allocation: '',
         amount: '',
         attachment: null,
@@ -275,10 +321,18 @@ export default {
         const body = new FormData()
         body.append('date', this.storeRequestFormData.date)
         body.append('method', this.storeRequestFormData.method)
+        body.append('cash', this.storeRequestFormData.method)
+        body.append('transfer', this.storeRequestFormData.method)
+        body.append('bank_name', this.storeRequestFormData.bank_name)
+        body.append('bank_code', this.storeRequestFormData.bank_code)
+        body.append('account_number', this.storeRequestFormData.account_number)
+        body.append('account_owner', this.storeRequestFormData.account_owner)
         body.append('allocation', this.storeRequestFormData.allocation)
         body.append('amount', this.storeRequestFormData.amount)
         body.append('attachment', this.storeRequestFormData.attachment)
         body.append('notes', this.storeRequestFormData.notes)
+        console.log('cash', this.storeRequestFormData.method)
+        console.log('transfer', this.storeRequestFormData.method)
         this.$axios({
           method: 'post',
           url: '/form/request',
