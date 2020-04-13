@@ -30,17 +30,21 @@
         <template v-slot:item.user="{item}">
           <div>{{ item.user.name }}</div>
         </template>
+        <template v-slot:item.status="{item}">
+          <div>{{ item.status.status }}</div>
+        </template>
         <template v-slot:item.method="{item}">
           <div>{{ item.method }}</div>
         </template>
         <template v-slot:item.amount="{item}">
-          <div>Rp. {{ item.amount.toLocaleString('id-ID') }}</div>
+          <div>Rp. {{ parseFloat(item.amount).toLocaleString('id-ID') }}</div>
         </template>
         <template v-slot:item.id="{item}">
           <nuxt-link :to="'/pettycashform/'+item.id" id="nuxt-link">
             <v-btn class="my-2" dark small color="teal">Detail Form</v-btn>
           </nuxt-link>
           <v-btn
+            v-if="item.status.id === 1"
             v-model="deleteForm"
             class="my-2"
             dark
@@ -115,13 +119,18 @@
                 <!-- Budget -->
                 <v-row>
                   <template v-for="(_, i) in budgetList">
-                    <v-col cols="4" class="py-1" :key="'code-'+i">
-                      <v-text-field v-model="budgetList[i].budget_code" solo label="Code"></v-text-field>
+                    <v-col cols="6" class="py-1" :key="'code-'+i">
+                        <v-autocomplete
+                          v-model="budgetList[i].budget_code"
+                          :items="budgetCodeList.map(budgetCode => budgetCode.code)"
+                          placeholder="Code"></v-autocomplete>
                     </v-col>
-                    <v-col cols="4" class="py-1" :key="'name-'+i">
-                      <v-text-field v-model="budgetList[i].budget_name" solo label="Name"></v-text-field>
-                    </v-col>
-                    <v-col cols="4" class="py-1" :key="'nominal-'+i">
+<!--                    <v-col cols="4" class="py-1" :key="'name-'+i">-->
+<!--                      <v-text-field v-model="budgetList[i].budget_name" solo label="Name">-->
+<!--                        {{ budgetCodeList.find(budgetCode => budgetCode.code == budgetList[i].budget_code).name }}-->
+<!--                      </v-text-field>-->
+<!--                    </v-col>-->
+                    <v-col cols="6" class="py-1" :key="'nominal-'+i">
                       <v-text-field v-model="budgetList[i].nominal" solo label="Nominal"></v-text-field>
                     </v-col>
                   </template>
@@ -252,7 +261,6 @@ export default {
       budgetList: [
         {
           budget_code: null,
-          budget_name: null,
           nominal: null
         }
       ],
@@ -272,6 +280,7 @@ export default {
         { text: 'Tanggal Pembuatan', value: 'created_at' },
         { text: 'Tanggal Pemakaian', value: 'date' },
         { text: 'PIC', value: 'user.name' },
+        { text: 'Status', value: 'status.status'},
         { text: 'Allocation', value: 'allocation' },
         { text: 'Jumlah', value: 'amount' },
         { text: 'Detail', value: 'id', sortable: false }
@@ -282,9 +291,16 @@ export default {
         allocation: '',
         amount: ''
       },
+      budgetCodeList: []
     }
   },
   methods: {
+    async getBudgetCode () {
+      await this.$axios.$get('/budget-code')
+      .then((response) => {
+        this.budgetCodeList = response.budget_code
+      })
+    },
     updateAmount() {
       if (this.dialogStorePettyCashForm){
         var amount = 0
@@ -296,7 +312,7 @@ export default {
     },
     addBudgetRowList() {
       if (this.budgetList.length <= 10) {
-        this.budgetList.push({ code: null, name: null, nominal: null })
+        this.budgetList.push({ budget_code: null,  nominal: null })
       }
     },
     removeBudgetRowList() {
@@ -317,10 +333,9 @@ export default {
       if (this.$refs.formPettyCashHeaderForm.validate()) {
         const body = new FormData()
         for (let i = 0; i < this.budgetList.length; i++){
-          body.append("details["+i+"][budget_code]",this.budgetList[i]['budget_code']);
-          body.append("details["+i+"][budget_name]",this.budgetList[i]['budget_name']);
+          let budgetCodeId = this.budgetCodeList.find(x => x.code === this.budgetList[i].budget_code).id
+          body.append("details["+i+"][budget_code_id]",budgetCodeId);
           body.append("details["+i+"][nominal]",this.budgetList[i]['nominal']);
-
         }
         body.append('date', this.storePettyCashFormData.date)
         body.append('allocation', this.storePettyCashFormData.allocation)
@@ -366,6 +381,7 @@ export default {
   mounted() {
     this.$store.commit('setCurrentPageTitle', 'Petty Cash Form')
     this.getPettyCashForms()
+    this.getBudgetCode()
     setInterval(this.updateAmount, 1000)
   },
   watch: {

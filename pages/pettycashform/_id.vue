@@ -107,14 +107,14 @@
             <h4>Amount</h4>
           </v-col>
           <v-col cols="8">
-            <p>Rp. {{ parseFloat(pettyCashForm.amount).toLocaleString() }}</p>
+            <p>Rp. {{ parseFloat(pettyCashForm.amount).toLocaleString('id-ID') }}</p>
           </v-col>
         </v-row>
 
         <!-- Detailnya -->
         <v-data-table
           :headers="headers"
-          :items="pettyCashForm.detail"
+          :items="pettyCashForm.details"
           :items-per-page="10"
           class="rounded-table"
           color="white"
@@ -122,13 +122,30 @@
 
           <!--data table-->
           <template v-slot:item.budget_code="{item}">
-            <div>{{ item.budget_code }}</div>
+            <div>{{ item.budget_code.code }}</div>
           </template>
           <template v-slot:item.budget_name="{item}">
-            <div>{{ item.budget_name }}</div>
+            <div>{{ item.budget_code.name }}</div>
           </template>
           <template v-slot:item.nominal="{item}">
-            <div>Rp. {{ item.nominal }}</div>
+            <div>Rp. {{ parseFloat(item.nominal).toLocaleString('id-ID') }}</div>
+          </template>
+          <template v-slot:item.id="{item}">
+            <v-btn v-if="checkEdit()" class="my-2" dark small color="teal" @click="showDialogUpdatePettyCashDetail(item)">
+              Update
+            </v-btn>
+            <v-btn
+              v-if="checkEdit()"
+              v-model="deletePettyCashDetailModel"
+              class="my-2"
+              dark
+              small
+              fab
+              color="indigo"
+              @click="deletePettyCashDetail(item)"
+            >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
           </template>
         </v-data-table>
 
@@ -169,7 +186,7 @@
 
     <!-- Section Action -->
     <template>
-      <v-row justify-content="space-between" v-if="checkEdit(this.pettyCashForm)">
+      <v-row justify-content="space-between" v-if="checkEdit()">
         <v-col>
           <v-btn @click="dialogSureDelete = true" block large color="#ECEFF1">
             Hapus
@@ -240,96 +257,241 @@
       </v-card>
     </v-dialog>
 
+    <!-- Dialog Update Petty Cash Header -->
     <v-dialog v-model="dialogUpdatePettyCashForm" width="640px" persistent>
       <v-card flat>
         <v-container fluid fill-height grid-list-md text-xs-center class="bg">
           <v-layout row wrap align-center justify-center>
             <v-card-title>
-              <h1 slot="header" class="title">Buat Form Petty Cash</h1>
+              <h1 slot="header" class="title">Update Form Petty Cash</h1>
             </v-card-title>
-            <v-form
-              ref="formPettyCashHeaderForm"
-              v-model="formPettyCashHeaderData"
-              lazy-validation>
-              <v-row>
-                <v-col cols="12">
-                  <v-menu
-                    ref="datePicker"
-                    v-model="datePicker"
-                    :close-on-content-click="false"
-                    :return-value="storePettyCashFormData.date"
-                    transition="scale-transition"
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{on}">
-                      <v-text-field
-                        v-model="storePettyCashFormData.date"
-                        :rules="[rules.required]"
-                        v-on="on"
-                        solo
-                        prepend-inner-icon="mdi-calendar"
-                        label="Date"
-                      />
-                    </template>
-                    <v-date-picker v-model="storePettyCashFormData.date" no-title scrollable>
-                      <v-btn @click="datePicker = false" text color="primary">
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        @click="$refs.datePicker.save(storePettyCashFormData.date)"
-                        text
-                        color="primary"
-                      >
-                        OK
-                      </v-btn>
-                    </v-date-picker>
-                  </v-menu>
-                </v-col>
-              </v-row>
+            <v-card-text>
+              <v-form
+                ref="formPettyCashHeaderForm"
+                v-model="formPettyCashHeaderData"
+                lazy-validation
+              >
+                <v-row>
+                  <v-col cols="12">
+                    <v-menu
+                      ref="datePicker"
+                      v-model="datePicker"
+                      :close-on-content-click="false"
+                      :return-value="storePettyCashFormData.date"
+                      transition="scale-transition"
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{on}">
+                        <v-text-field
+                          v-model="storePettyCashFormData.date"
+                          :rules="[rules.required]"
+                          v-on="on"
+                          solo
+                          prepend-inner-icon="mdi-calendar"
+                          label="Date"
+                        />
+                      </template>
+                      <v-date-picker v-model="storePettyCashFormData.date" no-title scrollable>
+                        <v-btn @click="datePicker = false" text color="primary">Cancel</v-btn>
+                        <v-btn
+                          @click="$refs.datePicker.save(storePettyCashFormData.date)"
+                          text
+                          color="primary"
+                        >OK</v-btn>
+                      </v-date-picker>
+                    </v-menu>
+                  </v-col>
+                </v-row>
 
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field
-                    solo
-                    prepend-inner-icon="mdi-home-map-marker"
-                    v-model="storePettyCashFormData.allocation"
-                    hide-details
-                    label="Allocation / Peruntukan"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
+                      solo
+                      prepend-inner-icon="mdi-home-map-marker"
+                      v-model="storePettyCashFormData.allocation"
+                      hide-details
+                      label="Allocation / Peruntukan"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
 
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field
-                    solo
-                    prepend-inner-icon="mdi-cash-multiple"
-                    v-model="storePettyCashFormData.amount"
-                    hide-details
-                    label="Amount"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+                <v-row>
+                  <v-col cols="12" v-show="errorm">
+                    <v-alert type="error">Error alert</v-alert>
+                  </v-col>
+                </v-row>
 
-              <v-row>
-                <v-col cols="12" v-show="errorm">
-                  <v-alert type="error">Error alert</v-alert>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col cols="6">
-                  <v-btn height="50px" block big dark  color="#06beb6" @click="updatePettyCashForm()" >Submit</v-btn>
-                </v-col>
-                <v-col>
-                  <v-btn height="50px" block big  @click.stop="dialogStorePettyCashForm = false ">Batal</v-btn>
-                </v-col>
-              </v-row>
-            </v-form>
+                <v-row>
+                  <v-col cols="6">
+                    <v-btn
+                      height="50px"
+                      block
+                      big
+                      dark
+                      color="#06beb6"
+                      @click="updatePettyCashForm()"
+                    >Submit</v-btn>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      height="50px"
+                      block
+                      big
+                      @click.stop="dialogUpdatePettyCashForm= false"
+                    >Batal</v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-card-text>
           </v-layout>
         </v-container>
       </v-card>
     </v-dialog>
+
+    <!-- Dialog Update Petty Cash Detail -->
+    <v-dialog v-model="dialogUpdatePettyCashDetail" width="640px" persistent>
+      <v-card flat>
+        <v-container fluid fill-height grid-list-md text-xs-center class="bg">
+          <v-layout row wrap align-center justify-center>
+            <v-card-title>
+              <h1 slot="header" class="title">Update Detail</h1>
+            </v-card-title>
+            <v-card-text>
+              <v-form
+                ref="formPettyCashDetailForm"
+                v-model="formPettyCashDetailData"
+                lazy-validation
+              >
+
+                <!-- Budget -->
+                <v-row>
+                  <template>
+                    <v-col cols="6" class="py-1">
+                      <v-autocomplete
+                        v-model="pettyCashDetail.budget_code.code"
+                        :items="budgetCodeList.map(budgetCode => budgetCode.code)"
+                        placeholder="Code"></v-autocomplete>
+                    </v-col>
+                    <!--                    <v-col cols="4" class="py-1" :key="'name-'+i">-->
+                    <!--                      <v-text-field v-model="budgetList[i].budget_name" solo label="Name">-->
+                    <!--                        {{ budgetCodeList.find(budgetCode => budgetCode.code == budgetList[i].budget_code).name }}-->
+                    <!--                      </v-text-field>-->
+                    <!--                    </v-col>-->
+                    <v-col cols="6" class="py-1">
+                      <v-text-field v-model="pettyCashDetail.nominal" solo label="Nominal"></v-text-field>
+                    </v-col>
+                  </template>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="12" v-show="errorm">
+                    <v-alert type="error">Error alert</v-alert>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="6">
+                    <v-btn
+                      height="50px"
+                      block
+                      big
+                      dark
+                      color="#06beb6"
+                      @click="updatePettyCashDetail()"
+                    >Submit</v-btn>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      height="50px"
+                      block
+                      big
+                      @click.stop="dialogUpdatePettyCashDetail= false"
+                    >Batal</v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-card-text>
+          </v-layout>
+        </v-container>
+      </v-card>
+    </v-dialog>
+
+    <!-- Dialog Store Petty Cash Detail -->
+    <v-dialog v-model="dialogStorePettyCashDetail" width="640px" persistent>
+      <v-card flat>
+        <v-container fluid fill-height grid-list-md text-xs-center class="bg">
+          <v-layout row wrap align-center justify-center>
+            <v-card-title>
+              <h1 slot="header" class="title">Simpan Detail</h1>
+            </v-card-title>
+            <v-card-text>
+              <v-form
+                ref="formStorePettyCashDetailForm"
+                v-model="formStorePettyCashDetailData"
+                lazy-validation
+              >
+
+                <!-- Budget -->
+                <v-row>
+                  <template>
+                    <v-col cols="6" class="py-1">
+                      <v-combobox
+                        v-model="storePettyCashDetailData.budget_code"
+                        :items="budgetCodeList.map(budgetCode => budgetCode.code)"
+                        placeholder="Code"
+                        ></v-combobox>
+                    </v-col>
+                    <v-col cols="6" class="py-1">
+                      <v-text-field v-model="storePettyCashDetailData.nominal" solo label="Nominal"></v-text-field>
+                    </v-col>
+                  </template>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="12" v-show="errorm">
+                    <v-alert type="error">Error alert</v-alert>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="6">
+                    <v-btn
+                      height="50px"
+                      block
+                      big
+                      dark
+                      color="#06beb6"
+                      @click="storePettyCashDetail()"
+                    >Submit</v-btn>
+                  </v-col>
+                  <v-col>
+                    <v-btn
+                      height="50px"
+                      block
+                      big
+                      @click.stop="dialogStorePettyCashDetail= false"
+                    >Batal</v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-card-text>
+          </v-layout>
+        </v-container>
+      </v-card>
+    </v-dialog>
+
+    <!-- Floating button nambah -->
+    <v-btn
+      id="tambah"
+      @click="showDialogStorePettyCashDetail()"
+      class="mx-2"
+      dark
+      color="#008080"
+      fab
+      v-if="checkEdit()"
+    >
+      <v-icon dark>mdi-plus</v-icon>
+    </v-btn>
 
   </v-container>
 </template>
@@ -341,7 +503,12 @@
         dialogSureDelete: false,
         dialogSureConfirm: false,
         formPettyCashHeaderData: true,
+        formPettyCashDetailData: true,
+        formStorePettyCashDetailData: true,
+        dialogUpdatePettyCashDetail: false,
         dialogUpdatePettyCashForm : false,
+        dialogStorePettyCashDetail: false,
+        deletePettyCashDetailModel: false,
         errorm: false,
         datePicker: false,
         choosenPettyCashFormId: '',
@@ -351,27 +518,140 @@
         },
         pettyCashForm: {
           user: {},
-          detail: []
+          details: []
         },
         storePettyCashFormData: {
           date: '',
           allocation: '',
-          amount: ''
+          amount: '',
         },
-        pettyCashDetail: {},
         headers: [
           { text: 'Budget Code', value: 'budget_code' },
           { text: 'Budget Name', value: 'budget_name' },
-          { text: 'Nominal', value: 'nominal' }
+          { text: 'Nominal', value: 'nominal' },
+          { text: 'Detail', value: 'id', sortable: false }
         ],
+        budgetCodeList: [],
+        pettyCashDetail: {
+          budget_code: {
+            code: null,
+            name: null
+          },
+          nominal: null
+        },
+        storePettyCashDetailData: {
+          budget_code: '',
+          nominal: ''
+        }
       }
     },
     methods: {
+      async showDialogStorePettyCashDetail(){
+        this.storePettyCashDetailData.budget_code = this.budgetCodeList[0].code
+        this.storePettyCashDetailData.nominal = null
+        this.dialogStorePettyCashDetail = true
+      },
+      async deletePettyCashDetail(item){
+        const body = new FormData()
+        body.append('id', item.id)
+        await this.$axios({
+          method: 'delete',
+          url: '/form/petty-cash/' + this.choosenPettyCashFormId +'/detail/' + item.id,
+          data: body
+        })
+          .then((response) => {
+          })
+          .catch(function(error) {
+            console.log(error)
+          })
+        await this.getPettyCashForm()
+        await this.updateAmount()
+      },
+      async storePettyCashDetail(){
+        let budgetCodeId = this.budgetCodeList.find(x => x.code === this.storePettyCashDetailData.budget_code).id
+        const body = new FormData()
+        body.append('budget_code_id', budgetCodeId)
+        body.append('nominal', this.storePettyCashDetailData.nominal)
+        await this.$axios({
+          method: 'post',
+          url: '/form/petty-cash/'+this.choosenPettyCashFormId+'/detail',
+          data: body
+        })
+          .then((response) => {
+          })
+          .catch(function(error) {
+            console.log(error)
+          })
+        await this.getPettyCashForm()
+        await this.updateAmount()
+        this.dialogStorePettyCashDetail = false
+
+      },
+      async updatePettyCashDetail(){
+        let budgetCodeId = this.budgetCodeList.find(x => x.code === this.pettyCashDetail.budget_code.code).id
+        const body = new FormData()
+        body.append('budget_code_id', budgetCodeId)
+        body.append('nominal', this.pettyCashDetail.nominal)
+        await this.$axios({
+          method: 'post',
+          url: '/form/petty-cash/'+this.choosenPettyCashFormId+'/detail/'+this.pettyCashDetail.id,
+          data: body
+        })
+          .then((response) => {
+          })
+          .catch(function(error) {
+            console.log(error)
+          })
+        this.dialogUpdatePettyCashDetail = false
+        this.$refs.formPettyCashDetailForm.reset()
+        await this.getPettyCashForm()
+        await this.updateAmount()
+      },
+      showDialogUpdatePettyCashDetail(item){
+        this.dialogUpdatePettyCashDetail = true
+        this.pettyCashDetail = item
+      },
+      async updateAmount() {
+        var amount = 0
+        for (let i=0; i<this.pettyCashForm.details.length; i++){
+          amount = amount + Number(this.pettyCashForm.details[i].nominal)
+        }
+        const body = new FormData()
+        if (this.pettyCashForm.details.length === 0){
+          body.append('amount', 0)
+        } else {
+          body.append('amount', amount)
+        }
+        await this.$axios({
+          method: 'post',
+          url: '/form/petty-cash/'+this.choosenPettyCashFormId,
+          data: body
+        })
+          .then((response) => {
+            console.log(response)
+          })
+          .catch(function(error) {
+            console.log(error)
+          })
+        this.getPettyCashForm()
+      },
+      getAmount() {
+        var amount = 0
+        for (let i=0; i<this.pettyCashForm.details.length; i++){
+          amount = amount + Number(this.pettyCashForm.details[i].nominal)
+        }
+        this.storePettyCashFormData.amount = amount
+      },
+      async getBudgetCode () {
+        await this.$axios.$get('/budget-code')
+          .then((response) => {
+            this.budgetCodeList = response.budget_code
+          })
+      },
       async getPettyCashForm () {
         await this.$axios
           .get('/form/petty-cash/'+this.choosenPettyCashFormId)
           .then((response) => {
-            console.log(response)
             this.pettyCashForm = response.data.form_petty_cash
           })
       },
@@ -384,7 +664,6 @@
           data: body
         })
           .then((response) => {
-            console.log(response)
           })
           .catch(function(error) {
             console.log(error)
@@ -400,7 +679,7 @@
           data: body
         })
           .then((response) => {
-            console.log(response)
+
           })
           .catch(function(error) {
             console.log(error)
@@ -416,15 +695,14 @@
           data: body
         })
           .then((response) => {
-            console.log(response)
           })
           .catch(function(error) {
             console.log(error)
           })
         this.getPettyCashForm()
       },
-      checkEdit (item) {
-        if (item.is_confirmed_pic === 0  && item.is_confirmed_cashier === 0 && item.is_confirmed_manager_ops === 0 && item.user_id === this.$auth.user.id) {
+      checkEdit () {
+        if (this.pettyCashForm.is_confirmed_pic === 0  && this.pettyCashForm.is_confirmed_cashier === 0 && this.pettyCashForm.is_confirmed_manager_ops === 0 && this.pettyCashForm.user_id === this.$auth.user.id) {
           return true
         }
       },
@@ -449,7 +727,6 @@
           url: '/form/petty-cash/'+this.choosenPettyCashFormId,
         })
           .then((response) => {
-            console.log(response)
           })
           .catch(function(error) {
             console.log(error)
@@ -461,10 +738,10 @@
         this.dialogUpdatePettyCashForm = true
         this.storePettyCashFormData.date = this.pettyCashForm.date
         this.storePettyCashFormData.allocation = this.pettyCashForm.allocation
-        this.storePettyCashFormData.amount = this.pettyCashForm.amount
       },
       async updatePettyCashForm() {
         if (this.$refs.formPettyCashHeaderForm.validate()) {
+          this.getAmount()
           const body = new FormData()
           body.append('date', this.storePettyCashFormData.date)
           body.append('allocation', this.storePettyCashFormData.allocation)
@@ -475,7 +752,6 @@
             data: body
           })
             .then((response) => {
-              console.log(response)
             })
             .catch(function(error) {
               console.log(error)
@@ -490,6 +766,7 @@
       this.choosenPettyCashFormId = this.$route.params.id
       this.getPettyCashForm()
       this.$store.commit('setCurrentPageTitle', 'Form Petty Cash Detail')
+      this.getBudgetCode()
     },
     watch: {
 
@@ -503,5 +780,22 @@
     background: transparent linear-gradient(to right, #06beb6, #48b1bf)
     no-repeat padding-box;
     box-shadow: 0px 3px 16px #00000029;
+  }
+  .v-data-table-header {
+    color: white;
+    background: transparent linear-gradient(to right, #06beb6, #48b1bf) no-repeat
+    padding-box;
+    box-shadow: 0px 3px 16px #00000029;
+  }
+  .rounded-table .v-data-table__wrapper,
+  .rounded-other {
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    box-shadow: 0px 3px 16px #00000029;
+  }
+  #tambah {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
   }
 </style>
