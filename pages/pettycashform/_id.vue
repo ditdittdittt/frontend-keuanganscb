@@ -111,6 +111,16 @@
           </v-col>
         </v-row>
 
+        <!-- Status -->
+        <v-row>
+          <v-col cols="4">
+            <h4>Status</h4>
+          </v-col>
+          <v-col cols="8">
+            <p>{{ pettyCashForm.status.status }}</p>
+          </v-col>
+        </v-row>
+
         <!-- Detailnya -->
         <v-data-table
           :headers="headers"
@@ -518,7 +528,8 @@
         },
         pettyCashForm: {
           user: {},
-          details: []
+          details: [],
+          status: {}
         },
         storePettyCashFormData: {
           date: '',
