@@ -717,9 +717,6 @@ export default {
     },
     async updateRequestForm() {
       if (this.$refs.formRequestForm.validate()) {
-        if (this.storeRequestFormData.budget_code){
-          var budgetCodeId = this.budgetCodeList.find(x => x.code === this.storeRequestFormData.budget_code).id
-        }
         const body = new FormData()
         body.append('date', this.storeRequestFormData.date)
         body.append('method', this.storeRequestFormData.method)
@@ -727,7 +724,10 @@ export default {
         body.append('amount', this.storeRequestFormData.amount)
         body.append('attachment', this.storeRequestFormData.attachment)
         body.append('notes', this.storeRequestFormData.notes)
-        body.append('budget_code_id', budgetCodeId)
+        if (this.storeRequestFormData.budget_code){
+          var budgetCodeId = this.budgetCodeList.find(x => x.code === this.storeRequestFormData.budget_code).id
+          body.append('budget_code_id', budgetCodeId)
+        }
         if (this.storeRequestFormData.method === 'Transfer'){
           body.append('bank_name', this.storeRequestFormData.bank_name)
           body.append('bank_code', this.storeRequestFormData.bank_code)
