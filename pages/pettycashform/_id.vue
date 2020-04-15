@@ -229,6 +229,17 @@
           </v-btn>
         </v-col>
       </v-row>
+      <v-row justify-content="space-between" v-if="pettyCashForm.status_id === 2">
+        <v-col cols="12">
+          <v-btn
+            @click="showDialogConfirmForm('alreadyPaid')"
+            block
+            large
+            dark
+            color="#008080"
+          >Apakah sudah dibayarkan?</v-btn>
+        </v-col>
+      </v-row>
     </template>
 
     <!-- Dialog Yakin Konfirmasi -->
@@ -557,6 +568,22 @@
       }
     },
     methods: {
+      async confirmAlreadyPaid(){
+        const body = new FormData()
+        body.append('status_id', 3)
+        await this.$axios({
+          method: 'post',
+          url: '/form/petty-cash/'+this.choosenPettyCashFormId,
+          data: body
+        })
+          .then((response) => {
+
+          })
+          .catch(function(error) {
+            console.log(error)
+          })
+        this.getPettyCashForm()
+      },
       async showDialogStorePettyCashDetail(){
         this.storePettyCashDetailData.budget_code = this.budgetCodeList[0].code
         this.storePettyCashDetailData.nominal = null
@@ -728,6 +755,8 @@
           this.confirmAsManagerOps()
         } else if (this.confirmAs === 'cashier') {
           this.confirmAsCashier()
+        } else if (this.confirmAs === 'alreadyPaid') {
+          this.confirmAlreadyPaid()
         }
         this.confirmAs = ''
         this.dialogSureConfirm = false
