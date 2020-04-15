@@ -3,10 +3,6 @@
     <v-container class="py-0 my-0">
       <!-- Section Detail -->
       <v-row class="pb-5">
-        <v-col cols="12">
-          <div class="pa-1" />
-        </v-col>
-
         <!-- Header -->
         <v-col cols="12">
           <v-row justify="center" class="grad rounded-other">
@@ -90,6 +86,16 @@
             </v-col>
           </v-row>
 
+          <!-- Budget Code -->
+          <v-row>
+            <v-col cols="4">
+              <h4>Budget Code</h4>
+            </v-col>
+            <v-col cols="8">
+              <p>{{ requestForm.budget_code.code }}</p>
+            </v-col>
+          </v-row>
+
           <!-- Allocation -->
           <v-row>
             <v-col cols="4">
@@ -110,7 +116,7 @@
             </v-col>
           </v-row>
 
-          <div v-if="storeRequestFormData.method === 'Transfer'">
+          <div v-if="requestForm.method === 'Transfer'">
             <!-- Nama Bank -->
             <v-row>
               <v-col cols="4">
@@ -158,12 +164,22 @@
               <h4>Amount</h4>
             </v-col>
             <v-col cols="8">
-              <p>Rp. {{ parseFloat(requestForm.amount).toLocaleString() }}</p>
+              <p>Rp. {{ parseFloat(requestForm.amount).toLocaleString('id-ID') }}</p>
+            </v-col>
+          </v-row>
+
+          <!-- Status -->
+          <v-row>
+            <v-col cols="4">
+              <h4>Status</h4>
+            </v-col>
+            <v-col cols="8">
+              <p>{{ requestForm.status.status }}</p>
             </v-col>
           </v-row>
 
           <!-- Attachment -->
-          <v-row>
+          <v-row v-if="requestForm.attachment">
             <v-col cols="4">
               <h4>Attachment</h4>
             </v-col>
@@ -225,6 +241,12 @@
               <p v-if="requestForm.is_confirmed_cashier == 1">Sudah disetujui</p>
             </v-col>
           </v-row>
+
+          <!-- Export as pdf -->
+          <v-row>
+
+          </v-row>
+
         </v-col>
       </v-row>
 
@@ -282,6 +304,17 @@
             >Konfirmasi sebagai Cashier</v-btn>
           </v-col>
         </v-row>
+        <v-row justify-content="space-between" v-if="requestForm.status_id === 2">
+          <v-col cols="12">
+            <v-btn
+              @click="showDialogConfirmForm('alreadyPaid')"
+              block
+              large
+              dark
+              color="#008080"
+            >Apakah sudah dibayarkan?</v-btn>
+          </v-col>
+        </v-row>
       </template>
 
       <!-- Modal Update -->
@@ -294,7 +327,7 @@
               </v-card-title>
               <v-form ref="formRequestForm" v-model="formRequestFormData" lazy-validation>
                 <v-row>
-                  <v-col cols="12">
+                  <v-col cols="6">
                     <v-menu
                       ref="datePicker"
                       v-model="datePicker"
@@ -321,6 +354,12 @@
                         >OK</v-btn>
                       </v-date-picker>
                     </v-menu>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-autocomplete
+                      v-model="storeRequestFormData.budget_code"
+                      :items="budgetCodeList.map(budgetCode => budgetCode.code)"
+                      placeholder="Code"></v-autocomplete>
                   </v-col>
                 </v-row>
 
@@ -411,17 +450,6 @@
 
                 <v-row>
                   <v-col cols="12">
-                    <!--                  <div id="example-3">-->
-                    <!--                    <h4>Attachment</h4>-->
-                    <!--                    <input type="checkbox" id="proker" value="Proker" v-model="storeRequestFormData.attachment" />-->
-                    <!--                    <label for="proker">Program Kerja</label>-->
-                    <!--                    <input type="checkbox" id="invoice" value="Invoice" v-model="storeRequestFormData.attachment" />-->
-                    <!--                    <label for="invoice">Invoice</label>-->
-                    <!--                    <input type="checkbox" id="fpbj" value="FPBJ" v-model="storeRequestFormData.attachment" />-->
-                    <!--                    <label for="fpbj">FPBJ</label>-->
-                    <!--                    <input type="checkbox" id="exsum" value="Exsum" v-model="storeRequestFormData.attachment" />-->
-                    <!--                    <label for="exsum">Expense Summary</label>-->
-                    <!--                  </div>-->
                     <v-file-input
                       v-model="storeRequestFormData.attachment"
                       chips
@@ -514,6 +542,7 @@ export default {
       choosenRequestFormId: '',
       confirmAs: '',
       items: ['Cash', 'Transfer'],
+      delay: 750,
       rules: {
         required: (value) => !!value || 'Required.'
       },
@@ -536,7 +565,9 @@ export default {
         is_confirmed_verificator: '',
         is_confirmed_head_dept: '',
         is_confirmed_cashier: '',
-        user: {}
+        budget_code: {},
+        user: {},
+        status: {}
       },
       storeRequestFormData: {
         date: '',
@@ -548,12 +579,36 @@ export default {
         allocation: '',
         amount: '',
         attachment: null,
-        notes: ''
-      }
+        notes: '',
+        budget_code: ''
+      },
+      budgetCodeList: []
+
     }
   },
 
   methods: {
+    async confirmAlreadyPaid(){
+      const body = new FormData()
+      body.append('status_id', 3)
+      await this.$axios({
+        method: 'post',
+        url: '/form/request/' + this.choosenRequestFormId,
+        data: body
+      })
+        .then((response) => {
+        })
+        .catch(function(error) {
+        })
+      this.getRequestForm()
+    },
+    async getBudgetCode () {
+      await this.$axios.$get('/budget-code')
+        .then((response) => {
+          console.log(response)
+          this.budgetCodeList = response.budget_code
+        })
+    },
     async openFile() {
       window.open(this.requestForm.attachment)
     },
@@ -574,10 +629,8 @@ export default {
         data: body
       })
         .then((response) => {
-          console.log(response)
         })
         .catch(function(error) {
-          console.log(error)
         })
       this.getRequestForm()
     },
@@ -590,10 +643,8 @@ export default {
         data: body
       })
         .then((response) => {
-          console.log(response)
         })
         .catch(function(error) {
-          console.log(error)
         })
       this.getRequestForm()
     },
@@ -606,10 +657,8 @@ export default {
         data: body
       })
         .then((response) => {
-          console.log(response)
         })
         .catch(function(error) {
-          console.log(error)
         })
       this.getRequestForm()
     },
@@ -622,10 +671,8 @@ export default {
         data: body
       })
         .then((response) => {
-          console.log(response)
         })
         .catch(function(error) {
-          console.log(error)
         })
       this.getRequestForm()
     },
@@ -666,22 +713,31 @@ export default {
       this.storeRequestFormData.amount = this.requestForm.amount
       this.storeRequestFormData.notes = this.requestForm.notes
       this.storeRequestFormData.attachment = this.requestForm.attachment
+      this.storeRequestFormData.budget_code = this.requestForm.budget_code.code
     },
     async updateRequestForm() {
       if (this.$refs.formRequestForm.validate()) {
+        let budgetCodeId = this.budgetCodeList.find(x => x.code === this.storeRequestFormData.budget_code).id
         const body = new FormData()
         body.append('date', this.storeRequestFormData.date)
         body.append('method', this.storeRequestFormData.method)
-        body.append('cash', this.storeRequestFormData.method)
-        body.append('transfer', this.storeRequestFormData.method)
-        body.append('bank_name', this.storeRequestFormData.bank_name)
-        body.append('bank_code', this.storeRequestFormData.bank_code)
-        body.append('account_number', this.storeRequestFormData.account_number)
-        body.append('account_owner', this.storeRequestFormData.account_owner)
         body.append('allocation', this.storeRequestFormData.allocation)
         body.append('amount', this.storeRequestFormData.amount)
         body.append('attachment', this.storeRequestFormData.attachment)
         body.append('notes', this.storeRequestFormData.notes)
+        body.append('budget_code_id', budgetCodeId)
+        if (this.storeRequestFormData.method === 'Transfer'){
+          body.append('bank_name', this.storeRequestFormData.bank_name)
+          body.append('bank_code', this.storeRequestFormData.bank_code)
+          body.append('account_number', this.storeRequestFormData.account_number)
+          body.append('account_owner', this.storeRequestFormData.account_owner)
+        }
+        if (this.storeRequestFormData.method === 'Cash'){
+          body.append('bank_name', null)
+          body.append('bank_code', null)
+          body.append('account_number', null)
+          body.append('account_owner', null)
+        }
         this.$axios({
           method: 'post',
           url: '/form/request/' + this.choosenRequestFormId,
@@ -695,7 +751,7 @@ export default {
           })
         this.$refs.formRequestForm.reset()
         this.dialogUpdateRequestForm = false
-        this.getRequestForm()
+        await this.getRequestForm()
       }
     },
     async showDialogConfirmForm(confirmAs) {
@@ -711,6 +767,8 @@ export default {
         this.confirmAsHeadDept()
       } else if (this.confirmAs === 'cashier') {
         this.confirmAsCashier()
+      } else if (this.confirmAs === 'alreadyPaid') {
+        this.confirmAlreadyPaid()
       }
       this.confirmAs = ''
       this.dialogSureConfirm = false
@@ -720,8 +778,13 @@ export default {
     this.choosenRequestFormId = this.$route.params.id
     this.getRequestForm()
     this.$store.commit('setCurrentPageTitle', 'Form Request Detail')
+    this.getBudgetCode()
   },
-  watch: {}
+  watch: {
+    dialogUpdateRequestForm: function(){
+      setTimeout(() => this.getRequestForm(), this.delay)
+    }
+  }
 }
 </script>
 <style>
@@ -729,6 +792,12 @@ export default {
   color: white !important;
   background: transparent linear-gradient(to right, #06beb6, #48b1bf) no-repeat
     padding-box;
+  box-shadow: 0px 3px 16px #00000029;
+}
+.rounded-table .v-data-table__wrapper,
+.rounded-other {
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
   box-shadow: 0px 3px 16px #00000029;
 }
 </style>

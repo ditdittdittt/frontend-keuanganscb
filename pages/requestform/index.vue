@@ -30,11 +30,14 @@
         <template v-slot:item.user="{item}">
           <div>{{ item.user.name }}</div>
         </template>
+        <template v-slot:item.status="{item}">
+          <div>{{ item.status.status }}</div>
+        </template>
         <template v-slot:item.method="{item}">
           <div>{{ item.method }}</div>
         </template>
         <template v-slot:item.amount="{item}">
-          <div>Rp. {{ item.amount.toLocaleString('id-ID') }}</div>
+          <div>Rp. {{ parseFloat(item.amount).toLocaleString('id-ID') }}</div>
         </template>
 
         <template v-slot:item.id="{item}">
@@ -42,6 +45,7 @@
             <v-btn class="my-2" dark small color="teal">Detail Form</v-btn>
           </nuxt-link>
           <v-btn
+            v-if="item.status.id === 1"
             v-model="deleteForm"
             class="my-2"
             dark
@@ -79,7 +83,7 @@
             </v-card-title>
             <v-form ref="formRequestForm" v-model="formRequestFormData" lazy-validation>
               <v-row>
-                <v-col cols="12">
+                <v-col cols="6">
                   <v-menu
                     ref="datePicker"
                     v-model="datePicker"
@@ -106,6 +110,12 @@
                       >OK</v-btn>
                     </v-date-picker>
                   </v-menu>
+                </v-col>
+                <v-col cols="6">
+                  <v-autocomplete
+                    v-model="storeRequestFormData.budget_code"
+                    :items="budgetCodeList.map(budgetCode => budgetCode.code)"
+                    placeholder="Code"></v-autocomplete>
                 </v-col>
               </v-row>
 
@@ -287,6 +297,7 @@ export default {
         { text: 'Tanggal Pembuatan', value: 'created_at' },
         { text: 'Tanggal Pemakaian', value: 'date' },
         { text: 'PIC', value: 'user.name' },
+        { text: 'Status', value: 'status.status'},
         { text: 'Pembayaran', value: 'method' },
         { text: 'Jumlah', value: 'amount' },
         { text: 'Detail', value: 'id', sortable: false }
@@ -302,37 +313,45 @@ export default {
         allocation: '',
         amount: '',
         attachment: null,
-        notes: ''
-      }
+        notes: '',
+        budget_code: ''
+      },
+      budgetCodeList: []
     }
   },
 
   methods: {
+    async getBudgetCode () {
+      await this.$axios.$get('/budget-code')
+        .then((response) => {
+          console.log(response)
+          this.budgetCodeList = response.budget_code
+        })
+    },
     async getRequestForms() {
       const params = {}
       await this.$axios.$get('/form/request', { params }).then((response) => {
-        console.log(response)
         this.request_forms = response.form_request
       })
     },
 
     async storeRequestForm() {
       if (this.$refs.formRequestForm.validate()) {
+        let budgetCodeId = this.budgetCodeList.find(x => x.code === this.storeRequestFormData.budget_code).id
         const body = new FormData()
         body.append('date', this.storeRequestFormData.date)
         body.append('method', this.storeRequestFormData.method)
-        body.append('cash', this.storeRequestFormData.method)
-        body.append('transfer', this.storeRequestFormData.method)
-        body.append('bank_name', this.storeRequestFormData.bank_name)
-        body.append('bank_code', this.storeRequestFormData.bank_code)
-        body.append('account_number', this.storeRequestFormData.account_number)
-        body.append('account_owner', this.storeRequestFormData.account_owner)
         body.append('allocation', this.storeRequestFormData.allocation)
         body.append('amount', this.storeRequestFormData.amount)
         body.append('attachment', this.storeRequestFormData.attachment)
         body.append('notes', this.storeRequestFormData.notes)
-        console.log('cash', this.storeRequestFormData.method)
-        console.log('transfer', this.storeRequestFormData.method)
+        body.append('budget_code_id', budgetCodeId)
+        if (this.storeRequestFormData.method === 'Transfer') {
+          body.append('bank_name', this.storeRequestFormData.bank_name)
+          body.append('bank_code', this.storeRequestFormData.bank_code)
+          body.append('account_number', this.storeRequestFormData.account_number)
+          body.append('account_owner', this.storeRequestFormData.account_owner)
+        }
         this.$axios({
           method: 'post',
           url: '/form/request',
@@ -376,6 +395,7 @@ export default {
   mounted() {
     this.$store.commit('setCurrentPageTitle', 'Request Form')
     this.getRequestForms()
+    this.getBudgetCode()
   },
   watch: {
     search() {
