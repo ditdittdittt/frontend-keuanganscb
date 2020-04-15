@@ -337,7 +337,9 @@ export default {
 
     async storeRequestForm() {
       if (this.$refs.formRequestForm.validate()) {
-        let budgetCodeId = this.budgetCodeList.find(x => x.code === this.storeRequestFormData.budget_code).id
+        if(this.storeRequestFormData.budget_code) {
+          var budgetCodeId = this.budgetCodeList.find(x => x.code === this.storeRequestFormData.budget_code).id
+        }
         const body = new FormData()
         body.append('date', this.storeRequestFormData.date)
         body.append('method', this.storeRequestFormData.method)
