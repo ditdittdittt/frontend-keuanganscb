@@ -13,6 +13,30 @@
         class="pb=2"
       />
 
+      <template>
+        <v-row justify-content="space-between">
+          <v-col cols="12">
+            <v-btn
+              @click="exportToExcel()"
+              block
+              large
+              dark
+              color="#008080"
+            >Export to excel</v-btn>
+          </v-col>
+        </v-row>
+        <v-row justify-content="space-between">
+          <v-col cols="12">
+            <v-btn
+              @click="exportToPdf()"
+              block
+              large
+              dark
+              color="#008080"
+            >Export to PDF</v-btn>
+          </v-col>
+        </v-row>
+      </template>
       <br />
 
       <!--Table-->
@@ -321,6 +345,13 @@ export default {
   },
 
   methods: {
+    exportToExcel () {
+      // this.$axios.$get('/form/request/export')
+      window.open('http://54.169.75.0/api/v1/form/request/export/excel')
+    },
+    exportToPdf() {
+      window.open('http://54.169.75.0/api/v1/form/request/export/pdf')
+    },
     async getBudgetCode () {
       await this.$axios.$get('/budget-code')
         .then((response) => {
