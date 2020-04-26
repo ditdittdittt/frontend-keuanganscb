@@ -95,68 +95,9 @@ export default {
     }
   },
   methods: {
-    initValue() {
-      this.items = [
-        {
-          id: 1,
-          date: '2020-09-28',
-          pic: 'Fahreza Ikhsan',
-          allocation: 'Pengeluaran harian',
-          amount: 1500000,
-          createdAt: '2020-09-21',
-          updatedAt: '2020-09-21'
-        },
-        {
-          id: 2,
-          date: '2020-08-29',
-          pic: 'Naufal',
-          allocation: 'DLC Assasin Creed',
-          amount: 100000,
-          createdAt: '2020-08-11',
-          updatedAt: '2020-08-11'
-        },
-        {
-          id: 3,
-          date: '2020-06-01',
-          pic: 'Al Ahmad Banjar',
-          allocation: '3 Box Sirup Marjan',
-          amount: 2560000,
-          createdAt: '2020-05-30',
-          updatedAt: '2020-05-30'
-        },
-        {
-          id: 4,
-          date: '2020-05-15',
-          pic: 'Intan Aida',
-          allocation: 'Minuman Cap Kaki Tiga',
-          amount: 5000,
-          createdAt: '2020-04-01',
-          updatedAt: '2020-04-01'
-        },
-        {
-          id: 5,
-          date: '2020-03-20',
-          pic: 'Kipli Kips Boi',
-          allocation: 'Laravel Udemy',
-          amount: 50000,
-          createdAt: '2020-03-25',
-          updatedAt: '2020-03-25'
-        },
-        {
-          id: 6,
-          date: '2020-08-17',
-          pic: 'Yudit Ditditdit',
-          allocation: 'DevOps Scholarship',
-          amount: 33000,
-          createdAt: '2020-08-17',
-          updatedAt: '2020-08-17'
-        }
-      ]
-    },
     async getAllRequestForms() {
       try {
         this.items = await this.$api('request', 'index', null)
-        console.log(this.items)
       } catch (e) {
         console.error(e)
       }
