@@ -231,6 +231,12 @@ export default {
     async storeRequest() {
       try {
         console.log(this.input)
+        if (this.input.method === 'cash') {
+          this.input.bank_code = null
+          this.input.bank_name = null
+          this.input.account_owner = null
+          this.input.account_number = null
+        }
         await this.$api('request', 'store', this.input)
       } catch (e) {
         console.error(e)
