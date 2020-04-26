@@ -1,4 +1,7 @@
-import colors from 'vuetify/es5/util/colors'
+import eng from './lang/en.js'
+import idn from './lang/id.js'
+import en from 'vuetify/es5/locale/en.js'
+import id from 'vuetify/es5/locale/id.js'
 
 export default {
   mode: 'spa',
@@ -24,14 +27,15 @@ export default {
   /*
   ** Global CSS
   */
-  css: [
-  ],
+  css: ['~assets/css/main.css'],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/axios',
-    '~/plugins/vuetify'
+    '~/plugins/terbilang',
+    '~/plugins/translate',
+    '~/plugins/api',
+    '~/plugins/global.js'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -52,21 +56,44 @@ export default {
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
-    '@nuxtjs/proxy',
     '@nuxtjs/auth',
-    'nuxt-leaflet',
+    'nuxt-i18n'
   ],
+  /*
+ ** Nuxt i18n configuration
+ ** See https://nuxt-community.github.io/nuxt-i18n/
+ */
+  i18n: {
+    strategy: 'no_prefix',
+    locales: [
+      {
+        code: 'en',
+        name: 'english',
+        file: 'en.js'
+      },
+      {
+        code: 'id',
+        name: 'indonesia',
+        file: 'id.js'
+      }
+    ],
+    defaultLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en',
+      messages: {
+        en: eng,
+        id: idn
+      }
+    }
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    // proxy: true
-    baseURL: 'http://18.141.140.18/api/v1'
-
-  },
-  proxy: {
-    '/api/' : 'http://54.169.75.0/'
+    prefix: '/api',
+    port: process.env.PORT || 5000,
+    host: process.env.HOST || 'localhost'
   },
   /*
   ** vuetify module configuration
@@ -74,45 +101,54 @@ export default {
   */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    lang: {
+      locales: { en, id },
+      current: 'en'
+    },
     theme: {
       dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        },
         light: {
-          primary: "#008080"
+          primary: '#3f51b5',
+          secondary: '#3f51b5',
+          accent: '#3f51b5',
+          error: '#f44336',
+          warning: '#ffc107',
+          info: '#2196f3',
+          success: '#4caf50'
+        },
+        dark: {
+          primary: '#3f51b5',
+          secondary: '#3f51b5',
+          accent: '#3f51b5',
+          error: '#f44336',
+          warning: '#ffc107',
+          info: '#2196f3',
+          success: '#4caf50'
         }
       }
-    },
-    defaultAssets: {
-      icons: 'mdiSvg',
-    },
+    }
   },
-  router: {
-    middleware: 'auth'
-  },
+  /*
+   ** Auth modulte configuration
+   ** See https://auth.nuxtjs.org/#getting-started
+   */
   auth: {
     redirect: {
       login: '/login',
-      logout: '/login',
-      home: '/'
+      logout: '/logout'
     },
     strategies: {
-      local:{
-        endpoints:{
-          login:  {url:'/auth/login', method: 'post', propertyName: 'success.token'},
-          user:   { url: '/auth/getUser', method: 'post', propertyName: 'success' },
-          logout:   { url: '/auth/logout', method: 'post'}
-        },
-        // tokenRequired: true,
-        // tokenType: 'bearer'
+      local: {
+        endpoints: {
+          login: {
+            url: '/api/auth/login',
+            method: 'post',
+            propertyName: 'token'
+          },
+          logout: { url: '/api/auth/logout', method: 'post' },
+          user: { url: '/api/auth/user', method: 'get', propertyName: 'user' }
+        }
       }
     }
   },

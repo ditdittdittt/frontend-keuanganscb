@@ -1,182 +1,151 @@
 <template>
-  <v-container
-    fluid fill-height grid-list-md text-xs-center class="bg"
-  >
-    <v-layout row wrap align-center justify-center>
-      <v-col
-        cols="12"
-        sm="8"
-        md="4"
-      >
-        <v-container text-center>
-          <img src="~assets/img/Logo-SCB_Hitam.png" style="height:60px" class="mb-4 mt-2">
-          <h2 class="mb-1 headline font-weight-medium" style="color:black">Welcome to <span class="font-weight-bold" style="color : #008080">SCB</span> </h2>
-          <p class="mb-5" style="color:black">Please Register</p>
-        </v-container>
-        <v-form
-          lazy-validation
-          ref="registerForm"
-          v-model="registerFormModel"
-        >
-          <v-row dense>
-            <v-col class="m-0" cols="12">
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-account"
-                v-model="name"
-                :rules="nameRules"
-                label="Nama"
-                class="mb-3"
-                required
-              ></v-text-field>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-email"
-                v-model="email"
-                label="Email"
-                class="mb-3"
-                :rules="emailRules"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="password"
-                solo
-                prepend-inner-icon="mdi-key"
-                :append-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showpassword ? 'text' : 'password'"
-                label="Kata Sandi"
-                @click:append="showpassword = !showpassword"
-                v-on:keyup.enter="login()"
-                class="mb-3"
-                required
-                :rules="passwordRules"
-              >
-              </v-text-field>
-              <v-text-field
-                v-model="c_password"
-                solo
-                prepend-inner-icon="mdi-key"
-                :append-icon="showcpassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showcpassword ? 'text' : 'password'"
-                label="Konfirmasi Kata Sandi"
-                @click:append="showcpassword = !showcpassword"
-                v-on:keyup.enter="login()"
-                class="mb-3"
-                :rules="c_passwordRules"
-                required
-              >
-              </v-text-field>
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-account-multiple"
-                v-model="division"
-                label="Divisi"
-                class="mb-3"
-                :rules="divisionRules"
-                required
-              ></v-text-field>
-            </v-col>
-
-            <v-col v-show="errorm" cols="12">
-              <v-alert type="error">
-                {{ errorMessage }}
-              </v-alert>
-            </v-col>
-
-          </v-row>
-
-          <v-btn height="50px" block big dark @click="register()" class="grad" color="#008080">Daftar</v-btn>
-        </v-form>
+  <v-container style="height: 100%">
+    <v-row justify="center" align="center" align-content="center">
+      <v-col cols="12" sm="10" md="8" lg="6" align-self="center">
+        <v-card class="pa-5" flat>
+          <v-card-title class="headline font-weight-bold text-uppercase text-center">
+            <v-spacer></v-spacer>
+            <span>Register</span>
+            <v-divider class="mx-2" vertical></v-divider>
+            <span class="green--text">SCB</span>
+            <v-spacer></v-spacer>
+          </v-card-title>
+          <v-card-subtitle class="caption text-center">Isi data dengan sebenar-benarnya</v-card-subtitle>
+          <v-card-text>
+            <v-form>
+              <v-row>
+                <v-col cols="12">
+                  <div class="caption primary--text text-capitalize">{{ $translate('text.name') }}</div>
+                  <v-text-field
+                    v-model="input.name"
+                    prepend-inner-icon="mdi-face"
+                    solo
+                    :label="$translate('text.name', 'capitalize')"
+                    counter
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.username') }}</div>
+                  <v-text-field
+                    v-model="input.username"
+                    prepend-inner-icon="mdi-account"
+                    solo
+                    :label="$translate('text.username', 'capitalize')"
+                    counter
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div class="caption primary--text text-capitalize">{{ $translate('text.email') }}</div>
+                  <v-text-field
+                    v-model="input.email"
+                    prepend-inner-icon="mdi-email"
+                    solo
+                    :label="$translate('text.name', 'capitalize')"
+                    type="email"
+                    counter
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.password') }}</div>
+                  <v-text-field
+                    v-model="input.password"
+                    prepend-inner-icon="mdi-lock"
+                    solo
+                    :label="$translate('text.password', 'capitalize')"
+                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show ? 'text' : 'password'"
+                    counter
+                    @click:append="show = !show"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.division') }}</div>
+                  <v-text-field
+                    v-model="input.division"
+                    prepend-inner-icon="mdi-office-building"
+                    solo
+                    :label="$translate('text.division', 'capitalize')"
+                    type="text"
+                    counter
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.position') }}</div>
+                  <v-text-field
+                    v-model="input.position"
+                    prepend-inner-icon="mdi-briefcase"
+                    solo
+                    :label="$translate('text.position', 'capitalize')"
+                    type="text"
+                    counter
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div class="caption primary--text text-uppercase">{{ $translate('text.nik') }}</div>
+                  <v-text-field
+                    v-model="input.nik"
+                    prepend-inner-icon="mdi-card-account-details"
+                    solo
+                    :label="$translate('text.nik', 'uppercase')"
+                    type="number"
+                    counter
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.address') }}</div>
+                  <v-textarea v-model="input.address" solo type="text" counter></v-textarea>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn large color="secondary" block dark elevation="8">Register</v-btn>
+          </v-card-actions>
+          <v-card-actions>
+            <v-btn outlined block color="primary" @click.stop="$router.go(-1)">Kembali</v-btn>
+          </v-card-actions>
+        </v-card>
       </v-col>
-    </v-layout>
+    </v-row>
   </v-container>
 </template>
-
 <script>
-
-  export default {
-    layout: 'blank',
-    auth: 'guest',
-    data(){
-      return{
-        registerFormModel: true,
-        name:'',
-        nameRules: [
-          v => !!v || 'Name is required',
-          v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-        ],
-        email:'',
-        emailRules: [
-          v => !!v || 'E-mail is required',
-          v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-        ],
-        password:'',
-        passwordRules: [
-          v => !!v || 'Password is required',
-          v => (v && v.length >= 8) || 'Password must be more than 8 characters',
-        ],
-        c_password:'',
-        c_passwordRules: [
-          v => !!v || 'Confirm Password is required',
-          v => (v && v.length >= 8) || 'Confirm Password must be more than 8 characters',
-          v => (v && v === this.password) || 'Confirm Password wrong'
-        ],
-        errorMessage: '',
-        division:'',
-        divisionRules: [
-          v => !!v || 'Division is required'
-        ],
-        errorm:false,
-        showpassword:false,
-        showcpassword: false,
+export default {
+  layout: 'blank',
+  data() {
+    return {
+      show: false,
+      input: {
+        name: null,
+        username: null,
+        email: null,
+        division: null,
+        position: null,
+        nik: null,
+        address: null
       }
-    },
-    methods: {
-      register() {
-        if(this.$refs.registerForm.validate()){
-          const body = new FormData();
-          body.append('name', this.name)
-          body.append('email', this.email)
-          body.append('password', this.password)
-          body.append('c_password', this.c_password)
-          body.append('division', this.division)
-          this.$axios({
-            method: 'post',
-            url: 'auth/register',
-            data: body
-          })
-            .then( response => {
-              console.log(response);
-
-            })
-            .catch( error => {
-              console.log(error.response)
-              if(error.response.status === 422){
-                if(error.response.data.errors.email) {
-                  this.errorMessage = error.response.data.errors.email[0]
-                }
-              }
-              this.errorm = true
-            })
-          .finally(() => {
-            if (this.errorm === false) {
-              this.$router.push('/')
-            }
-          })
-        }
+    }
+  },
+  methods: {
+    async register() {
+      try {
+        await this.$api('user', 'register', this.input)
+      } catch (e) {
+        console.error(e)
       }
-    },
-    mounted() {
-      this.$store.commit('setCurrentPageTitle', 'Register')
     }
   }
+}
 </script>
-<style>
-  .bg{
-    /*background: linear-gradient(0deg, rgba(0, 0, 0, 0.425), rgba(0, 0, 0, 0.623)), url(~assets/img/bg.jpg) no-repeat center center;*/
-    background-size: cover;
-  }
-  body{
-    overflow: hidden;
-  }
+<style scoped>
 </style>

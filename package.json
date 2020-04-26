@@ -25,9 +25,8 @@
     "@nuxtjs/axios": "^5.9.5",
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
-    "axios": "^0.19.2",
     "nuxt": "^2.0.0",
-    "nuxt-leaflet": "0.0.19"
+    "nuxt-i18n": "^6.8.1"
   },
   "devDependencies": {
     "@mdi/font": "^5.0.45",

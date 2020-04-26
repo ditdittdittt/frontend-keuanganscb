@@ -1,44 +1,50 @@
 <template>
   <v-app dark>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
-    </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
+    <v-container>
+      <v-row justify="center" align="center">
+        <v-col cols="8" class="text-center">
+          <logo />
+        </v-col>
+        <v-col cols="12" align-self="center">
+          <p class="text-center font-weight-black display-2">{{ error.statusCode }}</p>
+          <div class="text-center font-weight-light body-1">{{ error.message }}</div>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-app>
 </template>
 
 <script>
-export default {
-  layout: 'empty',
-  props: {
-    error: {
-      type: Object,
-      default: null
-    }
-  },
-  data () {
-    return {
-      pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
-    }
-  },
-  head () {
-    const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
-    return {
-      title
+  import Logo from '~/components/Logo.vue'
+
+  export default {
+    layout: 'empty',
+    components: {
+      Logo
+    },
+    props: {
+      error: {
+        type: Object,
+        default: null
+      }
+    },
+    data() {
+      return {}
+    },
+    head() {
+      const title = this.error.statusCode
+      return {
+        title
+      }
+    },
+    mounted() {
+      console.log(this.$props.error)
     }
   }
-}
 </script>
 
 <style scoped>
-h1 {
-  font-size: 20px;
-}
+  h1 {
+    font-size: 20px;
+  }
 </style>

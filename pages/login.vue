@@ -1,120 +1,96 @@
 <template>
-  <v-container
-    fluid fill-height grid-list-md text-xs-center class="bg"
-  >
-    <v-layout row wrap align-center justify-center>
-      <v-col
-        cols="12"
-        sm="8"
-        md="4"
-      >
-        <v-container text-center>
-          <img src="~assets/img/Logo-SCB_Hitam.png" style="height:60px" class="mb-4 mt-2">
-          <h2 class="mb-1 headline font-weight-medium" style="color:black">Welcome to <span class="font-weight-bold" style="color : #008080">SCB</span> </h2>
-          <p class="mb-5" style="color:black">Please LogIn with your account</p>
-        </v-container>
-        <v-form>
-          <v-row dense>
-            <v-col class="m-0" cols="12">
-              <v-text-field
-                solo
-                prepend-inner-icon="mdi-account"
-                v-model="email"
-                hide-details
-                label="Email"
-                class="mb-3"
-              ></v-text-field>
-              <v-text-field
-                v-model="password"
-                hide-details
-                solo
-                prepend-inner-icon="mdi-key"
-                :append-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showpassword ? 'text' : 'password'"
-                label="Kata Sandi"
-                @click:append="showpassword = !showpassword"
-                v-on:keyup.enter="login()"
-              >
-              </v-text-field>
-            </v-col>
-            <v-col v-show="errorm" cols="12">
-              <v-alert type="error">
-                {{ errorMessage }}
-              </v-alert>
-            </v-col>
-            <v-layout class="mx-1">
-              <v-flex>
-                <v-checkbox
-                  class="my-0 py-0"
-                  label="Ingat saya"
-                  value="Ingat Saya"
-                  color="primary"
-                  hide-details
-                ></v-checkbox>
-              </v-flex>
-              <v-spacer></v-spacer>
-              <v-flex class="text-right">
-                <nuxt-link to="/" disable style="color:black !important">Lupa Kata Sandi ?</nuxt-link>
-              </v-flex>
-            </v-layout>
-            <v-col cols="12">
-              <v-btn height="50px" block big dark @click="login()" class="grad" color="#008080">Masuk</v-btn>
-            </v-col>
-            <v-col cols="12">
-              <nuxt-link to="/register" style="text-decoration: none">
-                <v-btn height="50px" block big outlined class="grad" color="#008080">Register</v-btn>
-              </nuxt-link>
-            </v-col>
-          </v-row>
-        </v-form>
+  <v-container style="height: 100%">
+    <v-row justify="center" align="center" align-content="center" style="height: 100%">
+      <v-col cols="12" sm="10" md="8" lg="6" align-self="center">
+        <v-card class="pa-5" flat>
+          <v-card-title class="headline font-weight-bold text-uppercase text-center">
+            <v-spacer></v-spacer>
+            <span>Login</span>
+            <v-divider class="mx-2" vertical></v-divider>
+            <span class="green--text">SCB</span>
+            <v-spacer></v-spacer>
+          </v-card-title>
+          <v-card-subtitle class="caption text-center">Masukan akun yang telah terdaftar</v-card-subtitle>
+          <v-card-text>
+            <v-form ref="form">
+              <v-row>
+                <v-col cols="12">
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.username') }}</div>
+                  <v-text-field
+                    v-model="input.username"
+                    prepend-inner-icon="mdi-account"
+                    solo
+                    :label="$translate('text.username', 'capitalize')"
+                    counter
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.password') }}</div>
+                  <v-text-field
+                    v-model="input.password"
+                    prepend-inner-icon="mdi-lock"
+                    solo
+                    :label="$translate('text.password', 'capitalize')"
+                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show ? 'text' : 'password'"
+                    counter
+                    @click:append="show = !show"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn large color="secondary" block dark elevation="8" @click.stop="login()">Login</v-btn>
+          </v-card-actions>
+          <v-card-text class="text-center">
+            <span
+              class="caption"
+            >Jika belum memiliki akun, silahkan daftar terlebih dahulu dengan menekan tombol register di bawah ini.</span>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn outlined block color="primary" :to="'/register'">Register</v-btn>
+          </v-card-actions>
+        </v-card>
       </v-col>
-    </v-layout>
+    </v-row>
+    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
   </v-container>
 </template>
-
 <script>
-
-  export default {
-    layout: 'blank',
-    auth: 'guest',
-    data(){
-      return{
-        email:'',
-        password:'',
-        errorMessage: '',
-        errorm: false,
-        showpassword: false,
-      }
-    },
-    methods:{
-      async login(){
-        try{
-          await this.$auth.loginWith('local', {
-            data: {
-              email: this.email,
-              password: this.password
-            }
-          })
-        } catch(e){
-          console.log(e.response)
-          if (e.response.data.error){
-            this.errorMessage = e.response.data.error
-          } else {
-            this.errorMessage = e.response.data.messages
-          }
-          this.errorm = true
-        }
+export default {
+  layout: 'blank',
+  auth: 'guest',
+  data() {
+    return {
+      alert: false,
+      success: false,
+      messages: '',
+      show: false,
+      input: {
+        username: null,
+        password: null
       }
     }
-  }
+  },
+  methods: {
+    async login() {
+      try {
+        await this.$api('user', 'login', this.input)
+      } catch (e) {
+        console.error(e)
+      }
+      if (this.$auth.loggedIn || true) {
+        this.$router.replace('/dashboard')
+      }
+    }
+  },
+  mounted() {}
+}
 </script>
-<style>
-  .bg{
-    /*background: linear-gradient(0deg, rgba(0, 0, 0, 0.425), rgba(0, 0, 0, 0.623)), url(~assets/img/bg.jpg) no-repeat center center;*/
-    background-size: cover;
-  }
-  body{
-    overflow: hidden;
-  }
-
+<style scoped>
 </style>
