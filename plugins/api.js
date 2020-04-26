@@ -70,8 +70,7 @@ export default ({ app }, inject) => {
             Submission.store(data)
             break
           case 'show':
-            Submission.show()
-            break
+            return Submission.show(data)
           case 'update':
             Submission.update()
             break
@@ -230,8 +229,14 @@ export default ({ app }, inject) => {
           console.log(error)
         })
     },
-    show() {
+    async show(data) {
       console.log('[Submission] Show a submission with specified id')
+      let result = null
+      result = await app.$axios.$get('/form/submission/' + data).then((response) => {
+        console.log(response.form_submission)
+        return response.form_submission
+      })
+      return result
     },
     update() {
       console.log('[Submission] Update a submission with specified id')
