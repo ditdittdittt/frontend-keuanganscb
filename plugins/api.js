@@ -233,7 +233,7 @@ export default ({ app }, inject) => {
 
   const Table = {
     async getBudgetList() {
-      console.log('[Table] Get all budget list (bug)')
+      console.log('[Table] Get all budget list')
       let result = null
       result = await app.$axios.$get('/budget-code').then((response) => {
         return response
