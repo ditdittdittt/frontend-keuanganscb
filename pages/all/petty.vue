@@ -86,7 +86,7 @@ export default {
   filters: {
     currency: function(value) {
       if (value == null || value == '') return 'Rp 0'
-      let result = value
+      let result = Number(value)
         .toString()
         .match(/\d{1,3}(?=(\d{3})*$)/g)
         .join('.')
