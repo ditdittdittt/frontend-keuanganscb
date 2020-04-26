@@ -7,7 +7,10 @@
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
-        <v-form>
+        <v-form
+          ref="createFormRequest"
+          v-model="form"
+        >
           <v-row>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">{{ $translate('text.allocation') }}</div>
@@ -187,6 +190,10 @@ export default {
       modal: {
         date: false
       },
+      form: true,
+      data: {
+        budgetList: []
+      },
       input: {
         allocation: null,
         date: null,
@@ -230,14 +237,15 @@ export default {
     },
     async storeRequest() {
       try {
-        console.log(this.input)
-        if (this.input.method === 'cash') {
-          this.input.bank_code = null
-          this.input.bank_name = null
-          this.input.account_owner = null
-          this.input.account_number = null
-        }
         await this.$api('request', 'store', this.input)
+        this.$refs.createFormRequest.reset()
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async getBudgetList() {
+      try {
+        this.data.budgetList = this.$api('table', 'budgetlist')
       } catch (e) {
         console.error(e)
       }
@@ -245,6 +253,7 @@ export default {
   },
   mounted() {
     this.initValue()
+    this.getBudgetList()
   }
 }
 </script>

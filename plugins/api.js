@@ -43,7 +43,7 @@ export default ({ app }, inject) => {
       case 'request':
         switch (action) {
           case 'store':
-            Request.store()
+            Request.store(data)
             break
           case 'show':
             Request.show()
@@ -106,6 +106,19 @@ export default ({ app }, inject) => {
       default:
         console.error(`Unknown target : ${target} in '~/plugins/api.js'`)
         break
+
+      case 'table':
+        switch (action) {
+          case 'budgetlist':
+            Table.getBudgetList()
+            break
+
+          default:
+            console.error(
+              `Unknown ${target} action : ${action} in '~/plugins/api.js'`
+            )
+            break
+        }
     }
   }
 
@@ -131,8 +144,33 @@ export default ({ app }, inject) => {
     }
   }
   const Request = {
-    store() {
-      console.log('[Request] Creating a new request')
+    store(data) {
+      console.log('[Request] Creating a new request (there is dummy)')
+      const body = new FormData()
+      body.append('allocation', data.allocation)
+      body.append('date', data.date)
+      body.append('method', data.method)
+      body.append('amount', data.amount)
+      body.append('notes', data.notes)
+      if (data.method === 'transfer') {
+        body.append('bank_name', data.bank_name)
+        body.append('bank_code', data.bank_code)
+        body.append('account_number', data.account_number)
+        body.append('account_owner', data.account_owner)
+      }
+      // Masih dummy
+      body.append('budget_code_id', 1)
+      app.$axios({
+        method: 'post',
+        url: '/form/request',
+        data: body
+      })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
     },
     show() {
       console.log('[Request] Show a request with specified id')
@@ -170,6 +208,15 @@ export default ({ app }, inject) => {
     },
     delete() {
       console.log('[Petty] Delete a petty cash with specified id')
+    }
+  }
+
+  const Table = {
+    async getBudgetList() {
+      console.log('[Table] Get all budget list (bug)')
+      await app.$axios.$get('/budget-code')
+        .then((response) => {
+        })
     }
   }
 
