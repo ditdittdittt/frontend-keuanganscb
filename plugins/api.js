@@ -42,6 +42,8 @@ export default ({ app }, inject) => {
         break
       case 'request':
         switch (action) {
+          case 'index':
+            return Request.index()
           case 'store':
             Request.store(data)
             break
@@ -143,6 +145,14 @@ export default ({ app }, inject) => {
     }
   }
   const Request = {
+    async index() {
+      console.log('[Request] Show all request forms')
+      let result = null
+      result = await app.$axios.$get('/form/request').then((response) => {
+        return response.form_request
+      })
+      return result
+    },
     async store(data) {
       console.log('[Request] Creating a new request')
       const body = new FormData()
@@ -182,17 +192,16 @@ export default ({ app }, inject) => {
     }
   }
   const Submission = {
-    store(data) {
-      console.log('[Submission] Creating a new submission (there is dummy)')
+    async store(data) {
+      console.log('[Submission] Creating a new submission')
       const body = new FormData()
-      // Masih dummy
-      body.append('form_request_id', 37)
+      body.append('form_request_id', data.request.id)
       body.append('date', data.date)
       body.append('allocation', data.allocation)
       body.append('used', data.used)
       body.append('balance', data.balance)
       body.append('notes', data.notes)
-      app
+      await app
         .$axios({
           method: 'post',
           url: '/form/submission',

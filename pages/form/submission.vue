@@ -208,37 +208,19 @@ export default {
   methods: {
     initValue() {
       this.today = new Date().toISOString()
-      this.form.request = [
-        {
-          id: 'R1123',
-          pic: {
-            name: 'Fahreza Ikhsan'
-          },
-          allocation: 'Sarung bantal',
-          date: '2020-09-18'
-        },
-        {
-          id: 'R1333',
-          pic: {
-            name: 'Yudit Yudiarto'
-          },
-          allocation: 'Guling Asrama',
-          date: '2020-07-29'
-        },
-        {
-          id: 'R1345',
-          pic: {
-            name: 'Kipli Kips Boi'
-          },
-          allocation: 'Ganti Pipa Paralon',
-          date: '2020-05-11'
-        }
-      ]
     },
     async storeSubmission() {
       try {
+        console.log(this.input)
         await this.$api('submission', 'store', this.input)
-        this.$refs.createFormSubmission.reset()
+        // this.$refs.createFormSubmission.reset()
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async getAllRequestForms() {
+      try {
+        this.form.request = await this.$api('request', 'index', null)
       } catch (e) {
         console.error(e)
       }
@@ -246,6 +228,7 @@ export default {
   },
   mounted() {
     this.initValue()
+    this.getAllRequestForms()
   }
 }
 </script>
