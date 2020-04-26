@@ -9,7 +9,7 @@
         <div class="spacing-medium"></div>
         <v-form
           ref="createFormRequest"
-          v-model="form"
+          v-model="formRequest"
         >
           <v-row>
             <v-col cols="12" md="6">
@@ -190,7 +190,7 @@ export default {
       modal: {
         date: false
       },
-      form: true,
+      formRequest: true,
       data: {
         budgetList: []
       },

@@ -7,7 +7,10 @@
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
-        <v-form>
+        <v-form
+          v-model="formSubmission"
+          ref="createFormSubmission"
+        >
           <v-row>
             <v-col cols="12" md="3">
               <div
@@ -78,12 +81,12 @@
               <div class="caption primary--text text-capitalize">{{ $translate('text.use') }}</div>
               <v-text-field
                 prepend-inner-icon="mdi-cash"
-                v-model="input.use"
+                v-model="input.used"
                 prefix="Rp"
                 solo
                 :rules="[rules.required]"
                 :label="$translate('text.use', 'capitalize')"
-                :hint="input.use | currency"
+                :hint="input.used | currency"
                 type="number"
                 clearable
               ></v-text-field>
@@ -93,7 +96,7 @@
                 class="caption primary--text text-capitalize"
               >{{ $translate('text.amount_in_word') + ' ' + $translate('text.use', 'capitalize') }}</div>
               <v-text-field
-                :value="$terbilang(input.use) | capitalize"
+                :value="$terbilang(input.used) | capitalize"
                 :label="$translate('text.amount_in_word', 'capitalize') + ' ' + $translate('text.use')"
                 :messages="$translate('helper.messages.amount_in_word', 'capitalize')"
                 readonly
@@ -131,7 +134,7 @@
             <v-col cols="12">
               <div class="caption primary--text text-capitalize">{{ $translate('text.note') }}</div>
               <v-textarea
-                v-model="input.note"
+                v-model="input.notes"
                 counter
                 solo
                 :label="$translate('text.note', 'capitalize')"
@@ -163,21 +166,17 @@ export default {
       success: false,
       messages: '',
       today: null,
+      formSubmission: true,
       modal: {
         date: false
       },
       input: {
-        pic: null,
         request: null,
         date: null,
         allocation: null,
-        use: null,
+        used: null,
         balance: null,
-        note: null,
-        confirmPIC: false,
-        confirmHeadDept: false,
-        confirmVerificator: false,
-        confirmCashier: false
+        notes: null
       },
       form: {
         request: []
@@ -207,9 +206,6 @@ export default {
     }
   },
   methods: {
-    assignPIC() {
-      this.input.pic = null // auth user
-    },
     initValue() {
       this.today = new Date().toISOString()
       this.form.request = [
@@ -242,6 +238,7 @@ export default {
     async storeSubmission() {
       try {
         await this.$api('submission', 'store', this.input)
+        this.$refs.createFormSubmission.reset()
       } catch (e) {
         console.error(e)
       }
@@ -249,7 +246,6 @@ export default {
   },
   mounted() {
     this.initValue()
-    this.assignPIC()
   }
 }
 </script>
