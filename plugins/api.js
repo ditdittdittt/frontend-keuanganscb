@@ -193,11 +193,12 @@ export default ({ app }, inject) => {
       body.append('used', data.used)
       body.append('balance', data.balance)
       body.append('notes', data.notes)
-      app.$axios({
-        method: 'post',
-        url: '/form/submission',
-        data: body
-      })
+      app
+        .$axios({
+          method: 'post',
+          url: '/form/submission',
+          data: body
+        })
         .then((response) => {
           console.log(response)
         })
