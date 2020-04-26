@@ -17,12 +17,12 @@
                 <v-col cols="12">
                   <div
                     class="caption primary--text text-capitalize"
-                  >{{ $translate('text.username') }}</div>
+                  >{{ $translate('text.email') }}</div>
                   <v-text-field
-                    v-model="input.username"
+                    v-model="input.email"
                     prepend-inner-icon="mdi-account"
                     solo
-                    :label="$translate('text.username', 'capitalize')"
+                    :label="$translate('text.email', 'capitalize')"
                     counter
                   ></v-text-field>
                 </v-col>
@@ -72,7 +72,7 @@ export default {
       messages: '',
       show: false,
       input: {
-        username: null,
+        email: null,
         password: null
       }
     }
@@ -83,9 +83,6 @@ export default {
         await this.$api('user', 'login', this.input)
       } catch (e) {
         console.error(e)
-      }
-      if (this.$auth.loggedIn || true) {
-        this.$router.replace('/dashboard')
       }
     }
   },

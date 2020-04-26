@@ -338,7 +338,7 @@
     <div class="spacing-small"></div>
     <v-card raised>
       <v-card-actions class="pa-0">
-        <v-btn block color="accent" x-large :to="'/login'">
+        <v-btn block color="accent" x-large @click="logOut()">
           {{
           $translate('components.button.logout')
           }}
@@ -417,6 +417,13 @@ export default {
     async updateUser() {
       try {
         await this.$api('user', 'update')
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async logOut() {
+      try {
+        await this.$api('user', 'logout')
       } catch (e) {
         console.error(e)
       }

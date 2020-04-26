@@ -91,9 +91,9 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    prefix: '/api',
-    port: process.env.PORT || 5000,
-    host: process.env.HOST || 'localhost'
+    prefix: '/api/v1',
+    port: process.env.PORT || 80,
+    host: process.env.HOST || '18.141.140.18'
   },
   /*
   ** vuetify module configuration
@@ -129,6 +129,9 @@ export default {
       }
     }
   },
+  router: {
+    middleware: 'auth'
+  },
   /*
    ** Auth modulte configuration
    ** See https://auth.nuxtjs.org/#getting-started
@@ -136,18 +139,19 @@ export default {
   auth: {
     redirect: {
       login: '/login',
-      logout: '/logout'
+      logout: '/login',
+      home: '/dashboard'
     },
     strategies: {
       local: {
         endpoints: {
           login: {
-            url: '/api/auth/login',
+            url: '/auth/login',
             method: 'post',
-            propertyName: 'token'
+            propertyName: 'success.token'
           },
-          logout: { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get', propertyName: 'user' }
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/auth/getUser', method: 'post', propertyName: 'success' }
         }
       }
     }

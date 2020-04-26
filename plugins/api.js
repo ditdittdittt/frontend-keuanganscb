@@ -42,8 +42,8 @@ export default ({ app }, inject) => {
         break
       case 'request':
         switch (action) {
-          case 'create':
-            Request.create()
+          case 'store':
+            Request.store()
             break
           case 'show':
             Request.show()
@@ -121,6 +121,7 @@ export default ({ app }, inject) => {
     },
     logout() {
       console.log('[User] Logout from SCB app.')
+      app.$auth.logout()
     },
     show() {
       console.log('[User] Show current user SCB app.')
@@ -130,7 +131,7 @@ export default ({ app }, inject) => {
     }
   }
   const Request = {
-    create() {
+    store() {
       console.log('[Request] Creating a new request')
     },
     show() {
