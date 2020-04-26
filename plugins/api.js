@@ -110,8 +110,7 @@ export default ({ app }, inject) => {
       case 'table':
         switch (action) {
           case 'budgetlist':
-            Table.getBudgetList()
-            break
+            return Table.getBudgetList()
 
           default:
             console.error(
@@ -129,7 +128,7 @@ export default ({ app }, inject) => {
     login(data) {
       console.log('[User] Login into SCB app.')
       app.$auth.loginWith('local', {
-        data: data
+        data
       })
     },
     logout() {
@@ -160,11 +159,12 @@ export default ({ app }, inject) => {
       }
       // Masih dummy
       body.append('budget_code_id', 1)
-      app.$axios({
-        method: 'post',
-        url: '/form/request',
-        data: body
-      })
+      app
+        .$axios({
+          method: 'post',
+          url: '/form/request',
+          data: body
+        })
         .then((response) => {
           console.log(response)
         })
@@ -214,9 +214,11 @@ export default ({ app }, inject) => {
   const Table = {
     async getBudgetList() {
       console.log('[Table] Get all budget list (bug)')
-      await app.$axios.$get('/budget-code')
-        .then((response) => {
-        })
+      let result = null
+      result = await app.$axios.$get('/budget-code').then((response) => {
+        return response
+      })
+      return result
     }
   }
 
