@@ -98,7 +98,7 @@ export default {
     }
   },
   methods: {
-    async getSubmission() {
+    async getAllSubmissionForms() {
       try {
         this.items = await this.$api('submission', 'index', null)
       } catch (e) {
@@ -107,7 +107,7 @@ export default {
     }
   },
   mounted() {
-    this.getSubmission()
+    this.getAllSubmissionForms()
   }
 }
 </script>
