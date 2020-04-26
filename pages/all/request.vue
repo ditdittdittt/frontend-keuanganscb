@@ -68,10 +68,11 @@ export default {
           text: `${this.$translate('text.amount', 'capitalize')}`,
           value: 'amount'
         },
-        { text: `${this.$translate('text.pic', 'capitalize')}`, value: 'pic' },
+        { text: `${this.$translate('text.pic', 'capitalize')}`,
+          value: 'user.name' },
         {
           text: `${this.$translate('text.created_at', 'capitalize')}`,
-          value: 'createdAt'
+          value: 'created_at'
         },
         {
           text: `${this.$translate('text.action', 'capitalize')}`,
@@ -86,7 +87,7 @@ export default {
   filters: {
     currency: function(value) {
       if (value == null || value == '') return 'Rp 0'
-      let result = value
+      let result = Number(value)
         .toString()
         .match(/\d{1,3}(?=(\d{3})*$)/g)
         .join('.')
@@ -152,16 +153,17 @@ export default {
         }
       ]
     },
-    async getRequest() {
+    async getAllRequestForms() {
       try {
-        await this.$api('request', 'show', null)
+        this.items = await this.$api('request', 'index', null)
+        console.log(this.items)
       } catch (e) {
         console.error(e)
       }
     }
   },
   mounted() {
-    this.initValue()
+    this.getAllRequestForms()
   }
 }
 </script>
