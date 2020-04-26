@@ -65,6 +65,8 @@ export default ({ app }, inject) => {
         break
       case 'submission':
         switch (action) {
+          case 'index':
+            return Submission.index()
           case 'store':
             Submission.store(data)
             break
@@ -192,6 +194,14 @@ export default ({ app }, inject) => {
     }
   }
   const Submission = {
+    async index() {
+      console.log('[Submission] Show all submission forms')
+      let result = null
+      result = await app.$axios.$get('/form/submission').then((response) => {
+        return response.form_submission
+      })
+      return result
+    },
     async store(data) {
       console.log('[Submission] Creating a new submission')
       const body = new FormData()

@@ -65,15 +65,17 @@ export default {
           text: `${this.$translate('text.allocation', 'capitalize')}`,
           value: 'allocation'
         },
-        { text: `${this.$translate('text.use', 'capitalize')}`, value: 'use' },
+        { text: `${this.$translate('text.use', 'capitalize')}`,
+          value: 'used' },
         {
           text: `${this.$translate('text.balance', 'capitalize')}`,
           value: 'balance'
         },
-        { text: `${this.$translate('text.pic', 'capitalize')}`, value: 'pic' },
+        { text: `${this.$translate('text.pic', 'capitalize')}`,
+          value: 'user.name' },
         {
           text: `${this.$translate('text.created_at', 'capitalize')}`,
-          value: 'createdAt'
+          value: 'created_at'
         },
         {
           text: `${this.$translate('text.action', 'capitalize')}`,
@@ -88,7 +90,7 @@ export default {
   filters: {
     currency: function(value) {
       if (value == null || value == '') return 'Rp 0'
-      let result = value
+      let result = Number(value)
         .toString()
         .match(/\d{1,3}(?=(\d{3})*$)/g)
         .join('.')
@@ -96,80 +98,16 @@ export default {
     }
   },
   methods: {
-    initValue() {
-      this.items = [
-        {
-          id: 1,
-          date: '2020-09-28',
-          pic: 'Fahreza Ikhsan',
-          allocation: 'Pengeluaran harian',
-          use: 33000,
-          balance: 22000,
-          createdAt: '2020-09-21',
-          updatedAt: '2020-09-21'
-        },
-        {
-          id: 2,
-          date: '2020-11-15',
-          pic: 'Naufal',
-          allocation: 'DLC Assasin Creed',
-          use: 10000,
-          balance: 1000000,
-          createdAt: '2020-11-13',
-          updatedAt: '2020-11-13'
-        },
-        {
-          id: 3,
-          date: '2020-01-20',
-          pic: 'Al Ahmad Banjar',
-          allocation: '3 Box Sirup Marjan',
-          use: 100,
-          balance: 9000000,
-          createdAt: '2020-01-17',
-          updatedAt: '2020-01-17'
-        },
-        {
-          id: 4,
-          date: '2020-05-15',
-          pic: 'Intan Aida',
-          allocation: 'Minuman Cap Kaki Tiga',
-          use: 15600,
-          balance: 17200,
-          createdAt: '2020-02-02',
-          updatedAt: '2020-02-02'
-        },
-        {
-          id: 5,
-          date: '2020-10-22',
-          pic: 'Kipli Kips Boi',
-          allocation: 'Laravel Udemy',
-          use: 56000,
-          balance: 100,
-          createdAt: '2020-10-18',
-          updatedAt: '2020-10-18'
-        },
-        {
-          id: 6,
-          date: '2021-01-15',
-          pic: 'Yudit Ditditdit',
-          allocation: 'DevOps Scholarship',
-          use: 77800,
-          balance: 98001200,
-          createdAt: '2020-12-30',
-          updatedAt: '2020-12-30'
-        }
-      ]
-    },
     async getSubmission() {
       try {
-        await this.$api('submission', 'show', null)
+        this.items = await this.$api('submission', 'index', null)
       } catch (e) {
         console.error(e)
       }
     }
   },
   mounted() {
-    this.initValue()
+    this.getSubmission()
   }
 }
 </script>
