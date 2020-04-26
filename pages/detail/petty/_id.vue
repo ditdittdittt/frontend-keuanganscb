@@ -33,9 +33,14 @@
                     <span>{{ input.allocation || $vuetify.lang.t('$vuetify.noDataText') }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">{{ $translate('text.note')}}</div>
-                    <span>{{ input.note || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                    <div class="caption primary--text text-capitalize">{{ $translate('text.amount')}}</div>
+                    <span>{{ input.amount || $vuetify.lang.t('$vuetify.noDataText') }}</span>
                   </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">{{ $translate('text.status')}}</div>
+                    <span>{{ input.status.status || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                  </v-col>
+
                 </v-row>
               </v-card-text>
             </v-card>
@@ -47,7 +52,7 @@
               </v-card-title>
               <v-card-text>
                 <v-row justify="center">
-                  <v-data-table :items="input.budgets" :headers="headers"></v-data-table>
+                  <v-data-table :items="input.details" :headers="headers"></v-data-table>
                 </v-row>
               </v-card-text>
             </v-card>
@@ -63,19 +68,19 @@
                 <v-row>
                   <v-col cols="12" md="12">
                     <div class="caption primary--text text-capitalize">{{ $translate('text.name')}}</div>
-                    <span>{{ input.pic.name }}</span>
+                    <span>{{ input.user.name }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div
                       class="caption primary--text text-capitalize"
                     >{{ $translate('text.division')}}</div>
-                    <span>{{ input.pic.division }}</span>
+                    <span>{{ input.user.division }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div
                       class="caption primary--text text-capitalize"
-                    >{{ $translate('text.position')}}</div>
-                    <span>{{ input.pic.position }}</span>
+                    >{{ $translate('text.email')}}</div>
+                    <span>{{ input.user.email }}</span>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -122,11 +127,11 @@ export default {
       headers: [
         {
           text: `${this.$translate('text.budget_code', 'capitalize')}`,
-          value: 'code'
+          value: 'budget_code.code'
         },
         {
           text: `${this.$translate('text.budget_name', 'capitalize')}`,
-          value: 'name'
+          value: 'budget_code.name'
         },
         {
           text: `${this.$translate('text.budget_nominal', 'capitalize')}`,
@@ -134,25 +139,17 @@ export default {
         }
       ],
       input: {
-        pic: {
-          name: null,
-          username: null,
-          email: null,
-          division: null,
-          position: null,
-          nik: null,
-          address: null
-        },
-        allocation: null,
-        budgets: [],
-        note: null
+        details: [
+        ],
+        status: {},
+        user: {}
       }
     }
   },
   filters: {
     currency: function(value) {
       if (value == null || value == '') return 'Rp 0'
-      const result = value
+      const result = Number(value)
         .toString()
         .match(/\d{1,3}(?=(\d{3})*$)/g)
         .join('.')
@@ -188,6 +185,13 @@ export default {
         note: 'Belanja keperluan lebaran'
       }
     },
+    async getPettyCashForm() {
+      try {
+        this.input = await this.$api('petty', 'show', this.$route.params.id)
+      } catch (e) {
+        console.error(e)
+      }
+    },
     async deletePetty() {
       try {
         await this.$api('petty', 'delete', this.input)
@@ -197,7 +201,7 @@ export default {
     }
   },
   mounted() {
-    this.initValue()
+    this.getPettyCashForm()
   }
 }
 </script>

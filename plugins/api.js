@@ -92,8 +92,7 @@ export default ({ app }, inject) => {
             Petty.store(data)
             break
           case 'show':
-            Petty.show()
-            break
+            return Petty.show(data)
           case 'update':
             Petty.update()
             break
@@ -233,7 +232,6 @@ export default ({ app }, inject) => {
       console.log('[Submission] Show a submission with specified id')
       let result = null
       result = await app.$axios.$get('/form/submission/' + data).then((response) => {
-        console.log(response.form_submission)
         return response.form_submission
       })
       return result
@@ -280,8 +278,13 @@ export default ({ app }, inject) => {
           console.log(error)
         })
     },
-    show() {
+    async show(data) {
       console.log('[Petty] Show a petty cash with specified id')
+      let result = null
+      result = await app.$axios.$get('/form/petty-cash/' + data).then((response) => {
+        return response.form_petty_cash
+      })
+      return result
     },
     update() {
       console.log('[Petty] Update a petty cash with specified id')
