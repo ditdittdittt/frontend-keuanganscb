@@ -63,8 +63,8 @@ export default ({ app }, inject) => {
         break
       case 'submission':
         switch (action) {
-          case 'create':
-            Submission.create()
+          case 'store':
+            Submission.store(data)
             break
           case 'show':
             Submission.show()
@@ -183,8 +183,27 @@ export default ({ app }, inject) => {
     }
   }
   const Submission = {
-    create() {
-      console.log('[Submission] Creating a new submission')
+    store(data) {
+      console.log('[Submission] Creating a new submission (there is dummy)')
+      const body = new FormData()
+      // Masih dummy
+      body.append('form_request_id', 37)
+      body.append('date', data.date)
+      body.append('allocation', data.allocation)
+      body.append('used', data.used)
+      body.append('balance', data.balance)
+      body.append('notes', data.notes)
+      app.$axios({
+        method: 'post',
+        url: '/form/submission',
+        data: body
+      })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
     },
     show() {
       console.log('[Submission] Show a submission with specified id')
