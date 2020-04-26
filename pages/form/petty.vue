@@ -15,7 +15,10 @@
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
-        <v-form>
+        <v-form
+        v-model="formPettyCash"
+        ref="createFormPettyCash"
+        >
           <v-row>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">{{ $translate('text.allocation') }}</div>
@@ -68,31 +71,22 @@
                 <div
                   class="caption primary--text text-capitalize"
                 >[{{ i + 1 }}] {{ $translate('text.budget_code') }}</div>
-                <v-text-field
-                  solo
-                  prepend-inner-icon="mdi-text"
+                <v-combobox
+                  prepend-inner-icon="mdi-newspaper-plus"
                   v-model="input.budgets[i].code"
+                  :items="data.budgetList"
+                  solo
                   :rules="[rules.required]"
                   :label="$translate('text.budget_code', 'capitalize')"
                   clearable
-                  counter
-                ></v-text-field>
+                  auto-select-first
+                  cache-items
+                >
+                  <template v-slot:item="{item}">{{item.code + ' - ' + item.name}}</template>
+                  <template v-slot:selection="{item}">{{item.code + ' - ' + item.name}}</template>
+                </v-combobox>
               </v-col>
               <v-col cols="12" md="4" sm="6">
-                <div
-                  class="caption primary--text text-capitalize"
-                >[{{ i + 1 }}] {{ $translate('text.budget_name') }}</div>
-                <v-text-field
-                  solo
-                  prepend-inner-icon="mdi-text"
-                  v-model="input.budgets[i].name"
-                  :rules="[rules.required]"
-                  :label="$translate('text.budget_name', 'capitalize')"
-                  clearable
-                  counter
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="4">
                 <div
                   class="caption primary--text text-capitalize"
                 >[{{ i + 1 }}] {{ $translate('text.budget_nominal') }}</div>
@@ -152,7 +146,7 @@
         </v-form>
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn block x-large dark color="secondary" elevation="8">Submit</v-btn>
+        <v-btn block x-large dark color="secondary" elevation="8" @click.stop="storePetty">Submit</v-btn>
       </v-card-actions>
     </v-card>
     <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
@@ -166,6 +160,10 @@ export default {
       success: false,
       messages: '',
       today: null,
+      data: {
+        budgetList: []
+      },
+      formPettyCash: true,
       input: {
         allocation: null,
         date: null,
@@ -173,7 +171,6 @@ export default {
         budgets: [
           {
             code: null,
-            name: null,
             nominal: null
           }
         ]
@@ -214,12 +211,28 @@ export default {
         this.input.budgets.pop()
       }
     },
-    assignPIC() {
-      this.input.pic = null // auth user
-    },
     initValue() {
       this.today = new Date().toISOString()
+    },
+    async storePetty() {
+      try {
+        await this.$api('petty', 'store', this.input)
+        this.$refs.createFormPettyCash.reset()
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async getBudgetList() {
+      try {
+        this.data.budgetList = await this.$api('table', 'budgetlist', null)
+      } catch (e) {
+        console.error(e)
+      }
     }
+  },
+  mounted() {
+    this.initValue()
+    this.getBudgetList()
   }
 }
 </script>

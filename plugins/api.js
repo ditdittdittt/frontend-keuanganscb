@@ -86,8 +86,8 @@ export default ({ app }, inject) => {
         break
       case 'petty':
         switch (action) {
-          case 'create':
-            Petty.create()
+          case 'store':
+            Petty.store(data)
             break
           case 'show':
             Petty.show()
@@ -225,8 +225,30 @@ export default ({ app }, inject) => {
     }
   }
   const Petty = {
-    create() {
+    async store(data) {
       console.log('[Petty] Creating a new petty cash')
+      let amount = 0
+      const body = new FormData()
+      body.append('date', data.date)
+      body.append('allocation', data.allocation)
+      for (let i = 0; i < data.budgets.length; i++){
+        body.append("details["+i+"][budget_code_id]",data.budgets[i].code.id)
+        body.append("details["+i+"][nominal]",data.budgets[i].nominal)
+        amount += Number(data.budgets[i].nominal)
+      }
+      body.append('amount', amount)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash',
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
     },
     show() {
       console.log('[Petty] Show a petty cash with specified id')
