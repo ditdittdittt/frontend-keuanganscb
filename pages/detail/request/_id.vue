@@ -40,7 +40,7 @@
                       label
                       small
                       class="overline"
-                    >{{ input.type || $vuetify.lang.t('$vuetify.noDataText') }}</v-chip>
+                    >{{ input.method || $vuetify.lang.t('$vuetify.noDataText') }}</v-chip>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div
@@ -51,16 +51,43 @@
                       class="caption"
                     >{{ $terbilang(input.amount) || $vuetify.lang.t('$vuetify.noDataText') | capitalize }}</span>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" v-if="input.attachment">
                     <div class="caption primary--text text-capitalize">{{ $translate('text.file')}}</div>
                     <span class="text-capitalize">{{ $translate('text.view') }}</span>
-                    <v-btn color="accent" icon x-small :href="input.file" target="_blank">
+                    <v-btn color="accent" icon x-small :href="input.attachment" target="_blank">
                       <v-icon small>mdi-open-in-new</v-icon>
                     </v-btn>
                   </v-col>
                   <v-col cols="12">
                     <div class="caption primary--text text-capitalize">{{ $translate('text.note')}}</div>
-                    <span>{{ input.note || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                    <span>{{ input.notes || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                  </v-col>
+                  <v-col cols="12" md="6" v-if="input.method==='Transfer'">
+                    <div class="caption primary--text text-capitalize"
+                    >{{ $translate('text.bank_code')}}</div>
+                    <span>{{ input.bank_code || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                  </v-col>
+                  <v-col cols="12" md="6" v-if="input.method==='Transfer'">
+                    <div
+                      class="caption primary--text text-capitalize"
+                    >{{ $translate('text.bank_name')}}</div>
+                    <span>{{ input.bank_name || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                  </v-col>
+                  <v-col cols="12" md="6" v-if="input.method==='Transfer'">
+                    <div
+                      class="caption primary--text text-capitalize"
+                    >{{ $translate('text.account_number')}}</div>
+                    <span>{{ input.account_number || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                  </v-col>
+                  <v-col cols="12" md="6" v-if="input.method==='Transfer'">
+                    <div
+                      class="caption primary--text text-capitalize"
+                    >{{ $translate('text.account_owner')}}</div>
+                    <span>{{ input.account_owner || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                  </v-col>
+                  <v-col cols="12">
+                    <div class="caption primary--text text-capitalize">{{ $translate('text.status')}}</div>
+                    <span>{{ input.status.status || $vuetify.lang.t('$vuetify.noDataText') }}</span>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -117,19 +144,19 @@
                 <v-row>
                   <v-col cols="12" md="12">
                     <div class="caption primary--text text-capitalize">{{ $translate('text.name')}}</div>
-                    <span>{{ input.pic.name }}</span>
+                    <span>{{ input.user.name }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div
                       class="caption primary--text text-capitalize"
                     >{{ $translate('text.division')}}</div>
-                    <span>{{ input.pic.division }}</span>
+                    <span>{{ input.user.division }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div
                       class="caption primary--text text-capitalize"
-                    >{{ $translate('text.position')}}</div>
-                    <span>{{ input.pic.position }}</span>
+                    >{{ $translate('text.email')}}</div>
+                    <span>{{ input.user.email }}</span>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -174,28 +201,16 @@ export default {
       success: false,
       messages: '',
       input: {
-        pic: {
-          name: null,
-          username: null,
-          email: null,
-          division: null,
-          position: null,
-          nik: null,
-          address: null
-        },
-        allocation: null,
-        date: null,
-        type: null,
-        amount: null,
-        note: null,
-        file: null
+        user: {},
+        status: {},
+        budget_code: {}
       }
     }
   },
   filters: {
     currency: function(value) {
       if (value == null || value == '') return 'Rp 0'
-      const result = value
+      const result = Number(value)
         .toString()
         .match(/\d{1,3}(?=(\d{3})*$)/g)
         .join('.')
@@ -211,23 +226,12 @@ export default {
     }
   },
   methods: {
-    initValue() {
-      this.input = {
-        pic: {
-          name: 'Muhamad Hilmy',
-          username: 'hilmy_021',
-          email: 'hilmy@mail.com',
-          division: 'Keuangan',
-          position: 'Direktur',
-          nik: '11010101010',
-          address: 'jalan salak'
-        },
-        allocation: 'Beli baju',
-        date: '2020-09-21',
-        type: 'cash',
-        amount: 100000,
-        note: 'Belanja keperluan lebaran',
-        file: 'http://wow.com'
+    async getRequestForm() {
+      try {
+        this.input = await this.$api('request', 'show', this.$route.params.id)
+        console.log(this.input)
+      } catch (e) {
+        console.error(e)
       }
     },
     async deleteRequest() {
@@ -239,7 +243,7 @@ export default {
     }
   },
   mounted() {
-    this.initValue()
+    this.getRequestForm()
   }
 }
 </script>

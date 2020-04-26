@@ -105,7 +105,8 @@ export default {
     bank_name: 'bank name',
     bank_code: 'bank code',
     account_number: 'account number',
-    account_owner: 'account owner'
+    account_owner: 'account owner',
+    status: 'status'
   },
   helper: {
     messages: {

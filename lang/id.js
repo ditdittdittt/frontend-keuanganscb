@@ -105,7 +105,8 @@ export default {
     bank_name: 'nama bank',
     bank_code: 'kode bank',
     account_number: 'nomor rekening',
-    account_owner: 'pemilik rekening'
+    account_owner: 'pemilik rekening',
+    status: 'status'
   },
   helper: {
     messages: {

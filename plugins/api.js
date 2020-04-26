@@ -48,8 +48,7 @@ export default ({ app }, inject) => {
             Request.store(data)
             break
           case 'show':
-            Request.show()
-            break
+            return Request.show(data)
           case 'update':
             Request.update()
             break
@@ -185,8 +184,13 @@ export default ({ app }, inject) => {
           console.log(error)
         })
     },
-    show() {
+    async show(data) {
       console.log('[Request] Show a request with specified id')
+      let result = null
+      result = await app.$axios.$get('/form/request/' + data).then((response) => {
+        return response.form_request
+      })
+      return result
     },
     update() {
       console.log('[Request] Update a request with specified id')
