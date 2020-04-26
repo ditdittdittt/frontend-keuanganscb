@@ -63,14 +63,15 @@ export default {
           text: `${this.$translate('text.allocation', 'capitalize')}`,
           value: 'allocation'
         },
-        { text: `${this.$translate('text.pic', 'capitalize')}`, value: 'pic' },
+        { text: `${this.$translate('text.pic', 'capitalize')}`,
+          value: 'user.name' },
         {
           text: `${this.$translate('text.total_item', 'capitalize')}`,
-          value: 'budgets.length'
+          value: 'details.length'
         },
         {
           text: `${this.$translate('text.created_at', 'capitalize')}`,
-          value: 'createdAt'
+          value: 'created_at'
         },
         {
           text: `${this.$translate('text.action', 'capitalize')}`,
@@ -93,74 +94,16 @@ export default {
     }
   },
   methods: {
-    initValue() {
-      this.items = [
-        {
-          id: 1,
-          date: '2020-05-05',
-          pic: 'Fahreza Ikhsan',
-          allocation: 'Pengeluaran harian',
-          budgets: [{ code: 1101 }, { code: 1102 }],
-          createdAt: '2020-05-01',
-          updatedAt: '2020-05-01'
-        },
-        {
-          id: 2,
-          date: '2020-02-02',
-          pic: 'Naufal',
-          allocation: 'DLC Assasin Creed',
-          budgets: [{ code: 1101 }],
-          createdAt: '2020-01-22',
-          updatedAt: '2020-01-22'
-        },
-        {
-          id: 3,
-          date: '2020-02-20',
-          pic: 'Al Ahmad Banjar',
-          allocation: '3 Box Sirup Marjan',
-          budgets: [{ code: 1101 }, { code: 1101 }, { code: 1101 }],
-          createdAt: '2020-02-19',
-          updatedAt: '2020-02-19'
-        },
-        {
-          id: 4,
-          date: '2020-11-09',
-          pic: 'Intan Aida',
-          allocation: 'Minuman Cap Kaki Tiga',
-          budgets: [{ code: 1101 }],
-          createdAt: '2020-11-06',
-          updatedAt: '2020-11-06'
-        },
-        {
-          id: 5,
-          date: '2020-10-05',
-          pic: 'Kipli Kips Boi',
-          allocation: 'Laravel Udemy',
-          budgets: [{ code: 1101 }, { code: 1101 }],
-          createdAt: '2020-09-30',
-          updatedAt: '2020-09-30'
-        },
-        {
-          id: 6,
-          date: '2020-06-10',
-          pic: 'Yudit Ditditdit',
-          allocation: 'DevOps Scholarship',
-          budgets: [{ code: 1101 }],
-          createdAt: '2020-06-06',
-          updatedAt: '2020-06-06'
-        }
-      ]
-    },
-    async getPetty() {
+    async getAllPettyCashForms() {
       try {
-        await this.$api('petty', 'show', null)
+        this.items = await this.$api('petty', 'index', null)
       } catch (e) {
         console.error(e)
       }
     }
   },
   mounted() {
-    this.initValue()
+    this.getAllPettyCashForms()
   }
 }
 </script>

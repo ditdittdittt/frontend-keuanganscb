@@ -88,6 +88,8 @@ export default ({ app }, inject) => {
         break
       case 'petty':
         switch (action) {
+          case 'index':
+            return Petty.index()
           case 'store':
             Petty.store(data)
             break
@@ -235,6 +237,15 @@ export default ({ app }, inject) => {
     }
   }
   const Petty = {
+    async index() {
+      console.log('[Petty] Show all petty cash forms')
+      let result = null
+      result = await app.$axios.$get('/form/petty-cash').then((response) => {
+        console.log(response.form_petty_cash)
+        return response.form_petty_cash
+      })
+      return result
+    },
     async store(data) {
       console.log('[Petty] Creating a new petty cash')
       let amount = 0
