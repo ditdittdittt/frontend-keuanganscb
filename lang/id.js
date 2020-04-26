@@ -101,7 +101,11 @@ export default {
     action: 'aksi',
     total_item: 'total barang',
     created_at: 'dibuat',
-    search: 'cari'
+    search: 'cari',
+    bank_name: 'nama bank',
+    bank_code: 'kode bank',
+    account_number: 'nomor rekening',
+    account_owner: 'pemilik rekening'
   },
   helper: {
     messages: {

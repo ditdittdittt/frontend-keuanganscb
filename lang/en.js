@@ -101,7 +101,11 @@ export default {
     action: 'action',
     total_item: 'total item',
     created_at: 'created at',
-    search: 'search'
+    search: 'search',
+    bank_name: 'bank name',
+    bank_code: 'bank code',
+    account_number: 'account number',
+    account_owner: 'account owner'
   },
   helper: {
     messages: {

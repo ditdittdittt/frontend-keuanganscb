@@ -57,29 +57,56 @@
               <div
                 class="caption primary--text text-capitalize"
               >{{ $translate('text.payment_type') }}</div>
-              <v-radio-group v-model="input.type" dense row mandatory>
+              <v-radio-group v-model="input.method" dense row mandatory>
                 <v-radio :label="$translate('text.cash', 'capitalize')" value="cash"></v-radio>
                 <v-radio :label="$translate('text.transfer', 'capitalize')" value="transfer"></v-radio>
               </v-radio-group>
             </v-col>
           </v-row>
-<!--          Belum ditranslate-->
-          <v-row v-if="input.type === 'transfer'">
+          <v-row v-if="input.method === 'transfer'">
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">Nama Bank</div>
-              <v-text-field>Bank name</v-text-field>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.bank_name') }}</div>
+              <v-text-field
+                prepend-inner-icon="mdi-cash"
+                clearable
+                solo
+                :rules="[rules.required]"
+                :label="$translate('text.bank_name', 'capitalize')"
+                v-model="input.bank_name"
+              ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">Nama Bank</div>
-              <v-text-field>Bank name</v-text-field>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.bank_code') }}</div>
+              <v-text-field
+                prepend-inner-icon="mdi-cash"
+                clearable
+                solo
+                :rules="[rules.required]"
+                :label="$translate('text.bank_code', 'capitalize')"
+                v-model="input.bank_code"
+              ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">Nama Bank</div>
-              <v-text-field>Bank name</v-text-field>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.account_number') }}</div>
+              <v-text-field
+                prepend-inner-icon="mdi-cash"
+                clearable
+                solo
+                :rules="[rules.required]"
+                :label="$translate('text.account_number', 'capitalize')"
+                v-model="input.account_number"
+              ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">Nama Bank</div>
-              <v-text-field>Bank name</v-text-field>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.account_owner') }}</div>
+              <v-text-field
+                prepend-inner-icon="mdi-cash"
+                clearable
+                solo
+                :rules="[rules.required]"
+                :label="$translate('text.account_owner', 'capitalize')"
+                v-model="input.account_owner"
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -114,7 +141,7 @@
             <v-col cols="12">
               <div class="caption primary--text text-capitalize">{{ $translate('text.note') }}</div>
               <v-textarea
-                v-model="input.note"
+                v-model="input.notes"
                 clearable
                 counter
                 solo
@@ -125,7 +152,7 @@
               >{{ $translate('text.additional_file') }}</div>
               <v-file-input
                 show-size
-                v-model="input.file"
+                v-model="input.attachment"
                 clearable
                 solo
                 :label="$translate('text.attachment_file', 'capitalize')"
@@ -161,17 +188,16 @@ export default {
         date: false
       },
       input: {
-        pic: null,
         allocation: null,
         date: null,
-        type: null,
+        method: null,
         amount: null,
-        note: null,
-        file: null,
-        confirmPIC: false,
-        confirmHeadDept: false,
-        confirmVerificator: false,
-        confirmCashier: false
+        notes: null,
+        attachment: null,
+        bank_code: null,
+        bank_name: null,
+        account_number: null,
+        account_owner: null
       },
       rules: {
         required: value =>
@@ -199,14 +225,12 @@ export default {
     }
   },
   methods: {
-    assignPIC() {
-      this.input.pic = null // auth user
-    },
     initValue() {
       this.today = new Date().toISOString()
     },
     async storeRequest() {
       try {
+        console.log(this.input)
         await this.$api('request', 'store', this.input)
       } catch (e) {
         console.error(e)
@@ -215,7 +239,6 @@ export default {
   },
   mounted() {
     this.initValue()
-    this.assignPIC()
   }
 }
 </script>
