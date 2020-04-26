@@ -229,7 +229,6 @@ export default {
     async getRequestForm() {
       try {
         this.input = await this.$api('request', 'show', this.$route.params.id)
-        console.log(this.input)
       } catch (e) {
         console.error(e)
       }
