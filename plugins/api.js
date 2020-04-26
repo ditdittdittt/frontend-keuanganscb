@@ -143,8 +143,8 @@ export default ({ app }, inject) => {
     }
   }
   const Request = {
-    store(data) {
-      console.log('[Request] Creating a new request (there is dummy)')
+    async store(data) {
+      console.log('[Request] Creating a new request')
       const body = new FormData()
       body.append('allocation', data.allocation)
       body.append('date', data.date)
@@ -157,9 +157,8 @@ export default ({ app }, inject) => {
         body.append('account_number', data.account_number)
         body.append('account_owner', data.account_owner)
       }
-      // Masih dummy
-      body.append('budget_code_id', 1)
-      app
+      body.append('budget_code_id', data.budget_code.id)
+      await app
         .$axios({
           method: 'post',
           url: '/form/request',
@@ -233,10 +232,10 @@ export default ({ app }, inject) => {
 
   const Table = {
     async getBudgetList() {
-      console.log('[Table] Get all budget list (bug)')
+      console.log('[Table] Get all budget list')
       let result = null
       result = await app.$axios.$get('/budget-code').then((response) => {
-        return response
+        return response.budget_code
       })
       return result
     }

@@ -12,6 +12,25 @@
           v-model="formRequest"
         >
           <v-row>
+            <v-col cols="12" md="3">
+              <div
+                class="caption primary--text text-capitalize"
+              >{{ $translate('text.budget_code') }}</div>
+              <v-combobox
+                prepend-inner-icon="mdi-newspaper-plus"
+                v-model="input.budget_code"
+                :items="data.budgetList"
+                solo
+                :rules="[rules.required]"
+                :label="$translate('text.budget_code', 'capitalize')"
+                clearable
+                auto-select-first
+                cache-items
+              >
+                <template v-slot:item="{item}">{{item.code + ' - ' + item.name}}</template>
+                <template v-slot:selection="{item}">{{item.code + ' - ' + item.name}}</template>
+              </v-combobox>
+            </v-col>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">{{ $translate('text.allocation') }}</div>
               <v-text-field
@@ -195,6 +214,7 @@ export default {
         budgetList: []
       },
       input: {
+        budget_code: null,
         allocation: null,
         date: null,
         method: null,
@@ -245,7 +265,7 @@ export default {
     },
     async getBudgetList() {
       try {
-        this.data.budgetList = this.$api('table', 'budgetlist')
+        this.data.budgetList = await this.$api('table', 'budgetlist', null)
       } catch (e) {
         console.error(e)
       }
