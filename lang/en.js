@@ -96,6 +96,7 @@ export default {
     verification: 'verification',
     confirmation: 'confirmation',
     head_dept: 'head dept',
+    head_office: 'head office',
     cashier: 'cashier',
     verificator: 'verificator',
     view: 'view',

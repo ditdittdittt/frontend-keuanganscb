@@ -111,7 +111,7 @@
                       @click.stop="openDialogSureVerify('pic')"
                     >{{ $translate('text.pic')}}</v-btn>
                   </v-col>
-                  <v-col cols="12" md="6" v-if="checkVerifyVerifcator()">
+                  <v-col cols="12" md="6" v-if="checkVerifyVerificator()">
                     <v-btn
                       large
                       elevation="8"
@@ -342,25 +342,22 @@ export default {
       switch (this.verifyRole) {
         case 'pic':
           await this.verifyAsPic()
-          this.closeDialogSureVerify()
           break
         case 'verificator':
           await this.verifyAsVerificator()
-          this.closeDialogSureVerify()
           break
         case 'cashier':
           await this.verifyAsCashier()
-          this.closeDialogSureVerify()
           break
         case 'headDept':
           await this.verifyAsHeadDept()
-          this.closeDialogSureVerify()
           break
         default:
           this.verifyRole = ''
       }
       this.verifyRole = ''
-      this.getRequestForm()
+      await this.getRequestForm()
+      this.closeDialogSureVerify()
     },
     checkVerifyPic() {
       if (this.input.is_confirmed_pic === 0) {
@@ -377,8 +374,8 @@ export default {
         return true
       }
     },
-    checkVerifyVerifcator(){
-      if (this.input.is_confirmed_verification === 0) {
+    checkVerifyVerificator(){
+      if (this.input.is_confirmed_verificator === 0) {
         return true
       }
     },

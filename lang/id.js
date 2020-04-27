@@ -96,6 +96,7 @@ export default {
     verification: 'pembuktian',
     confirmation: 'konfirmasi',
     head_dept: 'kepala dept',
+    head_office: 'kepala kantor',
     cashier: 'kasir',
     verificator: 'pemeriksa',
     view: 'lihat',

@@ -89,6 +89,18 @@ export default ({ app }, inject) => {
           case 'delete':
             Submission.delete(data)
             break
+          case 'verifyaspic':
+            Submission.verifyAsPic(data)
+            break
+          case 'verifyasheadoffice':
+            Submission.verifyAsHeadOffice(data)
+            break
+          case 'verifyasheaddept':
+            Submission.verifyAsHeadDept(data)
+            break
+          case 'verifyasverificator':
+            Submission.verifyAsVerificator(data)
+            break
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -338,6 +350,70 @@ export default ({ app }, inject) => {
         })
         .catch(function(error) {
           console.log(error)
+        })
+    },
+    async verifyAsPic(data) {
+      console.log('[Submission] Verify as PIC')
+      const body = new FormData()
+      body.append('is_confirmed_pic', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
+    async verifyAsVerificator(data) {
+      console.log('[Submission] Verify as Verificator')
+      const body = new FormData()
+      body.append('is_confirmed_verificator', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
+    async verifyAsHeadOffice(data) {
+      console.log('[Submission] Verify as Head Office')
+      const body = new FormData()
+      body.append('is_confirmed_head_office', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
+    async verifyAsHeadDept(data) {
+      console.log('[Submission] Verify as Head Dept')
+      const body = new FormData()
+      body.append('is_confirmed_head_dept', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
         })
     }
   }
