@@ -97,7 +97,7 @@ export default ({ app }, inject) => {
             Petty.update()
             break
           case 'delete':
-            Petty.delete()
+            Petty.delete(data)
             break
           default:
             console.error(
@@ -311,8 +311,19 @@ export default ({ app }, inject) => {
     update() {
       console.log('[Petty] Update a petty cash with specified id')
     },
-    delete() {
+    async delete(data) {
       console.log('[Petty] Delete a petty cash with specified id')
+      await app
+        .$axios({
+          method: 'delete',
+          url: '/form/petty-cash/' + data
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
     }
   }
 

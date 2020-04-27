@@ -94,14 +94,14 @@
     </v-row>
     <div class="spacing-small"></div>
     <v-row>
-      <v-col>
+      <v-col v-if="checkEditAble()">
         <v-btn
           block
           dark
           elevation="8"
           x-large
           color="accent"
-          @click.stop="deletePetty()"
+          @click.stop="openDialogSureDelete()"
         >{{$translate('components.button.delete')}}</v-btn>
       </v-col>
       <v-col>
@@ -115,6 +115,21 @@
       </v-col>
     </v-row>
     <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialogSureDelete" persistent max-width="290">
+          <v-card>
+            <v-card-title class="headline text-capitalize">{{ $translate('text.sure_delete_head') | capitalize}} </v-card-title>
+            <v-card-text class="text-capitalize">{{ $translate('text.sure_delete_body') | capitalize}} </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="closeDialogSureDelete()">{{ $translate('components.button.sure_button_no') }}</v-btn>
+              <v-btn color="green darken-1" text @click="deletePettyCash()">{{ $translate('components.button.sure_button_yes') }}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template>
   </v-container>
 </template>
 <script>
@@ -123,6 +138,7 @@ export default {
     return {
       alert: false,
       success: false,
+      dialogSureDelete: false,
       messages: '',
       headers: [
         {
@@ -165,25 +181,11 @@ export default {
     }
   },
   methods: {
-    initValue() {
-      this.input = {
-        pic: {
-          name: 'Muhamad Hilmy',
-          username: 'hilmy_021',
-          email: 'hilmy@mail.com',
-          division: 'Keuangan',
-          position: 'Direktur',
-          nik: '11010101010',
-          address: 'jalan salak'
-        },
-        allocation: 'Beli baju',
-        date: '2020-08-17',
-        budgets: [
-          { code: '112A', name: 'Baju Koko', nominal: 120000 },
-          { code: '112M', name: 'Motor Baru', nominal: 5000000 }
-        ],
-        note: 'Belanja keperluan lebaran'
-      }
+    openDialogSureDelete () {
+      this.dialogSureDelete = true
+    },
+    closeDialogSureDelete () {
+      this.dialogSureDelete = false
     },
     async getPettyCashForm() {
       try {
@@ -192,13 +194,27 @@ export default {
         console.error(e)
       }
     },
-    async deletePetty() {
+    async deletePettyCash() {
       try {
-        await this.$api('petty', 'delete', this.input)
+        await this.$api('petty', 'delete', this.$route.params.id)
+        this.closeDialogSureDelete()
+        this.$router.replace('/all/petty')
       } catch (e) {
         console.error(e)
       }
-    }
+    },
+    checkEditAble() {
+      if (
+        (
+          this.input.is_confirmed_pic === 0 &&
+          this.input.is_confirmed_manager_ops === 0 &&
+          this.input.is_confirmed_cashier === 0 &&
+          this.input.user_id === this.$auth.user.id) ||
+        this.$auth.user.id === 1
+      ) {
+        return true
+      }
+    },
   },
   mounted() {
     this.getPettyCashForm()
