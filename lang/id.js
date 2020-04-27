@@ -12,7 +12,9 @@ export default {
       delete: 'hapus',
       cancel: 'batal',
       done: 'selesai',
-      close: 'tutup'
+      close: 'tutup',
+      sure_button_yes: 'ya',
+      sure_button_no: 'tidak'
     },
     row: {
       text: 'baris'
@@ -106,7 +108,9 @@ export default {
     bank_code: 'kode bank',
     account_number: 'nomor rekening',
     account_owner: 'pemilik rekening',
-    status: 'status'
+    status: 'status',
+    sure_delete_head: 'apakah anda yakin untuk menghapus form ini?',
+    sure_delete_body: 'form ini tidak dapat dikembalikan',
   },
   helper: {
     messages: {

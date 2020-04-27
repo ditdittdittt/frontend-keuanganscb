@@ -53,7 +53,7 @@ export default ({ app }, inject) => {
             Request.update()
             break
           case 'delete':
-            Request.delete()
+            Request.delete(data)
             break
           default:
             console.error(
@@ -193,8 +193,19 @@ export default ({ app }, inject) => {
     update() {
       console.log('[Request] Update a request with specified id')
     },
-    delete() {
+    async delete(data) {
       console.log('[Request] Delete a request with specified id')
+      await app
+        .$axios({
+          method: 'delete',
+          url: '/form/request/' + data
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
     }
   }
   const Submission = {

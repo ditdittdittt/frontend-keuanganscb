@@ -170,14 +170,14 @@
     </v-row>
     <div class="spacing-small"></div>
     <v-row>
-      <v-col>
+      <v-col v-if="checkEditAble()">
         <v-btn
           block
           dark
           elevation="8"
           x-large
           color="accent"
-          @click.stop="deleteRequest()"
+          @click.stop="openDialogSureDelete()"
         >{{$translate('components.button.delete')}}</v-btn>
       </v-col>
       <v-col>
@@ -191,6 +191,21 @@
       </v-col>
     </v-row>
     <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialogSureDelete" persistent max-width="290">
+          <v-card>
+            <v-card-title class="headline text-capitalize">{{ $translate('text.sure_delete_head') | capitalize}} </v-card-title>
+            <v-card-text class="text-capitalize">{{ $translate('text.sure_delete_body') | capitalize}} </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="closeDialogSureDelete()">{{ $translate('components.button.sure_button_no') }}</v-btn>
+              <v-btn color="green darken-1" text @click="deleteRequest()">{{ $translate('components.button.sure_button_yes') }}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template>
   </v-container>
 </template>
 <script>
@@ -199,6 +214,7 @@ export default {
     return {
       alert: false,
       success: false,
+      dialogSureDelete: false,
       messages: '',
       input: {
         user: {},
@@ -226,6 +242,12 @@ export default {
     }
   },
   methods: {
+    openDialogSureDelete () {
+      this.dialogSureDelete = true
+    },
+    closeDialogSureDelete () {
+      this.dialogSureDelete = false
+    },
     async getRequestForm() {
       try {
         this.input = await this.$api('request', 'show', this.$route.params.id)
@@ -235,11 +257,26 @@ export default {
     },
     async deleteRequest() {
       try {
-        await this.$api('request', 'delete', this.input)
+        await this.$api('request', 'delete', this.$route.params.id)
+        this.closeDialogSureDelete()
+        this.$router.replace('/all/request')
       } catch (e) {
         console.error(e)
       }
-    }
+    },
+    checkEditAble() {
+      if (
+        (
+          this.input.is_confirmed_pic === 0 &&
+          this.input.is_confirmed_verificator === 0 &&
+          this.input.is_confirmed_cashier === 0 &&
+          this.input.is_confirmed_head_dept === 0 &&
+          this.input.user_id === this.$auth.user.id) ||
+        this.$auth.user.id === 1
+      ) {
+        return true
+      }
+    },
   },
   mounted() {
     this.getRequestForm()

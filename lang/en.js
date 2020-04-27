@@ -12,7 +12,9 @@ export default {
       delete: 'delete',
       cancel: 'cancel',
       done: 'done',
-      close: 'close'
+      close: 'close',
+      sure_button_yes: 'yes',
+      sure_button_no: 'no'
     },
     row: {
       text: 'row'
@@ -106,7 +108,10 @@ export default {
     bank_code: 'bank code',
     account_number: 'account number',
     account_owner: 'account owner',
-    status: 'status'
+    status: 'status',
+    sure_delete_head: 'are you sure to delete this form?',
+    sure_delete_body: 'this form cannot be restore',
+
   },
   helper: {
     messages: {
