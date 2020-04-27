@@ -200,6 +200,7 @@ export default ({ app }, inject) => {
       body.append('date', data.date)
       body.append('method', data.method)
       body.append('amount', data.amount)
+      body.append('attachment', data.attachment)
       body.append('notes', data.notes)
       if (data.method === 'transfer') {
         body.append('bank_name', data.bank_name)
