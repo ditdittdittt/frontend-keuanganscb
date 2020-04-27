@@ -135,6 +135,9 @@ export default ({ app }, inject) => {
           case 'verifyascashier':
             Petty.verifyAsCashier(data)
             break
+          case 'verifyalreadypaid':
+            Petty.verifyAlreadyPaid(data)
+            break
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -552,6 +555,22 @@ export default ({ app }, inject) => {
         .catch(function(error) {
         })
     },
+    async verifyAlreadyPaid(data) {
+      console.log('[Petty] Verify already paid')
+      const body = new FormData()
+      body.append('status_id', 3 )
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    }
   }
 
   const Table = {
