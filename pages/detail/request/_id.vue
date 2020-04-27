@@ -102,31 +102,40 @@
               </v-card-title>
               <v-card-text>
                 <v-row justify="center">
-                  <v-col cols="12" md="6">
-                    <v-btn large elevation="8" block color="secondary">{{ $translate('text.pic')}}</v-btn>
-                  </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" v-if="checkVerifyPic()">
                     <v-btn
                       large
                       elevation="8"
                       block
                       color="secondary"
+                      @click.stop="openDialogSureVerify('pic')"
+                    >{{ $translate('text.pic')}}</v-btn>
+                  </v-col>
+                  <v-col cols="12" md="6" v-if="checkVerifyVerifcator()">
+                    <v-btn
+                      large
+                      elevation="8"
+                      block
+                      color="secondary"
+                      @click.stop="openDialogSureVerify('verificator')"
                     >{{ $translate('text.verificator')}}</v-btn>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" v-if="checkVerifyHeadDept()">
                     <v-btn
                       large
                       elevation="8"
                       block
                       color="secondary"
+                      @click.stop="openDialogSureVerify('headDept')"
                     >{{ $translate('text.head_dept')}}</v-btn>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" v-if="checkVerifyCashier()">
                     <v-btn
                       large
                       elevation="8"
                       block
                       color="secondary"
+                      @click.stop="openDialogSureVerify('cashier')"
                     >{{ $translate('text.cashier')}}</v-btn>
                   </v-col>
                 </v-row>
@@ -206,6 +215,21 @@
         </v-dialog>
       </v-row>
     </template>
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialogSureVerify" persistent max-width="290">
+          <v-card>
+            <v-card-title class="headline text-capitalize">{{ $translate('text.sure_verify_head') | capitalize}} </v-card-title>
+            <v-card-text class="text-capitalize">{{ $translate('text.sure_verify_body') | capitalize}} </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="closeDialogSureVerify()">{{ $translate('components.button.sure_button_no') }}</v-btn>
+              <v-btn color="green darken-1" text @click="verifyAs()">{{ $translate('components.button.sure_button_yes') }}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template>
   </v-container>
 </template>
 <script>
@@ -215,12 +239,14 @@ export default {
       alert: false,
       success: false,
       dialogSureDelete: false,
+      dialogSureVerify: false,
       messages: '',
       input: {
         user: {},
         status: {},
         budget_code: {}
-      }
+      },
+      verifyRole: '',
     }
   },
   filters: {
@@ -242,6 +268,13 @@ export default {
     }
   },
   methods: {
+    openDialogSureVerify(role) {
+      this.verifyRole = role
+      this.dialogSureVerify = true
+    },
+    closeDialogSureVerify() {
+      this.dialogSureVerify = false
+    },
     openDialogSureDelete () {
       this.dialogSureDelete = true
     },
@@ -274,6 +307,78 @@ export default {
           this.input.user_id === this.$auth.user.id) ||
         this.$auth.user.id === 1
       ) {
+        return true
+      }
+    },
+    async verifyAsPic() {
+      try {
+        await this.$api('request', 'verifyaspic', this.input)
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async verifyAsVerificator() {
+      try {
+        await this.$api('request', 'verifyasverificator', this.input)
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async verifyAsCashier() {
+      try {
+        await this.$api('request', 'verifyascashier', this.input)
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async verifyAsHeadDept() {
+      try {
+        await this.$api('request', 'verifyasheaddept', this.input)
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async verifyAs () {
+      switch (this.verifyRole) {
+        case 'pic':
+          await this.verifyAsPic()
+          this.closeDialogSureVerify()
+          break
+        case 'verificator':
+          await this.verifyAsVerificator()
+          this.closeDialogSureVerify()
+          break
+        case 'cashier':
+          await this.verifyAsCashier()
+          this.closeDialogSureVerify()
+          break
+        case 'headDept':
+          await this.verifyAsHeadDept()
+          this.closeDialogSureVerify()
+          break
+        default:
+          this.verifyRole = ''
+      }
+      this.verifyRole = ''
+      this.getRequestForm()
+    },
+    checkVerifyPic() {
+      if (this.input.is_confirmed_pic === 0) {
+        return true
+      }
+    },
+    checkVerifyCashier() {
+      if (this.input.is_confirmed_cashier === 0) {
+        return true
+      }
+    },
+    checkVerifyHeadDept() {
+      if (this.input.is_confirmed_head_dept === 0) {
+        return true
+      }
+    },
+    checkVerifyVerifcator(){
+      if (this.input.is_confirmed_verification === 0) {
         return true
       }
     },

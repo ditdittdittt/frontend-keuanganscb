@@ -111,6 +111,8 @@ export default {
     status: 'status',
     sure_delete_head: 'apakah anda yakin untuk menghapus form ini?',
     sure_delete_body: 'form ini tidak dapat dikembalikan',
+    sure_verify_head: 'apakah anda yakin untuk memverifikasi form ini?',
+    sure_verify_body: 'form ini tidak bisa diubah kembali setelah anda melakukan verifikasi',
   },
   helper: {
     messages: {

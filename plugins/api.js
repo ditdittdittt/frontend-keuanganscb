@@ -55,6 +55,18 @@ export default ({ app }, inject) => {
           case 'delete':
             Request.delete(data)
             break
+          case 'verifyaspic':
+            Request.verifyAsPic(data)
+            break
+          case 'verifyascashier':
+            Request.verifyAsCashier(data)
+            break
+          case 'verifyasheaddept':
+            Request.verifyAsHeadDept(data)
+            break
+          case 'verifyasverificator':
+            Request.verifyAsVerificator(data)
+            break
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -205,6 +217,70 @@ export default ({ app }, inject) => {
         })
         .catch(function(error) {
           console.log(error)
+        })
+    },
+    async verifyAsPic(data) {
+      console.log('[Request] Verify as PIC')
+      const body = new FormData()
+      body.append('is_confirmed_pic', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+      })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
+    async verifyAsVerificator(data) {
+      console.log('[Request] Verify as Verificator')
+      const body = new FormData()
+      body.append('is_confirmed_verificator', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
+    async verifyAsCashier(data) {
+      console.log('[Request] Verify as Cashier')
+      const body = new FormData()
+      body.append('is_confirmed_cashier', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
+    async verifyAsHeadDept(data) {
+      console.log('[Request] Verify as Head Dept')
+      const body = new FormData()
+      body.append('is_confirmed_head_dept', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
         })
     }
   }
