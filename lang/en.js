@@ -14,7 +14,8 @@ export default {
       done: 'done',
       close: 'close',
       sure_button_yes: 'yes',
-      sure_button_no: 'no'
+      sure_button_no: 'no',
+      already_paid: 'already paid'
     },
     row: {
       text: 'row'

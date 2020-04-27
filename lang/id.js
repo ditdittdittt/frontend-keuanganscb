@@ -14,7 +14,8 @@ export default {
       done: 'selesai',
       close: 'tutup',
       sure_button_yes: 'ya',
-      sure_button_no: 'tidak'
+      sure_button_no: 'tidak',
+      already_paid: 'telah dibayarkan'
     },
     row: {
       text: 'baris'

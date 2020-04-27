@@ -67,6 +67,9 @@ export default ({ app }, inject) => {
           case 'verifyasverificator':
             Request.verifyAsVerificator(data)
             break
+          case 'verifyalreadypaid':
+            Request.verifyAlreadyPaid(data)
+            break
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -132,6 +135,9 @@ export default ({ app }, inject) => {
           case 'verifyascashier':
             Petty.verifyAsCashier(data)
             break
+          case 'verifyalreadypaid':
+            Petty.verifyAlreadyPaid(data)
+            break
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -194,6 +200,7 @@ export default ({ app }, inject) => {
       body.append('date', data.date)
       body.append('method', data.method)
       body.append('amount', data.amount)
+      body.append('attachment', data.attachment)
       body.append('notes', data.notes)
       if (data.method === 'transfer') {
         body.append('bank_name', data.bank_name)
@@ -304,6 +311,24 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as Head Dept')
       const body = new FormData()
       body.append('is_confirmed_head_dept', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          return error
+        })
+    },
+    async verifyAlreadyPaid(data) {
+      console.log('[Request] Verify already paid')
+      const body = new FormData()
+      body.append('status_id', 3)
       await app
         .$axios({
           method: 'post',
@@ -562,6 +587,24 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify as Manager Ops')
       const body = new FormData()
       body.append('is_confirmed_manager_ops', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          return error
+        })
+    },
+    async verifyAlreadyPaid(data) {
+      console.log('[Petty] Verify already paid')
+      const body = new FormData()
+      body.append('status_id', 3)
       await app
         .$axios({
           method: 'post',

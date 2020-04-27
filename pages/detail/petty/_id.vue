@@ -173,10 +173,16 @@
           >{{ $translate('components.button.delete') }}</v-btn
         >
       </v-col>
-      <v-col>
-        <v-btn block dark elevation="8" x-large color="secondary">{{
-          $translate('components.button.done')
-        }}</v-btn>
+      <v-col v-if="checkStatus()">
+        <v-btn
+          block
+          dark
+          elevation="8"
+          x-large
+          color="secondary"
+          @click.stop="openDialogSureVerify('alreadyPaid')"
+          >{{ $translate('components.button.already_paid') }}</v-btn
+        >
       </v-col>
     </v-row>
     <snackbar-alert
@@ -342,6 +348,11 @@ export default {
         await this.$api('petty', 'verifyascashier', this.input)
       } catch (e) {}
     },
+    async verifyAlreadyPaid() {
+      try {
+        await this.$api('petty', 'verifyalreadypaid', this.input)
+      } catch (e) {}
+    },
     async verifyAs() {
       switch (this.verifyRole) {
         case 'pic':
@@ -352,6 +363,9 @@ export default {
           break
         case 'cashier':
           await this.verifyAsCashier()
+          break
+        case 'alreadyPaid':
+          await this.verifyAlreadyPaid()
           break
         default:
           this.verifyRole = ''
@@ -372,6 +386,11 @@ export default {
     },
     checkVerifyManagerOps() {
       if (this.input.is_confirmed_manager_ops === 0) {
+        return true
+      }
+    },
+    checkStatus() {
+      if (this.input.status_id === 2) {
         return true
       }
     }
