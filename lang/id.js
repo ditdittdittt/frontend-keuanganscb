@@ -13,6 +13,7 @@ export default {
       cancel: 'batal',
       done: 'selesai',
       close: 'tutup',
+      update: 'perbarui',
       sure_button_yes: 'ya',
       sure_button_no: 'tidak',
       already_paid: 'telah dibayarkan'

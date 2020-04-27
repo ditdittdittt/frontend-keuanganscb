@@ -186,8 +186,8 @@
       </v-col>
     </v-row>
     <div class="spacing-small"></div>
-    <v-row>
-      <v-col v-if="checkEditAble()">
+    <v-row v-if="checkEditAble()">
+      <v-col>
         <v-btn
           block
           dark
@@ -198,6 +198,19 @@
           >{{ $translate('components.button.delete') }}</v-btn
         >
       </v-col>
+      <v-col>
+        <v-btn
+          block
+          dark
+          elevation="8"
+          x-large
+          color="accent"
+          :to="'/update/submission/' + $route.params.id"
+          >{{ $translate('components.button.update') }}</v-btn
+        >
+      </v-col>
+    </v-row>
+    <v-row v-else>
       <v-col>
         <v-btn block dark elevation="8" x-large color="secondary">{{
           $translate('components.button.done')
@@ -341,6 +354,7 @@ export default {
       ) {
         return true
       }
+      return false
     },
     checkVerifyPic() {
       if (this.input.is_confirmed_pic === 0) {

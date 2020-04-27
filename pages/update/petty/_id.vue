@@ -11,7 +11,7 @@
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
-        <v-form ref="createFormPettyCash" v-model="formPettyCash">
+        <v-form ref="form" v-model="formPettyCash">
           <v-row>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
@@ -160,8 +160,8 @@
           dark
           color="secondary"
           elevation="8"
-          @click.stop="storePetty"
-          >{{ $translate('components.button.submit') }}</v-btn
+          @click.stop="updatePetty"
+          >{{ $translate('components.button.update') }}</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -224,7 +224,6 @@ export default {
   },
   mounted() {
     this.initValue()
-    this.getBudgetList()
   },
   methods: {
     addBuget() {
@@ -237,11 +236,18 @@ export default {
     },
     initValue() {
       this.today = new Date().toISOString()
+      this.getPetty()
+      this.getBudgetList()
     },
-    async storePetty() {
+    async getPetty() {
       try {
-        await this.$api('petty', 'store', this.input)
-        this.$refs.createFormPettyCash.reset()
+        this.input = await this.$api('petty', 'show', this.input)
+      } catch (e) {}
+    },
+    async updatePetty() {
+      try {
+        await this.$api('petty', 'update', this.input)
+        this.$refs.form.reset()
       } catch (e) {}
     },
     async getBudgetList() {

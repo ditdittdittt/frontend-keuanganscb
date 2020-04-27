@@ -11,7 +11,7 @@
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
-        <v-form ref="createFormPettyCash" v-model="formPettyCash">
+        <v-form ref="form" v-model="formPettyCash">
           <v-row>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
@@ -155,6 +155,7 @@
       </v-card-text>
       <v-card-actions class="pa-5">
         <v-btn
+          v-if="petty === null"
           block
           x-large
           dark
@@ -162,6 +163,16 @@
           elevation="8"
           @click.stop="storePetty"
           >{{ $translate('components.button.submit') }}</v-btn
+        >
+        <v-btn
+          v-else
+          block
+          x-large
+          dark
+          color="secondary"
+          elevation="8"
+          @click.stop="updatePetty"
+          >{{ $translate('components.button.update', 'capitalize') }}</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -174,6 +185,7 @@
 </template>
 <script>
 export default {
+  name: 'FormPetty',
   filters: {
     currency(value) {
       if (value === null || value === '') return 'Rp 0'
@@ -190,6 +202,12 @@ export default {
         .split(' ')
         .map((element) => element.charAt(0).toUpperCase() + element.slice(1))
       return value.join(' ')
+    }
+  },
+  props: {
+    petty: {
+      type: Object,
+      default: null
     }
   },
   data() {
@@ -237,11 +255,20 @@ export default {
     },
     initValue() {
       this.today = new Date().toISOString()
+      if (this.$props.petty !== null) {
+        this.input = this.$copy(this.$props.petty)
+      }
     },
     async storePetty() {
       try {
         await this.$api('petty', 'store', this.input)
-        this.$refs.createFormPettyCash.reset()
+        this.$refs.form.reset()
+      } catch (e) {}
+    },
+    async updatePetty() {
+      try {
+        await this.$api('petty', 'update', this.input)
+        this.$refs.form.reset()
       } catch (e) {}
     },
     async getBudgetList() {

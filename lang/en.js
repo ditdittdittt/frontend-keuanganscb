@@ -13,6 +13,7 @@ export default {
       cancel: 'cancel',
       done: 'done',
       close: 'close',
+      update: 'update',
       sure_button_yes: 'yes',
       sure_button_no: 'no',
       already_paid: 'already paid'

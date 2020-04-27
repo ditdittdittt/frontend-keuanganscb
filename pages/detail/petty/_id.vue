@@ -161,8 +161,8 @@
       </v-col>
     </v-row>
     <div class="spacing-small"></div>
-    <v-row>
-      <v-col v-if="checkEditAble()">
+    <v-row v-if="checkEditAble()">
+      <v-col>
         <v-btn
           block
           dark
@@ -173,7 +173,20 @@
           >{{ $translate('components.button.delete') }}</v-btn
         >
       </v-col>
-      <v-col v-if="checkStatus()">
+      <v-col>
+        <v-btn
+          block
+          dark
+          elevation="8"
+          x-large
+          color="accent"
+          :to="'/update/petty/' + $route.params.id"
+          >{{ $translate('components.button.update') }}</v-btn
+        >
+      </v-col>
+    </v-row>
+    <v-row v-if="checkStatus()">
+      <v-col>
         <v-btn
           block
           dark
@@ -332,6 +345,7 @@ export default {
       ) {
         return true
       }
+      return false
     },
     async verifyAsPic() {
       try {
