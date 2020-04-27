@@ -9,7 +9,7 @@ import Vue from 'vue'
       terbilang(23) : return => dua puluh tiga
  */
 
-const convertToUnit = digit => {
+const convertToUnit = (digit) => {
   if (digit >= 63) return 'vigintiliun'
   else if (digit >= 60) return 'novemdesiliun'
   else if (digit >= 57) return 'oktodesiliun'
@@ -34,7 +34,7 @@ const convertToUnit = digit => {
   else return ''
 }
 
-const numberToString = index => {
+const numberToString = (index) => {
   const numbers = [
     'satu',
     'dua',
@@ -49,7 +49,7 @@ const numberToString = index => {
   return numbers[index - 1] || ''
 }
 
-const numberInWords = angka => {
+const numberInWords = (angka) => {
   if (/^0*$/.test(angka)) {
     return 'nol'
   }
@@ -57,23 +57,23 @@ const numberInWords = angka => {
   let printUnit = true
   let isBelasan = false
 
-  for (var i = 0; i < angka.length; i++) {
-    var length = angka.length - 1 - i
-    if (length % 3 == 0) {
-      var num =
-        angka[i] == 1 &&
+  for (let i = 0; i < angka.length; i++) {
+    const length = angka.length - 1 - i
+    if (length % 3 === 0) {
+      const num =
+        angka[i] === 1 &&
         (isBelasan ||
-          (convertToUnit(length) == 'ribu' &&
-            (angka[i - 2] == undefined || angka[i - 2] == 0) &&
-            (angka[i - 1] == undefined || angka[i - 1] == 0)))
+          (convertToUnit(length) === 'ribu' &&
+            (angka[i - 2] === undefined || angka[i - 2] === 0) &&
+            (angka[i - 1] === undefined || angka[i - 1] === 0)))
           ? 'se'
           : `${numberToString(angka[i])} `
       result += ` ${num}`
 
       if (
-        (angka[i - 2] && angka[i - 2] != 0) ||
-        (angka[i - 1] && angka[i - 1] != 0) ||
-        angka[i] != 0
+        (angka[i - 2] && angka[i - 2] !== 0) ||
+        (angka[i - 1] && angka[i - 1] !== 0) ||
+        angka[i] !== 0
       ) {
         printUnit = true
       }
@@ -84,11 +84,13 @@ const numberInWords = angka => {
           isBelasan = false
         }
       }
-    } else if (length % 3 == 2 && angka[i] != 0) {
-      result += ` ${angka[i] == 1 ? 'se' : numberToString(angka[i]) + ' '}ratus`
-    } else if (length % 3 == 1 && angka[i] != 0) {
-      if (angka[i] == 1) {
-        if (angka[i + 1] == 0) {
+    } else if (length % 3 === 2 && angka[i] !== 0) {
+      result += ` ${
+        angka[i] === 1 ? 'se' : numberToString(angka[i]) + ' '
+      }ratus`
+    } else if (length % 3 === 1 && angka[i] !== 0) {
+      if (angka[i] === 1) {
+        if (angka[i + 1] === 0) {
           result += ' sepuluh'
         } else {
           isBelasan = true
@@ -101,8 +103,8 @@ const numberInWords = angka => {
   return result.trim().replace(/\s+/g, ' ')
 }
 
-Vue.prototype.$terbilang = angka => {
-  if (angka == null || angka == '') return ''
+Vue.prototype.$terbilang = (angka) => {
+  if (angka === null || angka === '') return ''
   const bagian = angka.toString().split('.')
   let hasil = ''
   for (let i = 0; i < bagian.length; i++) {

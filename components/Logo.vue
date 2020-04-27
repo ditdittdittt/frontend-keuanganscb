@@ -9,7 +9,7 @@
 </template>
 
 <style>
-  .border {
-    border: 1px solid white;
-  }
+.border {
+  border: 1px solid white;
+}
 </style>

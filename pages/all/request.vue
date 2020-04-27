@@ -11,16 +11,22 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item>
-              <v-list-item-title class="text-capitalize">{{ $translate('export.pdf') }}</v-list-item-title>
+            <v-list-item @click.stop="$export('pdf', 'request', null)">
+              <v-list-item-title class="text-capitalize">
+                {{ $translate('export.pdf') }}
+              </v-list-item-title>
             </v-list-item>
-            <v-list-item>
-              <v-list-item-title class="text-capitalize">{{ $translate('export.excel') }}</v-list-item-title>
+            <v-list-item @click.stop="$export('excel', 'request', null)">
+              <v-list-item-title class="text-capitalize">
+                {{ $translate('export.excel') }}
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </v-card-title>
-      <v-card-subtitle class="overline">{{ $translate('components.table.subtitle.request') }}</v-card-subtitle>
+      <v-card-subtitle class="overline">
+        {{ $translate('components.table.subtitle.request') }}
+      </v-card-subtitle>
       <v-card-text class="px-5">
         <v-text-field
           v-model="search"
@@ -37,18 +43,40 @@
       <v-card-text>
         <div class="spacing-medium"></div>
         <v-data-table :headers="headers" :items="items" :search="search">
-          <template v-slot:item.amount="{item}">{{ item.amount | currency }}</template>
-          <template v-slot:item.id="{item}">
-            <v-btn color="secondary" small text :to="'/detail/request/' + item.id">Detail</v-btn>
+          <template v-slot:item.amount="{ item }">
+            {{ item.amount | currency }}
+          </template>
+          <template v-slot:item.id="{ item }">
+            <v-btn
+              color="secondary"
+              small
+              text
+              :to="'/detail/request/' + item.id"
+              >Detail</v-btn
+            >
           </template>
         </v-data-table>
       </v-card-text>
     </v-card>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
   </v-container>
 </template>
 <script>
 export default {
+  filters: {
+    currency(value) {
+      if (value === null || value === '') return 'Rp 0'
+      const result = Number(value)
+        .toString()
+        .match(/\d{1,3}(?=(\d{3})*$)/g)
+        .join('.')
+      return 'Rp ' + result + ',00'
+    }
+  },
   data() {
     return {
       alert: false,
@@ -68,8 +96,10 @@ export default {
           text: `${this.$translate('text.amount', 'capitalize')}`,
           value: 'amount'
         },
-        { text: `${this.$translate('text.pic', 'capitalize')}`,
-          value: 'user.name' },
+        {
+          text: `${this.$translate('text.pic', 'capitalize')}`,
+          value: 'user.name'
+        },
         {
           text: `${this.$translate('text.created_at', 'capitalize')}`,
           value: 'created_at'
@@ -84,29 +114,16 @@ export default {
       items: []
     }
   },
-  filters: {
-    currency: function(value) {
-      if (value == null || value == '') return 'Rp 0'
-      let result = Number(value)
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result + ',00'
-    }
+  mounted() {
+    this.getAllRequestForms()
   },
   methods: {
     async getAllRequestForms() {
       try {
         this.items = await this.$api('request', 'index', null)
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     }
-  },
-  mounted() {
-    this.getAllRequestForms()
   }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

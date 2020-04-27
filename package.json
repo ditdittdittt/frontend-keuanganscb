@@ -9,7 +9,9 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "prettier": "prettier --write ./**/*.{js,vue}",
+    "eslint": "eslint --fix ./**/*.{js,vue}"
   },
   "lint-staged": {
     "*.{js,vue}": "npm run lint",

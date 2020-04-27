@@ -6,7 +6,9 @@
           <v-col cols="12">
             <v-card>
               <v-card-title class="text-capitalize primary white--text">
-                <span>{{ $translate('components.form.title.petty_cash') }}</span>
+                <span>{{
+                  $translate('components.form.title.petty_cash')
+                }}</span>
                 <v-spacer></v-spacer>
                 <v-menu bottom left>
                   <template v-slot:activator="{ on }">
@@ -15,11 +17,15 @@
                     </v-btn>
                   </template>
                   <v-list>
-                    <v-list-item>
-                      <v-list-item-title class="text-capitalize">{{ $translate('export.pdf') }}</v-list-item-title>
+                    <v-list-item @click.stop="$export('pdf', 'petty', input)">
+                      <v-list-item-title class="text-capitalize">{{
+                        $translate('export.pdf')
+                      }}</v-list-item-title>
                     </v-list-item>
-                    <v-list-item>
-                      <v-list-item-title class="text-capitalize">{{ $translate('export.excel') }}</v-list-item-title>
+                    <v-list-item @click.stop="$export('excel', 'petty', input)">
+                      <v-list-item-title class="text-capitalize">{{
+                        $translate('export.excel')
+                      }}</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -27,18 +33,29 @@
               <v-card-text>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <div
-                      class="caption primary--text text-capitalize"
-                    >{{ $translate('text.allocation')}}</div>
-                    <span>{{ input.allocation || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.allocation') }}
+                    </div>
+                    <span>{{
+                      input.allocation || $vuetify.lang.t('$vuetify.noDataText')
+                    }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">{{ $translate('text.amount')}}</div>
-                    <span>{{ input.amount || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.amount') }}
+                    </div>
+                    <span>{{
+                      input.amount || $vuetify.lang.t('$vuetify.noDataText')
+                    }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">{{ $translate('text.status')}}</div>
-                    <span>{{ input.status.status || $vuetify.lang.t('$vuetify.noDataText') }}</span>
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.status') }}
+                    </div>
+                    <span>{{
+                      input.status.status ||
+                        $vuetify.lang.t('$vuetify.noDataText')
+                    }}</span>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -47,38 +64,41 @@
           <v-col cols="12">
             <v-card>
               <v-card-title>
-                <div
-                  class="caption primary--text text-capitalize"
-                >{{ $translate('text.verification')}}</div>
+                <div class="caption primary--text text-capitalize">
+                  {{ $translate('text.verification') }}
+                </div>
               </v-card-title>
               <v-card-text>
                 <v-row justify="center">
-                  <v-col cols="12" md="6" v-if="checkVerifyPic()">
+                  <v-col v-if="checkVerifyPic()" cols="12" md="6">
                     <v-btn
                       large
                       elevation="8"
                       block
                       color="secondary"
                       @click.stop="openDialogSureVerify('pic')"
-                    >{{ $translate('text.pic')}}</v-btn>
+                      >{{ $translate('text.pic') }}</v-btn
+                    >
                   </v-col>
-                  <v-col cols="12" md="6" v-if="checkVerifyManagerOps()">
+                  <v-col v-if="checkVerifyManagerOps()" cols="12" md="6">
                     <v-btn
                       large
                       elevation="8"
                       block
                       color="secondary"
                       @click.stop="openDialogSureVerify('managerOps')"
-                    >{{ $translate('text.manager_ops')}}</v-btn>
+                      >{{ $translate('text.manager_ops') }}</v-btn
+                    >
                   </v-col>
-                  <v-col cols="12" md="6" v-if="checkVerifyCashier()">
+                  <v-col v-if="checkVerifyCashier()" cols="12" md="6">
                     <v-btn
                       large
                       elevation="8"
                       block
                       color="secondary"
                       @click.stop="openDialogSureVerify('cashier')"
-                    >{{ $translate('text.cashier')}}</v-btn>
+                      >{{ $translate('text.cashier') }}</v-btn
+                    >
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -87,11 +107,16 @@
           <v-col cols="12">
             <v-card>
               <v-card-title>
-                <div class="caption primary--text text-capitalize">{{ $translate('text.budget')}}</div>
+                <div class="caption primary--text text-capitalize">
+                  {{ $translate('text.budget') }}
+                </div>
               </v-card-title>
               <v-card-text>
                 <v-row justify="center">
-                  <v-data-table :items="input.details" :headers="headers"></v-data-table>
+                  <v-data-table
+                    :items="input.details"
+                    :headers="headers"
+                  ></v-data-table>
                 </v-row>
               </v-card-text>
             </v-card>
@@ -102,23 +127,27 @@
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-title class="text-capitalize primary white--text">{{ $translate('text.pic') }}</v-card-title>
+              <v-card-title class="text-capitalize primary white--text">{{
+                $translate('text.pic')
+              }}</v-card-title>
               <v-card-text>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <div class="caption primary--text text-capitalize">{{ $translate('text.name')}}</div>
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.name') }}
+                    </div>
                     <span>{{ input.user.name }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <div
-                      class="caption primary--text text-capitalize"
-                    >{{ $translate('text.division')}}</div>
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.division') }}
+                    </div>
                     <span>{{ input.user.division }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <div
-                      class="caption primary--text text-capitalize"
-                    >{{ $translate('text.email')}}</div>
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.email') }}
+                    </div>
                     <span>{{ input.user.email }}</span>
                   </v-col>
                 </v-row>
@@ -141,29 +170,41 @@
           x-large
           color="accent"
           @click.stop="openDialogSureDelete()"
-        >{{$translate('components.button.delete')}}</v-btn>
+          >{{ $translate('components.button.delete') }}</v-btn
+        >
       </v-col>
       <v-col>
-        <v-btn
-          block
-          dark
-          elevation="8"
-          x-large
-          color="secondary"
-        >{{$translate('components.button.done')}}</v-btn>
+        <v-btn block dark elevation="8" x-large color="secondary">{{
+          $translate('components.button.done')
+        }}</v-btn>
       </v-col>
     </v-row>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureDelete" persistent max-width="290">
           <v-card>
-            <v-card-title class="headline text-capitalize">{{ $translate('text.sure_delete_head') | capitalize}} </v-card-title>
-            <v-card-text class="text-capitalize">{{ $translate('text.sure_delete_body') | capitalize}} </v-card-text>
+            <v-card-title class="headline text-capitalize"
+              >{{ $translate('text.sure_delete_head') | capitalize }}
+            </v-card-title>
+            <v-card-text class="text-capitalize"
+              >{{ $translate('text.sure_delete_body') | capitalize }}
+            </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="closeDialogSureDelete()">{{ $translate('components.button.sure_button_no') }}</v-btn>
-              <v-btn color="green darken-1" text @click="deletePettyCash()">{{ $translate('components.button.sure_button_yes') }}</v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="closeDialogSureDelete()"
+                >{{ $translate('components.button.sure_button_no') }}</v-btn
+              >
+              <v-btn color="green darken-1" text @click="deletePettyCash()">{{
+                $translate('components.button.sure_button_yes')
+              }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -173,12 +214,23 @@
       <v-row justify="center">
         <v-dialog v-model="dialogSureVerify" persistent max-width="290">
           <v-card>
-            <v-card-title class="headline text-capitalize">{{ $translate('text.sure_verify_head') | capitalize}} </v-card-title>
-            <v-card-text class="text-capitalize">{{ $translate('text.sure_verify_body') | capitalize}} </v-card-text>
+            <v-card-title class="headline text-capitalize"
+              >{{ $translate('text.sure_verify_head') | capitalize }}
+            </v-card-title>
+            <v-card-text class="text-capitalize"
+              >{{ $translate('text.sure_verify_body') | capitalize }}
+            </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="closeDialogSureVerify()">{{ $translate('components.button.sure_button_no') }}</v-btn>
-              <v-btn color="green darken-1" text @click="verifyAs()">{{ $translate('components.button.sure_button_yes') }}</v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="closeDialogSureVerify()"
+                >{{ $translate('components.button.sure_button_no') }}</v-btn
+              >
+              <v-btn color="green darken-1" text @click="verifyAs()">{{
+                $translate('components.button.sure_button_yes')
+              }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -188,6 +240,24 @@
 </template>
 <script>
 export default {
+  filters: {
+    currency(value) {
+      if (value === null || value === '') return 'Rp 0'
+      const result = Number(value)
+        .toString()
+        .match(/\d{1,3}(?=(\d{3})*$)/g)
+        .join('.')
+      return 'Rp ' + result + ',00'
+    },
+    capitalize(value) {
+      if (!value) return ''
+      value = value
+        .toString()
+        .split(' ')
+        .map((element) => element.charAt(0).toUpperCase() + element.slice(1))
+      return value.join(' ')
+    }
+  },
   data() {
     return {
       alert: false,
@@ -210,31 +280,15 @@ export default {
         }
       ],
       input: {
-        details: [
-        ],
+        details: [],
         status: {},
         user: {}
       },
       verifyRole: ''
     }
   },
-  filters: {
-    currency: function(value) {
-      if (value == null || value == '') return 'Rp 0'
-      const result = Number(value)
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result + ',00'
-    },
-    capitalize: function(value) {
-      if (!value) return ''
-      value = value
-        .toString()
-        .split(' ')
-        .map(element => element.charAt(0).toUpperCase() + element.slice(1))
-      return value.join(' ')
-    }
+  mounted() {
+    this.getPettyCashForm()
   },
   methods: {
     openDialogSureVerify(role) {
@@ -244,32 +298,27 @@ export default {
     closeDialogSureVerify() {
       this.dialogSureVerify = false
     },
-    openDialogSureDelete () {
+    openDialogSureDelete() {
       this.dialogSureDelete = true
     },
-    closeDialogSureDelete () {
+    closeDialogSureDelete() {
       this.dialogSureDelete = false
     },
     async getPettyCashForm() {
       try {
         this.input = await this.$api('petty', 'show', this.$route.params.id)
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     },
     async deletePettyCash() {
       try {
         await this.$api('petty', 'delete', this.$route.params.id)
         this.closeDialogSureDelete()
         this.$router.replace('/all/petty')
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     },
     checkEditAble() {
       if (
-        (
-          this.input.is_confirmed_pic === 0 &&
+        (this.input.is_confirmed_pic === 0 &&
           this.input.is_confirmed_manager_ops === 0 &&
           this.input.is_confirmed_cashier === 0 &&
           this.input.user_id === this.$auth.user.id) ||
@@ -281,25 +330,19 @@ export default {
     async verifyAsPic() {
       try {
         await this.$api('petty', 'verifyaspic', this.input)
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     },
     async verifyAsManagerOps() {
       try {
         await this.$api('petty', 'verifyasmanagerops', this.input)
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     },
     async verifyAsCashier() {
       try {
         await this.$api('petty', 'verifyascashier', this.input)
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     },
-    async verifyAs () {
+    async verifyAs() {
       switch (this.verifyRole) {
         case 'pic':
           await this.verifyAsPic()
@@ -331,10 +374,7 @@ export default {
       if (this.input.is_confirmed_manager_ops === 0) {
         return true
       }
-    },
-  },
-  mounted() {
-    this.getPettyCashForm()
+    }
   }
 }
 </script>

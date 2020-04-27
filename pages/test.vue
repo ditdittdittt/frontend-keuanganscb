@@ -15,7 +15,7 @@ export default {
   methods: {
     async funct() {
       // this.test = await this.$api('request', 'index', null)
-      console.log(await this.$api('request', 'index', null))
+      // console.log(await this.$api('request', 'index', null))
     }
   }
 }

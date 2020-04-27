@@ -6,8 +6,12 @@
           <logo />
         </v-col>
         <v-col cols="12" align-self="center">
-          <p class="text-center font-weight-black display-2">{{ error.statusCode }}</p>
-          <div class="text-center font-weight-light body-1">{{ error.message }}</div>
+          <p class="text-center font-weight-black display-2">
+            {{ error.statusCode }}
+          </p>
+          <div class="text-center font-weight-light body-1">
+            {{ error.message }}
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -15,36 +19,34 @@
 </template>
 
 <script>
-  import Logo from '~/components/Logo.vue'
+import Logo from '~/components/Logo.vue'
 
-  export default {
-    layout: 'empty',
-    components: {
-      Logo
-    },
-    props: {
-      error: {
-        type: Object,
-        default: null
-      }
-    },
-    data() {
-      return {}
-    },
-    head() {
-      const title = this.error.statusCode
-      return {
-        title
-      }
-    },
-    mounted() {
-      console.log(this.$props.error)
+export default {
+  layout: 'empty',
+  components: {
+    Logo
+  },
+  props: {
+    error: {
+      type: Object,
+      default: null
+    }
+  },
+  data() {
+    return {}
+  },
+  mounted() {},
+  head() {
+    const title = this.error.statusCode
+    return {
+      title
     }
   }
+}
 </script>
 
 <style scoped>
-  h1 {
-    font-size: 20px;
-  }
+h1 {
+  font-size: 20px;
+}
 </style>

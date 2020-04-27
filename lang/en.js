@@ -114,7 +114,7 @@ export default {
     sure_delete_head: 'are you sure to delete this form?',
     sure_delete_body: 'this form cannot be restore',
     sure_verify_head: 'are you sure to verify this form?',
-    sure_verify_body: 'this form cannot be modify after you verify',
+    sure_verify_body: 'this form cannot be modify after you verify'
   },
   helper: {
     messages: {

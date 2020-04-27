@@ -2,29 +2,24 @@
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
       <v-card-title class="text-uppercase">
-        {{
-        $translate('components.form.title.petty_cash')
-        }}
+        {{ $translate('components.form.title.petty_cash') }}
       </v-card-title>
       <v-card-subtitle class="overline">
-        {{
-        $translate('components.form.subtitle.petty_cash')
-        }}
+        {{ $translate('components.form.subtitle.petty_cash') }}
       </v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
-        <v-form
-        v-model="formPettyCash"
-        ref="createFormPettyCash"
-        >
+        <v-form ref="createFormPettyCash" v-model="formPettyCash">
           <v-row>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.allocation') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.allocation') }}
+              </div>
               <v-text-field
-                prepend-inner-icon="mdi-basket"
                 v-model="input.allocation"
+                prepend-inner-icon="mdi-basket"
                 clearable
                 counter
                 solo
@@ -33,7 +28,9 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.date') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.date') }}
+              </div>
               <v-dialog
                 ref="date"
                 v-model="modal.date"
@@ -43,8 +40,8 @@
               >
                 <template v-slot:activator="{ on }">
                   <v-text-field
-                    prepend-inner-icon="mdi-calendar-clock"
                     v-model="input.date"
+                    prepend-inner-icon="mdi-calendar-clock"
                     :rules="[rules.required]"
                     :label="$translate('text.date', 'capitalize')"
                     readonly
@@ -55,25 +52,28 @@
                 </template>
                 <v-date-picker v-model="input.date" scrollable :min="today">
                   <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="modal.date = false">{{
+                    $translate('components.button.cancel')
+                  }}</v-btn>
                   <v-btn
                     text
                     color="primary"
-                    @click="modal.date = false"
-                  >{{ $translate('components.button.cancel') }}</v-btn>
-                  <v-btn text color="primary" @click="$refs.date.save(input.date)">OK</v-btn>
+                    @click="$refs.date.save(input.date)"
+                    >OK</v-btn
+                  >
                 </v-date-picker>
               </v-dialog>
             </v-col>
           </v-row>
-          <template v-for="(item, i) in input.budgets">
+          <template v-for="(budget, i) in input.budgets">
             <v-row :key="'budget-' + i">
               <v-col cols="12" md="4" sm="6">
-                <div
-                  class="caption primary--text text-capitalize"
-                >[{{ i + 1 }}] {{ $translate('text.budget_code') }}</div>
+                <div class="caption primary--text text-capitalize">
+                  [{{ i + 1 }}] {{ $translate('text.budget_code') }}
+                </div>
                 <v-combobox
-                  prepend-inner-icon="mdi-newspaper-plus"
                   v-model="input.budgets[i].code"
+                  prepend-inner-icon="mdi-newspaper-plus"
                   :items="data.budgetList"
                   solo
                   :rules="[rules.required]"
@@ -82,19 +82,23 @@
                   auto-select-first
                   cache-items
                 >
-                  <template v-slot:item="{item}">{{item.code + ' - ' + item.name}}</template>
-                  <template v-slot:selection="{item}">{{item.code + ' - ' + item.name}}</template>
+                  <template v-slot:item="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
+                  <template v-slot:selection="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
                 </v-combobox>
               </v-col>
               <v-col cols="12" md="4" sm="6">
-                <div
-                  class="caption primary--text text-capitalize"
-                >[{{ i + 1 }}] {{ $translate('text.budget_nominal') }}</div>
+                <div class="caption primary--text text-capitalize">
+                  [{{ i + 1 }}] {{ $translate('text.budget_nominal') }}
+                </div>
                 <v-text-field
+                  v-model="input.budgets[i].nominal"
                   solo
                   type="number"
                   prepend-inner-icon="mdi-cash"
-                  v-model="input.budgets[i].nominal"
                   :rules="[rules.required]"
                   :label="$translate('text.budget_nominal', 'capitalize')"
                   :hint="input.budgets[i].nominal | currency"
@@ -112,27 +116,31 @@
               <v-btn
                 small
                 elevation="8"
-                @click.stop="deleteBudget()"
                 dark
                 color="error"
-              >{{ $translate('components.button.delete') + ' item' }}</v-btn>
+                @click.stop="deleteBudget()"
+                >{{ $translate('components.button.delete') + ' item' }}</v-btn
+              >
             </v-col>
             <v-spacer></v-spacer>
             <v-col>
               <v-btn
                 small
                 elevation="8"
-                @click.stop="addBuget()"
                 dark
                 color="secondary"
-              >{{ $translate('components.button.add') + ' item' }}</v-btn>
+                @click.stop="addBuget()"
+                >{{ $translate('components.button.add') + ' item' }}</v-btn
+              >
             </v-col>
             <v-spacer></v-spacer>
           </v-row>
 
           <v-row>
             <v-col cols="12">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.note') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.note') }}
+              </div>
               <v-textarea
                 v-model="input.note"
                 solo
@@ -146,14 +154,44 @@
         </v-form>
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn block x-large dark color="secondary" elevation="8" @click.stop="storePetty">Submit</v-btn>
+        <v-btn
+          block
+          x-large
+          dark
+          color="secondary"
+          elevation="8"
+          @click.stop="storePetty"
+          >Submit</v-btn
+        >
       </v-card-actions>
     </v-card>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
   </v-container>
 </template>
 <script>
 export default {
+  filters: {
+    currency(value) {
+      if (value === null || value === '') return 'Rp 0'
+      const result = value
+        .toString()
+        .match(/\d{1,3}(?=(\d{3})*$)/g)
+        .join('.')
+      return 'Rp ' + result + ',00'
+    },
+    capitalize(value) {
+      if (!value) return ''
+      value = value
+        .toString()
+        .split(' ')
+        .map((element) => element.charAt(0).toUpperCase() + element.slice(1))
+      return value.join(' ')
+    }
+  },
   data() {
     return {
       alert: false,
@@ -179,28 +217,14 @@ export default {
         date: false
       },
       rules: {
-        required: value =>
+        required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
       }
     }
   },
-  filters: {
-    currency: function(value) {
-      if (value == null || value == '') return 'Rp 0'
-      let result = value
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result + ',00'
-    },
-    capitalize: function(value) {
-      if (!value) return ''
-      value = value
-        .toString()
-        .split(' ')
-        .map(element => element.charAt(0).toUpperCase() + element.slice(1))
-      return value.join(' ')
-    }
+  mounted() {
+    this.initValue()
+    this.getBudgetList()
   },
   methods: {
     addBuget() {
@@ -218,21 +242,13 @@ export default {
       try {
         await this.$api('petty', 'store', this.input)
         this.$refs.createFormPettyCash.reset()
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     },
     async getBudgetList() {
       try {
         this.data.budgetList = await this.$api('table', 'budgetlist', null)
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     }
-  },
-  mounted() {
-    this.initValue()
-    this.getBudgetList()
   }
 }
 </script>

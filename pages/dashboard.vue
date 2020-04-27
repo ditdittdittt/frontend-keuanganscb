@@ -2,15 +2,17 @@
   <v-container>
     <v-row>
       <template v-for="(item, i) in statistics.summary">
-        <v-col cols="12" sm="6" md="3" :key="item.name+i">
+        <v-col :key="item.name + i" cols="12" sm="6" md="3">
           <v-card color="accent" dark class="pa-5">
             <v-list-item two-line>
               <v-list-item-content>
-                <v-list-item-title class="headline font-weight-black">{{ item.value }}</v-list-item-title>
+                <v-list-item-title class="headline font-weight-black">{{
+                  item.value
+                }}</v-list-item-title>
                 <v-divider></v-divider>
-                <v-list-item-subtitle
-                  class="body-2 text-capitalize"
-                >{{ $translate('text.'+item.name) }}</v-list-item-subtitle>
+                <v-list-item-subtitle class="body-2 text-capitalize">{{
+                  $translate('text.' + item.name)
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <v-icon large>{{ item.icon }}</v-icon>
@@ -24,9 +26,13 @@
       <v-col>
         <v-card>
           <v-card-title class="title">
-            <span class="text-uppercase primary--text font-weight-black">Divisi Keuangan</span>
+            <span class="text-uppercase primary--text font-weight-black"
+              >Divisi Keuangan</span
+            >
             <v-divider vertical class="mx-2"></v-divider>
-            <span class="text-uppercase font-weight-black">{{ $translate('text.user') }}</span>
+            <span class="text-uppercase font-weight-black">{{
+              $translate('text.user')
+            }}</span>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -39,13 +45,14 @@
           </v-card-title>
           <v-card-text>
             <v-data-table :items="items" :headers="headers" :search="search">
-              <template v-slot:item.id="{item}">
+              <template v-slot:item.id="{ item }">
                 <v-btn
                   color="secondary"
                   text
                   small
                   @click.stop="popupUser(item)"
-                >{{ $translate('text.view') }}</v-btn>
+                  >{{ $translate('text.view') }}</v-btn
+                >
               </template>
             </v-data-table>
           </v-card-text>
@@ -54,52 +61,68 @@
     </v-row>
     <v-dialog v-model="modal.user" width="600px" persistent>
       <v-card>
-        <v-card-title class="text-capitalize headline">{{ $translate('text.user') }}</v-card-title>
+        <v-card-title class="text-capitalize headline">{{
+          $translate('text.user')
+        }}</v-card-title>
         <v-card-text>
           <v-simple-table>
             <template v-slot:default>
               <tbody>
                 <tr>
                   <td class="overline">
-                    <v-chip label small color="primary" outlined>{{ $translate('text.name') }}</v-chip>
+                    <v-chip label small color="primary" outlined>{{
+                      $translate('text.name')
+                    }}</v-chip>
                   </td>
-                  <td class="text-capitalize">{{user.name}}</td>
+                  <td class="text-capitalize">{{ user.name }}</td>
                 </tr>
                 <tr>
                   <td class="overline">
-                    <v-chip label small color="primary" outlined>{{ $translate('text.username') }}</v-chip>
+                    <v-chip label small color="primary" outlined>{{
+                      $translate('text.username')
+                    }}</v-chip>
                   </td>
-                  <td>{{user.username}}</td>
+                  <td>{{ user.username }}</td>
                 </tr>
                 <tr>
                   <td class="overline">
-                    <v-chip label small color="primary" outlined>{{ $translate('text.email') }}</v-chip>
+                    <v-chip label small color="primary" outlined>{{
+                      $translate('text.email')
+                    }}</v-chip>
                   </td>
-                  <td>{{user.email}}</td>
+                  <td>{{ user.email }}</td>
                 </tr>
                 <tr>
                   <td class="overline">
-                    <v-chip label small color="primary" outlined>{{ $translate('text.division') }}</v-chip>
+                    <v-chip label small color="primary" outlined>{{
+                      $translate('text.division')
+                    }}</v-chip>
                   </td>
-                  <td class="text-capitalize">{{user.division}}</td>
+                  <td class="text-capitalize">{{ user.division }}</td>
                 </tr>
                 <tr>
                   <td class="overline">
-                    <v-chip label small color="primary" outlined>{{ $translate('text.position') }}</v-chip>
+                    <v-chip label small color="primary" outlined>{{
+                      $translate('text.position')
+                    }}</v-chip>
                   </td>
-                  <td class="text-capitalize">{{user.position}}</td>
+                  <td class="text-capitalize">{{ user.position }}</td>
                 </tr>
                 <tr>
                   <td class="overline">
-                    <v-chip label small color="primary" outlined>{{ $translate('text.nik') }}</v-chip>
+                    <v-chip label small color="primary" outlined>{{
+                      $translate('text.nik')
+                    }}</v-chip>
                   </td>
-                  <td>{{user.nik}}</td>
+                  <td>{{ user.nik }}</td>
                 </tr>
                 <tr>
                   <td class="overline">
-                    <v-chip label small color="primary" outlined>{{ $translate('text.address') }}</v-chip>
+                    <v-chip label small color="primary" outlined>{{
+                      $translate('text.address')
+                    }}</v-chip>
                   </td>
-                  <td>{{user.address}}</td>
+                  <td>{{ user.address }}</td>
                 </tr>
               </tbody>
             </template>
@@ -111,11 +134,16 @@
             color="secondary"
             block
             @click.stop="modal.user = false"
-          >{{ $translate('components.button.close') }}</v-btn>
+            >{{ $translate('components.button.close') }}</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
   </v-container>
 </template>
 
@@ -188,6 +216,9 @@ export default {
       user: {}
     }
   },
+  mounted() {
+    this.initValue()
+  },
   methods: {
     popupUser(user) {
       this.user = user
@@ -227,9 +258,6 @@ export default {
         }
       ]
     }
-  },
-  mounted() {
-    this.initValue()
   }
 }
 </script>

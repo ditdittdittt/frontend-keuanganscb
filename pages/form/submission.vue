@@ -1,38 +1,49 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">{{ $translate('components.form.title.submission') }}</v-card-title>
-      <v-card-subtitle class="overline">{{ $translate('components.form.subtitle.submission') }}</v-card-subtitle>
+      <v-card-title class="text-uppercase">{{
+        $translate('components.form.title.submission')
+      }}</v-card-title>
+      <v-card-subtitle class="overline">{{
+        $translate('components.form.subtitle.submission')
+      }}</v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
-        <v-form
-          v-model="formSubmission"
-          ref="createFormSubmission"
-        >
+        <v-form ref="createFormSubmission" v-model="formSubmission">
           <v-row>
             <v-col cols="12" md="3">
-              <div
-                class="caption primary--text text-capitalize"
-              >{{ $translate('text.form') + ' ' + $translate('text.request') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.form') + ' ' + $translate('text.request') }}
+              </div>
               <v-combobox
-                prepend-inner-icon="mdi-newspaper-plus"
                 v-model="input.request"
+                prepend-inner-icon="mdi-newspaper-plus"
                 :items="form.request"
                 solo
                 :rules="[rules.required]"
-                :label="$translate('text.form', 'capitalize') + ' ' + $translate('text.request', 'capitalize')"
+                :label="
+                  $translate('text.form', 'capitalize') +
+                    ' ' +
+                    $translate('text.request', 'capitalize')
+                "
                 clearable
                 auto-select-first
                 cache-items
               >
-                <template v-slot:item="{item}">{{item.id + ' - ' + item.allocation}}</template>
-                <template v-slot:selection="{item}">{{item.id + ' - ' + item.allocation}}</template>
+                <template v-slot:item="{ item }">{{
+                  item.id + ' - ' + item.allocation
+                }}</template>
+                <template v-slot:selection="{ item }">{{
+                  item.id + ' - ' + item.allocation
+                }}</template>
               </v-combobox>
             </v-col>
             <v-col cols="12" md="3">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.date') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.date') }}
+              </div>
               <v-dialog
                 ref="date"
                 v-model="modal.date"
@@ -42,8 +53,8 @@
               >
                 <template v-slot:activator="{ on }">
                   <v-text-field
-                    prepend-inner-icon="mdi-calendar-clock"
                     v-model="input.date"
+                    prepend-inner-icon="mdi-calendar-clock"
                     :rules="[rules.required]"
                     :label="$translate('text.date', 'capitalize')"
                     readonly
@@ -54,20 +65,25 @@
                 </template>
                 <v-date-picker v-model="input.date" scrollable :min="today">
                   <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="modal.date = false">{{
+                    $translate('components.button.cancel')
+                  }}</v-btn>
                   <v-btn
                     text
                     color="primary"
-                    @click="modal.date = false"
-                  >{{ $translate('components.button.cancel') }}</v-btn>
-                  <v-btn text color="primary" @click="$refs.date.save(input.date)">OK</v-btn>
+                    @click="$refs.date.save(input.date)"
+                    >OK</v-btn
+                  >
                 </v-date-picker>
               </v-dialog>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.allocation') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.allocation') }}
+              </div>
               <v-text-field
-                prepend-inner-icon="mdi-basket"
                 v-model="input.allocation"
+                prepend-inner-icon="mdi-basket"
                 solo
                 :rules="[rules.required]"
                 :label="$translate('text.allocation', 'capitalize')"
@@ -78,10 +94,12 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.use') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.use') }}
+              </div>
               <v-text-field
-                prepend-inner-icon="mdi-cash"
                 v-model="input.used"
+                prepend-inner-icon="mdi-cash"
                 prefix="Rp"
                 solo
                 :rules="[rules.required]"
@@ -92,22 +110,34 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div
-                class="caption primary--text text-capitalize"
-              >{{ $translate('text.amount_in_word') + ' ' + $translate('text.use', 'capitalize') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{
+                  $translate('text.amount_in_word') +
+                    ' ' +
+                    $translate('text.use', 'capitalize')
+                }}
+              </div>
               <v-text-field
                 :value="$terbilang(input.used) | capitalize"
-                :label="$translate('text.amount_in_word', 'capitalize') + ' ' + $translate('text.use')"
-                :messages="$translate('helper.messages.amount_in_word', 'capitalize')"
+                :label="
+                  $translate('text.amount_in_word', 'capitalize') +
+                    ' ' +
+                    $translate('text.use')
+                "
+                :messages="
+                  $translate('helper.messages.amount_in_word', 'capitalize')
+                "
                 readonly
                 solo
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.balance') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.balance') }}
+              </div>
               <v-text-field
-                prepend-inner-icon="mdi-cash-multiple"
                 v-model="input.balance"
+                prepend-inner-icon="mdi-cash-multiple"
                 prefix="Rp"
                 solo
                 :rules="[rules.required]"
@@ -118,13 +148,23 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div
-                class="caption primary--text text-capitalize"
-              >{{ $translate('text.amount_in_word') + ' ' + $translate('text.balance', 'capitalize') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{
+                  $translate('text.amount_in_word') +
+                    ' ' +
+                    $translate('text.balance', 'capitalize')
+                }}
+              </div>
               <v-text-field
                 :value="$terbilang(input.balance) | capitalize"
-                :label="$translate('text.amount_in_word', 'capitalize') + ' ' + $translate('text.balance')"
-                :messages="$translate('helper.messages.amount_in_word', 'capitalize')"
+                :label="
+                  $translate('text.amount_in_word', 'capitalize') +
+                    ' ' +
+                    $translate('text.balance')
+                "
+                :messages="
+                  $translate('helper.messages.amount_in_word', 'capitalize')
+                "
                 readonly
                 solo
               ></v-text-field>
@@ -132,7 +172,9 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.note') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.note') }}
+              </div>
               <v-textarea
                 v-model="input.notes"
                 counter
@@ -152,14 +194,37 @@
           color="secondary"
           elevation="8"
           @click.stop="storeSubmission()"
-        >{{ $translate('components.button.submit') }}</v-btn>
+          >{{ $translate('components.button.submit') }}</v-btn
+        >
       </v-card-actions>
     </v-card>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
   </v-container>
 </template>
 <script>
 export default {
+  filters: {
+    currency(value) {
+      if (value === null || value === '') return 'Rp 0'
+      const result = value
+        .toString()
+        .match(/\d{1,3}(?=(\d{3})*$)/g)
+        .join('.')
+      return 'Rp ' + result + ',00'
+    },
+    capitalize(value) {
+      if (!value) return ''
+      value = value
+        .toString()
+        .split(' ')
+        .map((element) => element.charAt(0).toUpperCase() + element.slice(1))
+      return value.join(' ')
+    }
+  },
   data() {
     return {
       alert: false,
@@ -182,28 +247,14 @@ export default {
         request: []
       },
       rules: {
-        required: value =>
+        required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
       }
     }
   },
-  filters: {
-    currency: function(value) {
-      if (value == null || value == '') return 'Rp 0'
-      let result = value
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result + ',00'
-    },
-    capitalize: function(value) {
-      if (!value) return ''
-      value = value
-        .toString()
-        .split(' ')
-        .map(element => element.charAt(0).toUpperCase() + element.slice(1))
-      return value.join(' ')
-    }
+  mounted() {
+    this.initValue()
+    this.getAllRequestForms()
   },
   methods: {
     initValue() {
@@ -211,26 +262,16 @@ export default {
     },
     async storeSubmission() {
       try {
-        console.log(this.input)
         await this.$api('submission', 'store', this.input)
         this.$refs.createFormSubmission.reset()
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     },
     async getAllRequestForms() {
       try {
         this.form.request = await this.$api('request', 'index', null)
-      } catch (e) {
-        console.error(e)
-      }
+      } catch (e) {}
     }
-  },
-  mounted() {
-    this.initValue()
-    this.getAllRequestForms()
   }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

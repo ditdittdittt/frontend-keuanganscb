@@ -210,17 +210,21 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
           console.log(error)
+          return error
         })
     },
     async show(data) {
       console.log('[Request] Show a request with specified id')
       let result = null
-      result = await app.$axios.$get('/form/request/' + data).then((response) => {
-        return response.form_request
-      })
+      result = await app.$axios
+        .$get('/form/request/' + data)
+        .then((response) => {
+          return response.form_request
+        })
       return result
     },
     update() {
@@ -235,9 +239,11 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
           console.log(error)
+          return error
         })
     },
     async verifyAsPic(data) {
@@ -249,11 +255,13 @@ export default ({ app }, inject) => {
           method: 'post',
           url: '/form/request/' + data.id,
           data: body
-      })
+        })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     },
     async verifyAsVerificator(data) {
@@ -268,8 +276,10 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     },
     async verifyAsCashier(data) {
@@ -284,8 +294,10 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     },
     async verifyAsHeadDept(data) {
@@ -300,8 +312,10 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     }
   }
@@ -331,17 +345,21 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
           console.log(error)
+          return error
         })
     },
     async show(data) {
       console.log('[Submission] Show a submission with specified id')
       let result = null
-      result = await app.$axios.$get('/form/submission/' + data).then((response) => {
-        return response.form_submission
-      })
+      result = await app.$axios
+        .$get('/form/submission/' + data)
+        .then((response) => {
+          return response.form_submission
+        })
       return result
     },
     update() {
@@ -356,9 +374,11 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
           console.log(error)
+          return error
         })
     },
     async verifyAsPic(data) {
@@ -373,8 +393,10 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     },
     async verifyAsVerificator(data) {
@@ -389,8 +411,10 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     },
     async verifyAsHeadOffice(data) {
@@ -405,8 +429,10 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     },
     async verifyAsHeadDept(data) {
@@ -421,8 +447,10 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     }
   }
@@ -441,9 +469,12 @@ export default ({ app }, inject) => {
       const body = new FormData()
       body.append('date', data.date)
       body.append('allocation', data.allocation)
-      for (let i = 0; i < data.budgets.length; i++){
-        body.append("details["+i+"][budget_code_id]",data.budgets[i].code.id)
-        body.append("details["+i+"][nominal]",data.budgets[i].nominal)
+      for (let i = 0; i < data.budgets.length; i++) {
+        body.append(
+          'details[' + i + '][budget_code_id]',
+          data.budgets[i].code.id
+        )
+        body.append('details[' + i + '][nominal]', data.budgets[i].nominal)
         amount += Number(data.budgets[i].nominal)
       }
       body.append('amount', amount)
@@ -455,17 +486,21 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
           console.log(error)
+          return error
         })
     },
     async show(data) {
       console.log('[Petty] Show a petty cash with specified id')
       let result = null
-      result = await app.$axios.$get('/form/petty-cash/' + data).then((response) => {
-        return response.form_petty_cash
-      })
+      result = await app.$axios
+        .$get('/form/petty-cash/' + data)
+        .then((response) => {
+          return response.form_petty_cash
+        })
       return result
     },
     update() {
@@ -480,9 +515,11 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
           console.log(error)
+          return error
         })
     },
     async verifyAsPic(data) {
@@ -497,8 +534,10 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     },
     async verifyAsCashier(data) {
@@ -513,8 +552,10 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
     },
     async verifyAsManagerOps(data) {
@@ -529,10 +570,12 @@ export default ({ app }, inject) => {
         })
         .then((response) => {
           console.log(response)
+          return response
         })
-        .catch(function(error) {
+        .catch((error) => {
+          return error
         })
-    },
+    }
   }
 
   const Table = {

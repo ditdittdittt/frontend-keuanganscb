@@ -10,9 +10,9 @@ Vue.component('snackbar-alert', SnackbarAlert)
 // ==============================================================
 
 // ===================== Helper Functions =====================
-const copyValue = object => {
+const copyValue = (object) => {
   const result = {}
-  for (let element in object) {
+  for (const element in object) {
     // Filter sesuai type
     switch (typeof object[element]) {
       case 'object':
@@ -34,10 +34,16 @@ const copyValue = object => {
 const exportPDF = (form, data) => {
   switch (form) {
     case 'request':
+      if (data.id === null)
+        window.open('http://54.169.75.0/api/v1/form/request/export/pdf')
       break
     case 'submission':
+      if (data.id === null)
+        window.open('http://54.169.75.0/api/v1/form/submission/export/pdf')
       break
     case 'petty':
+      if (data.id === null)
+        window.open('http://54.169.75.0/api/v1/form/petty/export/pdf')
       break
   }
 }
@@ -45,10 +51,16 @@ const exportPDF = (form, data) => {
 const exportExcel = (form, data) => {
   switch (form) {
     case 'request':
+      if (data.id === null)
+        window.open('http://54.169.75.0/api/v1/form/request/export/excel')
       break
     case 'submission':
+      if (data.id === null)
+        window.open('http://54.169.75.0/api/v1/form/submission/export/excel')
       break
     case 'petty':
+      if (data.id === null)
+        window.open('http://54.169.75.0/api/v1/form/petty/export/excel')
       break
   }
 }
@@ -63,7 +75,7 @@ const exportExcel = (form, data) => {
 //  dengan nilai yang di copy. Karena biasanya jika hanya
 //  melakukan `something = other` variabel something akan
 //  berbentuk reference (bukan variabel baru)
-Vue.prototype.$copy = object => {
+Vue.prototype.$copy = (object) => {
   return copyValue(object)
 }
 

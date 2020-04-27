@@ -10,6 +10,6 @@ export const mutations = {
 
 export const actions = {
   async change({ commit }, value) {
-    commit('CHANGE_LANGUAGE', value)
+    await commit('CHANGE_LANGUAGE', value)
   }
 }

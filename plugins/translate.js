@@ -13,7 +13,7 @@ export default ({ app }, inject) => {
   inject('translate', (choose, mode) => {
     const selected = choose.split('.')
     let result = app.i18n.messages[app.context.$vuetify.lang.current]
-    for (let select of selected) {
+    for (const select of selected) {
       result = result[select]
     }
 
