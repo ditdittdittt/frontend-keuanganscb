@@ -189,14 +189,15 @@
           @click.stop="openDialogSureDelete()"
         >{{$translate('components.button.delete')}}</v-btn>
       </v-col>
-      <v-col>
+      <v-col v-if="checkStatus()">
         <v-btn
           block
           dark
           elevation="8"
           x-large
           color="secondary"
-        >{{$translate('components.button.done')}}</v-btn>
+          @click.stop="openDialogSureVerify('alreadyPaid')"
+        >{{$translate('components.button.already_paid') | capitalize }}</v-btn>
       </v-col>
     </v-row>
     <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
@@ -338,6 +339,13 @@ export default {
         console.error(e)
       }
     },
+    async verifyAlreadyPaid() {
+      try {
+        await this.$api('request', 'verifyalreadypaid', this.input)
+      } catch (e) {
+        console.error(e)
+      }
+    },
     async verifyAs () {
       switch (this.verifyRole) {
         case 'pic':
@@ -351,6 +359,9 @@ export default {
           break
         case 'headDept':
           await this.verifyAsHeadDept()
+          break
+        case 'alreadyPaid':
+          await this.verifyAlreadyPaid()
           break
         default:
           this.verifyRole = ''
@@ -379,6 +390,11 @@ export default {
         return true
       }
     },
+    checkStatus(){
+     if (this.input.status_id === 2) {
+       return true
+     }
+    }
   },
   mounted() {
     this.getRequestForm()

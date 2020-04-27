@@ -26,7 +26,8 @@
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
     "nuxt": "^2.0.0",
-    "nuxt-i18n": "^6.8.1"
+    "nuxt-i18n": "^6.8.1",
+    "vue-signature-pad": "^2.0.0"
   },
   "devDependencies": {
     "@mdi/font": "^5.0.45",

@@ -67,6 +67,9 @@ export default ({ app }, inject) => {
           case 'verifyasverificator':
             Request.verifyAsVerificator(data)
             break
+          case 'verifyalreadypaid':
+            Request.verifyAlreadyPaid(data)
+            break
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -292,6 +295,22 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as Head Dept')
       const body = new FormData()
       body.append('is_confirmed_head_dept', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
+    async verifyAlreadyPaid(data) {
+      console.log('[Request] Verify already paid')
+      const body = new FormData()
+      body.append('status_id', 3 )
       await app
         .$axios({
           method: 'post',
