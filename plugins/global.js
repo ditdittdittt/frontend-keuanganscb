@@ -93,7 +93,6 @@ Vue.prototype.$export = (type, form, data) => {
       exportExcel(form, data)
       break
     default:
-      console.error(`Unknown type of : ${type} in ~plugins/global.js`)
       break
   }
 }
