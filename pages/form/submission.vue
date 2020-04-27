@@ -213,7 +213,7 @@ export default {
       try {
         console.log(this.input)
         await this.$api('submission', 'store', this.input)
-        // this.$refs.createFormSubmission.reset()
+        this.$refs.createFormSubmission.reset()
       } catch (e) {
         console.error(e)
       }

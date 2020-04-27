@@ -75,7 +75,7 @@ export default ({ app }, inject) => {
             Submission.update()
             break
           case 'delete':
-            Submission.delete()
+            Submission.delete(data)
             break
           default:
             console.error(
@@ -250,8 +250,19 @@ export default ({ app }, inject) => {
     update() {
       console.log('[Submission] Update a submission with specified id')
     },
-    delete() {
+    async delete(data) {
       console.log('[Submission] Delete a submission with specified id')
+      await app
+        .$axios({
+          method: 'delete',
+          url: '/form/submission/' + data
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
     }
   }
   const Petty = {
