@@ -123,6 +123,15 @@ export default ({ app }, inject) => {
           case 'delete':
             Petty.delete(data)
             break
+          case 'verifyaspic':
+            Petty.verifyAsPic(data)
+            break
+          case 'verifyasmanagerops':
+            Petty.verifyAsManagerOps(data)
+            break
+          case 'verifyascashier':
+            Petty.verifyAsCashier(data)
+            break
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -475,7 +484,55 @@ export default ({ app }, inject) => {
         .catch(function(error) {
           console.log(error)
         })
-    }
+    },
+    async verifyAsPic(data) {
+      console.log('[Petty] Verify as PIC')
+      const body = new FormData()
+      body.append('is_confirmed_pic', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
+    async verifyAsCashier(data) {
+      console.log('[Petty] Verify as Cashier')
+      const body = new FormData()
+      body.append('is_confirmed_cashier', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
+    async verifyAsManagerOps(data) {
+      console.log('[Petty] Verify as Manager Ops')
+      const body = new FormData()
+      body.append('is_confirmed_manager_ops', 1)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch(function(error) {
+        })
+    },
   }
 
   const Table = {

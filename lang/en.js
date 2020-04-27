@@ -97,6 +97,7 @@ export default {
     confirmation: 'confirmation',
     head_dept: 'head dept',
     head_office: 'head office',
+    manager_ops: 'manager ops',
     cashier: 'cashier',
     verificator: 'verificator',
     view: 'view',
