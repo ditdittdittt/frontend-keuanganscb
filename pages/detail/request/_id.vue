@@ -235,7 +235,7 @@
           >{{ $translate('components.button.delete') }}</v-btn
         >
       </v-col>
-      <v-col>
+      <v-col v-if="checkEditAble()">
         <v-btn
           block
           dark
@@ -349,15 +349,13 @@ export default {
       dialogSureVerify: false,
       messages: '',
       input: {
+        amount : '',
         user: {},
         status: {},
         budget_code: {}
       },
       verifyRole: ''
     }
-  },
-  mounted() {
-    this.getRequestForm()
   },
   methods: {
     openDialogSureVerify(role) {
@@ -472,7 +470,10 @@ export default {
         return true
       }
     }
-  }
+  },
+  mounted() {
+    this.getRequestForm()
+  },
 }
 </script>
 <style scoped></style>

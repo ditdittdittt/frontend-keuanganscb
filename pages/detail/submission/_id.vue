@@ -198,7 +198,7 @@
           >{{ $translate('components.button.delete') }}</v-btn
         >
       </v-col>
-      <v-col>
+      <v-col v-if="checkEditAble()">
         <v-btn
           block
           dark
@@ -305,7 +305,9 @@ export default {
       dialogSureVerify: false,
       input: {
         form_request: {},
-        user: {}
+        user: {},
+        used: '',
+        balance: ''
       },
       verifyRole: ''
     }
