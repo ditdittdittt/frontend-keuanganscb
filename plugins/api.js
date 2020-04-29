@@ -50,7 +50,7 @@ export default ({ app }, inject) => {
           case 'show':
             return Request.show(data)
           case 'update':
-            Request.update()
+            Request.update(data)
             break
           case 'delete':
             Request.delete(data)
@@ -87,7 +87,7 @@ export default ({ app }, inject) => {
           case 'show':
             return Submission.show(data)
           case 'update':
-            Submission.update()
+            Submission.update(data)
             break
           case 'delete':
             Submission.delete(data)
@@ -121,7 +121,7 @@ export default ({ app }, inject) => {
           case 'show':
             return Petty.show(data)
           case 'update':
-            Petty.update()
+            Petty.update(data)
             break
           case 'delete':
             Petty.delete(data)
@@ -163,6 +163,9 @@ export default ({ app }, inject) => {
     }
   }
 
+  /**
+   * User Interface
+   */
   const User = {
     register() {
       console.log('[User] Registering a new user.')
@@ -184,6 +187,10 @@ export default ({ app }, inject) => {
       console.log('[User] Update current user SCB app.')
     }
   }
+
+  /**
+   * Request Interface
+   */
   const Request = {
     async index() {
       console.log('[Request] Show all request forms')
@@ -234,8 +241,36 @@ export default ({ app }, inject) => {
         })
       return result
     },
-    update() {
+    async update(data) {
       console.log('[Request] Update a request with specified id')
+      const body = new FormData()
+      body.append('allocation', data.allocation)
+      body.append('date', data.date)
+      body.append('method', data.method)
+      body.append('amount', data.amount)
+      body.append('attachment', data.attachment)
+      body.append('notes', data.notes)
+      if (data.method === 'transfer') {
+        body.append('bank_name', data.bank_name)
+        body.append('bank_code', data.bank_code)
+        body.append('account_number', data.account_number)
+        body.append('account_owner', data.account_owner)
+      }
+      body.append('budget_code_id', data.budget_code.id)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          console.log(error)
+          return error
+        })
     },
     async delete(data) {
       console.log('[Request] Delete a request with specified id')
@@ -344,6 +379,10 @@ export default ({ app }, inject) => {
         })
     }
   }
+
+  /**
+   * Submission Interface
+   */
   const Submission = {
     async index() {
       console.log('[Submission] Show all submission forms')
@@ -387,8 +426,29 @@ export default ({ app }, inject) => {
         })
       return result
     },
-    update() {
+    async update(data) {
       console.log('[Submission] Update a submission with specified id')
+      const body = new FormData()
+      body.append('form_request_id', data.form_request.id)
+      body.append('date', data.date)
+      body.append('allocation', data.allocation)
+      body.append('used', data.used)
+      body.append('balance', data.balance)
+      body.append('notes', data.notes)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          console.log(error)
+          return error
+        })
     },
     async delete(data) {
       console.log('[Submission] Delete a submission with specified id')
@@ -479,6 +539,10 @@ export default ({ app }, inject) => {
         })
     }
   }
+
+  /**
+   * Petty Cash Interface
+   */
   const Petty = {
     async index() {
       console.log('[Petty] Show all petty cash forms')
@@ -528,8 +592,36 @@ export default ({ app }, inject) => {
         })
       return result
     },
-    update() {
+    async update(data) {
       console.log('[Petty] Update a petty cash with specified id')
+      console.log(data)
+      let amount = 0
+      const body = new FormData()
+      body.append('date', data.date)
+      body.append('allocation', data.allocation)
+      for (let i = 0; i < data.details.length; i++) {
+        body.append(
+          'details[' + i + '][budget_code_id]',
+          data.details[i].budget_code_id
+        )
+        body.append('details[' + i + '][nominal]', data.details[i].nominal)
+        amount += Number(data.details[i].nominal)
+      }
+      body.append('amount', amount)
+      await app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          console.log(error)
+          return error
+        })
     },
     async delete(data) {
       console.log('[Petty] Delete a petty cash with specified id')
@@ -621,6 +713,9 @@ export default ({ app }, inject) => {
     }
   }
 
+  /**
+   * Table Interface
+   */
   const Table = {
     async getBudgetList() {
       console.log('[Table] Get all budget list')

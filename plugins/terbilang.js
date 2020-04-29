@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import Vue from 'vue'
 
 /*
@@ -59,21 +60,21 @@ const numberInWords = (angka) => {
 
   for (let i = 0; i < angka.length; i++) {
     const length = angka.length - 1 - i
-    if (length % 3 === 0) {
+    if (length % 3 == 0) {
       const num =
-        angka[i] === 1 &&
+        angka[i] == 1 &&
         (isBelasan ||
-          (convertToUnit(length) === 'ribu' &&
-            (angka[i - 2] === undefined || angka[i - 2] === 0) &&
-            (angka[i - 1] === undefined || angka[i - 1] === 0)))
+          (convertToUnit(length) == 'ribu' &&
+            (angka[i - 2] == undefined || angka[i - 2] == 0) &&
+            (angka[i - 1] == undefined || angka[i - 1] == 0)))
           ? 'se'
           : `${numberToString(angka[i])} `
       result += ` ${num}`
 
       if (
-        (angka[i - 2] && angka[i - 2] !== 0) ||
-        (angka[i - 1] && angka[i - 1] !== 0) ||
-        angka[i] !== 0
+        (angka[i - 2] && angka[i - 2] != 0) ||
+        (angka[i - 1] && angka[i - 1] != 0) ||
+        angka[i] != 0
       ) {
         printUnit = true
       }
@@ -84,13 +85,11 @@ const numberInWords = (angka) => {
           isBelasan = false
         }
       }
-    } else if (length % 3 === 2 && angka[i] !== 0) {
-      result += ` ${
-        angka[i] === 1 ? 'se' : numberToString(angka[i]) + ' '
-      }ratus`
-    } else if (length % 3 === 1 && angka[i] !== 0) {
-      if (angka[i] === 1) {
-        if (angka[i + 1] === 0) {
+    } else if (length % 3 == 2 && angka[i] != 0) {
+      result += ` ${angka[i] == 1 ? 'se' : numberToString(angka[i]) + ' '}ratus`
+    } else if (length % 3 == 1 && angka[i] != 0) {
+      if (angka[i] == 1) {
+        if (angka[i + 1] == 0) {
           result += ' sepuluh'
         } else {
           isBelasan = true
@@ -104,12 +103,12 @@ const numberInWords = (angka) => {
 }
 
 Vue.prototype.$terbilang = (angka) => {
-  if (angka === null || angka === '') return ''
+  if (angka == null || angka == '') return ''
   const bagian = angka.toString().split('.')
   let hasil = ''
   for (let i = 0; i < bagian.length; i++) {
     hasil += numberInWords(bagian[i]) + ' '
-    if (i !== bagian.length - 1) {
+    if (i != bagian.length - 1) {
       hasil += 'koma '
     }
   }

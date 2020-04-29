@@ -31,36 +31,47 @@ const copyValue = (object) => {
   return result
 }
 
-const exportPDF = (form, data) => {
+const exportPDF = (form, id) => {
   switch (form) {
     case 'request':
-      if (data.id === null)
+      if (id === null)
         window.open('http://54.169.75.0/api/v1/form/request/export/pdf')
+      else window.open('http://54.169.75.0/api/v1/form/request/' + id + '/pdf')
       break
     case 'submission':
-      if (data.id === null)
+      if (id === null)
         window.open('http://54.169.75.0/api/v1/form/submission/export/pdf')
+      else
+        window.open('http://54.169.75.0/api/v1/form/submission/' + id + '/pdf')
       break
     case 'petty':
-      if (data.id === null)
+      if (id === null)
         window.open('http://54.169.75.0/api/v1/form/petty/export/pdf')
+      else window.open('http://54.169.75.0/api/v1/form/petty/' + id + '/pdf')
       break
   }
 }
 
-const exportExcel = (form, data) => {
+const exportExcel = (form, id) => {
   switch (form) {
     case 'request':
-      if (data.id === null)
+      if (id === null)
         window.open('http://54.169.75.0/api/v1/form/request/export/excel')
+      else
+        window.open('http://54.169.75.0/api/v1/form/request/' + id + '/excel')
       break
     case 'submission':
-      if (data.id === null)
+      if (id === null)
         window.open('http://54.169.75.0/api/v1/form/submission/export/excel')
+      else
+        window.open(
+          'http://54.169.75.0/api/v1/form/submission/' + id + '/excel'
+        )
       break
     case 'petty':
-      if (data.id === null)
+      if (id === null)
         window.open('http://54.169.75.0/api/v1/form/petty/export/excel')
+      else window.open('http://54.169.75.0/api/v1/form/petty/' + id + '/excel')
       break
   }
 }
@@ -84,13 +95,13 @@ Vue.prototype.$copy = (object) => {
 // Function :
 //  Untuk mengekspor pdf, excel atau mungkin yang lainnya
 //  dengan memanggil fungsi global
-Vue.prototype.$export = (type, form, data) => {
+Vue.prototype.$export = (type, form, id) => {
   switch (type) {
     case 'pdf':
-      exportPDF(form, data)
+      exportPDF(form, id)
       break
     case 'excel':
-      exportExcel(form, data)
+      exportExcel(form, id)
       break
     default:
       break

@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">{{
-        $translate('components.form.title.request')
-      }}</v-card-title>
-      <v-card-subtitle class="overline">{{
-        $translate('components.form.subtitle.request')
-      }}</v-card-subtitle>
+      <v-card-title class="text-uppercase">
+        {{ $translate('components.form.title.request') }}
+      </v-card-title>
+      <v-card-subtitle class="overline">
+        {{ $translate('components.form.subtitle.request') }}
+      </v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
@@ -28,12 +28,12 @@
                 auto-select-first
                 cache-items
               >
-                <template v-slot:item="{ item }">{{
-                  item.code + ' - ' + item.name
-                }}</template>
-                <template v-slot:selection="{ item }">{{
-                  item.code + ' - ' + item.name
-                }}</template>
+                <template v-slot:item="{ item }">
+                  {{ item.code + ' - ' + item.name }}
+                </template>
+                <template v-slot:selection="{ item }">
+                  {{ item.code + ' - ' + item.name }}
+                </template>
               </v-combobox>
             </v-col>
             <v-col cols="12" md="6">
@@ -75,9 +75,9 @@
                 </template>
                 <v-date-picker v-model="input.date" scrollable :min="today">
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal.date = false">{{
-                    $translate('components.button.cancel')
-                  }}</v-btn>
+                  <v-btn text color="primary" @click="modal.date = false">
+                    {{ $translate('components.button.cancel') }}
+                  </v-btn>
                   <v-btn
                     text
                     color="primary"
@@ -241,7 +241,7 @@
 export default {
   filters: {
     currency(value) {
-      if (value === null || value === '') return 'Rp 0'
+      if (value == null || value === '') return 'Rp 0'
       if (value.toString().split('.').length > 1) return 'Rp ~'
       const result = value
         .toString()
