@@ -1,18 +1,18 @@
 <template>
   <v-container>
     <v-row>
-      <template v-for="(item, i) in statistics.summary">
+      <template v-for="(item, i) in summary">
         <v-col :key="item.name + i" cols="12" sm="6" md="3">
           <v-card color="accent" dark class="pa-5">
             <v-list-item two-line>
               <v-list-item-content>
-                <v-list-item-title class="headline font-weight-black">{{
-                  item.value
-                }}</v-list-item-title>
+                <v-list-item-title class="headline font-weight-black">
+                  {{ item.value }}
+                </v-list-item-title>
                 <v-divider></v-divider>
-                <v-list-item-subtitle class="body-2 text-capitalize">{{
-                  $translate('text.' + item.name)
-                }}</v-list-item-subtitle>
+                <v-list-item-subtitle class="body-2 text-capitalize">
+                  {{ $translate('text.' + item.name) }}
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <v-icon large>{{ item.icon }}</v-icon>
@@ -30,13 +30,13 @@
               >Divisi Keuangan</span
             >
             <v-divider vertical class="mx-2"></v-divider>
-            <span class="text-uppercase font-weight-black">{{
-              $translate('text.user')
-            }}</span>
+            <span class="text-uppercase font-weight-black">
+              {{ $translate('text.user') }}
+            </span>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
-              append-icon="mdi-magnify"
+              push-icon="mdi-magnify"
               :label="$translate('text.search', 'capitalize')"
               single-line
               hide-details
@@ -61,66 +61,52 @@
     </v-row>
     <v-dialog v-model="modal.user" width="600px" persistent>
       <v-card>
-        <v-card-title class="text-capitalize headline">{{
-          $translate('text.user')
-        }}</v-card-title>
+        <v-card-title class="text-capitalize headline">
+          {{ $translate('text.user') }}
+        </v-card-title>
         <v-card-text>
           <v-simple-table>
             <template v-slot:default>
               <tbody>
                 <tr>
-                  <td class="overline">
-                    <v-chip label small color="primary" outlined>{{
-                      $translate('text.name')
-                    }}</v-chip>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.name') }}
                   </td>
                   <td class="text-capitalize">{{ user.name }}</td>
                 </tr>
                 <tr>
-                  <td class="overline">
-                    <v-chip label small color="primary" outlined>{{
-                      $translate('text.username')
-                    }}</v-chip>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.username') }}
                   </td>
                   <td>{{ user.username }}</td>
                 </tr>
                 <tr>
-                  <td class="overline">
-                    <v-chip label small color="primary" outlined>{{
-                      $translate('text.email')
-                    }}</v-chip>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.email') }}
                   </td>
                   <td>{{ user.email }}</td>
                 </tr>
                 <tr>
-                  <td class="overline">
-                    <v-chip label small color="primary" outlined>{{
-                      $translate('text.division')
-                    }}</v-chip>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.division') }}
                   </td>
                   <td class="text-capitalize">{{ user.division }}</td>
                 </tr>
                 <tr>
-                  <td class="overline">
-                    <v-chip label small color="primary" outlined>{{
-                      $translate('text.position')
-                    }}</v-chip>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.position') }}
                   </td>
                   <td class="text-capitalize">{{ user.position }}</td>
                 </tr>
                 <tr>
-                  <td class="overline">
-                    <v-chip label small color="primary" outlined>{{
-                      $translate('text.nik')
-                    }}</v-chip>
+                  <td class="caption font-weight-bold text-uppercase">
+                    {{ $translate('text.nik') }}
                   </td>
                   <td>{{ user.nik }}</td>
                 </tr>
                 <tr>
-                  <td class="overline">
-                    <v-chip label small color="primary" outlined>{{
-                      $translate('text.address')
-                    }}</v-chip>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.address') }}
                   </td>
                   <td>{{ user.address }}</td>
                 </tr>
@@ -155,34 +141,15 @@ export default {
       success: false,
       messages: '',
       search: '',
-      statistics: {
-        summary: [
-          {
-            name: 'request',
-            value: 33,
-            icon: 'mdi-newspaper'
-          },
-          {
-            name: 'submission',
-            value: 5,
-            icon: 'mdi-newspaper-variant-multiple'
-          },
-          {
-            name: 'petty_cash',
-            value: 150,
-            icon: 'mdi-cash-multiple'
-          },
-          {
-            name: 'user',
-            value: 13,
-            icon: 'mdi-account-circle'
-          }
-        ]
-      },
+      summary: [],
       headers: [
         {
           text: `${this.$translate('text.name', 'capitalize')}`,
           value: 'name'
+        },
+        {
+          text: `${this.$translate('text.username', 'capitalize')}`,
+          value: 'username'
         },
         {
           text: `${this.$translate('text.email', 'capitalize')}`,
@@ -191,14 +158,6 @@ export default {
         {
           text: `${this.$translate('text.division', 'capitalize')}`,
           value: 'division'
-        },
-        {
-          text: `${this.$translate('text.position', 'capitalize')}`,
-          value: 'position'
-        },
-        {
-          text: `${this.$translate('text.nik', 'uppercase')}`,
-          value: 'nik'
         },
         {
           text: `${this.$translate('text.action', 'capitalize')}`,
@@ -213,23 +172,44 @@ export default {
         user: false
       },
 
-      user: {},
-      users: []
+      user: {}
     }
   },
   mounted() {
-    this.initValue()
     this.getAllUsers()
+    this.initValue()
   },
   methods: {
     popupUser(user) {
       this.user = user
       this.modal.user = true
     },
-    initValue() {},
+    initValue() {
+      this.summary.push({
+        name: 'request',
+        value: 33,
+        icon: 'mdi-newspaper'
+      })
+      this.summary.push({
+        name: 'submission',
+        value: 5,
+        icon: 'mdi-newspaper-variant-multiple'
+      })
+      this.summary.push({
+        name: 'petty_cash',
+        value: 150,
+        icon: 'mdi-cash-multiple'
+      })
+    },
     async getAllUsers() {
       try {
-        this.users = await this.$api('user', 'all')
+        const { users } = await this.$api('user', 'all')
+        this.items = users
+        this.summary.push({
+          name: 'user',
+          value: users.length,
+          icon: 'mdi-account-circle'
+        })
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
