@@ -29,9 +29,8 @@
                   <v-list-item-subtitle
                     v-if="!edit.name"
                     class="text-capitalize"
+                    >{{ input.name }}</v-list-item-subtitle
                   >
-                    {{ input.name }}
-                  </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.name"
@@ -75,9 +74,9 @@
                       >{{ $translate('text.username') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.username">
-                    {{ input.username }}
-                  </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!edit.username">{{
+                    input.username
+                  }}</v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.username"
@@ -121,9 +120,9 @@
                       >{{ $translate('text.email') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.email">
-                    {{ input.email }}
-                  </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!edit.email">{{
+                    input.email
+                  }}</v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.email"
@@ -180,9 +179,8 @@
                   <v-list-item-subtitle
                     v-if="!edit.division"
                     class="text-capitalize"
+                    >{{ input.division }}</v-list-item-subtitle
                   >
-                    {{ input.division }}
-                  </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.division"
@@ -229,9 +227,8 @@
                   <v-list-item-subtitle
                     v-if="!edit.position"
                     class="text-capitalize"
+                    >{{ input.position }}</v-list-item-subtitle
                   >
-                    {{ input.position }}
-                  </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.position"
@@ -285,9 +282,9 @@
                       >{{ $translate('text.nik') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.nik">
-                    {{ input.nik }}
-                  </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!edit.nik">{{
+                    input.nik
+                  }}</v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.nik"
@@ -331,9 +328,9 @@
                       >{{ $translate('text.address') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.address">
-                    {{ input.address }}
-                  </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!edit.address">{{
+                    input.address
+                  }}</v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.address"
@@ -369,14 +366,14 @@
         <v-col cols="12">
           <v-row>
             <v-col>
-              <v-btn color="accent" block @click.stop="reset()">
-                {{ $translate('components.button.reset') }}
-              </v-btn>
+              <v-btn color="accent" block @click.stop="reset()">{{
+                $translate('components.button.reset')
+              }}</v-btn>
             </v-col>
             <v-col>
-              <v-btn dark color="secondary" block @click.stop="updateUser()">
-                {{ $translate('components.button.save') }}
-              </v-btn>
+              <v-btn dark color="secondary" block @click.stop="updateUser()">{{
+                $translate('components.button.save')
+              }}</v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -385,9 +382,9 @@
     <div class="spacing-small"></div>
     <v-card raised>
       <v-card-actions class="pa-0">
-        <v-btn block color="accent" x-large @click="logOut()">
-          {{ $translate('components.button.logout') }}
-        </v-btn>
+        <v-btn block color="accent" x-large @click="logOut()">{{
+          $translate('components.button.logout')
+        }}</v-btn>
       </v-card-actions>
     </v-card>
     <div class="spacing-medium"></div>
@@ -446,15 +443,7 @@ export default {
       return a !== b
     },
     initValue() {
-      this.user = {
-        name: 'M Hilmy Haidar',
-        username: 'hilmy021',
-        email: 'hilmy@my.com',
-        division: 'keuangan',
-        position: 'direktur utama',
-        nik: '111010101011110101',
-        address: 'Bogor Jawa Barat'
-      }
+      this.user = this.$auth.$state.user
       this.input = this.$copy(this.user)
     },
     reset() {

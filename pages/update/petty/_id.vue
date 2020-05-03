@@ -1,16 +1,8 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">
-        {{
-        $translate('components.form.title.petty_cash')
-        }}
-      </v-card-title>
-      <v-card-subtitle class="overline">
-        {{
-        $translate('components.form.subtitle.petty_cash')
-        }}
-      </v-card-subtitle>
+      <v-card-title class="text-uppercase">{{ $translate('components.form.title.petty_cash') }}</v-card-title>
+      <v-card-subtitle class="overline">{{ $translate('components.form.subtitle.petty_cash') }}</v-card-subtitle>
       <v-card-text class="py-0 text-right">
         <v-btn small color="secondary" :to="'/detail/petty/' + $route.params.id">
           <v-icon small class="mr-2">mdi-arrow-left</v-icon>
@@ -58,11 +50,11 @@
                 </template>
                 <v-date-picker v-model="input.date" scrollable :min="today">
                   <v-spacer></v-spacer>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="modal.date = false"
-                  >{{ $translate('components.button.cancel') }}</v-btn>
+                  <v-btn text color="primary" @click="modal.date = false">
+                    {{
+                    $translate('components.button.cancel')
+                    }}
+                  </v-btn>
                   <v-btn text color="primary" @click="$refs.date.save(input.date)">OK</v-btn>
                 </v-date-picker>
               </v-dialog>
@@ -85,8 +77,16 @@
                   auto-select-first
                   cache-items
                 >
-                  <template v-slot:item="{ item }">{{ item.code + ' - ' + item.name }}</template>
-                  <template v-slot:selection="{ item }">{{ item.code + ' - ' + item.name }}</template>
+                  <template v-slot:item="{ item }">
+                    {{
+                    item.code + ' - ' + item.name
+                    }}
+                  </template>
+                  <template v-slot:selection="{ item }">
+                    {{
+                    item.code + ' - ' + item.name
+                    }}
+                  </template>
                 </v-combobox>
               </v-col>
               <v-col cols="12" md="4" sm="6">
@@ -217,7 +217,6 @@ export default {
     async getPetty() {
       try {
         this.input = await this.$api('petty', 'show', this.$route.params.id)
-        console.log(this.input)
       } catch (e) {}
     },
     async updatePetty() {

@@ -12,27 +12,24 @@
 */
 
 export default ({ app }, inject) => {
-  const api = (target, action, data) => {
+  const api = (target, action, data, user) => {
     target = target.toLowerCase()
     action = action.toLowerCase()
     switch (target) {
       case 'user':
         switch (action) {
           case 'login':
-            User.login(data)
-            break
+            return User.login(data)
           case 'logout':
-            User.logout()
-            break
+            return User.logout()
           case 'register':
-            User.register()
-            break
+            return User.register()
           case 'show':
-            User.show()
-            break
+            return User.show()
           case 'update':
-            User.update()
-            break
+            return User.update()
+          case 'all':
+            return User.getAll()
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -45,31 +42,23 @@ export default ({ app }, inject) => {
           case 'index':
             return Request.index()
           case 'store':
-            Request.store(data)
-            break
+            return Request.store(data, user)
           case 'show':
             return Request.show(data)
           case 'update':
-            Request.update(data)
-            break
+            return Request.update(data)
           case 'delete':
-            Request.delete(data)
-            break
+            return Request.delete(data)
           case 'verifyaspic':
-            Request.verifyAsPic(data)
-            break
+            return Request.verifyAsPic(data)
           case 'verifyascashier':
-            Request.verifyAsCashier(data)
-            break
+            return Request.verifyAsCashier(data)
           case 'verifyasheaddept':
-            Request.verifyAsHeadDept(data)
-            break
+            return Request.verifyAsHeadDept(data)
           case 'verifyasverificator':
-            Request.verifyAsVerificator(data)
-            break
+            return Request.verifyAsVerificator(data)
           case 'verifyalreadypaid':
-            Request.verifyAlreadyPaid(data)
-            break
+            return Request.verifyAlreadyPaid(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -82,28 +71,21 @@ export default ({ app }, inject) => {
           case 'index':
             return Submission.index()
           case 'store':
-            Submission.store(data)
-            break
+            return Submission.store(data)
           case 'show':
             return Submission.show(data)
           case 'update':
-            Submission.update(data)
-            break
+            return Submission.update(data)
           case 'delete':
-            Submission.delete(data)
-            break
+            return Submission.delete(data)
           case 'verifyaspic':
-            Submission.verifyAsPic(data)
-            break
+            return Submission.verifyAsPic(data)
           case 'verifyasheadoffice':
-            Submission.verifyAsHeadOffice(data)
-            break
+            return Submission.verifyAsHeadOffice(data)
           case 'verifyasheaddept':
-            Submission.verifyAsHeadDept(data)
-            break
+            return Submission.verifyAsHeadDept(data)
           case 'verifyasverificator':
-            Submission.verifyAsVerificator(data)
-            break
+            return Submission.verifyAsVerificator(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -116,28 +98,21 @@ export default ({ app }, inject) => {
           case 'index':
             return Petty.index()
           case 'store':
-            Petty.store(data)
-            break
+            return Petty.store(data)
           case 'show':
             return Petty.show(data)
           case 'update':
-            Petty.update(data)
-            break
+            return Petty.update(data)
           case 'delete':
-            Petty.delete(data)
-            break
+            return Petty.delete(data)
           case 'verifyaspic':
-            Petty.verifyAsPic(data)
-            break
+            return Petty.verifyAsPic(data)
           case 'verifyasmanagerops':
-            Petty.verifyAsManagerOps(data)
-            break
+            return Petty.verifyAsManagerOps(data)
           case 'verifyascashier':
-            Petty.verifyAsCashier(data)
-            break
+            return Petty.verifyAsCashier(data)
           case 'verifyalreadypaid':
-            Petty.verifyAlreadyPaid(data)
-            break
+            return Petty.verifyAlreadyPaid(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -185,6 +160,19 @@ export default ({ app }, inject) => {
     },
     update() {
       console.log('[User] Update current user SCB app.')
+    },
+    async getAll() {
+      console.log('[User] Get all users.')
+      let result = null
+      result = await app.$axios
+        .$get('/users')
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+      return result
     }
   }
 
@@ -202,6 +190,7 @@ export default ({ app }, inject) => {
     },
     async store(data) {
       console.log('[Request] Creating a new request')
+      console.log(data)
       const body = new FormData()
       body.append('allocation', data.allocation)
       body.append('date', data.date)
@@ -216,19 +205,17 @@ export default ({ app }, inject) => {
         body.append('account_owner', data.account_owner)
       }
       body.append('budget_code_id', data.budget_code.id)
-      await app
+      return app
         .$axios({
           method: 'post',
           url: '/form/request',
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
-          console.log(error)
-          return error
+          throw new Error(error)
         })
     },
     async show(data) {
@@ -268,8 +255,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          console.log(error)
-          return error
+          throw new Error(error)
         })
     },
     async delete(data) {
@@ -284,8 +270,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          console.log(error)
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsPic(data) {
@@ -303,7 +288,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsVerificator(data) {
@@ -321,7 +306,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsCashier(data) {
@@ -339,7 +324,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsHeadDept(data) {
@@ -357,7 +342,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAlreadyPaid(data) {
@@ -375,7 +360,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     }
   }
@@ -412,8 +397,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          console.log(error)
-          return error
+          throw new Error(error)
         })
     },
     async show(data) {
@@ -446,8 +430,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          console.log(error)
-          return error
+          throw new Error(error)
         })
     },
     async delete(data) {
@@ -462,8 +445,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          console.log(error)
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsPic(data) {
@@ -481,7 +463,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsVerificator(data) {
@@ -499,7 +481,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsHeadOffice(data) {
@@ -517,7 +499,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsHeadDept(data) {
@@ -535,7 +517,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     }
   }
@@ -578,8 +560,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          console.log(error)
-          return error
+          throw new Error(error)
         })
     },
     async show(data) {
@@ -619,8 +600,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          console.log(error)
-          return error
+          throw new Error(error)
         })
     },
     async delete(data) {
@@ -635,8 +615,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          console.log(error)
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsPic(data) {
@@ -654,7 +633,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsCashier(data) {
@@ -672,7 +651,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAsManagerOps(data) {
@@ -690,7 +669,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     },
     async verifyAlreadyPaid(data) {
@@ -708,7 +687,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          return error
+          throw new Error(error)
         })
     }
   }

@@ -8,9 +8,9 @@
       :color="success ? color.success : color.error"
     >
       <span class="caption font-weigth-light">{{ messages }}</span>
-      <v-btn text @click="close()">{{
-        $translate('components.button.close')
-      }}</v-btn>
+      <v-btn text @click="close()">
+        {{ $translate('components.button.close') }}
+      </v-btn>
     </v-snackbar>
   </v-container>
 </template>
@@ -18,10 +18,7 @@
 export default {
   name: 'SnackbarAlert',
   props: {
-    value: {
-      type: Boolean,
-      default: false
-    },
+    value: Boolean,
     messages: {
       type: String,
       default: ''
@@ -33,7 +30,7 @@ export default {
   },
   data() {
     return {
-      show: false,
+      show: this.$props.value,
       timeout: 10000,
       color: {
         success: 'green darken-1',
@@ -42,8 +39,8 @@ export default {
     }
   },
   watch: {
-    show(value) {
-      this.$emit('input', false)
+    value(value) {
+      this.show = value
     }
   },
   mounted() {
@@ -52,6 +49,7 @@ export default {
   methods: {
     close() {
       this.show = false
+      this.$emit('input', false)
     }
   }
 }

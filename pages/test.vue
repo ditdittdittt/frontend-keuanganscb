@@ -16,24 +16,16 @@
           </div>
           <div class="row">
             <div class="col-3 mt-2">
-              <button class="btn btn-outline-secondary" @click="undo">
-                Undo
-              </button>
+              <button class="btn btn-outline-secondary" @click="undo">Undo</button>
             </div>
             <div class="col-3 mt-2">
-              <button class="btn btn-outline-primary" @click="save">
-                Save
-              </button>
+              <button class="btn btn-outline-primary" @click="save">Save</button>
             </div>
             <div class="col-3 mt-2">
-              <button class="btn btn-outline-primary" @click="clear">
-                Clear
-              </button>
+              <button class="btn btn-outline-primary" @click="clear">Clear</button>
             </div>
             <div class="col-3 mt-2">
-              <button class="btn btn-outline-primary" @click="resume">
-                Resume
-              </button>
+              <button class="btn btn-outline-primary" @click="resume">Resume</button>
             </div>
           </div>
         </div>
@@ -66,11 +58,8 @@ export default {
       this.$refs.signaturePad.undoSignature()
     },
     save() {
-      const { isEmpty, data } = this.$refs.signaturePad.saveSignature()
-
+      this.$refs.signaturePad.saveSignature()
       alert('Open DevTools see the save data.')
-      console.log(isEmpty)
-      console.log(data)
     },
     clear() {
       this.$refs.signaturePad.clearSignature()

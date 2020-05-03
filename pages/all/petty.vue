@@ -13,25 +13,19 @@
           <v-list>
             <v-list-item @click.stop="$export('pdf', 'petty', null)">
               <v-list-item-title class="text-capitalize">
-                {{
-                $translate('export.pdf')
-                }}
+                {{ $translate('export.pdf') }}
               </v-list-item-title>
             </v-list-item>
             <v-list-item @click.stop="$export('excel', 'petty', null)">
               <v-list-item-title class="text-capitalize">
-                {{
-                $translate('export.excel')
-                }}
+                {{ $translate('export.excel') }}
               </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </v-card-title>
       <v-card-subtitle class="overline">
-        {{
-        $translate('components.table.subtitle.petty_cash')
-        }}
+        {{ $translate('components.table.subtitle.petty_cash') }}
       </v-card-subtitle>
       <v-card-text class="px-5">
         <v-text-field
@@ -50,12 +44,18 @@
         <div class="spacing-medium"></div>
         <v-data-table :headers="headers" :items="items" :search="search">
           <template v-slot:item.id="{ item }">
-            <v-btn color="secondary" small text :to="'/detail/petty/' + item.id">Detail</v-btn>
+            <v-btn color="secondary" small text :to="'/detail/petty/' + item.id"
+              >Detail</v-btn
+            >
           </template>
         </v-data-table>
       </v-card-text>
     </v-card>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
   </v-container>
 </template>
 <script>

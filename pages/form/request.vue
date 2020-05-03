@@ -1,17 +1,17 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">
-        {{ $translate('components.form.title.request') }}
-      </v-card-title>
-      <v-card-subtitle class="overline">
-        {{ $translate('components.form.subtitle.request') }}
-      </v-card-subtitle>
+      <v-card-title class="text-uppercase">{{
+        $translate('components.form.title.request')
+      }}</v-card-title>
+      <v-card-subtitle class="overline">{{
+        $translate('components.form.subtitle.request')
+      }}</v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
-        <v-form ref="createFormRequest" v-model="formRequest">
+        <v-form ref="form" v-model="valid">
           <v-row>
             <v-col cols="12" md="3">
               <div class="caption primary--text text-capitalize">
@@ -28,12 +28,12 @@
                 auto-select-first
                 cache-items
               >
-                <template v-slot:item="{ item }">
-                  {{ item.code + ' - ' + item.name }}
-                </template>
-                <template v-slot:selection="{ item }">
-                  {{ item.code + ' - ' + item.name }}
-                </template>
+                <template v-slot:item="{ item }">{{
+                  item.code + ' - ' + item.name
+                }}</template>
+                <template v-slot:selection="{ item }">{{
+                  item.code + ' - ' + item.name
+                }}</template>
               </v-combobox>
             </v-col>
             <v-col cols="12" md="6">
@@ -75,9 +75,9 @@
                 </template>
                 <v-date-picker v-model="input.date" scrollable :min="today">
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal.date = false">
-                    {{ $translate('components.button.cancel') }}
-                  </v-btn>
+                  <v-btn text color="primary" @click="modal.date = false">{{
+                    $translate('components.button.cancel')
+                  }}</v-btn>
                   <v-btn
                     text
                     color="primary"
@@ -103,60 +103,62 @@
               </v-radio-group>
             </v-col>
           </v-row>
-          <v-row v-if="input.method === 'transfer'">
-            <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.bank_name') }}
-              </div>
-              <v-text-field
-                v-model="input.bank_name"
-                prepend-inner-icon="mdi-cash"
-                clearable
-                solo
-                :rules="[rules.required]"
-                :label="$translate('text.bank_name', 'capitalize')"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.bank_code') }}
-              </div>
-              <v-text-field
-                v-model="input.bank_code"
-                prepend-inner-icon="mdi-cash"
-                clearable
-                solo
-                :rules="[rules.required]"
-                :label="$translate('text.bank_code', 'capitalize')"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.account_number') }}
-              </div>
-              <v-text-field
-                v-model="input.account_number"
-                prepend-inner-icon="mdi-cash"
-                clearable
-                solo
-                :rules="[rules.required]"
-                :label="$translate('text.account_number', 'capitalize')"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.account_owner') }}
-              </div>
-              <v-text-field
-                v-model="input.account_owner"
-                prepend-inner-icon="mdi-cash"
-                clearable
-                solo
-                :rules="[rules.required]"
-                :label="$translate('text.account_owner', 'capitalize')"
-              ></v-text-field>
-            </v-col>
-          </v-row>
+          <template v-if="input.method === 'transfer'">
+            <v-row>
+              <v-col cols="12" md="6">
+                <div class="caption primary--text text-capitalize">
+                  {{ $translate('text.bank_name') }}
+                </div>
+                <v-text-field
+                  v-model="input.bank_name"
+                  prepend-inner-icon="mdi-cash"
+                  clearable
+                  solo
+                  :rules="[rules.required]"
+                  :label="$translate('text.bank_name', 'capitalize')"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <div class="caption primary--text text-capitalize">
+                  {{ $translate('text.bank_code') }}
+                </div>
+                <v-text-field
+                  v-model="input.bank_code"
+                  prepend-inner-icon="mdi-cash"
+                  clearable
+                  solo
+                  :rules="[rules.required]"
+                  :label="$translate('text.bank_code', 'capitalize')"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <div class="caption primary--text text-capitalize">
+                  {{ $translate('text.account_number') }}
+                </div>
+                <v-text-field
+                  v-model="input.account_number"
+                  prepend-inner-icon="mdi-cash"
+                  clearable
+                  solo
+                  :rules="[rules.required]"
+                  :label="$translate('text.account_number', 'capitalize')"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <div class="caption primary--text text-capitalize">
+                  {{ $translate('text.account_owner') }}
+                </div>
+                <v-text-field
+                  v-model="input.account_owner"
+                  prepend-inner-icon="mdi-cash"
+                  clearable
+                  solo
+                  :rules="[rules.required]"
+                  :label="$translate('text.account_owner', 'capitalize')"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </template>
           <v-row>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
@@ -267,7 +269,7 @@ export default {
       modal: {
         date: false
       },
-      formRequest: true,
+      valid: true,
       data: {
         budgetList: []
       },
@@ -299,10 +301,29 @@ export default {
       this.today = new Date().toISOString()
     },
     async storeRequest() {
+      if (!this.$refs.form.validate()) {
+        this.success = false
+        this.messages =
+          'Gagal membuat form request periksa lagi data yang di input'
+        this.alert = true
+      }
       try {
-        await this.$api('request', 'store', this.input)
-        this.$refs.createFormRequest.reset()
-      } catch (e) {}
+        const result = await this.$api('request', 'store', this.input)
+        if (result) {
+          this.success = true
+          this.messages = 'Berhasil membuat form request'
+          this.alert = true
+          this.$refs.form.reset()
+        } else {
+          this.success = false
+          this.messages = 'Gagal membuat form request karena kesalahan server'
+          this.alert = true
+        }
+      } catch (e) {
+        this.success = false
+        this.messages = 'Gagal membuat form request karena kesalahan server'
+        this.alert = true
+      }
     },
     async getBudgetList() {
       try {
