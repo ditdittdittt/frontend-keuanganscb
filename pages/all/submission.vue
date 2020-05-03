@@ -12,21 +12,21 @@
           </template>
           <v-list>
             <v-list-item @click.stop="$export('pdf', 'submission', null)">
-              <v-list-item-title class="text-capitalize">
-                {{ $translate('export.pdf') }}
-              </v-list-item-title>
+              <v-list-item-title class="text-capitalize">{{
+                $translate('export.pdf')
+              }}</v-list-item-title>
             </v-list-item>
             <v-list-item @click.stop="$export('excel', 'submission', null)">
-              <v-list-item-title class="text-capitalize">
-                {{ $translate('export.excel') }}
-              </v-list-item-title>
+              <v-list-item-title class="text-capitalize">{{
+                $translate('export.excel')
+              }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </v-card-title>
-      <v-card-subtitle class="overline">
-        {{ $translate('components.table.subtitle.submission') }}
-      </v-card-subtitle>
+      <v-card-subtitle class="overline">{{
+        $translate('components.table.subtitle.submission')
+      }}</v-card-subtitle>
       <v-card-text class="px-5">
         <v-text-field
           v-model="search"
@@ -43,12 +43,12 @@
       <v-card-text>
         <div class="spacing-medium"></div>
         <v-data-table :headers="headers" :items="items" :search="search">
-          <template v-slot:item.use="{ item }">
-            {{ item.use | currency }}
-          </template>
-          <template v-slot:item.balance="{ item }">
-            {{ item.balance | currency }}
-          </template>
+          <template v-slot:item.use="{ item }">{{
+            item.use | currency
+          }}</template>
+          <template v-slot:item.balance="{ item }">{{
+            item.balance | currency
+          }}</template>
           <template v-slot:item.id="{ item }">
             <v-btn
               color="secondary"
@@ -129,7 +129,11 @@ export default {
     async getAllSubmissionForms() {
       try {
         this.items = await this.$api('submission', 'index', null)
-      } catch (e) {}
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
     }
   }
 }

@@ -8,7 +8,9 @@
       :color="success ? color.success : color.error"
     >
       <span class="caption font-weigth-light">{{ messages }}</span>
-      <v-btn text @click="close()">{{ $translate('components.button.close') }}</v-btn>
+      <v-btn text @click="close()">{{
+        $translate('components.button.close')
+      }}</v-btn>
     </v-snackbar>
   </v-container>
 </template>

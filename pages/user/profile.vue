@@ -74,9 +74,9 @@
                       >{{ $translate('text.username') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.username">{{
-                    input.username
-                  }}</v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!edit.username">
+                    {{ input.username }}
+                  </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.username"
@@ -120,9 +120,9 @@
                       >{{ $translate('text.email') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.email">{{
-                    input.email
-                  }}</v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!edit.email">
+                    {{ input.email }}
+                  </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.email"
@@ -282,9 +282,9 @@
                       >{{ $translate('text.nik') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.nik">{{
-                    input.nik
-                  }}</v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!edit.nik">
+                    {{ input.nik }}
+                  </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.nik"
@@ -328,9 +328,9 @@
                       >{{ $translate('text.address') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.address">{{
-                    input.address
-                  }}</v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="!edit.address">
+                    {{ input.address }}
+                  </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.address"
@@ -366,14 +366,14 @@
         <v-col cols="12">
           <v-row>
             <v-col>
-              <v-btn color="accent" block @click.stop="reset()">{{
-                $translate('components.button.reset')
-              }}</v-btn>
+              <v-btn color="accent" block @click.stop="reset()">
+                {{ $translate('components.button.reset') }}
+              </v-btn>
             </v-col>
             <v-col>
-              <v-btn dark color="secondary" block @click.stop="updateUser()">{{
-                $translate('components.button.save')
-              }}</v-btn>
+              <v-btn dark color="secondary" block @click.stop="updateUser()">
+                {{ $translate('components.button.save') }}
+              </v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -382,9 +382,9 @@
     <div class="spacing-small"></div>
     <v-card raised>
       <v-card-actions class="pa-0">
-        <v-btn block color="accent" x-large @click="logOut()">{{
-          $translate('components.button.logout')
-        }}</v-btn>
+        <v-btn block color="accent" x-large @click="logOut()">
+          {{ $translate('components.button.logout') }}
+        </v-btn>
       </v-card-actions>
     </v-card>
     <div class="spacing-medium"></div>
@@ -452,17 +452,29 @@ export default {
     async getUser() {
       try {
         await this.$api('user', 'show')
-      } catch (e) {}
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
     },
     async updateUser() {
       try {
         await this.$api('user', 'update')
-      } catch (e) {}
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
     },
     async logOut() {
       try {
         await this.$api('user', 'logout')
-      } catch (e) {}
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
     }
   }
 }

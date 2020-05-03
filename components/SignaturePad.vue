@@ -1,6 +1,11 @@
 <template>
   <v-container>
-    <v-row class="text-center" justify="center" align-content="center" align="center">
+    <v-row
+      class="text-center"
+      justify="center"
+      align-content="center"
+      align="center"
+    >
       <v-col class="px-0">
         <v-btn fab icon small @click="clear">
           <v-icon>mdi-close</v-icon>
@@ -15,11 +20,18 @@
     <v-row>
       <v-col class="pa-0">
         <v-card flat color="white" :light="true">
-          <VueSignaturePad id="signature" ref="signaturePad" height="300px" :options="options" />
+          <VueSignaturePad
+            id="signature"
+            ref="signaturePad"
+            height="300px"
+            :options="options"
+          />
           <v-overlay :absolute="true" :value="isLoading" :opacity="0.9">
             <v-row justify="center" align="center" class="text-center">
               <v-col>
-                <span>{{ $translate('text.convert_to_image', 'capitalize') + '...' }}</span>
+                <span>{{
+                  $translate('text.convert_to_image', 'capitalize') + '...'
+                }}</span>
               </v-col>
             </v-row>
           </v-overlay>

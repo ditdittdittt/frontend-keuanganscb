@@ -161,7 +161,7 @@ export default ({ app }, inject) => {
     update() {
       console.log('[User] Update current user SCB app.')
     },
-    async getAll() {
+    getAll() {
       console.log('[User] Get all users.')
 
       return app.$axios
@@ -670,7 +670,7 @@ export default ({ app }, inject) => {
    * Table Interface
    */
   const Table = {
-    async getBudgetList() {
+    getBudgetList() {
       console.log('[Table] Get all budget list')
 
       return app.$axios.$get('/budget-code').then((response) => {

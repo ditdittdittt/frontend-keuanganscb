@@ -65,10 +65,10 @@
             >
           </v-card-actions>
           <v-card-text class="text-center">
-            <span class="caption"
-              >Jika belum memiliki akun, silahkan daftar terlebih dahulu dengan
-              menekan tombol register di bawah ini.</span
-            >
+            <span class="caption">
+              Jika belum memiliki akun, silahkan daftar terlebih dahulu dengan
+              menekan tombol register di bawah ini.
+            </span>
           </v-card-text>
           <v-card-actions>
             <v-btn outlined block color="primary" :to="'/register'"
@@ -106,7 +106,11 @@ export default {
     async login() {
       try {
         await this.$api('user', 'login', this.input)
-      } catch (e) {}
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
     }
   }
 }
