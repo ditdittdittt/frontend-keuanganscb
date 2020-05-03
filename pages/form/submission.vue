@@ -35,6 +35,8 @@
                 clearable
                 auto-select-first
                 cache-items
+                return-object
+                @change="setMinDate()"
               >
                 <template v-slot:item="{ item }">
                   {{
@@ -101,7 +103,7 @@
                 prepend-inner-icon="mdi-cash"
                 prefix="Rp"
                 solo
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.positive]"
                 :label="$translate('text.use', 'capitalize')"
                 :hint="input.used | currency"
                 type="number"
@@ -237,6 +239,8 @@ export default {
         request: []
       },
       rules: {
+        positive: (value) =>
+          value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
       }
@@ -250,14 +254,20 @@ export default {
     initValue() {
       this.today = new Date().toISOString()
     },
+    setMinDate() {
+      this.today = this.input.request.date
+      this.input.date = null
+    },
     async storeSubmission() {
       if (!this.$refs.form.validate()) {
         this.success = false
         this.messages = 'Gagal membuat form periksa lagi data yang di input'
         this.alert = true
+        return
       }
       try {
         const result = await this.$api('submission', 'store', this.input)
+        console.log(result)
         if (result.status === 201) {
           this.success = true
           this.messages = 'Berhasil membuat form submission'
@@ -270,8 +280,9 @@ export default {
           this.alert = true
         }
       } catch (e) {
+        console.log(e)
         this.success = false
-        this.messages = 'Gagal membuat form periksa lagi data yang di input'
+        this.messages = 'Gagal membuat form submission karena kesalahan data'
         this.alert = true
       }
     },

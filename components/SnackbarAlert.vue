@@ -8,9 +8,7 @@
       :color="success ? color.success : color.error"
     >
       <span class="caption font-weigth-light">{{ messages }}</span>
-      <v-btn text @click="close()">
-        {{ $translate('components.button.close') }}
-      </v-btn>
+      <v-btn text @click="close()">{{ $translate('components.button.close') }}</v-btn>
     </v-snackbar>
   </v-container>
 </template>
@@ -43,12 +41,8 @@ export default {
       this.show = value
     }
   },
-  mounted() {
-    this.show = this.$props.value
-  },
   methods: {
     close() {
-      this.show = false
       this.$emit('input', false)
     }
   }

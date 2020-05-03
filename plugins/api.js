@@ -163,8 +163,8 @@ export default ({ app }, inject) => {
     },
     async getAll() {
       console.log('[User] Get all users.')
-      let result = null
-      result = await app.$axios
+
+      return app.$axios
         .$get('/users')
         .then((response) => {
           return response
@@ -172,7 +172,6 @@ export default ({ app }, inject) => {
         .catch((error) => {
           throw new Error(error)
         })
-      return result
     }
   }
 
@@ -180,15 +179,13 @@ export default ({ app }, inject) => {
    * Request Interface
    */
   const Request = {
-    async index() {
+    index() {
       console.log('[Request] Show all request forms')
-      let result = null
-      result = await app.$axios.$get('/form/request').then((response) => {
+      return app.$axios.$get('/form/request').then((response) => {
         return response.form_request
       })
-      return result
     },
-    async store(data) {
+    store(data) {
       console.log('[Request] Creating a new request')
       const body = new FormData()
       body.append('allocation', data.allocation)
@@ -219,13 +216,10 @@ export default ({ app }, inject) => {
     },
     async show(data) {
       console.log('[Request] Show a request with specified id')
-      let result = null
-      result = await app.$axios
-        .$get('/form/request/' + data)
-        .then((response) => {
-          return response.form_request
-        })
-      return result
+
+      return app.$axios.$get('/form/request/' + data).then((response) => {
+        return response.form_request
+      })
     },
     async update(data) {
       console.log('[Request] Update a request with specified id')
@@ -250,7 +244,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -265,7 +258,6 @@ export default ({ app }, inject) => {
           url: '/form/request/' + data
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -283,7 +275,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -301,7 +292,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -319,7 +309,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -337,7 +326,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -355,7 +343,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -368,15 +355,14 @@ export default ({ app }, inject) => {
    * Submission Interface
    */
   const Submission = {
-    async index() {
+    index() {
       console.log('[Submission] Show all submission forms')
-      let result = null
-      result = await app.$axios.$get('/form/submission').then((response) => {
+
+      return app.$axios.$get('/form/submission').then((response) => {
         return response.form_submission
       })
-      return result
     },
-    async store(data) {
+    store(data) {
       console.log('[Submission] Creating a new submission')
       const body = new FormData()
       body.append('form_request_id', data.request.id)
@@ -385,14 +371,13 @@ export default ({ app }, inject) => {
       body.append('used', data.used)
       body.append('balance', data.balance)
       body.append('notes', data.notes)
-      await app
+      return app
         .$axios({
           method: 'post',
           url: '/form/submission',
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -401,13 +386,10 @@ export default ({ app }, inject) => {
     },
     async show(data) {
       console.log('[Submission] Show a submission with specified id')
-      let result = null
-      result = await app.$axios
-        .$get('/form/submission/' + data)
-        .then((response) => {
-          return response.form_submission
-        })
-      return result
+
+      return app.$axios.$get('/form/submission/' + data).then((response) => {
+        return response.form_submission
+      })
     },
     async update(data) {
       console.log('[Submission] Update a submission with specified id')
@@ -425,7 +407,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -440,7 +421,6 @@ export default ({ app }, inject) => {
           url: '/form/submission/' + data
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -458,7 +438,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -476,7 +455,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -494,7 +472,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -512,7 +489,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -525,15 +501,14 @@ export default ({ app }, inject) => {
    * Petty Cash Interface
    */
   const Petty = {
-    async index() {
+    index() {
       console.log('[Petty] Show all petty cash forms')
-      let result = null
-      result = await app.$axios.$get('/form/petty-cash').then((response) => {
+
+      return app.$axios.$get('/form/petty-cash').then((response) => {
         return response.form_petty_cash
       })
-      return result
     },
-    async store(data) {
+    store(data) {
       console.log('[Petty] Creating a new petty cash')
       let amount = 0
       const body = new FormData()
@@ -548,14 +523,13 @@ export default ({ app }, inject) => {
         amount += Number(data.budgets[i].nominal)
       }
       body.append('amount', amount)
-      await app
+      return app
         .$axios({
           method: 'post',
           url: '/form/petty-cash',
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -564,17 +538,13 @@ export default ({ app }, inject) => {
     },
     async show(data) {
       console.log('[Petty] Show a petty cash with specified id')
-      let result = null
-      result = await app.$axios
-        .$get('/form/petty-cash/' + data)
-        .then((response) => {
-          return response.form_petty_cash
-        })
-      return result
+
+      return app.$axios.$get('/form/petty-cash/' + data).then((response) => {
+        return response.form_petty_cash
+      })
     },
     async update(data) {
       console.log('[Petty] Update a petty cash with specified id')
-      console.log(data)
       let amount = 0
       const body = new FormData()
       body.append('date', data.date)
@@ -595,7 +565,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -610,7 +579,6 @@ export default ({ app }, inject) => {
           url: '/form/petty-cash/' + data
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -628,7 +596,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -646,7 +613,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -664,7 +630,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -682,7 +647,6 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -697,11 +661,10 @@ export default ({ app }, inject) => {
   const Table = {
     async getBudgetList() {
       console.log('[Table] Get all budget list')
-      let result = null
-      result = await app.$axios.$get('/budget-code').then((response) => {
+
+      return app.$axios.$get('/budget-code').then((response) => {
         return response.budget_code
       })
-      return result
     }
   }
 

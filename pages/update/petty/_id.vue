@@ -192,6 +192,8 @@ export default {
         date: false
       },
       rules: {
+        positive: (value) =>
+          value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
       }

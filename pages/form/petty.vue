@@ -186,6 +186,8 @@ export default {
         date: false
       },
       rules: {
+        positive: (value) =>
+          value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
       }
@@ -212,6 +214,7 @@ export default {
         this.success = false
         this.messages = 'Gagal membuat form periksa lagi data yang di input'
         this.alert = true
+        return
       }
       try {
         const result = await this.$api('petty', 'store', this.input)
@@ -228,7 +231,7 @@ export default {
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Gagal membuat form periksa lagi data yang di input'
+        this.messages = 'Gagal membuat form petty cash karena kesalahan data'
         this.alert = true
       }
     },

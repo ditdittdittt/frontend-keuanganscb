@@ -119,7 +119,8 @@ export default {
     sure_verify_body:
       'form ini tidak bisa diubah kembali setelah anda melakukan verifikasi',
     current_file: 'berkas saat ini',
-    back: 'kembali'
+    back: 'kembali',
+    positive: 'harus bernilai positif'
   },
   helper: {
     messages: {

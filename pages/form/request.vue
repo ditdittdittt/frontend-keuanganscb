@@ -164,7 +164,7 @@
                 type="number"
                 clearable
                 solo
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.positive]"
                 :label="$translate('text.amount', 'capitalize')"
                 :hint="input.amount | currency"
               ></v-text-field>
@@ -273,6 +273,8 @@ export default {
         account_owner: null
       },
       rules: {
+        positive: (value) =>
+          value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
       }
@@ -292,10 +294,10 @@ export default {
         this.messages =
           'Gagal membuat form request periksa lagi data yang di input'
         this.alert = true
+        return
       }
       try {
         const result = await this.$api('request', 'store', this.input)
-        console.log(result)
         if (result.status === 201) {
           this.success = true
           this.messages = 'Berhasil membuat form request'
@@ -308,7 +310,7 @@ export default {
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Gagal membuat form request karena kesalahan server'
+        this.messages = 'Gagal membuat form request karena kesalahan data'
         this.alert = true
       }
     },

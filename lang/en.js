@@ -118,7 +118,8 @@ export default {
     sure_verify_head: 'are you sure to verify this form?',
     sure_verify_body: 'this form cannot be modify after you verify',
     current_file: 'Current file',
-    back: 'back'
+    back: 'back',
+    positive: 'must have a positive value'
   },
   helper: {
     messages: {

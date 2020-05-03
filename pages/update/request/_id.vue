@@ -1,18 +1,10 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">
-        {{ $translate('components.form.title.request') }}
-      </v-card-title>
-      <v-card-subtitle class="overline">
-        {{ $translate('components.form.subtitle.request') }}
-      </v-card-subtitle>
+      <v-card-title class="text-uppercase">{{ $translate('components.form.title.request') }}</v-card-title>
+      <v-card-subtitle class="overline">{{ $translate('components.form.subtitle.request') }}</v-card-subtitle>
       <v-card-text class="py-0 text-right">
-        <v-btn
-          small
-          color="secondary"
-          :to="'/detail/request/' + $route.params.id"
-        >
+        <v-btn small color="secondary" :to="'/detail/request/' + $route.params.id">
           <v-icon small class="mr-2">mdi-arrow-left</v-icon>
           {{ $translate('text.back') }}
         </v-btn>
@@ -24,9 +16,9 @@
         <v-form ref="form" v-model="formRequest">
           <v-row>
             <v-col cols="12" md="3">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.budget_code') }}
-              </div>
+              <div
+                class="caption primary--text text-capitalize"
+              >{{ $translate('text.budget_code') }}</div>
               <v-combobox
                 v-model="input.budget_code"
                 prepend-inner-icon="mdi-newspaper-plus"
@@ -38,18 +30,12 @@
                 auto-select-first
                 cache-items
               >
-                <template v-slot:item="{ item }">
-                  {{ item.code + ' - ' + item.name }}
-                </template>
-                <template v-slot:selection="{ item }">
-                  {{ item.code + ' - ' + item.name }}
-                </template>
+                <template v-slot:item="{ item }">{{ item.code + ' - ' + item.name }}</template>
+                <template v-slot:selection="{ item }">{{ item.code + ' - ' + item.name }}</template>
               </v-combobox>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.allocation') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.allocation') }}</div>
               <v-text-field
                 v-model="input.allocation"
                 prepend-inner-icon="mdi-basket"
@@ -61,9 +47,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="3">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.date') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.date') }}</div>
               <v-dialog
                 ref="date"
                 v-model="modal.date"
@@ -85,39 +69,28 @@
                 </template>
                 <v-date-picker v-model="input.date" scrollable :min="today">
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal.date = false">
-                    {{ $translate('components.button.cancel') }}
-                  </v-btn>
                   <v-btn
                     text
                     color="primary"
-                    @click="$refs.date.save(input.date)"
-                    >OK</v-btn
-                  >
+                    @click="modal.date = false"
+                  >{{ $translate('components.button.cancel') }}</v-btn>
+                  <v-btn text color="primary" @click="$refs.date.save(input.date)">OK</v-btn>
                 </v-date-picker>
               </v-dialog>
             </v-col>
             <v-col cols="12" md="3">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.payment_type') }}
-              </div>
+              <div
+                class="caption primary--text text-capitalize"
+              >{{ $translate('text.payment_type') }}</div>
               <v-radio-group v-model="input.method" dense row>
-                <v-radio
-                  :label="$translate('text.cash', 'capitalize')"
-                  value="cash"
-                ></v-radio>
-                <v-radio
-                  :label="$translate('text.transfer', 'capitalize')"
-                  value="transfer"
-                ></v-radio>
+                <v-radio :label="$translate('text.cash', 'capitalize')" value="cash"></v-radio>
+                <v-radio :label="$translate('text.transfer', 'capitalize')" value="transfer"></v-radio>
               </v-radio-group>
             </v-col>
           </v-row>
           <v-row v-if="input.method === 'transfer'">
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.bank_name') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.bank_name') }}</div>
               <v-text-field
                 v-model="input.bank_name"
                 prepend-inner-icon="mdi-cash"
@@ -128,9 +101,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.bank_code') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.bank_code') }}</div>
               <v-text-field
                 v-model="input.bank_code"
                 prepend-inner-icon="mdi-cash"
@@ -141,9 +112,9 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.account_number') }}
-              </div>
+              <div
+                class="caption primary--text text-capitalize"
+              >{{ $translate('text.account_number') }}</div>
               <v-text-field
                 v-model="input.account_number"
                 prepend-inner-icon="mdi-cash"
@@ -154,9 +125,9 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.account_owner') }}
-              </div>
+              <div
+                class="caption primary--text text-capitalize"
+              >{{ $translate('text.account_owner') }}</div>
               <v-text-field
                 v-model="input.account_owner"
                 prepend-inner-icon="mdi-cash"
@@ -169,9 +140,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.amount') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.amount') }}</div>
               <v-text-field
                 v-model="input.amount"
                 prepend-inner-icon="mdi-cash"
@@ -185,9 +154,9 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.amount_in_word') }}
-              </div>
+              <div
+                class="caption primary--text text-capitalize"
+              >{{ $translate('text.amount_in_word') }}</div>
               <v-text-field
                 :value="$terbilang(input.amount) | capitalize"
                 :label="$translate('text.amount_in_word', 'capitalize')"
@@ -201,9 +170,7 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.note') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.note') }}</div>
               <v-textarea
                 v-model="input.notes"
                 clearable
@@ -211,14 +178,16 @@
                 solo
                 :label="$translate('text.note', 'capitalize')"
               ></v-textarea>
-              <v-btn v-if="file" :href="file" target="_blank">{{
+              <v-btn v-if="file" :href="file" target="_blank">
+                {{
                 $translate('text.current_file')
-              }}</v-btn>
+                }}
+              </v-btn>
             </v-col>
             <v-col cols="12">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.additional_file') }}
-              </div>
+              <div
+                class="caption primary--text text-capitalize"
+              >{{ $translate('text.additional_file') }}</div>
               <v-file-input
                 v-model="input.attachment"
                 show-size
@@ -239,15 +208,10 @@
           color="secondary"
           elevation="8"
           @click.stop="updateRequest()"
-          >{{ $translate('components.button.update') }}</v-btn
-        >
+        >{{ $translate('components.button.update') }}</v-btn>
       </v-card-actions>
     </v-card>
-    <snackbar-alert
-      v-model="alert"
-      :success="success"
-      :messages="messages"
-    ></snackbar-alert>
+    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
   </v-container>
 </template>
 <script>
@@ -299,6 +263,8 @@ export default {
       },
       file: null,
       rules: {
+        positive: (value) =>
+          value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
       }
