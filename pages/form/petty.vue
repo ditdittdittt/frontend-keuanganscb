@@ -56,7 +56,7 @@
           </v-row>
           <template v-for="(budget, i) in input.budgets">
             <v-row :key="'budget-' + i">
-              <v-col cols="12" md="4" sm="6">
+              <v-col cols="12" md="6" sm="6">
                 <div
                   class="caption primary--text text-capitalize"
                 >[{{ i + 1 }}] {{ $translate('text.budget_code') }}</div>
@@ -83,7 +83,7 @@
                   </template>
                 </v-combobox>
               </v-col>
-              <v-col cols="12" md="4" sm="6">
+              <v-col cols="12" md="6" sm="6">
                 <div
                   class="caption primary--text text-capitalize"
                 >[{{ i + 1 }}] {{ $translate('text.budget_nominal') }}</div>

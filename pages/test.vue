@@ -1,84 +1,17 @@
 <template>
-  <v-layout column justify-center align-center>
-    <template>
-      <div id="app">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 mt-2">
-              <VueSignaturePad
-                id="signature"
-                ref="signaturePad"
-                width="500px"
-                height="500px"
-                :options="options"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3 mt-2">
-              <button class="btn btn-outline-secondary" @click="undo">Undo</button>
-            </div>
-            <div class="col-3 mt-2">
-              <button class="btn btn-outline-primary" @click="save">Save</button>
-            </div>
-            <div class="col-3 mt-2">
-              <button class="btn btn-outline-primary" @click="clear">Clear</button>
-            </div>
-            <div class="col-3 mt-2">
-              <button class="btn btn-outline-primary" @click="resume">Resume</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-  </v-layout>
+  <v-container></v-container>
 </template>
 
 <script>
-import Vue from 'vue'
-import VueSignaturePad from 'vue-signature-pad'
-
-Vue.use(VueSignaturePad)
-
 export default {
   data() {
     return {
-      test: null,
-      options: {
-        penColor: '#000000'
-      }
+      test: null
     }
   },
-  mounted() {},
-  methods: {
-    async funct() {
-      // this.test = await this.$api('request', 'index', null)
-    },
-    undo() {
-      this.$refs.signaturePad.undoSignature()
-    },
-    save() {
-      this.$refs.signaturePad.saveSignature()
-      alert('Open DevTools see the save data.')
-    },
-    clear() {
-      this.$refs.signaturePad.clearSignature()
-    },
-    resume() {
-      this.options = {
-        penColor: '#c0f'
-      }
-    }
-  }
+  watch: {},
+  methods: {}
 }
 </script>
 <style>
-#signature {
-  border: double 3px transparent;
-  border-radius: 5px;
-  background-image: linear-gradient(white, white),
-    radial-gradient(circle at top left, #4bc5e8, #9f6274);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-}
 </style>

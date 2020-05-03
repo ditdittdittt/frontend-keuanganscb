@@ -120,7 +120,8 @@ export default {
       'form ini tidak bisa diubah kembali setelah anda melakukan verifikasi',
     current_file: 'berkas saat ini',
     back: 'kembali',
-    positive: 'harus bernilai positif'
+    positive: 'harus bernilai positif',
+    convert_to_image: 'mengonversi ke dalam gambar'
   },
   helper: {
     messages: {

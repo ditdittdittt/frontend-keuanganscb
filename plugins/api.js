@@ -214,14 +214,14 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async show(data) {
+    show(data) {
       console.log('[Request] Show a request with specified id')
 
       return app.$axios.$get('/form/request/' + data).then((response) => {
         return response.form_request
       })
     },
-    async update(data) {
+    update(data) {
       console.log('[Request] Update a request with specified id')
       const body = new FormData()
       body.append('allocation', data.allocation)
@@ -237,7 +237,7 @@ export default ({ app }, inject) => {
         body.append('account_owner', data.account_owner)
       }
       body.append('budget_code_id', data.budget_code.id)
-      await app
+      return app
         .$axios({
           method: 'post',
           url: '/form/request/' + data.id,
@@ -250,9 +250,9 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async delete(data) {
+    delete(data) {
       console.log('[Request] Delete a request with specified id')
-      await app
+      return app
         .$axios({
           method: 'delete',
           url: '/form/request/' + data
@@ -264,11 +264,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsPic(data) {
+    verifyAsPic(data) {
       console.log('[Request] Verify as PIC')
       const body = new FormData()
       body.append('is_confirmed_pic', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/request/' + data.id,
@@ -281,11 +282,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsVerificator(data) {
+    verifyAsVerificator(data) {
       console.log('[Request] Verify as Verificator')
       const body = new FormData()
       body.append('is_confirmed_verificator', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/request/' + data.id,
@@ -298,11 +300,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsCashier(data) {
+    verifyAsCashier(data) {
       console.log('[Request] Verify as Cashier')
       const body = new FormData()
       body.append('is_confirmed_cashier', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/request/' + data.id,
@@ -315,11 +318,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsHeadDept(data) {
+    verifyAsHeadDept(data) {
       console.log('[Request] Verify as Head Dept')
       const body = new FormData()
       body.append('is_confirmed_head_dept', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/request/' + data.id,
@@ -332,11 +336,11 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAlreadyPaid(data) {
+    verifyAlreadyPaid(data) {
       console.log('[Request] Verify already paid')
       const body = new FormData()
       body.append('status_id', 3)
-      await app
+      return app
         .$axios({
           method: 'post',
           url: '/form/request/' + data.id,
@@ -384,14 +388,14 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async show(data) {
+    show(data) {
       console.log('[Submission] Show a submission with specified id')
 
       return app.$axios.$get('/form/submission/' + data).then((response) => {
         return response.form_submission
       })
     },
-    async update(data) {
+    update(data) {
       console.log('[Submission] Update a submission with specified id')
       const body = new FormData()
       body.append('form_request_id', data.form_request.id)
@@ -400,7 +404,7 @@ export default ({ app }, inject) => {
       body.append('used', data.used)
       body.append('balance', data.balance)
       body.append('notes', data.notes)
-      await app
+      return app
         .$axios({
           method: 'post',
           url: '/form/submission/' + data.id,
@@ -413,9 +417,9 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async delete(data) {
+    delete(data) {
       console.log('[Submission] Delete a submission with specified id')
-      await app
+      return app
         .$axios({
           method: 'delete',
           url: '/form/submission/' + data
@@ -427,11 +431,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsPic(data) {
+    verifyAsPic(data) {
       console.log('[Submission] Verify as PIC')
       const body = new FormData()
       body.append('is_confirmed_pic', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/submission/' + data.id,
@@ -444,11 +449,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsVerificator(data) {
+    verifyAsVerificator(data) {
       console.log('[Submission] Verify as Verificator')
       const body = new FormData()
       body.append('is_confirmed_verificator', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/submission/' + data.id,
@@ -461,11 +467,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsHeadOffice(data) {
+    verifyAsHeadOffice(data) {
       console.log('[Submission] Verify as Head Office')
       const body = new FormData()
       body.append('is_confirmed_head_office', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/submission/' + data.id,
@@ -478,11 +485,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsHeadDept(data) {
+    verifyAsHeadDept(data) {
       console.log('[Submission] Verify as Head Dept')
       const body = new FormData()
       body.append('is_confirmed_head_dept', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/submission/' + data.id,
@@ -536,14 +544,14 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async show(data) {
+    show(data) {
       console.log('[Petty] Show a petty cash with specified id')
 
       return app.$axios.$get('/form/petty-cash/' + data).then((response) => {
         return response.form_petty_cash
       })
     },
-    async update(data) {
+    update(data) {
       console.log('[Petty] Update a petty cash with specified id')
       let amount = 0
       const body = new FormData()
@@ -558,7 +566,7 @@ export default ({ app }, inject) => {
         amount += Number(data.details[i].nominal)
       }
       body.append('amount', amount)
-      await app
+      return app
         .$axios({
           method: 'post',
           url: '/form/petty-cash/' + data.id,
@@ -571,9 +579,9 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async delete(data) {
+    delete(data) {
       console.log('[Petty] Delete a petty cash with specified id')
-      await app
+      return app
         .$axios({
           method: 'delete',
           url: '/form/petty-cash/' + data
@@ -585,11 +593,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsPic(data) {
+    verifyAsPic(data) {
       console.log('[Petty] Verify as PIC')
       const body = new FormData()
       body.append('is_confirmed_pic', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/petty-cash/' + data.id,
@@ -602,11 +611,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsCashier(data) {
+    verifyAsCashier(data) {
       console.log('[Petty] Verify as Cashier')
       const body = new FormData()
       body.append('is_confirmed_cashier', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/petty-cash/' + data.id,
@@ -619,11 +629,12 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAsManagerOps(data) {
+    verifyAsManagerOps(data) {
       console.log('[Petty] Verify as Manager Ops')
       const body = new FormData()
       body.append('is_confirmed_manager_ops', 1)
-      await app
+      body.append('signature', data.signature)
+      return app
         .$axios({
           method: 'post',
           url: '/form/petty-cash/' + data.id,
@@ -636,11 +647,11 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    async verifyAlreadyPaid(data) {
+    verifyAlreadyPaid(data) {
       console.log('[Petty] Verify already paid')
       const body = new FormData()
       body.append('status_id', 3)
-      await app
+      return app
         .$axios({
           method: 'post',
           url: '/form/petty-cash/' + data.id,

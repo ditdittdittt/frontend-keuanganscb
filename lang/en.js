@@ -119,7 +119,8 @@ export default {
     sure_verify_body: 'this form cannot be modify after you verify',
     current_file: 'Current file',
     back: 'back',
-    positive: 'must have a positive value'
+    positive: 'must have a positive value',
+    convert_to_image: 'converting to image'
   },
   helper: {
     messages: {
