@@ -1,12 +1,16 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">{{
+      <v-card-title class="text-uppercase">
+        {{
         $translate('components.form.title.submission')
-      }}</v-card-title>
-      <v-card-subtitle class="overline">{{
+        }}
+      </v-card-title>
+      <v-card-subtitle class="overline">
+        {{
         $translate('components.form.subtitle.submission')
-      }}</v-card-subtitle>
+        }}
+      </v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
@@ -14,9 +18,9 @@
         <v-form ref="form" v-model="valid">
           <v-row>
             <v-col cols="12" md="3">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.form') + ' ' + $translate('text.request') }}
-              </div>
+              <div
+                class="caption primary--text text-capitalize"
+              >{{ $translate('text.form') + ' ' + $translate('text.request') }}</div>
               <v-combobox
                 v-model="input.request"
                 prepend-inner-icon="mdi-newspaper-plus"
@@ -32,18 +36,20 @@
                 auto-select-first
                 cache-items
               >
-                <template v-slot:item="{ item }">{{
+                <template v-slot:item="{ item }">
+                  {{
                   item.id + ' - ' + item.allocation
-                }}</template>
-                <template v-slot:selection="{ item }">{{
+                  }}
+                </template>
+                <template v-slot:selection="{ item }">
+                  {{
                   item.id + ' - ' + item.allocation
-                }}</template>
+                  }}
+                </template>
               </v-combobox>
             </v-col>
             <v-col cols="12" md="3">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.date') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.date') }}</div>
               <v-dialog
                 ref="date"
                 v-model="modal.date"
@@ -65,22 +71,17 @@
                 </template>
                 <v-date-picker v-model="input.date" scrollable :min="today">
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal.date = false">{{
+                  <v-btn text color="primary" @click="modal.date = false">
+                    {{
                     $translate('components.button.cancel')
-                  }}</v-btn>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.date.save(input.date)"
-                    >OK</v-btn
-                  >
+                    }}
+                  </v-btn>
+                  <v-btn text color="primary" @click="$refs.date.save(input.date)">OK</v-btn>
                 </v-date-picker>
               </v-dialog>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.allocation') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.allocation') }}</div>
               <v-text-field
                 v-model="input.allocation"
                 prepend-inner-icon="mdi-basket"
@@ -94,9 +95,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.use') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.use') }}</div>
               <v-text-field
                 v-model="input.used"
                 prepend-inner-icon="mdi-cash"
@@ -112,9 +111,9 @@
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
                 {{
-                  $translate('text.amount_in_word') +
-                    ' ' +
-                    $translate('text.use', 'capitalize')
+                $translate('text.amount_in_word') +
+                ' ' +
+                $translate('text.use', 'capitalize')
                 }}
               </div>
               <v-text-field
@@ -132,9 +131,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.balance') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.balance') }}</div>
               <v-text-field
                 v-model="input.balance"
                 prepend-inner-icon="mdi-cash-multiple"
@@ -150,9 +147,9 @@
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
                 {{
-                  $translate('text.amount_in_word') +
-                    ' ' +
-                    $translate('text.balance', 'capitalize')
+                $translate('text.amount_in_word') +
+                ' ' +
+                $translate('text.balance', 'capitalize')
                 }}
               </div>
               <v-text-field
@@ -172,9 +169,7 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.note') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.note') }}</div>
               <v-textarea
                 v-model="input.notes"
                 counter
@@ -194,15 +189,10 @@
           color="secondary"
           elevation="8"
           @click.stop="storeSubmission()"
-          >{{ $translate('components.button.submit') }}</v-btn
-        >
+        >{{ $translate('components.button.submit') }}</v-btn>
       </v-card-actions>
     </v-card>
-    <snackbar-alert
-      v-model="alert"
-      :success="success"
-      :messages="messages"
-    ></snackbar-alert>
+    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
   </v-container>
 </template>
 <script>
@@ -268,7 +258,7 @@ export default {
       }
       try {
         const result = await this.$api('submission', 'store', this.input)
-        if (result) {
+        if (result.status === 201) {
           this.success = true
           this.messages = 'Berhasil membuat form submission'
           this.alert = true

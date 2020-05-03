@@ -190,7 +190,6 @@ export default ({ app }, inject) => {
     },
     async store(data) {
       console.log('[Request] Creating a new request')
-      console.log(data)
       const body = new FormData()
       body.append('allocation', data.allocation)
       body.append('date', data.date)
