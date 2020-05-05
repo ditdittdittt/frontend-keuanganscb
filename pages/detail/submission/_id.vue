@@ -40,6 +40,17 @@
               </v-card-title>
               <v-card-text>
                 <v-row>
+                  <v-col cols="12">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.number') }}
+                    </div>
+                    <span>
+                      {{
+                        input.number ||
+                          $vuetify.lang.t('$vuetify.noDataText')
+                      }}
+                    </span>
+                  </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.allocation') }}

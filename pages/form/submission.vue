@@ -23,11 +23,7 @@
                 :items="form.request"
                 solo
                 :rules="[rules.required]"
-                :label="
-                  $translate('text.form', 'capitalize') +
-                    ' ' +
-                    $translate('text.request', 'capitalize')
-                "
+                :label="$translate('text.number', 'capitalize')"
                 clearable
                 auto-select-first
                 cache-items
@@ -35,10 +31,10 @@
                 @change="setMinDate()"
               >
                 <template v-slot:item="{ item }">{{
-                  item.id + ' - ' + item.allocation
+                  item.number
                 }}</template>
                 <template v-slot:selection="{ item }">{{
-                  item.id + ' - ' + item.allocation
+                  item.number
                 }}</template>
               </v-combobox>
             </v-col>
