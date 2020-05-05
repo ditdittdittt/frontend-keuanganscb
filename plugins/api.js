@@ -27,7 +27,7 @@ export default ({ app }, inject) => {
           case 'show':
             return User.show()
           case 'update':
-            return User.update()
+            return User.update(data)
           case 'all':
             return User.getAll()
           default:
@@ -164,8 +164,28 @@ export default ({ app }, inject) => {
     show() {
       console.log('[User] Show current user SCB app.')
     },
-    update() {
+    update(data) {
       console.log('[User] Update current user SCB app.')
+      console.log(data)
+      const body = new FormData()
+      body.append('name', data.name)
+      body.append('username', data.username)
+      body.append('email', data.email)
+      body.append('division', data.division)
+      body.append('nik', data.nik)
+      body.append('address', data.address)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/users/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     },
     getAll() {
       console.log('[User] Get all users.')

@@ -212,52 +212,52 @@
               </v-list-item>
 
               <!-- Position -->
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="overline font-weight-bold">
-                    <v-badge
-                      :value="different(user.position, input.position)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.position') }}</v-badge
-                    >
-                  </v-list-item-title>
-                  <v-list-item-subtitle
-                    v-if="!edit.position"
-                    class="text-capitalize"
-                    >{{ input.position }}</v-list-item-subtitle
-                  >
-                  <v-list-item-subtitle v-else>
-                    <v-text-field
-                      v-model="input.position"
-                      dense
-                      :type="'text'"
-                      autofocus
-                      solo
-                      :placeholder="$translate('text.position', 'capitalize')"
-                    ></v-text-field>
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-btn
-                    v-if="!edit.position"
-                    text
-                    small
-                    @click.stop="edit.position = true"
-                    >Edit</v-btn
-                  >
-                  <v-btn
-                    v-else
-                    dark
-                    color="secondary"
-                    small
-                    @click.stop="edit.position = false"
-                    >{{ $translate('components.button.done') }}</v-btn
-                  >
-                </v-list-item-action>
-              </v-list-item>
+<!--              <v-list-item>-->
+<!--                <v-list-item-content>-->
+<!--                  <v-list-item-title class="overline font-weight-bold">-->
+<!--                    <v-badge-->
+<!--                      :value="different(user.position, input.position)"-->
+<!--                      dot-->
+<!--                      color="red"-->
+<!--                      :offset-x="-4"-->
+<!--                      :offset-y="8"-->
+<!--                      >{{ $translate('text.position') }}</v-badge-->
+<!--                    >-->
+<!--                  </v-list-item-title>-->
+<!--                  <v-list-item-subtitle-->
+<!--                    v-if="!edit.position"-->
+<!--                    class="text-capitalize"-->
+<!--                    >{{ input.position }}</v-list-item-subtitle-->
+<!--                  >-->
+<!--                  <v-list-item-subtitle v-else>-->
+<!--                    <v-text-field-->
+<!--                      v-model="input.position"-->
+<!--                      dense-->
+<!--                      :type="'text'"-->
+<!--                      autofocus-->
+<!--                      solo-->
+<!--                      :placeholder="$translate('text.position', 'capitalize')"-->
+<!--                    ></v-text-field>-->
+<!--                  </v-list-item-subtitle>-->
+<!--                </v-list-item-content>-->
+<!--                <v-list-item-action>-->
+<!--                  <v-btn-->
+<!--                    v-if="!edit.position"-->
+<!--                    text-->
+<!--                    small-->
+<!--                    @click.stop="edit.position = true"-->
+<!--                    >Edit</v-btn-->
+<!--                  >-->
+<!--                  <v-btn-->
+<!--                    v-else-->
+<!--                    dark-->
+<!--                    color="secondary"-->
+<!--                    small-->
+<!--                    @click.stop="edit.position = false"-->
+<!--                    >{{ $translate('components.button.done') }}</v-btn-->
+<!--                  >-->
+<!--                </v-list-item-action>-->
+<!--              </v-list-item>-->
 
               <div class="spacing-small"></div>
               <v-subheader class="primary--text caption text-capitalize">
@@ -460,7 +460,8 @@ export default {
     },
     async updateUser() {
       try {
-        await this.$api('user', 'update')
+        await this.$api('user', 'update', this.input)
+        await this.getUser()
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
