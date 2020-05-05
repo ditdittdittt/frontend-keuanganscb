@@ -121,13 +121,26 @@ export default {
     back: 'back',
     positive: 'must have a positive value',
     convert_to_image: 'converting to image',
-    number: 'number'
+    number: 'number',
+    role: 'role',
+    confirm_password: 'confirm password'
   },
   helper: {
     messages: {
       attachment_file: 'click to choose file',
       amount_in_word: 'automaticly filled'
-    }
+    },
+    name: 'your full name',
+    username: 'alias or nickname',
+    email: 'use correct email',
+    wrong_email: 'email format is not correct',
+    password: 'use strong password',
+    confirm_password: 're-type your password',
+    different_password: 'password does not match',
+    division: 'current division you are working in office',
+    role: 'your role in this software',
+    nik: 'identity number in your id card',
+    address: 'your residential address'
   },
   export: {
     pdf: 'export to PDF',

@@ -23,7 +23,7 @@ export default ({ app }, inject) => {
           case 'logout':
             return User.logout()
           case 'register':
-            return User.register()
+            return User.register(data)
           case 'show':
             return User.show()
           case 'update':
@@ -148,8 +148,31 @@ export default ({ app }, inject) => {
    * User Interface
    */
   const User = {
-    register() {
+    register(data) {
       console.log('[User] Registering a new user.')
+      console.log(data)
+      const body = new FormData()
+      body.append('name', data.name)
+      body.append('username', data.username)
+      body.append('email', data.email)
+      body.append('password', data.password)
+      body.append('c_password', data.confirm)
+      body.append('division', data.division)
+      body.append('role', data.role)
+      body.append('nik', data.nik)
+      body.append('address', data.address)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/auth/register',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     },
     login(data) {
       console.log('[User] Login into SCB app.')
@@ -379,7 +402,7 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    count () {
+    count() {
       console.log('[Request] Get count for all request forms')
 
       return app.$axios
@@ -541,7 +564,7 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    count () {
+    count() {
       console.log('[Submission] Get count for all submission forms')
 
       return app.$axios
@@ -714,7 +737,7 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    count () {
+    count() {
       console.log('[Petty] Get count for all petty forms')
 
       return app.$axios

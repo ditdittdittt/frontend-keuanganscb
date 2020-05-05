@@ -122,13 +122,26 @@ export default {
     back: 'kembali',
     positive: 'harus bernilai positif',
     convert_to_image: 'mengonversi ke dalam gambar',
-    number: 'nomor'
+    number: 'nomor',
+    role: 'peran',
+    confirm_password: 'konfirmasi password'
   },
   helper: {
     messages: {
       attachment_file: 'klik untuk memilih lampiran',
       amount_in_word: 'otomatis terisi'
-    }
+    },
+    name: 'nama lengkap',
+    username: 'nama panggilan atau singkatan',
+    email: 'gunakan email yang benar',
+    wrong_email: 'format email tidak tepat',
+    password: 'gunakan sandi yang aman',
+    confirm_password: 'tulis ulang sandi',
+    different_password: 'password yang tertulis berbeda',
+    division: 'divisi pada tempat kerja',
+    role: 'peran pada penggunaan software',
+    nik: 'nomor induk kependudukan',
+    address: 'alamat tempat tinggal'
   },
   export: {
     pdf: 'ekspor ke PDF',
