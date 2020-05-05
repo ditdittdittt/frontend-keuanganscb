@@ -24,6 +24,7 @@
             id="signature"
             ref="signaturePad"
             height="300px"
+            width="300px"
             :options="options"
           />
           <v-overlay :absolute="true" :value="isLoading" :opacity="0.9">
@@ -101,6 +102,7 @@ export default {
 #signature {
   border-radius: 8px;
   border: 2px dashed #dddddd;
+  margin: 0 auto;
 }
 .v-dialog {
   box-shadow: none !important;
