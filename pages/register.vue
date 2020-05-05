@@ -141,6 +141,7 @@
 <script>
 export default {
   layout: 'blank',
+  auth: 'guest',
   data() {
     return {
       show: false,

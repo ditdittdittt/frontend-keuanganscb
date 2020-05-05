@@ -176,30 +176,15 @@ export default {
     }
   },
   mounted() {
+    this.getFormRequestCount()
+    this.getFormSubmissionCount()
+    this.getFormPettyCashCount()
     this.getAllUsers()
-    this.initValue()
   },
   methods: {
     popupUser(user) {
       this.user = user
       this.modal.user = true
-    },
-    initValue() {
-      this.summary.push({
-        name: 'request',
-        value: 33,
-        icon: 'mdi-newspaper'
-      })
-      this.summary.push({
-        name: 'submission',
-        value: 5,
-        icon: 'mdi-newspaper-variant-multiple'
-      })
-      this.summary.push({
-        name: 'petty_cash',
-        value: 150,
-        icon: 'mdi-cash-multiple'
-      })
     },
     async getAllUsers() {
       try {
@@ -209,6 +194,48 @@ export default {
           name: 'user',
           value: users.length,
           icon: 'mdi-account-circle'
+        })
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async getFormRequestCount() {
+      try {
+        const response = await this.$api('request', 'count')
+        this.summary.push({
+          name: 'request',
+          value: response.form_request_count,
+          icon: 'mdi-newspaper'
+        })
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async getFormSubmissionCount() {
+      try {
+        const response = await this.$api('submission', 'count')
+        this.summary.push({
+          name: 'submission',
+          value: response.form_submission_count,
+          icon: 'mdi-newspaper-variant-multiple'
+        })
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async getFormPettyCashCount() {
+      try {
+        const response = await this.$api('petty', 'count')
+        this.summary.push({
+          name: 'petty_cash',
+          value: response.form_petty_cash_count,
+          icon: 'mdi-cash-multiple'
         })
       } catch (e) {
         this.success = false

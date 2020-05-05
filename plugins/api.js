@@ -59,6 +59,8 @@ export default ({ app }, inject) => {
             return Request.verifyAsVerificator(data)
           case 'verifyalreadypaid':
             return Request.verifyAlreadyPaid(data)
+          case 'count':
+            return Request.count()
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -86,6 +88,8 @@ export default ({ app }, inject) => {
             return Submission.verifyAsHeadDept(data)
           case 'verifyasverificator':
             return Submission.verifyAsVerificator(data)
+          case 'count':
+            return Submission.count()
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -113,6 +117,8 @@ export default ({ app }, inject) => {
             return Petty.verifyAsCashier(data)
           case 'verifyalreadypaid':
             return Petty.verifyAlreadyPaid(data)
+          case 'count':
+            return Petty.count()
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -352,6 +358,18 @@ export default ({ app }, inject) => {
         .catch((error) => {
           throw new Error(error)
         })
+    },
+    count () {
+      console.log('[Request] Get count for all request forms')
+
+      return app.$axios
+        .$get('/form/request/count')
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     }
   }
 
@@ -496,6 +514,18 @@ export default ({ app }, inject) => {
           url: '/form/submission/' + data.id,
           data: body
         })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    count () {
+      console.log('[Submission] Get count for all submission forms')
+
+      return app.$axios
+        .$get('/form/submission/count')
         .then((response) => {
           return response
         })
@@ -657,6 +687,18 @@ export default ({ app }, inject) => {
           url: '/form/petty-cash/' + data.id,
           data: body
         })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    count () {
+      console.log('[Petty] Get count for all petty forms')
+
+      return app.$axios
+        .$get('/form/petty-cash/count')
         .then((response) => {
           return response
         })
