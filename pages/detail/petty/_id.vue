@@ -24,13 +24,6 @@
                         {{ $translate('export.pdf') }}
                       </v-list-item-title>
                     </v-list-item>
-                    <v-list-item
-                      @click.stop="$export('excel', 'petty', $route.params.id)"
-                    >
-                      <v-list-item-title class="text-capitalize">
-                        {{ $translate('export.excel') }}
-                      </v-list-item-title>
-                    </v-list-item>
                   </v-list>
                 </v-menu>
               </v-card-title>
