@@ -98,8 +98,8 @@ export default {
           value: 'details.length'
         },
         {
-          text: `${this.$translate('text.created_at', 'capitalize')}`,
-          value: 'created_at'
+          text: `${this.$translate('text.number', 'capitalize')}`,
+          value: 'number'
         },
         {
           text: `${this.$translate('text.action', 'capitalize')}`,

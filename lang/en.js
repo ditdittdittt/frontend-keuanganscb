@@ -120,7 +120,8 @@ export default {
     current_file: 'Current file',
     back: 'back',
     positive: 'must have a positive value',
-    convert_to_image: 'converting to image'
+    convert_to_image: 'converting to image',
+    number: 'number'
   },
   helper: {
     messages: {

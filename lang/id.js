@@ -121,7 +121,8 @@ export default {
     current_file: 'berkas saat ini',
     back: 'kembali',
     positive: 'harus bernilai positif',
-    convert_to_image: 'mengonversi ke dalam gambar'
+    convert_to_image: 'mengonversi ke dalam gambar',
+    number: 'nomor'
   },
   helper: {
     messages: {

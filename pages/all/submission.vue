@@ -109,8 +109,8 @@ export default {
           value: 'status.status'
         },
         {
-          text: `${this.$translate('text.created_at', 'capitalize')}`,
-          value: 'created_at'
+          text: `${this.$translate('text.number', 'capitalize')}`,
+          value: 'number'
         },
         {
           text: `${this.$translate('text.action', 'capitalize')}`,
