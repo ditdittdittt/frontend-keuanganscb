@@ -35,19 +35,19 @@ const exportPDF = (form, id) => {
   switch (form) {
     case 'request':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/form/request/export/pdf')
-      else window.open('http://54.169.75.0/api/v1/form/request/' + id + '/pdf')
+        window.open('http://54.169.75.0/api/v1/export/form-request/pdf')
+      else window.open('http://54.169.75.0/api/v1/export/form-request/' + id + '/pdf')
       break
     case 'submission':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/form/submission/export/pdf')
+        window.open('http://54.169.75.0/api/v1/export/form-submission/pdf')
       else
-        window.open('http://54.169.75.0/api/v1/form/submission/' + id + '/pdf')
+        window.open('http://54.169.75.0/api/v1/export/form-submission/' + id + '/pdf')
       break
     case 'petty':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/form/petty/export/pdf')
-      else window.open('http://54.169.75.0/api/v1/form/petty/' + id + '/pdf')
+        window.open('http://54.169.75.0/api/v1/export/form-petty-cash/pdf')
+      else window.open('http://54.169.75.0/api/v1/export/form-petty-cash/' + id + '/pdf')
       break
   }
 }
@@ -56,22 +56,22 @@ const exportExcel = (form, id) => {
   switch (form) {
     case 'request':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/form/request/export/excel')
+        window.open('http://54.169.75.0/api/v1/export/form-request/excel')
       else
-        window.open('http://54.169.75.0/api/v1/form/request/' + id + '/excel')
+        window.open('http://54.169.75.0/api/v1/export/form-request' + id + '/excel')
       break
     case 'submission':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/form/submission/export/excel')
+        window.open('http://54.169.75.0/api/v1/export/form-submission/excel')
       else
         window.open(
-          'http://54.169.75.0/api/v1/form/submission/' + id + '/excel'
+          'http://54.169.75.0/api/v1/export/form-submission/' + id + '/excel'
         )
       break
     case 'petty':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/form/petty/export/excel')
-      else window.open('http://54.169.75.0/api/v1/form/petty/' + id + '/excel')
+        window.open('http://54.169.75.0/api/v1/export/form-petty-cash/excel')
+      else window.open('http://54.169.75.0/api/v1/export/form-petty-cash/' + id + '/excel')
       break
   }
 }
