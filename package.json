@@ -9,7 +9,8 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "prettier": "prettier --write ./**/*.{js,vue}"
   },
   "lint-staged": {
     "*.{js,vue}": "npm run lint",
@@ -25,9 +26,9 @@
     "@nuxtjs/axios": "^5.9.5",
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
-    "axios": "^0.19.2",
     "nuxt": "^2.0.0",
-    "nuxt-leaflet": "0.0.19"
+    "nuxt-i18n": "^6.8.1",
+    "vue-signature-pad": "^2.0.0"
   },
   "devDependencies": {
     "@mdi/font": "^5.0.45",

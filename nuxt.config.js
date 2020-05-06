@@ -1,129 +1,180 @@
-import colors from 'vuetify/es5/util/colors'
+import en from 'vuetify/es5/locale/en.js'
+import id from 'vuetify/es5/locale/id.js'
+import eng from './lang/en.js'
+import idn from './lang/id.js'
 
 export default {
   mode: 'spa',
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s',
+    title: 'SCB Keuangan',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      { name: 'msapplication-TileColor', content: '#ffffff' },
+      {
+        name: 'msapplication-TileImage',
+        content: '/favicon/ms-icon-144x144.png'
+      },
+      { name: 'theme-color', content: '#ffffff' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Aplikasi Divisi Keuangan di Sekolah Cendekia Baznas'
+      }
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   /*
-  ** Customize the progress-bar color
-  */
+   ** Customize the progress-bar color
+   */
   loading: { color: '#fff' },
   /*
-  ** Global CSS
-  */
-  css: [
-  ],
+   ** Global CSS
+   */
+  css: ['~assets/css/main.css'],
   /*
-  ** Plugins to load before mounting the App
-  */
+   ** Plugins to load before mounting the App
+   */
   plugins: [
-    '~/plugins/axios',
-    '~/plugins/vuetify'
+    '~/plugins/terbilang',
+    '~/plugins/translate',
+    '~/plugins/api',
+    '~/plugins/global.js'
   ],
   /*
-  ** Nuxt.js dev-modules
-  */
+   ** Nuxt.js dev-modules
+   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     // '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
     // '@nuxtjs/stylelint-module',
-    '@nuxtjs/vuetify',
+    '@nuxtjs/vuetify'
   ],
   /*
-  ** Nuxt.js modules
-  */
+   ** Nuxt.js modules
+   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
-    '@nuxtjs/proxy',
     '@nuxtjs/auth',
-    'nuxt-leaflet',
+    'nuxt-i18n'
   ],
   /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  axios: {
-    // proxy: true
-    baseURL: 'http://18.141.140.18/api/v1'
-
-  },
-  proxy: {
-    '/api/' : 'http://54.169.75.0/'
+   ** Nuxt i18n configuration
+   ** See https://nuxt-community.github.io/nuxt-i18n/
+   */
+  i18n: {
+    strategy: 'no_prefix',
+    locales: [
+      {
+        code: 'en',
+        name: 'english',
+        file: 'en.js'
+      },
+      {
+        code: 'id',
+        name: 'indonesia',
+        file: 'id.js'
+      }
+    ],
+    defaultLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en',
+      messages: {
+        en: eng,
+        id: idn
+      }
+    }
   },
   /*
-  ** vuetify module configuration
-  ** https://github.com/nuxt-community/vuetify-module
-  */
+   ** Axios module configuration
+   ** See https://axios.nuxtjs.org/options
+   */
+  axios: {
+    prefix: '/api/v1',
+    port: process.env.PORT || 80,
+    host: process.env.HOST || '18.141.140.18'
+  },
+  /*
+   ** vuetify module configuration
+   ** https://github.com/nuxt-community/vuetify-module
+   */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    lang: {
+      locales: { en, id },
+      current: 'en'
+    },
     theme: {
       dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        },
         light: {
-          primary: "#008080"
+          primary: '#3f51b5',
+          secondary: '#3f51b5',
+          accent: '#3f51b5',
+          error: '#f44336',
+          warning: '#ffc107',
+          info: '#2196f3',
+          success: '#4caf50'
+        },
+        dark: {
+          primary: '#3f51b5',
+          secondary: '#3f51b5',
+          accent: '#3f51b5',
+          error: '#f44336',
+          warning: '#ffc107',
+          info: '#2196f3',
+          success: '#4caf50'
         }
       }
-    },
-    defaultAssets: {
-      icons: 'mdiSvg',
-    },
+    }
   },
   router: {
     middleware: 'auth'
   },
+  /*
+   ** Auth modulte configuration
+   ** See https://auth.nuxtjs.org/#getting-started
+   */
   auth: {
     redirect: {
       login: '/login',
       logout: '/login',
-      home: '/'
+      home: '/dashboard'
     },
     strategies: {
-      local:{
-        endpoints:{
-          login:  {url:'/auth/login', method: 'post', propertyName: 'success.token'},
-          user:   { url: '/auth/getUser', method: 'post', propertyName: 'success' },
-          logout:   { url: '/auth/logout', method: 'post'}
-        },
-        // tokenRequired: true,
-        // tokenType: 'bearer'
+      local: {
+        endpoints: {
+          login: {
+            url: '/auth/login',
+            method: 'post',
+            propertyName: 'success.token'
+          },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: {
+            url: '/auth/getUser',
+            method: 'post',
+            propertyName: 'success'
+          }
+        }
       }
     }
   },
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   build: {
     /*
-    ** You can extend webpack config here
-    */
-    extend (config, ctx) {
-    }
+     ** You can extend webpack config here
+     */
+    extend(config, ctx) {}
   }
 }
