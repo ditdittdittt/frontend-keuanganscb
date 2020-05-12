@@ -247,18 +247,18 @@ export default {
       try {
         const result = await this.$api('petty', 'update', this.input).then(
           (response) => {
+            if (response.status === 200) {
+              this.success = true
+              this.messages = 'Data berhasil di update'
+              this.alert = true
+            } else {
+              this.success = false
+              this.messages = 'Gagal mengupdate data'
+              this.alert = true
+            }
             this.getPetty()
           }
         )
-        if (result.status === 200) {
-          this.success = true
-          this.messages = 'Data berhasil di update'
-          this.alert = true
-        } else {
-          this.success = false
-          this.messages = 'Gagal mengupdate data'
-          this.alert = true
-        }
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
