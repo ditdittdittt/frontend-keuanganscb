@@ -267,6 +267,7 @@ export default ({ app }, inject) => {
       console.log('[Request] Show a request with specified id')
 
       return app.$axios.$get('/form/request/' + data).then((response) => {
+        console.log(response)
         return response.form_request
       })
     },

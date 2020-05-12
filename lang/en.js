@@ -40,9 +40,9 @@ export default {
         petty_cash: 'form petty cash'
       },
       subtitle: {
-        request: 'isi formulir untuk mengajukan dana',
-        submission: 'isi formulir untuk submisi dana',
-        petty_cash: 'isi formulir untuk pengajuan uang belanja kecil'
+        request: 'fill this request form',
+        submission: 'fill this submission form',
+        petty_cash: 'fill this petty cash form'
       }
     }
   },
