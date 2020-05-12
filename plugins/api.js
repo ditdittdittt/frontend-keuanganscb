@@ -150,7 +150,6 @@ export default ({ app }, inject) => {
   const User = {
     register(data) {
       console.log('[User] Registering a new user.')
-      console.log(data)
       const body = new FormData()
       body.append('name', data.name)
       body.append('username', data.username)
@@ -176,20 +175,34 @@ export default ({ app }, inject) => {
     },
     login(data) {
       console.log('[User] Login into SCB app.')
-      app.$auth.loginWith('local', {
-        data
-      })
+      return app.$auth
+        .loginWith('local', {
+          data
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     },
     logout() {
       console.log('[User] Logout from SCB app.')
-      app.$auth.logout()
+      return app.$auth
+        .logout()
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     },
     show() {
       console.log('[User] Show current user SCB app.')
     },
     update(data) {
       console.log('[User] Update current user SCB app.')
-      console.log(data)
       const body = new FormData()
       body.append('name', data.name)
       body.append('username', data.username)
