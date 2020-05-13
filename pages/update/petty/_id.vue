@@ -1,18 +1,18 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">{{
+      <v-card-title class="text-uppercase">
+        {{
         $translate('components.form.title.petty_cash')
-      }}</v-card-title>
-      <v-card-subtitle class="overline">{{
+        }}
+      </v-card-title>
+      <v-card-subtitle class="overline">
+        {{
         $translate('components.form.subtitle.petty_cash')
-      }}</v-card-subtitle>
+        }}
+      </v-card-subtitle>
       <v-card-text class="py-0 text-right">
-        <v-btn
-          small
-          color="secondary"
-          :to="'/detail/petty/' + $route.params.id"
-        >
+        <v-btn small color="secondary" :to="'/detail/petty/' + $route.params.id">
           <v-icon small class="mr-2">mdi-arrow-left</v-icon>
           {{ $translate('text.back') }}
         </v-btn>
@@ -24,9 +24,7 @@
         <v-form ref="form" v-model="formPettyCash">
           <v-row>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.allocation') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.allocation') }}</div>
               <v-text-field
                 v-model="input.allocation"
                 prepend-inner-icon="mdi-basket"
@@ -38,9 +36,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.date') }}
-              </div>
+              <div class="caption primary--text text-capitalize">{{ $translate('text.date') }}</div>
               <v-dialog
                 ref="date"
                 v-model="modal.date"
@@ -62,15 +58,12 @@
                 </template>
                 <v-date-picker v-model="input.date" scrollable :min="today">
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal.date = false">
-                    {{ $translate('components.button.cancel') }}
-                  </v-btn>
                   <v-btn
                     text
                     color="primary"
-                    @click="$refs.date.save(input.date)"
-                    >OK</v-btn
-                  >
+                    @click="modal.date = false"
+                  >{{ $translate('components.button.cancel') }}</v-btn>
+                  <v-btn text color="primary" @click="$refs.date.save(input.date)">OK</v-btn>
                 </v-date-picker>
               </v-dialog>
             </v-col>
@@ -78,9 +71,9 @@
           <template v-for="(budget, i) in input.details">
             <v-row :key="'budget-' + i">
               <v-col cols="12" md="4" sm="6">
-                <div class="caption primary--text text-capitalize">
-                  [{{ i + 1 }}] {{ $translate('text.budget_code') }}
-                </div>
+                <div
+                  class="caption primary--text text-capitalize"
+                >[{{ i + 1 }}] {{ $translate('text.budget_code') }}</div>
                 <v-combobox
                   v-model="input.details[i].budget_code"
                   prepend-inner-icon="mdi-newspaper-plus"
@@ -92,18 +85,14 @@
                   auto-select-first
                   cache-items
                 >
-                  <template v-slot:item="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
-                  <template v-slot:selection="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
+                  <template v-slot:item="{ item }">{{ item.code + ' - ' + item.name }}</template>
+                  <template v-slot:selection="{ item }">{{ item.code + ' - ' + item.name }}</template>
                 </v-combobox>
               </v-col>
               <v-col cols="12" md="4" sm="6">
-                <div class="caption primary--text text-capitalize">
-                  [{{ i + 1 }}] {{ $translate('text.budget_nominal') }}
-                </div>
+                <div
+                  class="caption primary--text text-capitalize"
+                >[{{ i + 1 }}] {{ $translate('text.budget_nominal') }}</div>
                 <v-text-field
                   v-model="input.details[i].nominal"
                   solo
@@ -129,8 +118,7 @@
                 dark
                 color="error"
                 @click.stop="deleteBudget()"
-                >{{ $translate('components.button.delete') + ' item' }}</v-btn
-              >
+              >{{ $translate('components.button.delete') + ' item' }}</v-btn>
             </v-col>
             <v-spacer></v-spacer>
             <v-col>
@@ -140,8 +128,7 @@
                 dark
                 color="secondary"
                 @click.stop="addBuget()"
-                >{{ $translate('components.button.add') + ' item' }}</v-btn
-              >
+              >{{ $translate('components.button.add') + ' item' }}</v-btn>
             </v-col>
             <v-spacer></v-spacer>
           </v-row>
@@ -155,15 +142,10 @@
           color="secondary"
           elevation="8"
           @click.stop="updatePetty()"
-          >{{ $translate('components.button.update') }}</v-btn
-        >
+        >{{ $translate('components.button.update') }}</v-btn>
       </v-card-actions>
     </v-card>
-    <snackbar-alert
-      v-model="alert"
-      :success="success"
-      :messages="messages"
-    ></snackbar-alert>
+    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
   </v-container>
 </template>
 <script>
@@ -267,7 +249,7 @@ export default {
     },
     async getBudgetList() {
       try {
-        this.data.budgetList = await this.$api('table', 'budgetlist', null)
+        this.data.budgetList = await this.$api('budget', 'index', null)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

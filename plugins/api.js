@@ -30,6 +30,10 @@ export default ({ app }, inject) => {
             return User.update(data)
           case 'all':
             return User.getAll()
+          case 'roles':
+            return User.roles()
+          case 'delete':
+            return User.delete()
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -126,21 +130,24 @@ export default ({ app }, inject) => {
             break
         }
         break
-      default:
-        console.error(`Unknown target : ${target} in '~/plugins/api.js'`)
-        break
-
-      case 'table':
+      case 'budget':
         switch (action) {
-          case 'budgetlist':
-            return Table.getBudgetList()
-
+          case 'index':
+            return Budget.getBudgetList()
+          case 'store':
+            return Budget.store(data)
+          case 'delete':
+            return Budget.delete(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
             )
             break
         }
+        break
+      default:
+        console.error(`Unknown target : ${target} in '~/plugins/api.js'`)
+        break
     }
   }
 
@@ -225,9 +232,34 @@ export default ({ app }, inject) => {
     },
     getAll() {
       console.log('[User] Get all users.')
-
       return app.$axios
         .$get('/users')
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    roles() {
+      console.log('[User] Get all user roles.')
+      return app.$axios
+        .$get('/roles')
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    delete(data) {
+      console.log('[User] Delete a user')
+      return app
+        .$axios({
+          method: 'delete',
+          url: '/users/' + data,
+          data: null
+        })
         .then((response) => {
           return response
         })
@@ -766,15 +798,47 @@ export default ({ app }, inject) => {
   }
 
   /**
-   * Table Interface
+   * Budget Interface
    */
-  const Table = {
+  const Budget = {
     getBudgetList() {
-      console.log('[Table] Get all budget list')
-
+      console.log('[Budget] Get all budget code')
       return app.$axios.$get('/budget-code').then((response) => {
         return response.budget_code
       })
+    },
+    store(data) {
+      console.log('[Budget] store budget code')
+      const body = new FormData()
+      body.append('code', data.code)
+      body.append('name', data.name)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/budget-code',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    delete(data) {
+      console.log('[Budget] Get all budget code')
+      return app
+        .$axios({
+          method: 'delete',
+          url: '/budget-code/' + data,
+          data: null
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     }
   }
 
