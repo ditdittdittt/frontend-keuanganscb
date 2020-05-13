@@ -329,7 +329,7 @@ export default {
     },
     async getBudgetList() {
       try {
-        this.data.budgetList = await this.$api('table', 'budgetlist', null)
+        this.data.budgetList = await this.$api('budget', 'index', null)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

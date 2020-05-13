@@ -30,9 +30,7 @@
                 return-object
                 @change="setMinDate()"
               >
-                <template v-slot:item="{ item }">{{
-                  item.number
-                }}</template>
+                <template v-slot:item="{ item }">{{ item.number }}</template>
                 <template v-slot:selection="{ item }">{{
                   item.number
                 }}</template>
