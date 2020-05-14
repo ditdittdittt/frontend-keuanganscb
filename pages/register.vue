@@ -325,17 +325,26 @@ export default {
         this.alert = true
         return
       }
+
       try {
         await this.$api('user', 'register', this.input)
-      } catch (e) {}
+      } catch (e) {
+        this.success = false
+        this.messages = 'Gagal register user'
+        this.alert = true
+      }
     },
     async getRoles() {
-      await this.$axios
-        .$get('/roles')
-        .then((response) => {
-          this.roles = response.role
-        })
-        .catch((error) => {})
+      try {
+        const result = await this.$api('user', 'roles', null)
+        if (result) {
+          this.roles = result.role
+        }
+      } catch (e) {
+        this.success = false
+        this.messages = 'Gagal menampilkan daftar peran user'
+        this.alert = true
+      }
     }
   }
 }

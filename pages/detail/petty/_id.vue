@@ -35,8 +35,7 @@
                     </div>
                     <span>
                       {{
-                        input.number ||
-                          $vuetify.lang.t('$vuetify.noDataText')
+                        input.number || $vuetify.lang.t('$vuetify.noDataText')
                       }}
                     </span>
                   </v-col>

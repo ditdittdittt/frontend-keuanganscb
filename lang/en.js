@@ -1,5 +1,4 @@
 export default {
-  hello: 'Hello World !',
   components: {
     button: {
       text: 'button',
@@ -25,24 +24,30 @@ export default {
       title: {
         request: 'request table',
         submission: 'submission table',
-        petty_cash: 'petty cash table'
+        petty_cash: 'petty cash table',
+        budget_code: 'budget code table',
+        user: 'User Table'
       },
       subtitle: {
         request: 'list requesting fund',
         submission: 'list submission fund',
-        petty_cash: 'list petty cash'
+        petty_cash: 'list petty cash',
+        budget_code: 'list budget code',
+        user: 'list user'
       }
     },
     form: {
       title: {
         request: 'form fund request',
         submission: 'form fund submission',
-        petty_cash: 'form petty cash'
+        petty_cash: 'form petty cash',
+        budget_code: 'budget code'
       },
       subtitle: {
-        request: 'fill this request form',
-        submission: 'fill this submission form',
-        petty_cash: 'fill this petty cash form'
+        request: 'fill this form to create request form',
+        submission: 'fill this form to create submission form',
+        petty_cash: 'fill this form to create petty cash form',
+        budget_code: 'fill this form to create budget code form'
       }
     }
   },
@@ -107,6 +112,7 @@ export default {
     action: 'action',
     total_item: 'total item',
     created_at: 'created at',
+    updated_at: 'updated at',
     search: 'search',
     bank_name: 'bank name',
     bank_code: 'bank code',
@@ -123,7 +129,8 @@ export default {
     convert_to_image: 'converting to image',
     number: 'number',
     role: 'role',
-    confirm_password: 'confirm password'
+    confirm_password: 'confirm password',
+    code: 'code'
   },
   helper: {
     messages: {

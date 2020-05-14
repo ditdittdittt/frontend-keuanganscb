@@ -329,20 +329,18 @@ export default {
     },
     async updateRequest() {
       try {
-        const result = await this.$api('request', 'update', this.input).then(
-          (response) => {
-            if (response.status === 200) {
-              this.success = true
-              this.messages = 'Data berhasil di update'
-              this.alert = true
-            } else {
-              this.success = false
-              this.messages = 'Gagal mengupdate data'
-              this.alert = true
-            }
-            this.getRequest()
+        await this.$api('request', 'update', this.input).then((response) => {
+          if (response.status === 200) {
+            this.success = true
+            this.messages = 'Data berhasil di update'
+            this.alert = true
+          } else {
+            this.success = false
+            this.messages = 'Gagal mengupdate data'
+            this.alert = true
           }
-        )
+          this.getRequest()
+        })
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
@@ -351,7 +349,7 @@ export default {
     },
     async getBudgetList() {
       try {
-        this.data.budgetList = await this.$api('table', 'budgetlist', null)
+        this.data.budgetList = await this.$api('budget', 'index', null)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">{{
-        $translate('components.form.title.petty_cash')
-      }}</v-card-title>
-      <v-card-subtitle class="overline">{{
-        $translate('components.form.subtitle.petty_cash')
-      }}</v-card-subtitle>
+      <v-card-title class="text-uppercase">
+        {{ $translate('components.form.title.petty_cash') }}
+      </v-card-title>
+      <v-card-subtitle class="overline">
+        {{ $translate('components.form.subtitle.petty_cash') }}
+      </v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
@@ -52,9 +52,9 @@
                 </template>
                 <v-date-picker v-model="input.date" scrollable :min="today">
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal.date = false">
-                    {{ $translate('components.button.cancel') }}
-                  </v-btn>
+                  <v-btn text color="primary" @click="modal.date = false">{{
+                    $translate('components.button.cancel')
+                  }}</v-btn>
                   <v-btn
                     text
                     color="primary"
@@ -82,12 +82,12 @@
                   auto-select-first
                   cache-items
                 >
-                  <template v-slot:item="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
-                  <template v-slot:selection="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
+                  <template v-slot:item="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
+                  <template v-slot:selection="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
                 </v-combobox>
               </v-col>
               <v-col cols="12" md="6" sm="6">
@@ -250,7 +250,7 @@ export default {
     },
     async getBudgetList() {
       try {
-        this.data.budgetList = await this.$api('table', 'budgetlist', null)
+        this.data.budgetList = await this.$api('budget', 'index', null)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
