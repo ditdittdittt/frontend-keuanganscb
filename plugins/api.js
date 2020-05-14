@@ -23,13 +23,17 @@ export default ({ app }, inject) => {
           case 'logout':
             return User.logout()
           case 'register':
-            return User.register()
+            return User.register(data)
           case 'show':
             return User.show()
           case 'update':
             return User.update(data)
           case 'all':
             return User.getAll()
+          case 'roles':
+            return User.roles()
+          case 'delete':
+            return User.delete()
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -126,21 +130,24 @@ export default ({ app }, inject) => {
             break
         }
         break
-      default:
-        console.error(`Unknown target : ${target} in '~/plugins/api.js'`)
-        break
-
-      case 'table':
+      case 'budget':
         switch (action) {
-          case 'budgetlist':
-            return Table.getBudgetList()
-
+          case 'index':
+            return Budget.getBudgetList()
+          case 'store':
+            return Budget.store(data)
+          case 'delete':
+            return Budget.delete(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
             )
             break
         }
+        break
+      default:
+        console.error(`Unknown target : ${target} in '~/plugins/api.js'`)
+        break
     }
   }
 
@@ -148,25 +155,61 @@ export default ({ app }, inject) => {
    * User Interface
    */
   const User = {
-    register() {
+    register(data) {
       console.log('[User] Registering a new user.')
+      const body = new FormData()
+      body.append('name', data.name)
+      body.append('username', data.username)
+      body.append('email', data.email)
+      body.append('password', data.password)
+      body.append('c_password', data.confirm)
+      body.append('division', data.division)
+      body.append('role', data.role)
+      body.append('nik', data.nik)
+      body.append('address', data.address)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/auth/register',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     },
     login(data) {
       console.log('[User] Login into SCB app.')
-      app.$auth.loginWith('local', {
-        data
-      })
+      return app.$auth
+        .loginWith('local', {
+          data
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     },
     logout() {
       console.log('[User] Logout from SCB app.')
-      app.$auth.logout()
+      return app.$auth
+        .logout()
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     },
     show() {
       console.log('[User] Show current user SCB app.')
     },
     update(data) {
       console.log('[User] Update current user SCB app.')
-      console.log(data)
       const body = new FormData()
       body.append('name', data.name)
       body.append('username', data.username)
@@ -189,9 +232,34 @@ export default ({ app }, inject) => {
     },
     getAll() {
       console.log('[User] Get all users.')
-
       return app.$axios
         .$get('/users')
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    roles() {
+      console.log('[User] Get all user roles.')
+      return app.$axios
+        .$get('/roles')
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    delete(data) {
+      console.log('[User] Delete a user')
+      return app
+        .$axios({
+          method: 'delete',
+          url: '/users/' + data,
+          data: null
+        })
         .then((response) => {
           return response
         })
@@ -244,6 +312,7 @@ export default ({ app }, inject) => {
       console.log('[Request] Show a request with specified id')
 
       return app.$axios.$get('/form/request/' + data).then((response) => {
+        console.log(response)
         return response.form_request
       })
     },
@@ -294,11 +363,11 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as PIC')
       const body = new FormData()
       body.append('is_confirmed_pic', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id,
+          url: '/form/request/' + data.id +'/confirm',
           data: body
         })
         .then((response) => {
@@ -312,11 +381,11 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as Verificator')
       const body = new FormData()
       body.append('is_confirmed_verificator', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id,
+          url: '/form/request/' + data.id +'/confirm',
           data: body
         })
         .then((response) => {
@@ -330,11 +399,11 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as Cashier')
       const body = new FormData()
       body.append('is_confirmed_cashier', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id,
+          url: '/form/request/' + data.id +'/confirm',
           data: body
         })
         .then((response) => {
@@ -348,11 +417,11 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as Head Dept')
       const body = new FormData()
       body.append('is_confirmed_head_dept', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id,
+          url: '/form/request/' + data.id +'/confirm',
           data: body
         })
         .then((response) => {
@@ -366,6 +435,7 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify already paid')
       const body = new FormData()
       body.append('status_id', 3)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
@@ -379,7 +449,7 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    count () {
+    count() {
       console.log('[Request] Get count for all request forms')
 
       return app.$axios
@@ -473,11 +543,11 @@ export default ({ app }, inject) => {
       console.log('[Submission] Verify as PIC')
       const body = new FormData()
       body.append('is_confirmed_pic', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/submission/' + data.id,
+          url: '/form/submission/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -491,11 +561,11 @@ export default ({ app }, inject) => {
       console.log('[Submission] Verify as Verificator')
       const body = new FormData()
       body.append('is_confirmed_verificator', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/submission/' + data.id,
+          url: '/form/submission/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -509,11 +579,11 @@ export default ({ app }, inject) => {
       console.log('[Submission] Verify as Head Office')
       const body = new FormData()
       body.append('is_confirmed_head_office', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/submission/' + data.id,
+          url: '/form/submission/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -527,11 +597,11 @@ export default ({ app }, inject) => {
       console.log('[Submission] Verify as Head Dept')
       const body = new FormData()
       body.append('is_confirmed_head_dept', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/submission/' + data.id,
+          url: '/form/submission/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -541,7 +611,7 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    count () {
+    count() {
       console.log('[Submission] Get count for all submission forms')
 
       return app.$axios
@@ -647,11 +717,11 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify as PIC')
       const body = new FormData()
       body.append('is_confirmed_pic', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/petty-cash/' + data.id,
+          url: '/form/petty-cash/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -665,11 +735,11 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify as Cashier')
       const body = new FormData()
       body.append('is_confirmed_cashier', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/petty-cash/' + data.id,
+          url: '/form/petty-cash/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -683,11 +753,11 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify as Manager Ops')
       const body = new FormData()
       body.append('is_confirmed_manager_ops', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/petty-cash/' + data.id,
+          url: '/form/petty-cash/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -701,10 +771,11 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify already paid')
       const body = new FormData()
       body.append('status_id', 3)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/petty-cash/' + data.id,
+          url: '/form/petty-cash/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -714,7 +785,7 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    count () {
+    count() {
       console.log('[Petty] Get count for all petty forms')
 
       return app.$axios
@@ -729,15 +800,47 @@ export default ({ app }, inject) => {
   }
 
   /**
-   * Table Interface
+   * Budget Interface
    */
-  const Table = {
+  const Budget = {
     getBudgetList() {
-      console.log('[Table] Get all budget list')
-
+      console.log('[Budget] Get all budget code')
       return app.$axios.$get('/budget-code').then((response) => {
         return response.budget_code
       })
+    },
+    store(data) {
+      console.log('[Budget] store budget code')
+      const body = new FormData()
+      body.append('code', data.code)
+      body.append('name', data.name)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/budget-code',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    delete(data) {
+      console.log('[Budget] Get all budget code')
+      return app
+        .$axios({
+          method: 'delete',
+          url: '/budget-code/' + data,
+          data: null
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     }
   }
 

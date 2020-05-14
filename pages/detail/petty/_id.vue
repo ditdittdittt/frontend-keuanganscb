@@ -35,8 +35,7 @@
                     </div>
                     <span>
                       {{
-                        input.number ||
-                          $vuetify.lang.t('$vuetify.noDataText')
+                        input.number || $vuetify.lang.t('$vuetify.noDataText')
                       }}
                     </span>
                   </v-col>
@@ -462,6 +461,7 @@ export default {
     async verifyAlreadyPaid() {
       try {
         await this.$api('petty', 'verifyalreadypaid', this.input)
+        this.input.signature = this.$copy(this.signature)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

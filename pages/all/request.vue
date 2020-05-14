@@ -98,7 +98,7 @@ export default {
         },
         {
           text: `${this.$translate('text.pic', 'capitalize')}`,
-          value: 'user.name'
+          value: 'pic.name'
         },
         {
           text: `${this.$translate('text.status', 'capitalize')}`,

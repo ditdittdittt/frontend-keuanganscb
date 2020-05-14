@@ -21,7 +21,7 @@
             >Masukan akun yang telah terdaftar</v-card-subtitle
           >
           <v-card-text>
-            <v-form ref="form">
+            <v-form ref="form" aria-autocomplete="on">
               <v-row>
                 <v-col cols="12">
                   <div class="caption primary--text text-capitalize">
@@ -33,6 +33,9 @@
                     solo
                     :label="$translate('text.email', 'capitalize')"
                     counter
+                    :rules="[rules.required, rules.email]"
+                    autofocus
+                    @keyup.enter="login()"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -47,7 +50,9 @@
                     :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show ? 'text' : 'password'"
                     counter
+                    :rules="[rules.required, rules.min]"
                     @click:append="show = !show"
+                    @keyup.enter="login()"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -98,17 +103,41 @@ export default {
       input: {
         email: null,
         password: null
+      },
+      rules: {
+        required: (value) =>
+          !!value || `${this.$translate('text.required', 'capitalize')}`,
+        min: (value) => (!!value && value.length >= 6) || 'Minimum 6',
+        email: (value) =>
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+            value
+          ) || `${this.$translate('helper.wrong_email', 'capitalize')}`
       }
     }
   },
   mounted() {},
   methods: {
     async login() {
+      if (!this.$refs.form.validate()) {
+        this.success = false
+        this.messages = 'Data belum valid'
+        this.alert = true
+        return
+      }
       try {
-        await this.$api('user', 'login', this.input)
+        const result = await this.$api('user', 'login', this.input)
+        if (result.status === 200) {
+          this.success = true
+          this.messages = 'Berhasil login'
+          this.alert = true
+        } else {
+          this.success = false
+          this.messages = 'Gagal login'
+          this.alert = true
+        }
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages = 'Terjadi kesalahan : ' + e.toString()
         this.alert = true
       }
     }

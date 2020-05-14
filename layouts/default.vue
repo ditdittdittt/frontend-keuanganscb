@@ -29,9 +29,9 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-light">{{
-                item.title
-              }}</v-list-item-title>
+              <v-list-item-title class="font-weight-light">
+                {{ item.title }}
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -52,9 +52,9 @@
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item>
-              <v-list-item-title class="caption pa-0 text-capitalize">
-                {{ $translate('text.theme') }}
-              </v-list-item-title>
+              <v-list-item-title class="caption pa-0 text-capitalize">{{
+                $translate('text.theme')
+              }}</v-list-item-title>
             </v-list-item>
             <v-container class="py-0">
               <v-switch
@@ -76,9 +76,9 @@
               </v-switch>
             </v-container>
             <v-list-item>
-              <v-list-item-title class="caption pa-0 text-capitalize">
-                {{ $translate('text.language') }}
-              </v-list-item-title>
+              <v-list-item-title class="caption pa-0 text-capitalize">{{
+                $translate('text.language')
+              }}</v-list-item-title>
             </v-list-item>
             <v-container class="py-0">
               <v-radio-group v-model="preferences.lang" row class="ma-0">
@@ -102,9 +102,9 @@
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item>
-              <v-list-item-title class="caption pa-0 text-capitalize">
-                {{ $translate('text.primary') }}
-              </v-list-item-title>
+              <v-list-item-title class="caption pa-0 text-capitalize">{{
+                $translate('text.primary')
+              }}</v-list-item-title>
             </v-list-item>
             <v-container class="px-5">
               <v-item-group v-model="preferences.theme.color.primary" mandatory>
@@ -132,9 +132,9 @@
               </v-item-group>
             </v-container>
             <v-list-item>
-              <v-list-item-title class="caption pa-0 text-capitalize">
-                {{ $translate('text.secondary') }}
-              </v-list-item-title>
+              <v-list-item-title class="caption pa-0 text-capitalize">{{
+                $translate('text.secondary')
+              }}</v-list-item-title>
             </v-list-item>
             <v-container class="px-5">
               <v-item-group
@@ -165,9 +165,9 @@
               </v-item-group>
             </v-container>
             <v-list-item>
-              <v-list-item-title class="caption pa-0 text-capitalize">
-                {{ $translate('text.accent') }}
-              </v-list-item-title>
+              <v-list-item-title class="caption pa-0 text-capitalize">{{
+                $translate('text.accent')
+              }}</v-list-item-title>
             </v-list-item>
             <v-container class="px-5">
               <v-item-group v-model="preferences.theme.color.accent" mandatory>
@@ -309,8 +309,18 @@ export default {
         },
         {
           icon: 'mdi-cash-multiple',
-          title: 'All Petty Cash',
+          title: 'All Petty',
           to: '/all/petty'
+        },
+        {
+          icon: 'mdi-cash-usd',
+          title: 'Management Budget',
+          to: '/management/budget'
+        },
+        {
+          icon: 'mdi-account-details',
+          title: 'Management User',
+          to: '/management/user'
         }
       ]
     }

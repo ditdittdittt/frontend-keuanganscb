@@ -1,5 +1,4 @@
 export default {
-  hello: 'Hello World !',
   components: {
     button: {
       text: 'button',
@@ -25,24 +24,30 @@ export default {
       title: {
         request: 'request table',
         submission: 'submission table',
-        petty_cash: 'petty cash table'
+        petty_cash: 'petty cash table',
+        budget_code: 'budget code table',
+        user: 'User Table'
       },
       subtitle: {
         request: 'list requesting fund',
         submission: 'list submission fund',
-        petty_cash: 'list petty cash'
+        petty_cash: 'list petty cash',
+        budget_code: 'list budget code',
+        user: 'list user'
       }
     },
     form: {
       title: {
         request: 'form fund request',
         submission: 'form fund submission',
-        petty_cash: 'form petty cash'
+        petty_cash: 'form petty cash',
+        budget_code: 'budget code'
       },
       subtitle: {
-        request: 'fill this request form',
-        submission: 'fill this submission form',
-        petty_cash: 'fill this petty cash form'
+        request: 'fill this form to create request form',
+        submission: 'fill this form to create submission form',
+        petty_cash: 'fill this form to create petty cash form',
+        budget_code: 'fill this form to create budget code form'
       }
     }
   },
@@ -107,6 +112,7 @@ export default {
     action: 'action',
     total_item: 'total item',
     created_at: 'created at',
+    updated_at: 'updated at',
     search: 'search',
     bank_name: 'bank name',
     bank_code: 'bank code',
@@ -121,13 +127,27 @@ export default {
     back: 'back',
     positive: 'must have a positive value',
     convert_to_image: 'converting to image',
-    number: 'number'
+    number: 'number',
+    role: 'role',
+    confirm_password: 'confirm password',
+    code: 'code'
   },
   helper: {
     messages: {
       attachment_file: 'click to choose file',
       amount_in_word: 'automaticly filled'
-    }
+    },
+    name: 'your full name',
+    username: 'alias or nickname',
+    email: 'use correct email',
+    wrong_email: 'email format is not correct',
+    password: 'use strong password',
+    confirm_password: 're-type your password',
+    different_password: 'password does not match',
+    division: 'current division you are working in office',
+    role: 'your role in this software',
+    nik: 'identity number in your id card',
+    address: 'your residential address'
   },
   export: {
     pdf: 'export to PDF',
