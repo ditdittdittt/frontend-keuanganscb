@@ -331,11 +331,11 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as PIC')
       const body = new FormData()
       body.append('is_confirmed_pic', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id,
+          url: '/form/request/' + data.id +'/confirm',
           data: body
         })
         .then((response) => {
@@ -349,11 +349,11 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as Verificator')
       const body = new FormData()
       body.append('is_confirmed_verificator', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id,
+          url: '/form/request/' + data.id +'/confirm',
           data: body
         })
         .then((response) => {
@@ -367,11 +367,11 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as Cashier')
       const body = new FormData()
       body.append('is_confirmed_cashier', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id,
+          url: '/form/request/' + data.id +'/confirm',
           data: body
         })
         .then((response) => {
@@ -385,11 +385,11 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify as Head Dept')
       const body = new FormData()
       body.append('is_confirmed_head_dept', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id,
+          url: '/form/request/' + data.id +'/confirm',
           data: body
         })
         .then((response) => {
@@ -403,6 +403,7 @@ export default ({ app }, inject) => {
       console.log('[Request] Verify already paid')
       const body = new FormData()
       body.append('status_id', 3)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
@@ -510,11 +511,11 @@ export default ({ app }, inject) => {
       console.log('[Submission] Verify as PIC')
       const body = new FormData()
       body.append('is_confirmed_pic', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/submission/' + data.id,
+          url: '/form/submission/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -528,11 +529,11 @@ export default ({ app }, inject) => {
       console.log('[Submission] Verify as Verificator')
       const body = new FormData()
       body.append('is_confirmed_verificator', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/submission/' + data.id,
+          url: '/form/submission/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -546,11 +547,11 @@ export default ({ app }, inject) => {
       console.log('[Submission] Verify as Head Office')
       const body = new FormData()
       body.append('is_confirmed_head_office', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/submission/' + data.id,
+          url: '/form/submission/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -564,11 +565,11 @@ export default ({ app }, inject) => {
       console.log('[Submission] Verify as Head Dept')
       const body = new FormData()
       body.append('is_confirmed_head_dept', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/submission/' + data.id,
+          url: '/form/submission/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -684,11 +685,11 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify as PIC')
       const body = new FormData()
       body.append('is_confirmed_pic', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/petty-cash/' + data.id,
+          url: '/form/petty-cash/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -702,11 +703,11 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify as Cashier')
       const body = new FormData()
       body.append('is_confirmed_cashier', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/petty-cash/' + data.id,
+          url: '/form/petty-cash/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -720,11 +721,11 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify as Manager Ops')
       const body = new FormData()
       body.append('is_confirmed_manager_ops', 1)
-      body.append('signature', data.signature)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/petty-cash/' + data.id,
+          url: '/form/petty-cash/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -738,10 +739,11 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify already paid')
       const body = new FormData()
       body.append('status_id', 3)
+      body.append('signature', data.signature.data)
       return app
         .$axios({
           method: 'post',
-          url: '/form/petty-cash/' + data.id,
+          url: '/form/petty-cash/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {

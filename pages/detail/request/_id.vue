@@ -483,6 +483,7 @@ export default {
         this.alert = true
       } else {
         try {
+          this.input.signature = this.$copy(this.signature)
           await this.$api('request', 'verifyaspic', this.input)
         } catch (e) {
           this.success = false
