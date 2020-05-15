@@ -13,43 +13,63 @@
             <v-form ref="form" v-model="valid">
               <v-row>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">{{ $translate('text.code') }}</div>
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.bank_name') }}</div>
                   <v-text-field
-                    v-model="input.code"
-                    prepend-inner-icon="mdi-code-brackets"
+                    v-model="input.bank_name"
+                    prepend-inner-icon="mdi-cash"
                     clearable
-                    counter
                     solo
                     :rules="[rules.required]"
-                    :label="$translate('text.code', 'capitalize')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">{{ $translate('text.name') }}</div>
-                  <v-text-field
-                    v-model="input.name"
-                    prepend-inner-icon="mdi-alphabetical"
-                    clearable
-                    counter
-                    solo
-                    :rules="[rules.required]"
-                    :label="$translate('text.name', 'capitalize')"
+                    persistent-hint
+                    :hint="$translate('helper.multiple_bank')"
+                    :label="$translate('text.bank_name', 'capitalize')"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <div
                     class="caption primary--text text-capitalize"
-                  >{{ $translate('text.balance') }}</div>
+                  >{{ $translate('text.bank_code') }}</div>
                   <v-text-field
-                    v-model="input.balance"
+                    v-model="input.bank_code"
                     prepend-inner-icon="mdi-cash"
-                    prefix="Rp"
-                    type="number"
                     clearable
                     solo
-                    :rules="[rules.required, rules.positive]"
-                    :label="$translate('text.balance', 'capitalize')"
-                    :hint="input.balance | currency"
+                    :rules="[rules.required]"
+                    persistent-hint
+                    :hint="$translate('helper.multiple_bank')"
+                    :label="$translate('text.bank_code', 'capitalize')"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.account_number') }}</div>
+                  <v-text-field
+                    v-model="input.account_number"
+                    prepend-inner-icon="mdi-cash"
+                    clearable
+                    solo
+                    :rules="[rules.required]"
+                    persistent-hint
+                    :hint="$translate('helper.multiple_bank')"
+                    :label="$translate('text.account_number', 'capitalize')"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.account_owner') }}</div>
+                  <v-text-field
+                    v-model="input.account_owner"
+                    prepend-inner-icon="mdi-cash"
+                    clearable
+                    solo
+                    :rules="[rules.required]"
+                    persistent-hint
+                    :hint="$translate('helper.multiple_bank')"
+                    :label="$translate('text.account_owner', 'capitalize')"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -69,7 +89,7 @@
       </v-col>
 
       <!-- All budget list -->
-      <v-col cols="12" sm="6" md="8">
+      <v-col cols="12" md="8">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
           <v-card-title class="text-uppercase">
             <span>{{ $translate('components.table.title.budget_code') }}</span>

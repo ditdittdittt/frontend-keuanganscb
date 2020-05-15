@@ -152,7 +152,8 @@ export default {
     division: 'current division you are working in office',
     role: 'your role in this software',
     nik: 'identity number in your id card',
-    address: 'your residential address'
+    address: 'your residential address',
+    multiple_bank: 'separate them with commas for more than one data'
   },
   export: {
     pdf: 'export to PDF',

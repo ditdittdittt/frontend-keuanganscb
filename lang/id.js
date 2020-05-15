@@ -153,7 +153,8 @@ export default {
     division: 'divisi pada tempat kerja',
     role: 'peran pada penggunaan software',
     nik: 'nomor induk kependudukan',
-    address: 'alamat tempat tinggal'
+    address: 'alamat tempat tinggal',
+    multiple_bank: 'pisahkan dengan koma untuk data yang lebih dari satu'
   },
   export: {
     pdf: 'ekspor ke PDF',

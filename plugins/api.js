@@ -285,18 +285,23 @@ export default ({ app }, inject) => {
       console.log('[Request] Creating a new request')
       const body = new FormData()
       body.append('allocation', data.allocation)
-      body.append('date', data.date)
       body.append('method', data.method)
       body.append('amount', data.amount)
       body.append('attachment', data.attachment)
       body.append('notes', data.notes)
+      for (let i = 0; i < data.budgets.length; i++) {
+        body.append(
+          'details[' + i + '][budget_code_id]',
+          data.budgets[i].code.id
+        )
+        body.append('details[' + i + '][nominal]', data.budgets[i].nominal)
+      }
       if (data.method === 'transfer') {
         body.append('bank_name', data.bank_name)
         body.append('bank_code', data.bank_code)
         body.append('account_number', data.account_number)
         body.append('account_owner', data.account_owner)
       }
-      body.append('budget_code_id', data.budget_code.id)
       return app
         .$axios({
           method: 'post',
@@ -370,7 +375,7 @@ export default ({ app }, inject) => {
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id +'/confirm',
+          url: '/form/request/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -388,7 +393,7 @@ export default ({ app }, inject) => {
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id +'/confirm',
+          url: '/form/request/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -406,7 +411,7 @@ export default ({ app }, inject) => {
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id +'/confirm',
+          url: '/form/request/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -424,7 +429,7 @@ export default ({ app }, inject) => {
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id +'/confirm',
+          url: '/form/request/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
