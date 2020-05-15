@@ -3,25 +3,19 @@
     <v-row justify="center" align="center" align-content="center">
       <v-col cols="12" sm="10" md="8" lg="6" align-self="center">
         <v-card class="pa-5" flat>
-          <v-card-title
-            class="headline font-weight-bold text-uppercase text-center"
-          >
+          <v-card-title class="headline font-weight-bold text-uppercase text-center">
             <v-spacer></v-spacer>
             <span>Register</span>
             <v-divider class="mx-2" vertical></v-divider>
             <span class="green--text">SCB</span>
             <v-spacer></v-spacer>
           </v-card-title>
-          <v-card-subtitle class="caption text-center"
-            >Isi data dengan sebenar-benarnya</v-card-subtitle
-          >
+          <v-card-subtitle class="caption text-center">Isi data dengan sebenar-benarnya</v-card-subtitle>
           <v-card-text>
             <v-form ref="form" aria-autocomplete="on">
               <v-row>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.name') }}
-                  </div>
+                  <div class="caption primary--text text-capitalize">{{ $translate('text.name') }}</div>
                   <v-text-field
                     v-model="input.name"
                     prepend-inner-icon="mdi-face"
@@ -35,9 +29,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.username') }}
-                  </div>
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.username') }}</div>
                   <v-text-field
                     v-model="input.username"
                     prepend-inner-icon="mdi-account"
@@ -50,9 +44,7 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.email') }}
-                  </div>
+                  <div class="caption primary--text text-capitalize">{{ $translate('text.email') }}</div>
                   <v-text-field
                     v-model="input.email"
                     prepend-inner-icon="mdi-email"
@@ -65,9 +57,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.password') }}
-                  </div>
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.password') }}</div>
                   <v-text-field
                     v-model="input.password"
                     prepend-inner-icon="mdi-lock"
@@ -82,9 +74,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.confirm_password') }}
-                  </div>
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.confirm_password') }}</div>
                   <v-text-field
                     v-model="input.confirm"
                     prepend-inner-icon="mdi-lock"
@@ -98,9 +90,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.division') }}
-                  </div>
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.division') }}</div>
                   <v-text-field
                     v-model="input.division"
                     prepend-inner-icon="mdi-office-building"
@@ -113,35 +105,7 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.role') }}
-                  </div>
-                  <v-select
-                    v-model="input.role"
-                    prepend-inner-icon="mdi-briefcase"
-                    solo
-                    :label="$translate('text.role', 'capitalize')"
-                    cache-items
-                    item-text="name"
-                    item-value="name"
-                    :items="roles"
-                    counter
-                    :rules="[rules.required]"
-                    :hint="$translate('helper.role', 'capitalize')"
-                    @keyup.enter="register()"
-                  >
-                    <template v-slot:selection="{ item }">
-                      <span>{{ item.name | beauty }}</span>
-                    </template>
-                    <template v-slot:item="{ item }">
-                      <span>{{ item.name | beauty }}</span>
-                    </template>
-                  </v-select>
-                </v-col>
-                <v-col cols="12">
-                  <div class="caption primary--text text-uppercase">
-                    {{ $translate('text.nik') }}
-                  </div>
+                  <div class="caption primary--text text-uppercase">{{ $translate('text.nik') }}</div>
                   <v-text-field
                     v-model="input.nik"
                     prepend-inner-icon="mdi-card-account-details"
@@ -155,9 +119,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.address') }}
-                  </div>
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.address') }}</div>
                   <v-textarea
                     v-model="input.address"
                     solo
@@ -181,22 +145,15 @@
               elevation="8"
               type="submit"
               @click.stop="register()"
-              >Register</v-btn
-            >
+            >Register</v-btn>
           </v-card-actions>
           <v-card-actions>
-            <v-btn outlined block color="primary" @click.stop="$router.go(-1)"
-              >Kembali</v-btn
-            >
+            <v-btn outlined block color="primary" @click.stop="$router.go(-1)">Kembali</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
-    <snackbar-alert
-      v-model="alert"
-      :success="success"
-      :messages="messages"
-    ></snackbar-alert>
+    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
   </v-container>
 </template>
 <script>
@@ -222,7 +179,6 @@ export default {
         confirm: null,
         email: null,
         division: null,
-        role: null,
         nik: null,
         address: null
       },
@@ -232,11 +188,9 @@ export default {
         email: null,
         password: null,
         division: null,
-        role: null,
         nik: null,
         address: null
       },
-      roles: [],
       rules: {
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`,
@@ -313,9 +267,6 @@ export default {
     this.fake.email = chance.email({ domain: 'example.com' })
     this.fake.nik = chance.string({ length: 16, numeric: true })
     this.fake.address = chance.address() + ' ' + chance.province({ full: true })
-
-    // Get all available roles
-    this.getRoles()
   },
   methods: {
     async register() {
@@ -331,18 +282,6 @@ export default {
       } catch (e) {
         this.success = false
         this.messages = 'Gagal register user'
-        this.alert = true
-      }
-    },
-    async getRoles() {
-      try {
-        const result = await this.$api('user', 'roles', null)
-        if (result) {
-          this.roles = result.role
-        }
-      } catch (e) {
-        this.success = false
-        this.messages = 'Gagal menampilkan daftar peran user'
         this.alert = true
       }
     }

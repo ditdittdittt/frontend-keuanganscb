@@ -4,8 +4,8 @@
       <!-- New Budget -->
       <v-col cols="12" sm="6" md="4">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-          <v-card-title class="text-uppercase">{{ $translate('components.form.title.budget_code') }}</v-card-title>
-          <v-card-subtitle class="overline">{{ $translate('components.form.subtitle.budget_code') }}</v-card-subtitle>
+          <v-card-title class="text-uppercase">{{ $translate('components.form.title.role') }}</v-card-title>
+          <v-card-subtitle class="overline">{{ $translate('components.form.subtitle.role') }}</v-card-subtitle>
         </v-card>
         <v-card raised class="back-card px-md-5">
           <v-card-text>
@@ -56,11 +56,9 @@
       <v-col cols="12" sm="6" md="8">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
           <v-card-title class="text-uppercase">
-            <span>{{ $translate('components.table.title.budget_code') }}</span>
+            <span>{{ $translate('components.table.title.role') }}</span>
           </v-card-title>
-          <v-card-subtitle
-            class="overline"
-          >{{ $translate('components.table.subtitle.budget_code') }}</v-card-subtitle>
+          <v-card-subtitle class="overline">{{ $translate('components.table.subtitle.role') }}</v-card-subtitle>
           <v-card-text class="px-5">
             <v-text-field
               v-model="search"
@@ -154,19 +152,12 @@ export default {
       }
     },
     async storeBudgetCode() {
-      if (!this.$refs.form.validate()) {
-        this.success = false
-        this.messages = 'Form belum valid'
-        this.alert = true
-        return
-      }
       try {
         const result = await this.$api('budget', 'store', this.input)
         if (result.status === 201) {
           this.success = true
           this.messages = 'Budget code berhasil di simpan'
           this.alert = true
-          this.$refs.form.reset()
         }
         this.getAllBudgetCode()
       } catch (e) {

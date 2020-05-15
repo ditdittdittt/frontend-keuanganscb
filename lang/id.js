@@ -26,6 +26,7 @@ export default {
         submission: 'tabel submission',
         petty_cash: 'tabel petty cash',
         budget_code: 'tabel kode anggaran',
+        role: 'tabel peran',
         user: 'tabel pengguna'
       },
       subtitle: {
@@ -33,6 +34,7 @@ export default {
         submission: 'daftar submisi dana',
         petty_cash: 'daftar pengajuan uang belanja kecil',
         budget_code: 'daftar kode anggaran',
+        role: 'daftar peran',
         user: 'daftar pengguna'
       }
     },
@@ -41,12 +43,14 @@ export default {
         request: 'formulir pengajuan dana',
         submission: 'formulir submisi dana',
         petty_cash: 'formulir petty cash',
+        role: 'formulir peran',
         budget_code: 'formulir kode budget'
       },
       subtitle: {
         request: 'isi formulir untuk mengajukan dana',
         submission: 'isi formulir untuk submisi dana',
         petty_cash: 'isi formulir untuk pengajuan uang belanja kecil',
+        role: 'isi formulit peran',
         budget_code: 'isi formulir untuk membuat kode anggaran'
       }
     }
