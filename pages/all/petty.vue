@@ -43,6 +43,9 @@
       <v-card-text>
         <div class="spacing-medium"></div>
         <v-data-table :headers="headers" :items="items" :search="search">
+          <template v-slot:item.amount="{ item }">
+            {{ item.amount | currency }}
+          </template>
           <template v-slot:item.id="{ item }">
             <v-btn color="secondary" small text :to="'/detail/petty/' + item.id"
               >Detail</v-btn
@@ -87,15 +90,15 @@ export default {
         },
         {
           text: `${this.$translate('text.pic', 'capitalize')}`,
-          value: 'user.name'
+          value: 'pic.name'
         },
         {
           text: `${this.$translate('text.status', 'capitalize')}`,
           value: 'status.status'
         },
         {
-          text: `${this.$translate('text.total_item', 'capitalize')}`,
-          value: 'details.length'
+          text: `${this.$translate('text.amount', 'capitalize')}`,
+          value: 'amount'
         },
         {
           text: `${this.$translate('text.number', 'capitalize')}`,

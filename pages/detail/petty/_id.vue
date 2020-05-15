@@ -146,19 +146,19 @@
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.name') }}
                     </div>
-                    <span>{{ input.user.name }}</span>
+                    <span>{{ input.pic.name }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.division') }}
                     </div>
-                    <span>{{ input.user.division }}</span>
+                    <span>{{ input.pic.division }}</span>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.email') }}
                     </div>
-                    <span>{{ input.user.email }}</span>
+                    <span>{{ input.pic.email }}</span>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -342,7 +342,7 @@ export default {
       input: {
         details: [],
         status: {},
-        user: {},
+        pic: {},
         signature: {}
       },
       verifyRole: '',
@@ -512,4 +512,6 @@ export default {
   }
 }
 </script>
-<style scoped></style>
+<style scoped>
+
+</style>
