@@ -195,19 +195,6 @@
         >
       </v-col>
     </v-row>
-    <v-row v-if="checkStatus()">
-      <v-col>
-        <v-btn
-          block
-          dark
-          elevation="8"
-          x-large
-          color="secondary"
-          @click.stop="openDialogSureVerify('alreadyPaid')"
-          >{{ $translate('components.button.already_paid') }}</v-btn
-        >
-      </v-col>
-    </v-row>
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureDelete" persistent max-width="600">
@@ -458,16 +445,6 @@ export default {
         }
       }
     },
-    async verifyAlreadyPaid() {
-      try {
-        await this.$api('petty', 'verifyalreadypaid', this.input)
-        this.input.signature = this.$copy(this.signature)
-      } catch (e) {
-        this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
-        this.alert = true
-      }
-    },
     async verifyAs() {
       switch (this.verifyRole) {
         case 'pic':
@@ -479,9 +456,6 @@ export default {
         case 'cashier':
           await this.verifyAsCashier()
           break
-        case 'alreadyPaid':
-          await this.verifyAlreadyPaid()
-          break
         default:
           this.verifyRole = ''
       }
@@ -489,25 +463,26 @@ export default {
       await this.getPettyCashForm()
       this.closeDialogSureVerify()
     },
+    // TODO: check if is_confirmed_pic === 0 and auth user is the pic of the form or auth user is admin
     checkVerifyPic() {
       if (this.input.is_confirmed_pic === 0) {
         return true
       }
     },
+    // TODO: check if pic, manager ops alreand the status of form id is 2ady confirm and cashier not yet, and the auth user role is cashier or admin and the status of form id is 2
     checkVerifyCashier() {
-      if (this.input.is_confirmed_cashier === 0) {
+      if (this.input.is_confirmed_cashier === 0 && this.input.is_confirmed_pic === 1 && this.input.is_confirmed_manager_ops === 1) {
         return true
       }
     },
+    // TODO: check if pic already confirm and manager_ops not yet, and the auth user role is manager_ops or admin,
     checkVerifyManagerOps() {
-      if (this.input.is_confirmed_manager_ops === 0) {
+      if (this.input.is_confirmed_manager_ops === 0 && this.input.is_confirmed_pic === 1) {
         return true
       }
     },
-    checkStatus() {
-      if (this.input.status_id === 2) {
-        return true
-      }
+    checkIfAdmin() {
+      // TODO: check if auth admin or not, if yes return true, if no return false
     }
   }
 }
