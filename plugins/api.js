@@ -806,6 +806,7 @@ export default ({ app }, inject) => {
     getBudgetList() {
       console.log('[Budget] Get all budget code')
       return app.$axios.$get('/budget-code').then((response) => {
+        console.log(response)
         return response.budget_code
       })
     },
@@ -814,6 +815,7 @@ export default ({ app }, inject) => {
       const body = new FormData()
       body.append('code', data.code)
       body.append('name', data.name)
+      body.append('balance', data.balance)
       return app
         .$axios({
           method: 'post',

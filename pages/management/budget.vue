@@ -44,6 +44,22 @@
                     :label="$translate('text.name', 'capitalize')"
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12" md="6">
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.balance') }}
+                  </div>
+                  <v-text-field
+                    v-model="input.balance"
+                    prepend-inner-icon="mdi-cash"
+                    prefix="Rp"
+                    type="number"
+                    clearable
+                    solo
+                    :rules="[rules.required, rules.positive]"
+                    :label="$translate('text.balance', 'capitalize')"
+                    :hint="input.balance | currency"
+                  ></v-text-field>
+                </v-col>
               </v-row>
             </v-form>
           </v-card-text>
@@ -86,6 +102,9 @@
           <v-card-text>
             <div class="spacing-medium"></div>
             <v-data-table :headers="headers" :items="items" :search="search">
+              <template v-slot:item.balance="{ item }">
+                {{ item.balance | currency }}
+              </template>
               <template v-slot:item.id="{ item }">
                 <v-btn
                   color="secondary"
@@ -117,6 +136,14 @@ export default {
         .match(/\d{1,3}(?=(\d{3})*$)/g)
         .join('.')
       return 'Rp ' + result + ',00'
+    },
+    capitalize(value) {
+      if (!value) return ''
+      value = value
+        .toString()
+        .split(' ')
+        .map((element) => element.charAt(0).toUpperCase() + element.slice(1))
+      return value.join(' ')
     }
   },
   data() {
@@ -129,7 +156,8 @@ export default {
       valid: true,
       input: {
         code: null,
-        name: null
+        name: null,
+        balance: null
       },
       modal: {
         date: false
@@ -142,6 +170,10 @@ export default {
         {
           text: `${this.$translate('text.name', 'capitalize')}`,
           value: 'name'
+        },
+        {
+          text: `${this.$translate('text.balance', 'capitalize')}`,
+          value: 'balance'
         },
         {
           text: `${this.$translate('text.action', 'capitalize')}`,
