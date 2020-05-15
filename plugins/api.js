@@ -119,8 +119,6 @@ export default ({ app }, inject) => {
             return Petty.verifyAsManagerOps(data)
           case 'verifyascashier':
             return Petty.verifyAsCashier(data)
-          case 'verifyalreadypaid':
-            return Petty.verifyAlreadyPaid(data)
           case 'count':
             return Petty.count()
           default:
@@ -648,7 +646,6 @@ export default ({ app }, inject) => {
       console.log('[Petty] Creating a new petty cash')
       let amount = 0
       const body = new FormData()
-      body.append('date', data.date)
       body.append('allocation', data.allocation)
       for (let i = 0; i < data.budgets.length; i++) {
         body.append(
@@ -674,7 +671,6 @@ export default ({ app }, inject) => {
     },
     show(data) {
       console.log('[Petty] Show a petty cash with specified id')
-
       return app.$axios.$get('/form/petty-cash/' + data).then((response) => {
         return response.form_petty_cash
       })
@@ -761,24 +757,6 @@ export default ({ app }, inject) => {
       console.log('[Petty] Verify as Manager Ops')
       const body = new FormData()
       body.append('is_confirmed_manager_ops', 1)
-      body.append('signature', data.signature.data)
-      return app
-        .$axios({
-          method: 'post',
-          url: '/form/petty-cash/' + data.id + '/confirm',
-          data: body
-        })
-        .then((response) => {
-          return response
-        })
-        .catch((error) => {
-          throw new Error(error)
-        })
-    },
-    verifyAlreadyPaid(data) {
-      console.log('[Petty] Verify already paid')
-      const body = new FormData()
-      body.append('status_id', 3)
       body.append('signature', data.signature.data)
       return app
         .$axios({

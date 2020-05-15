@@ -307,6 +307,11 @@ export default {
           icon: 'mdi-account-cog',
           title: 'Management Role',
           to: '/management/role'
+        },
+        {
+          icon: 'mdi-bank',
+          title: 'Management Bank',
+          to: '/management/bank'
         }
       ]
     }

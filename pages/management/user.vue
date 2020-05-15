@@ -258,22 +258,22 @@ export default {
         edit: false
       },
       user: {
-        name: '',
-        username: '',
-        email: '',
-        division: '',
-        role: '',
-        nik: '',
-        address: ''
+        name: null,
+        username: null,
+        email: null,
+        division: null,
+        role: null,
+        nik: null,
+        address: null
       },
       input: {
-        name: '',
-        username: '',
-        email: '',
-        division: '',
-        role: '',
-        nik: '',
-        address: ''
+        name: null,
+        username: null,
+        email: null,
+        division: null,
+        role: null,
+        nik: null,
+        address: null
       }
     }
   },

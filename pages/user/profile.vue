@@ -8,9 +8,6 @@
               <v-subheader class="primary--text caption text-capitalize">
                 {{ $translate('text.account') }}
                 <v-spacer></v-spacer>
-                <v-btn small icon color="primary">
-                  <v-icon dense>mdi-help-circle-outline</v-icon>
-                </v-btn>
               </v-subheader>
               <v-divider></v-divider>
               <!-- Name -->
@@ -130,9 +127,6 @@
               <v-subheader class="primary--text caption text-capitalize">
                 {{ $translate('text.job') }}
                 <v-spacer></v-spacer>
-                <v-btn small icon color="primary">
-                  <v-icon dense>mdi-help-circle-outline</v-icon>
-                </v-btn>
               </v-subheader>
               <v-divider></v-divider>
 
@@ -178,9 +172,6 @@
               <v-subheader class="primary--text caption text-capitalize">
                 {{ $translate('text.additional_information') }}
                 <v-spacer></v-spacer>
-                <v-btn small icon color="primary">
-                  <v-icon dense>mdi-help-circle-outline</v-icon>
-                </v-btn>
               </v-subheader>
               <v-divider></v-divider>
 
