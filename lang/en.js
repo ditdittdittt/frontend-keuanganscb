@@ -15,7 +15,8 @@ export default {
       update: 'update',
       sure_button_yes: 'yes',
       sure_button_no: 'no',
-      already_paid: 'already paid'
+      already_paid: 'already paid',
+      reject: 'reject'
     },
     row: {
       text: 'row'

@@ -82,7 +82,7 @@ export default {
       headers: [
         {
           text: `${this.$translate('text.date', 'capitalize')}`,
-          value: 'date'
+          value: 'created_at'
         },
         {
           text: `${this.$translate('text.allocation', 'capitalize')}`,

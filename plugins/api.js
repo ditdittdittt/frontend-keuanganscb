@@ -121,6 +121,10 @@ export default ({ app }, inject) => {
             return Petty.verifyAsCashier(data)
           case 'count':
             return Petty.count()
+          case 'reject':
+            return Petty.reject(data)
+          case 'alreadypaid':
+            return Petty.alreadyPaid(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -667,6 +671,7 @@ export default ({ app }, inject) => {
     show(data) {
       console.log('[Petty] Show a petty cash with specified id')
       return app.$axios.$get('/form/petty-cash/' + data).then((response) => {
+        console.log(response)
         return response.form_petty_cash
       })
     },
@@ -772,6 +777,42 @@ export default ({ app }, inject) => {
       return app.$axios
         .$get('/form/petty-cash/count')
         .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    reject(data) {
+      console.log('[Petty] Reject this petty form')
+      const body = new FormData()
+      body.append('status_id', 7)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    alreadyPaid(data) {
+      console.log('[Petty] Reject this petty form')
+      const body = new FormData()
+      body.append('status_id', 6)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
           return response
         })
         .catch((error) => {

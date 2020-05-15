@@ -15,7 +15,8 @@ export default {
       update: 'perbarui',
       sure_button_yes: 'ya',
       sure_button_no: 'tidak',
-      already_paid: 'telah dibayarkan'
+      already_paid: 'telah dibayarkan',
+      reject: 'tolak'
     },
     row: {
       text: 'baris'

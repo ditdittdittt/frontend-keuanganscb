@@ -171,28 +171,28 @@
       </v-col>
     </v-row>
     <div class="spacing-small"></div>
-    <v-row v-if="checkEditAble()">
-      <v-col>
+    <v-row>
+      <v-col v-if="checkVerifyManagerOps()">
         <v-btn
           block
           dark
           elevation="8"
           x-large
           color="accent"
-          @click.stop="openDialogSureDelete()"
-          >{{ $translate('components.button.delete') }}</v-btn
-        >
+          @click.stop="rejectPettyCashForm()"
+        >{{ $translate('components.button.reject') }}
+        </v-btn>
       </v-col>
-      <v-col v-if="checkEditAble()">
+      <v-col v-if="checkIfPic()">
         <v-btn
           block
           dark
           elevation="8"
           x-large
-          color="secondary"
-          :to="'/update/petty/' + $route.params.id"
-          >{{ $translate('components.button.update') }}</v-btn
-        >
+          color="accent"
+          @click.stop="alreadyPaidPettyCashForm()"
+        >{{ $translate('components.button.already_paid') }}
+        </v-btn>
       </v-col>
     </v-row>
     <template>
@@ -385,18 +385,6 @@ export default {
         this.alert = true
       }
     },
-    checkEditAble() {
-      if (
-        (this.input.is_confirmed_pic === 0 &&
-          this.input.is_confirmed_manager_ops === 0 &&
-          this.input.is_confirmed_cashier === 0 &&
-          this.input.user_id === this.$auth.user.id) ||
-        this.$auth.user.id === 1
-      ) {
-        return true
-      }
-      return false
-    },
     async verifyAsPic() {
       if (this.signature.isEmpty === true || this.signature == null) {
         this.success = false
@@ -477,13 +465,40 @@ export default {
     },
     // TODO: check if pic already confirm and manager_ops not yet, and the auth user role is manager_ops or admin,
     checkVerifyManagerOps() {
-      if (this.input.is_confirmed_manager_ops === 0 && this.input.is_confirmed_pic === 1) {
+      if (this.input.is_confirmed_manager_ops === 0 && this.input.is_confirmed_pic === 1 && this.input.status_id === 1) {
         return true
       }
     },
+    // TODO: check if auth admin or not, if yes return true, if no return false
     checkIfAdmin() {
-      // TODO: check if auth admin or not, if yes return true, if no return false
-    }
+    },
+    // TODO: check if admin or auth is the pic of the form and status is 3
+    checkIfPic() {
+      if (this.input.status_id === 3 && this.$auth.user.id === this.input.pic.id) {
+        return true
+      }
+    },
+    async rejectPettyCashForm() {
+      try {
+        await this.$api('petty', 'reject', this.input)
+        await this.getPettyCashForm()
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async alreadyPaidPettyCashForm() {
+      try {
+        await this.$api('petty', 'alreadypaid', this.input)
+        await this.getPettyCashForm()
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    // TODO: Create reject dialog confirmation and already paid dialog confirmation
   }
 }
 </script>
