@@ -633,6 +633,7 @@ export default ({ app }, inject) => {
       console.log('[Petty] Show all petty cash forms')
 
       return app.$axios.$get('/form/petty-cash').then((response) => {
+        console.log(response)
         return response.form_petty_cash
       })
     },
