@@ -45,12 +45,12 @@
                   v-model="input.budgets[i].nominal"
                   solo
                   type="number"
-                  @change="calculateSum()"
                   prepend-inner-icon="mdi-cash"
                   :rules="[rules.required]"
                   :label="$translate('text.budget_nominal', 'capitalize')"
                   :hint="input.budgets[i].nominal | currency"
                   clearable
+                  @change="calculateSum()"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -90,6 +90,7 @@
                 prefix="Rp"
                 type="number"
                 readonly
+                persistent-hint
                 solo
                 :rules="[rules.required, rules.positive]"
                 :label="$translate('text.amount', 'capitalize')"
@@ -134,7 +135,7 @@
           </v-row>
           <template v-if="input.method === 'transfer'">
             <v-row>
-              <v-col cols="12" md="6">
+              <v-col cols="12" sm="6">
                 <div
                   class="caption primary--text text-capitalize"
                 >{{ $translate('text.bank_name') }}</div>
@@ -144,10 +145,12 @@
                   clearable
                   solo
                   :rules="[rules.required]"
+                  persistent-hint
+                  :hint="$translate('helper.multiple_bank')"
                   :label="$translate('text.bank_name', 'capitalize')"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" md="6">
+              <v-col cols="12" sm="6">
                 <div
                   class="caption primary--text text-capitalize"
                 >{{ $translate('text.bank_code') }}</div>
@@ -157,10 +160,12 @@
                   clearable
                   solo
                   :rules="[rules.required]"
+                  persistent-hint
+                  :hint="$translate('helper.multiple_bank')"
                   :label="$translate('text.bank_code', 'capitalize')"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" md="6">
+              <v-col cols="12" sm="6">
                 <div
                   class="caption primary--text text-capitalize"
                 >{{ $translate('text.account_number') }}</div>
@@ -170,10 +175,12 @@
                   clearable
                   solo
                   :rules="[rules.required]"
+                  persistent-hint
+                  :hint="$translate('helper.multiple_bank')"
                   :label="$translate('text.account_number', 'capitalize')"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" md="6">
+              <v-col cols="12" sm="6">
                 <div
                   class="caption primary--text text-capitalize"
                 >{{ $translate('text.account_owner') }}</div>
@@ -183,6 +190,8 @@
                   clearable
                   solo
                   :rules="[rules.required]"
+                  persistent-hint
+                  :hint="$translate('helper.multiple_bank')"
                   :label="$translate('text.account_owner', 'capitalize')"
                 ></v-text-field>
               </v-col>
@@ -235,11 +244,15 @@ export default {
     currency(value) {
       if (value == null || value === '') return 'Rp 0'
       if (value.toString().split('.').length > 1) return 'Rp ~'
-      const result = value
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result
+      try {
+        const result = value
+          .toString()
+          .match(/\d{1,3}(?=(\d{3})*$)/g)
+          .join('.')
+        return 'Rp ' + result
+      } catch (error) {
+        return 'Rp ~'
+      }
     },
     capitalize(value) {
       if (!value) return ''

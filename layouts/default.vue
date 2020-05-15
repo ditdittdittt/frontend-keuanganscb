@@ -39,11 +39,12 @@
               <v-list-item-title
                 class="caption font-weight-black text-capitalize"
               >{{ $translate('text.setting') }}</v-list-item-title>
-              <v-list-item-action>
-                <v-btn icon x-small @click.stop="theme = !theme">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </v-list-item-action>
+              <v-btn class="mx-1" icon x-small @click.stop="$router.go(0)">
+                <v-icon>mdi-refresh</v-icon>
+              </v-btn>
+              <v-btn class="mx-1" icon x-small @click.stop="theme = !theme">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item>
