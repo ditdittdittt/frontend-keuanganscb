@@ -211,12 +211,12 @@ export default ({ app }, inject) => {
     update(data) {
       console.log('[User] Update current user SCB app.')
       const body = new FormData()
-      body.append('name', data.name)
-      body.append('username', data.username)
-      body.append('email', data.email)
-      body.append('division', data.division)
-      body.append('nik', data.nik)
-      body.append('address', data.address)
+      if (data.name) body.append('name', data.name)
+      if (data.username) body.append('username', data.username)
+      if (data.email) body.append('email', data.email)
+      if (data.division) body.append('division', data.division)
+      if (data.nik) body.append('nik', data.nik)
+      if (data.address) body.append('address', data.address)
       return app
         .$axios({
           method: 'post',
@@ -319,19 +319,20 @@ export default ({ app }, inject) => {
     update(data) {
       console.log('[Request] Update a request with specified id')
       const body = new FormData()
-      body.append('allocation', data.allocation)
-      body.append('date', data.date)
-      body.append('method', data.method)
-      body.append('amount', data.amount)
-      body.append('attachment', data.attachment)
-      body.append('notes', data.notes)
+      if (data.name) body.append('allocation', data.allocation)
+      if (data.date) body.append('date', data.date)
+      if (data.method) body.append('method', data.method)
+      if (data.amount) body.append('amount', data.amount)
+      if (data.attachment) body.append('attachment', data.attachment)
+      if (data.notes) body.append('notes', data.notes)
       if (data.method === 'transfer') {
         body.append('bank_name', data.bank_name)
         body.append('bank_code', data.bank_code)
         body.append('account_number', data.account_number)
         body.append('account_owner', data.account_owner)
       }
-      body.append('budget_code_id', data.budget_code.id)
+      if (data.budget_code.id)
+        body.append('budget_code_id', data.budget_code.id)
       return app
         .$axios({
           method: 'post',
@@ -506,12 +507,13 @@ export default ({ app }, inject) => {
     update(data) {
       console.log('[Submission] Update a submission with specified id')
       const body = new FormData()
-      body.append('form_request_id', data.form_request.id)
-      body.append('date', data.date)
-      body.append('allocation', data.allocation)
-      body.append('used', data.used)
-      body.append('balance', data.balance)
-      body.append('notes', data.notes)
+      if (data.form_request.id)
+        body.append('form_request_id', data.form_request.id)
+      if (data.date) body.append('date', data.date)
+      if (data.allocation) body.append('allocation', data.allocation)
+      if (data.used) body.append('used', data.used)
+      if (data.balance) body.append('balance', data.balance)
+      if (data.notes) body.append('notes', data.notes)
       return app
         .$axios({
           method: 'post',
@@ -675,8 +677,8 @@ export default ({ app }, inject) => {
       console.log('[Petty] Update a petty cash with specified id')
       let amount = 0
       const body = new FormData()
-      body.append('date', data.date)
-      body.append('allocation', data.allocation)
+      if (data.date) body.append('date', data.date)
+      if (data.allocation) body.append('allocation', data.allocation)
       for (let i = 0; i < data.details.length; i++) {
         body.append(
           'details[' + i + '][budget_code_id]',
