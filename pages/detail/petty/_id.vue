@@ -58,6 +58,29 @@
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.created_at') }}
+                    </div>
+                    <span>
+                      {{
+                        input.created_at ||
+                          $vuetify.lang.t('$vuetify.noDataText')
+                      }}
+                    </span>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.paid_at') }}
+                    </div>
+                    <span>
+                      {{
+                        input.date ||
+                          $vuetify.lang.t('$vuetify.noDataText')
+                      }}
+                    </span>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
                       {{ $translate('text.status') }}
                     </div>
                     <span>
@@ -179,7 +202,7 @@
           elevation="8"
           x-large
           color="accent"
-          @click.stop="rejectPettyCashForm()"
+          @click.stop="openDialogSureReject()"
         >{{ $translate('components.button.reject') }}
         </v-btn>
       </v-col>
@@ -190,20 +213,21 @@
           elevation="8"
           x-large
           color="accent"
-          @click.stop="alreadyPaidPettyCashForm()"
+          @click.stop="openDialogSureAlreadyPaid()"
         >{{ $translate('components.button.already_paid') }}
         </v-btn>
       </v-col>
     </v-row>
+
     <template>
       <v-row justify="center">
-        <v-dialog v-model="dialogSureDelete" persistent max-width="600">
+        <v-dialog v-model="dialogSureReject" persistent max-width="600">
           <v-card>
             <v-card-title class="title text-capitalize">{{
-              $translate('text.sure_delete_head')
+              $translate('text.sure_reject_head')
             }}</v-card-title>
             <v-card-text class="overline">{{
-              $translate('text.sure_delete_body')
+              $translate('text.sure_reject_body')
             }}</v-card-text>
             <v-card-actions>
               <v-row class="mx-0">
@@ -212,7 +236,7 @@
                     color="accent"
                     text
                     block
-                    @click="closeDialogSureDelete()"
+                    @click="closeDialogSureReject()"
                     >{{ $translate('components.button.sure_button_no') }}</v-btn
                   >
                 </v-col>
@@ -221,7 +245,7 @@
                     color="secondary"
                     text
                     block
-                    @click="deletePettyCash()"
+                    @click.stop="rejectPettyCashForm()"
                     >{{
                       $translate('components.button.sure_button_yes')
                     }}</v-btn
@@ -233,6 +257,46 @@
         </v-dialog>
       </v-row>
     </template>
+
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialogSureAlreadyPaid" persistent max-width="600">
+          <v-card>
+            <v-card-title class="title text-capitalize">{{
+              $translate('text.sure_paid_head')
+              }}</v-card-title>
+            <v-card-text class="overline">{{
+              $translate('text.sure_paid_body')
+              }}</v-card-text>
+            <v-card-actions>
+              <v-row class="mx-0">
+                <v-col class="px-0" cols="6">
+                  <v-btn
+                    color="accent"
+                    text
+                    block
+                    @click="closeDialogSureAlreadyPaid()"
+                  >{{ $translate('components.button.sure_button_no') }}</v-btn
+                  >
+                </v-col>
+                <v-col class="px-0" cols="6">
+                  <v-btn
+                    color="secondary"
+                    text
+                    block
+                    @click.stop="alreadyPaidPettyCashForm()"
+                  >{{
+                    $translate('components.button.sure_button_yes')
+                    }}</v-btn
+                  >
+                </v-col>
+              </v-row>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template>
+
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureVerify" persistent max-width="600">
@@ -309,8 +373,8 @@ export default {
     return {
       alert: false,
       success: false,
-      dialogSureDelete: false,
-      dialogSureVerify: false,
+      dialogSureReject: false,
+      dialogSureAlreadyPaid: false,
       messages: '',
       headers: [
         {
@@ -356,11 +420,17 @@ export default {
       this.signature.isEmpty = true
       this.signature.data = null
     },
-    openDialogSureDelete() {
-      this.dialogSureDelete = true
+    openDialogSureReject() {
+      this.dialogSureReject = true
     },
-    closeDialogSureDelete() {
-      this.dialogSureDelete = false
+    closeDialogSureReject() {
+      this.dialogSureReject = false
+    },
+    openDialogSureAlreadyPaid() {
+      this.dialogSureAlreadyPaid = true
+    },
+    closeDialogSureAlreadyPaid() {
+      this.dialogSureAlreadyPaid = false
     },
     rerender() {
       this.key++
@@ -368,17 +438,6 @@ export default {
     async getPettyCashForm() {
       try {
         this.input = await this.$api('petty', 'show', this.$route.params.id)
-      } catch (e) {
-        this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
-        this.alert = true
-      }
-    },
-    async deletePettyCash() {
-      try {
-        await this.$api('petty', 'delete', this.$route.params.id)
-        this.closeDialogSureDelete()
-        this.$router.replace('/all/petty')
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
@@ -457,15 +516,15 @@ export default {
         return true
       }
     },
-    // TODO: check if pic, manager ops alreand the status of form id is 2ady confirm and cashier not yet, and the auth user role is cashier or admin and the status of form id is 2
-    checkVerifyCashier() {
-      if (this.input.is_confirmed_cashier === 0 && this.input.is_confirmed_pic === 1 && this.input.is_confirmed_manager_ops === 1) {
-        return true
-      }
-    },
     // TODO: check if pic already confirm and manager_ops not yet, and the auth user role is manager_ops or admin,
     checkVerifyManagerOps() {
       if (this.input.is_confirmed_manager_ops === 0 && this.input.is_confirmed_pic === 1 && this.input.status_id === 1) {
+        return true
+      }
+    },
+    // TODO: check if pic, manager ops alreand the status of form id is 2ady confirm and cashier not yet, and the auth user role is cashier or admin and the status of form id is 2
+    checkVerifyCashier() {
+      if (this.input.is_confirmed_cashier === 0 && this.input.is_confirmed_pic === 1 && this.input.is_confirmed_manager_ops === 1) {
         return true
       }
     },
@@ -482,6 +541,7 @@ export default {
       try {
         await this.$api('petty', 'reject', this.input)
         await this.getPettyCashForm()
+        this.dialogSureReject = false
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
@@ -492,13 +552,13 @@ export default {
       try {
         await this.$api('petty', 'alreadypaid', this.input)
         await this.getPettyCashForm()
+        this.dialogSureAlreadyPaid = false
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
         this.alert = true
       }
     },
-    // TODO: Create reject dialog confirmation and already paid dialog confirmation
   }
 }
 </script>
