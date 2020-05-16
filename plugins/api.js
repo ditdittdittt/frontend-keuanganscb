@@ -200,7 +200,6 @@ export default ({ app }, inject) => {
       return app.$auth
         .logout()
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -642,7 +641,6 @@ export default ({ app }, inject) => {
       console.log('[Petty] Show all petty cash forms')
 
       return app.$axios.$get('/form/petty-cash').then((response) => {
-        console.log(response)
         return response.form_petty_cash
       })
     },
@@ -676,7 +674,6 @@ export default ({ app }, inject) => {
     show(data) {
       console.log('[Petty] Show a petty cash with specified id')
       return app.$axios.$get('/form/petty-cash/' + data).then((response) => {
-        console.log(response)
         return response.form_petty_cash
       })
     },
