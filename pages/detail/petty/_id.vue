@@ -206,7 +206,7 @@
         >{{ $translate('components.button.reject') }}
         </v-btn>
       </v-col>
-      <v-col v-if="checkIfPic()">
+      <v-col v-if="checkIfUserWantToConfirmAlreadyPaid()">
         <v-btn
           block
           dark
@@ -375,6 +375,7 @@ export default {
       success: false,
       dialogSureReject: false,
       dialogSureAlreadyPaid: false,
+      dialogSureVerify: false,
       messages: '',
       headers: [
         {
@@ -510,33 +511,6 @@ export default {
       await this.getPettyCashForm()
       this.closeDialogSureVerify()
     },
-    // TODO: check if is_confirmed_pic === 0 and auth user is the pic of the form or auth user is admin
-    checkVerifyPic() {
-      if (this.input.is_confirmed_pic === 0) {
-        return true
-      }
-    },
-    // TODO: check if pic already confirm and manager_ops not yet, and the auth user role is manager_ops or admin,
-    checkVerifyManagerOps() {
-      if (this.input.is_confirmed_manager_ops === 0 && this.input.is_confirmed_pic === 1 && this.input.status_id === 1) {
-        return true
-      }
-    },
-    // TODO: check if pic, manager ops alreand the status of form id is 2ady confirm and cashier not yet, and the auth user role is cashier or admin and the status of form id is 2
-    checkVerifyCashier() {
-      if (this.input.is_confirmed_cashier === 0 && this.input.is_confirmed_pic === 1 && this.input.is_confirmed_manager_ops === 1) {
-        return true
-      }
-    },
-    // TODO: check if auth admin or not, if yes return true, if no return false
-    checkIfAdmin() {
-    },
-    // TODO: check if admin or auth is the pic of the form and status is 3
-    checkIfPic() {
-      if (this.input.status_id === 3 && this.$auth.user.id === this.input.pic.id) {
-        return true
-      }
-    },
     async rejectPettyCashForm() {
       try {
         await this.$api('petty', 'reject', this.input)
@@ -559,6 +533,35 @@ export default {
         this.alert = true
       }
     },
+    checkVerifyPic() {
+      if (this.input.is_confirmed_pic === 0 && (this.$auth.user.id === this.input.pic.id || this.checkIfUserRoleIsAdmin())) {
+        return true
+      }
+    },
+    checkVerifyManagerOps() {
+      if (this.input.is_confirmed_manager_ops === 0 && this.input.is_confirmed_pic === 1 && this.input.status_id === 1 && (this.checkIfUserRoleIsManagerOps() || this.checkIfUserRoleIsAdmin())) {
+        return true
+      }
+    },
+    checkVerifyCashier() {
+      if (this.input.is_confirmed_cashier === 0 && this.input.is_confirmed_pic === 1 && this.input.is_confirmed_manager_ops === 1 && this.input.status_id === 2 && (this.checkIfUserRoleIsCashier() || this.checkIfUserRoleIsAdmin())) {
+        return true
+      }
+    },
+    checkIfUserWantToConfirmAlreadyPaid() {
+      if ((this.checkIfUserRoleIsAdmin() || this.$auth.user.id === this.input.pic.id) && this.input.status_id === 3) {
+        return true
+      }
+    },
+    checkIfUserRoleIsAdmin() {
+      return this.$auth.user.roles_list.includes('admin')
+    },
+    checkIfUserRoleIsManagerOps() {
+      return this.$auth.user.roles_list.includes('manager_ops')
+    },
+    checkIfUserRoleIsCashier() {
+      return this.$auth.user.roles_list.includes('cashier')
+    }
   }
 }
 </script>
