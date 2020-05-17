@@ -27,15 +27,17 @@ export default {
         petty_cash: 'petty cash table',
         budget_code: 'budget code table',
         role: 'role table',
-        user: 'user table'
+        user: 'user table',
+        bank: 'bank table'
       },
       subtitle: {
         request: 'list requesting fund',
         submission: 'list submission fund',
         petty_cash: 'list petty cash',
         budget_code: 'list budget code',
-        role: 'list role',
-        user: 'list user'
+        role: 'list of role',
+        user: 'list of user',
+        bank: 'list of bank'
       }
     },
     form: {
@@ -44,14 +46,16 @@ export default {
         submission: 'form fund submission',
         petty_cash: 'form petty cash',
         role: 'form role',
-        budget_code: 'budget code'
+        budget_code: 'form budget code',
+        bank: 'form bank account'
       },
       subtitle: {
         request: 'fill this form to create request form',
         submission: 'fill this form to create submission form',
         petty_cash: 'fill this form to create petty cash form',
         role: 'fill this form to create role',
-        budget_code: 'fill this form to create budget code form'
+        budget_code: 'fill this form to create budget code form',
+        bank: 'fill this form to create bank account'
       }
     }
   },

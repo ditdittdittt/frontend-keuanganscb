@@ -143,6 +143,21 @@ export default ({ app }, inject) => {
             break
         }
         break
+      case 'rekening':
+        switch (action) {
+          case 'index':
+            return Rekening.getAllRekening()
+          case 'store':
+            return Rekening.store(data)
+          case 'delete':
+            return Rekening.delete(data)
+          default:
+            console.error(
+              `Unknown ${target} action : ${action} in '~/plugins/api.js'`
+            )
+            break
+        }
+        break
       default:
         console.error(`Unknown target : ${target} in '~/plugins/api.js'`)
         break
@@ -821,6 +836,54 @@ export default ({ app }, inject) => {
         .$axios({
           method: 'delete',
           url: '/budget-code/' + data,
+          data: null
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    }
+  }
+
+  /**
+   * Rekening Interface
+   */
+  const Rekening = {
+    getAllRekening() {
+      console.log('[Rekening] Get all Rekening code')
+      return app.$axios.$get('/rekening').then((response) => {
+        console.log(response)
+        return response.rekening
+      })
+    },
+    store(data) {
+      console.log('[Rekening] store Rekening code')
+      const body = new FormData()
+      body.append('bank_code', data.bank_code)
+      body.append('bank_name', data.bank_name)
+      body.append('account_number', data.account_number)
+      body.append('account_owner', data.account_owner)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/rekening',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    delete(data) {
+      console.log('[Rekening] Get all Rekening code')
+      return app
+        .$axios({
+          method: 'delete',
+          url: '/rekening/' + data,
           data: null
         })
         .then((response) => {
