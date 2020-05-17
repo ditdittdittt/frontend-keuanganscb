@@ -85,8 +85,8 @@ export default {
       search: '',
       headers: [
         {
-          text: `${this.$translate('text.date', 'capitalize')}`,
-          value: 'date'
+          text: `${this.$translate('text.created_at', 'capitalize')}`,
+          value: 'created_at'
         },
         {
           text: `${this.$translate('text.allocation', 'capitalize')}`,
@@ -103,6 +103,10 @@ export default {
         {
           text: `${this.$translate('text.status', 'capitalize')}`,
           value: 'status.status'
+        },
+        {
+          text: `${this.$translate('text.paid_at', 'capitalize')}`,
+          value: 'date'
         },
         {
           text: `${this.$translate('text.number', 'capitalize')}`,

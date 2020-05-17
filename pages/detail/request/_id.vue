@@ -66,6 +66,28 @@
                       }}
                     </span>
                   </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.created_at') }}
+                    </div>
+                    <span>
+                      {{
+                        input.created_at ||
+                          $vuetify.lang.t('$vuetify.noDataText')
+                      }}
+                    </span>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.paid_at') }}
+                    </div>
+                    <span>
+                      {{
+                        input.date ||
+                          $vuetify.lang.t('$vuetify.noDataText')
+                      }}
+                    </span>
+                  </v-col>
                   <v-col v-if="input.attachment" cols="12" md="6">
                     <div class="caption primary--text text-capitalize">{{ $translate('text.file') }}</div>
                     <span class="text-capitalize">{{ $translate('text.view') }}</span>
