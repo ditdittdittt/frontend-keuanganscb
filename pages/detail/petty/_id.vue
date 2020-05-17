@@ -534,7 +534,7 @@ export default {
       }
     },
     checkVerifyPic() {
-      if (this.input.is_confirmed_pic === 0 && (this.$auth.user.id === this.input.pic.id || this.checkIfUserRoleIsAdmin())) {
+      if (this.input.is_confirmed_pic === 0 && this.input.status_id === 1 && (this.$auth.user.id === this.input.pic.id || this.checkIfUserRoleIsAdmin())) {
         return true
       }
     },

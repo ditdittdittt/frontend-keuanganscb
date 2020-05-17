@@ -55,14 +55,18 @@ export default ({ app }, inject) => {
             return Request.delete(data)
           case 'verifyaspic':
             return Request.verifyAsPic(data)
-          case 'verifyascashier':
-            return Request.verifyAsCashier(data)
           case 'verifyasheaddept':
             return Request.verifyAsHeadDept(data)
           case 'verifyasverificator':
             return Request.verifyAsVerificator(data)
-          case 'verifyalreadypaid':
+          case 'verifyasheadoffice':
+            return Request.verifyAsHeadOffice(data)
+          case 'verifyascashier':
+            return Request.verifyAsCashier(data)
+          case 'alreadypaid':
             return Request.verifyAlreadyPaid(data)
+          case 'reject':
+            return Request.reject(data)
           case 'count':
             return Request.count()
           default:
@@ -318,7 +322,6 @@ export default ({ app }, inject) => {
       console.log('[Request] Show a request with specified id')
 
       return app.$axios.$get('/form/request/' + data).then((response) => {
-        console.log(response)
         return response.form_request
       })
     },
@@ -438,11 +441,45 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
+    verifyAsHeadOffice(data) {
+      console.log('[Request] Verify as Head Office')
+      const body = new FormData()
+      body.append('is_confirmed_head_office', 1)
+      body.append('signature', data.signature.data)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id + '/confirm',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
     verifyAlreadyPaid(data) {
       console.log('[Request] Verify already paid')
       const body = new FormData()
-      body.append('status_id', 3)
-      body.append('signature', data.signature.data)
+      body.append('status_id', 4)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    reject(data) {
+      console.log('[Request] Reject Form Request')
+      const body = new FormData()
+      body.append('status_id', 7)
       return app
         .$axios({
           method: 'post',
