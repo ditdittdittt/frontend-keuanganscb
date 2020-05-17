@@ -69,6 +69,8 @@ export default ({ app }, inject) => {
             return Request.reject(data)
           case 'count':
             return Request.count()
+          case 'cancel':
+            return Request.cancel(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -104,6 +106,8 @@ export default ({ app }, inject) => {
             return Submission.reject(data)
           case 'count':
             return Submission.count()
+          case 'cancel':
+            return Submission.cancel(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -135,6 +139,8 @@ export default ({ app }, inject) => {
             return Petty.reject(data)
           case 'alreadypaid':
             return Petty.alreadyPaid(data)
+          case 'cancel':
+            return Petty.cancel(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -510,6 +516,23 @@ export default ({ app }, inject) => {
         .catch((error) => {
           throw new Error(error)
         })
+    },
+    cancel(data) {
+      console.log('[Request] Cancel Form Request')
+      const body = new FormData()
+      body.append('status_id', 8)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     }
   }
 
@@ -725,6 +748,23 @@ export default ({ app }, inject) => {
         .catch((error) => {
           throw new Error(error)
         })
+    },
+    cancel(data) {
+      console.log('[Submission] Cancel Form Submission')
+      const body = new FormData()
+      body.append('status_id', 8)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     }
   }
 
@@ -915,7 +955,25 @@ export default ({ app }, inject) => {
         .catch((error) => {
           throw new Error(error)
         })
-    }
+    },
+    cancel(data) {
+      console.log('[Petty] Cancel this petty form')
+      const body = new FormData()
+      body.append('status_id', 8)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
   }
 
   /**
@@ -925,7 +983,6 @@ export default ({ app }, inject) => {
     getBudgetList() {
       console.log('[Budget] Get all budget code')
       return app.$axios.$get('/budget-code').then((response) => {
-        console.log(response)
         return response.budget_code
       })
     },
