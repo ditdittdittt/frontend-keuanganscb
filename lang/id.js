@@ -15,7 +15,8 @@ export default {
       update: 'perbarui',
       sure_button_yes: 'ya',
       sure_button_no: 'tidak',
-      already_paid: 'telah dibayarkan'
+      already_paid: 'telah dibayarkan',
+      reject: 'tolak'
     },
     row: {
       text: 'baris'
@@ -139,7 +140,12 @@ export default {
     number: 'nomor',
     role: 'peran',
     confirm_password: 'konfirmasi password',
-    code: 'Kode'
+    code: 'Kode',
+    sure_reject_head: 'apakah kamu yakin untuk menolak form ini?',
+    sure_reject_body: 'form tidak bisa dikembalikan setelah melakukan penolakan',
+    sure_paid_head: 'apakah kamu yakin uang sudah diterima?',
+    sure_paid_body: 'form tidak bisa dikembalikan setelah melakukan konfirmasi',
+    paid_at: 'dibayarkan saat'
   },
   helper: {
     messages: {

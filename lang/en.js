@@ -15,7 +15,8 @@ export default {
       update: 'update',
       sure_button_yes: 'yes',
       sure_button_no: 'no',
-      already_paid: 'already paid'
+      already_paid: 'already paid',
+      reject: 'reject'
     },
     row: {
       text: 'row'
@@ -138,7 +139,13 @@ export default {
     number: 'number',
     role: 'role',
     confirm_password: 'confirm password',
-    code: 'code'
+    code: 'code',
+    sure_reject_head: 'are you sure to reject this form?',
+    sure_reject_body: 'this form cannot be restore after got rejected',
+    sure_paid_head: 'are you sure the money already paid?',
+    sure_paid_body: 'you cannot undo after you confirm',
+    paid_at: 'paid at'
+
   },
   helper: {
     messages: {

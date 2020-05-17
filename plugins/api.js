@@ -55,14 +55,18 @@ export default ({ app }, inject) => {
             return Request.delete(data)
           case 'verifyaspic':
             return Request.verifyAsPic(data)
-          case 'verifyascashier':
-            return Request.verifyAsCashier(data)
           case 'verifyasheaddept':
             return Request.verifyAsHeadDept(data)
           case 'verifyasverificator':
             return Request.verifyAsVerificator(data)
-          case 'verifyalreadypaid':
+          case 'verifyasheadoffice':
+            return Request.verifyAsHeadOffice(data)
+          case 'verifyascashier':
+            return Request.verifyAsCashier(data)
+          case 'alreadypaid':
             return Request.verifyAlreadyPaid(data)
+          case 'reject':
+            return Request.reject(data)
           case 'count':
             return Request.count()
           default:
@@ -92,6 +96,12 @@ export default ({ app }, inject) => {
             return Submission.verifyAsHeadDept(data)
           case 'verifyasverificator':
             return Submission.verifyAsVerificator(data)
+          case 'verifyascashier':
+            return Submission.verifyAsCashier(data)
+          case 'alreadypaid':
+            return Submission.verifyAlreadyPaid(data)
+          case 'reject':
+            return Submission.reject(data)
           case 'count':
             return Submission.count()
           default:
@@ -121,6 +131,10 @@ export default ({ app }, inject) => {
             return Petty.verifyAsCashier(data)
           case 'count':
             return Petty.count()
+          case 'reject':
+            return Petty.reject(data)
+          case 'alreadypaid':
+            return Petty.alreadyPaid(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -211,7 +225,6 @@ export default ({ app }, inject) => {
       return app.$auth
         .logout()
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -330,7 +343,6 @@ export default ({ app }, inject) => {
       console.log('[Request] Show a request with specified id')
 
       return app.$axios.$get('/form/request/' + data).then((response) => {
-        console.log(response)
         return response.form_request
       })
     },
@@ -450,11 +462,45 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
+    verifyAsHeadOffice(data) {
+      console.log('[Request] Verify as Head Office')
+      const body = new FormData()
+      body.append('is_confirmed_head_office', 1)
+      body.append('signature', data.signature.data)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id + '/confirm',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
     verifyAlreadyPaid(data) {
       console.log('[Request] Verify already paid')
       const body = new FormData()
-      body.append('status_id', 3)
-      body.append('signature', data.signature.data)
+      body.append('status_id', 4)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    reject(data) {
+      console.log('[Request] Reject Form Request')
+      const body = new FormData()
+      body.append('status_id', 7)
       return app
         .$axios({
           method: 'post',
@@ -631,6 +677,58 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
+    verifyAsCashier(data) {
+      console.log('[Submission] Verify as Cashier')
+      const body = new FormData()
+      body.append('is_confirmed_cashier', 1)
+      body.append('signature', data.signature.data)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id + '/confirm',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    verifyAlreadyPaid(data) {
+      console.log('[Submission] Verify already paid')
+      const body = new FormData()
+      body.append('status_id', 6)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    reject(data) {
+      console.log('[Submission] Reject Form Submission')
+      const body = new FormData()
+      body.append('status_id', 7)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
     count() {
       console.log('[Submission] Get count for all submission forms')
 
@@ -653,7 +751,6 @@ export default ({ app }, inject) => {
       console.log('[Petty] Show all petty cash forms')
 
       return app.$axios.$get('/form/petty-cash').then((response) => {
-        console.log(response)
         return response.form_petty_cash
       })
     },
@@ -792,6 +889,42 @@ export default ({ app }, inject) => {
       return app.$axios
         .$get('/form/petty-cash/count')
         .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    reject(data) {
+      console.log('[Petty] Reject this petty form')
+      const body = new FormData()
+      body.append('status_id', 7)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    alreadyPaid(data) {
+      console.log('[Petty] Reject this petty form')
+      const body = new FormData()
+      body.append('status_id', 6)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
           return response
         })
         .catch((error) => {
