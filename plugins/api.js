@@ -96,6 +96,12 @@ export default ({ app }, inject) => {
             return Submission.verifyAsHeadDept(data)
           case 'verifyasverificator':
             return Submission.verifyAsVerificator(data)
+          case 'verifyascashier':
+            return Submission.verifyAsCashier(data)
+          case 'alreadypaid':
+            return Submission.verifyAlreadyPaid(data)
+          case 'reject':
+            return Submission.reject(data)
           case 'count':
             return Submission.count()
           default:
@@ -647,6 +653,58 @@ export default ({ app }, inject) => {
         .$axios({
           method: 'post',
           url: '/form/submission/' + data.id + '/confirm',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    verifyAsCashier(data) {
+      console.log('[Submission] Verify as Cashier')
+      const body = new FormData()
+      body.append('is_confirmed_cashier', 1)
+      body.append('signature', data.signature.data)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id + '/confirm',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    verifyAlreadyPaid(data) {
+      console.log('[Submission] Verify already paid')
+      const body = new FormData()
+      body.append('status_id', 6)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    reject(data) {
+      console.log('[Submission] Reject Form Submission')
+      const body = new FormData()
+      body.append('status_id', 7)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
           data: body
         })
         .then((response) => {
