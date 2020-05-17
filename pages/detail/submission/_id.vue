@@ -217,6 +217,16 @@
           @click.stop="openDialogSureAlreadyPaid()"
         >{{ $translate('components.button.already_paid') }}</v-btn>
       </v-col>
+      <v-col v-if="checkVerifyPic()">
+        <v-btn
+          block
+          dark
+          elevation="8"
+          x-large
+          color="accent"
+          @click.stop="cancelSubmissionForm()"
+        >{{ $translate('components.button.cancel') }}</v-btn>
+      </v-col>
     </v-row>
     <!-- Alert -->
     <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
@@ -552,6 +562,16 @@ export default {
         await this.$api('submission', 'alreadypaid', this.input)
         await this.getSubmissionForm()
         this.dialogSureAlreadyPaid = false
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async cancelSubmissionForm() {
+      try {
+        await this.$api('submission', 'cancel', this.input)
+        await this.getSubmissionForm()
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

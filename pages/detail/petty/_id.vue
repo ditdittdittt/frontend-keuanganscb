@@ -217,6 +217,16 @@
         >{{ $translate('components.button.already_paid') }}
         </v-btn>
       </v-col>
+      <v-col v-if="checkVerifyPic()">
+        <v-btn
+          block
+          dark
+          elevation="8"
+          x-large
+          color="accent"
+          @click.stop="cancelPettyCashForm()"
+        >{{ $translate('components.button.cancel') }}</v-btn>
+      </v-col>
     </v-row>
 
     <template>
@@ -527,6 +537,16 @@ export default {
         await this.$api('petty', 'alreadypaid', this.input)
         await this.getPettyCashForm()
         this.dialogSureAlreadyPaid = false
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async cancelPettyCashForm() {
+      try {
+        await this.$api('petty', 'cancel', this.input)
+        await this.getPettyCashForm()
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

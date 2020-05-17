@@ -184,6 +184,7 @@ export default {
       today: null,
       valid: true,
       input: {
+        budgets: [{ code: null, nominal: null, balance: null }],
         request: null,
         allocation: null,
         used: null,
@@ -198,11 +199,17 @@ export default {
           value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
-      }
+      },
+      choosenRequestForm: {}
     }
   },
   mounted() {
     this.getAllRequestForms()
+  },
+  watch: {
+    'input.request': function() {
+      this.getChoosenRequestForm()
+    }
   },
   methods: {
     async storeSubmission() {
@@ -213,7 +220,7 @@ export default {
         return
       }
       try {
-        const result = await this.$api('submission', 'store', this.input)
+        // const result = await this.$api('submission', 'store', this.input)
         if (result.status === 201) {
           this.success = true
           this.messages = 'Berhasil membuat form submission'
@@ -233,6 +240,18 @@ export default {
     async getAllRequestForms() {
       try {
         this.form.request = await this.$api('request', 'index', null)
+        this.form.request = this.form.request.filter(function(form) {
+          return form.status_id === 4
+        })
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async getChoosenRequestForm() {
+      try {
+        this.choosenRequestForm = await this.$api('request', 'show', this.input.request.id)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

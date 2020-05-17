@@ -110,11 +110,22 @@ export default {
   filters: {
     currency(value) {
       if (value === null || value === '') return 'Rp 0'
-      const result = Number(value)
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result + ',00'
+      if (value < 0) {
+        const result = Number(value)
+          .toString()
+          .match(/\d{1,3}(?=(\d{3})*$)/g)
+          .join('.')
+        return '-' + 'Rp ' + result + ',00'
+      }
+      try {
+        const result = Number(value)
+          .toString()
+          .match(/\d{1,3}(?=(\d{3})*$)/g)
+          .join('.')
+        return 'Rp ' + result + ',00'
+      } catch (e) {
+        return 'Rp ~'
+      }
     },
     capitalize(value) {
       if (!value) return ''
