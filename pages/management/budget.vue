@@ -120,6 +120,13 @@
                 >
                   mdi-plus
                 </v-icon>
+                <v-icon
+                  small
+                  class="mr-2"
+                  @click.stop="openDialogUpdate(item.id)"
+                >
+                  mdi-pencil
+                </v-icon>
               </template>
             </v-data-table>
           </v-card-text>
@@ -188,6 +195,63 @@
         </v-dialog>
       </v-row>
     </template>
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialogUpdate" persistent max-width="600">
+          <v-card>
+            <v-card-title class="title text-capitalize">{{
+              $translate('text.update_balance')
+              }}</v-card-title>
+            <v-card-text class="overline">
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.update_balance') }}
+                    </div>
+                    <v-text-field
+                      v-model="updateInput.balance"
+                      prepend-inner-icon="mdi-cash"
+                      prefix="Rp"
+                      type="number"
+                      clearable
+                      solo
+                      :label="$translate('text.nominal', 'capitalize')"
+                      :rules="[rules.required]"
+                      :hint="updateInput.balance | currency"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-row class="mx-0">
+                <v-col class="px-0" cols="6">
+                  <v-btn
+                    color="accent"
+                    text
+                    block
+                    @click="closeDialogUpdate()"
+                  >{{ $translate('components.button.sure_button_no') }}</v-btn
+                  >
+                </v-col>
+                <v-col class="px-0" cols="6">
+                  <v-btn
+                    color="secondary"
+                    text
+                    block
+                    @click.stop="updateBalance()"
+                  >{{
+                    $translate('components.button.sure_button_yes')
+                    }}</v-btn
+                  >
+                </v-col>
+              </v-row>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template>
   </v-container>
 </template>
 <script>
@@ -230,6 +294,7 @@ export default {
       today: null,
       valid: true,
       dialogTopUp: false,
+      dialogUpdate: false,
       input: {
         code: null,
         name: null,
@@ -238,6 +303,10 @@ export default {
       topUpInput: {
         id: null,
         nominal: null
+      },
+      updateInput: {
+        id: null,
+        balance: null
       },
       modal: {
         date: false
@@ -330,6 +399,15 @@ export default {
       this.topUpInput.id = null
       this.topUpInput.nominal = null
     },
+    openDialogUpdate(budgetCodeId) {
+      this.dialogUpdate = true
+      this.updateInput.id = budgetCodeId
+    },
+    closeDialogUpdate() {
+      this.dialogUpdate = false
+      this.updateInput.id = null
+      this.updateInput.balance = null
+    },
     async topUp() {
       try {
         const result = await this.$api('budget', 'topup', this.topUpInput)
@@ -341,6 +419,24 @@ export default {
         }
         await this.getAllBudgetCode()
         this.closeDialogTopUp()
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+        console.log(e)
+      }
+    },
+    async updateBalance(){
+      try {
+        const result = await this.$api('budget', 'update', this.updateInput)
+        if (result.status === 201) {
+          this.success = true
+          this.messages = 'Budget code berhasil di simpan'
+          this.alert = true
+          this.$refs.form.reset()
+        }
+        await this.getAllBudgetCode()
+        this.closeDialogUpdate()
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
