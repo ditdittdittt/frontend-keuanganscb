@@ -293,7 +293,7 @@
     </v-row>
     <div class="spacing-small"></div>
     <v-row>
-      <v-col v-if="checkVerifyHeadOffice() || checkVerifyHeadDept()">
+      <v-col v-if="checkVerifyHeadOffice() || checkVerifyVerificator() || checkVerifyHeadDept()">
         <v-btn
           block
           dark
@@ -304,15 +304,15 @@
           >{{ $translate('components.button.reject') }}</v-btn
         >
       </v-col>
-      <v-col v-if="checkIfUserWantToConfirmAlreadyPaid()">
+      <v-col v-if="checkIfRequestFormNeedSubmission()">
         <v-btn
           block
           dark
           elevation="8"
           x-large
           color="accent"
-          @click.stop="openDialogSureAlreadyPaid()"
-          >{{ $translate('components.button.already_paid') }}</v-btn
+          @click.stop="openDialogSureNeedSubmission()"
+          >{{ $translate('components.button.need_submission') }}</v-btn
         >
       </v-col>
       <v-col v-if="checkVerifyPic()">
@@ -375,13 +375,13 @@
 
     <template>
       <v-row justify="center">
-        <v-dialog v-model="dialogSureAlreadyPaid" persistent max-width="600">
+        <v-dialog v-model="dialogSureNeedSubmission"  max-width="600">
           <v-card>
             <v-card-title class="title text-capitalize">{{
-              $translate('text.sure_paid_head')
+              $translate('text.sure_need_submission_head')
             }}</v-card-title>
             <v-card-text class="overline">{{
-              $translate('text.sure_paid_body')
+              $translate('text.sure_need_submission_body')
             }}</v-card-text>
             <v-card-actions>
               <v-row class="mx-0">
@@ -390,7 +390,7 @@
                     color="accent"
                     text
                     block
-                    @click="closeDialogSureAlreadyPaid()"
+                    @click="confirmIfRequestFormNoNeedSubmission()"
                     >{{ $translate('components.button.sure_button_no') }}</v-btn
                   >
                 </v-col>
@@ -399,7 +399,7 @@
                     color="secondary"
                     text
                     block
-                    @click.stop="alreadyPaidRequestForm()"
+                    @click.stop="confirmIfRequestFormNeedSubmission()"
                     >{{
                       $translate('components.button.sure_button_yes')
                     }}</v-btn
@@ -483,7 +483,7 @@ export default {
       alert: false,
       success: false,
       dialogSureReject: false,
-      dialogSureAlreadyPaid: false,
+      dialogSureNeedSubmission: false,
       dialogSureVerify: false,
       messages: '',
       headers: [
@@ -540,11 +540,11 @@ export default {
     closeDialogSureReject() {
       this.dialogSureReject = false
     },
-    openDialogSureAlreadyPaid() {
-      this.dialogSureAlreadyPaid = true
+    openDialogSureNeedSubmission() {
+      this.dialogSureNeedSubmission = true
     },
-    closeDialogSureAlreadyPaid() {
-      this.dialogSureAlreadyPaid = false
+    closeDialogSureNeedSubmission() {
+      this.dialogSureNeedSubmission = false
     },
     rerender() {
       this.key++
@@ -673,11 +673,22 @@ export default {
         this.alert = true
       }
     },
-    async alreadyPaidRequestForm() {
+    async confirmIfRequestFormNeedSubmission() {
       try {
-        await this.$api('request', 'alreadypaid', this.input)
+        await this.$api('request', 'confirmneedsubmission', this.input)
         await this.getRequestForm()
-        this.dialogSureAlreadyPaid = false
+        this.closeDialogSureNeedSubmission()
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async confirmIfRequestFormNoNeedSubmission() {
+      try {
+        await this.$api('request', 'confirmnoneedsubmission', this.input)
+        await this.getRequestForm()
+        this.closeDialogSureNeedSubmission()
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
@@ -752,10 +763,10 @@ export default {
         return true
       }
     },
-    checkIfUserWantToConfirmAlreadyPaid() {
+    checkIfRequestFormNeedSubmission() {
       if (
         (this.checkIfUserRoleIsAdmin() ||
-          this.$auth.user.id === this.input.pic.id) &&
+          this.checkIfUserRoleIsCashier()) &&
         this.input.status_id === 3
       ) {
         return true

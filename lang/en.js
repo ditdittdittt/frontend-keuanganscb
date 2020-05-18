@@ -16,7 +16,8 @@ export default {
       sure_button_yes: 'yes',
       sure_button_no: 'no',
       already_paid: 'already paid',
-      reject: 'reject'
+      reject: 'reject',
+      need_submission: 'is this form need submission?'
     },
     row: {
       text: 'row'
@@ -147,7 +148,9 @@ export default {
     paid_at: 'paid at',
     information: 'information',
     top_up: 'top up',
-    nominal: 'nominal'
+    nominal: 'nominal',
+    sure_need_submission_head: 'are you sure this form need submission?',
+    sure_need_submission_body: 'yes if needed, no if not'
   },
   helper: {
     messages: {

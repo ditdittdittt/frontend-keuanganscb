@@ -16,7 +16,8 @@ export default {
       sure_button_yes: 'ya',
       sure_button_no: 'tidak',
       already_paid: 'telah dibayarkan',
-      reject: 'tolak'
+      reject: 'tolak',
+      need_submission: 'apakah form ini membutuhkan submisi?'
     },
     row: {
       text: 'baris'
@@ -149,7 +150,9 @@ export default {
     paid_at: 'dibayarkan saat',
     information: 'informasi',
     top_up: 'isi saldo',
-    nominal: 'nominal'
+    nominal: 'nominal',
+    sure_need_submission_head: 'apakah form ini membutuh submisi?',
+    sure_need_submission_body: 'ya jika membutuhkan, tidak jika tidak'
   },
   helper: {
     messages: {
