@@ -63,8 +63,10 @@ export default ({ app }, inject) => {
             return Request.verifyAsHeadOffice(data)
           case 'verifyascashier':
             return Request.verifyAsCashier(data)
-          case 'alreadypaid':
-            return Request.verifyAlreadyPaid(data)
+          case 'confirmneedsubmission':
+            return Request.confirmNeedSubmission(data)
+          case 'confirmnoneedsubmission':
+            return Request.confirmNoNeedSubmission(data)
           case 'reject':
             return Request.reject(data)
           case 'count':
@@ -488,10 +490,27 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    verifyAlreadyPaid(data) {
-      console.log('[Request] Verify already paid')
+    confirmNeedSubmission(data) {
+      console.log('[Request] Confirm need submission')
       const body = new FormData()
       body.append('status_id', 4)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    confirmNoNeedSubmission(data) {
+      console.log('[Request] Confirm no need submission')
+      const body = new FormData()
+      body.append('status_id', 6)
       return app
         .$axios({
           method: 'post',
