@@ -156,6 +156,8 @@ export default ({ app }, inject) => {
             return Budget.getBudgetList()
           case 'store':
             return Budget.store(data)
+          case 'update':
+            return Budget.update(data)
           case 'delete':
             return Budget.delete(data)
           case 'topup':
@@ -1046,6 +1048,23 @@ export default ({ app }, inject) => {
         .$axios({
           method: 'post',
           url: '/budget-code',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    update(data) {
+      console.log('[Budget] Update balance')
+      const body = new FormData()
+      body.append('balance', data.balance)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/budget-code/' + data.id,
           data: body
         })
         .then((response) => {

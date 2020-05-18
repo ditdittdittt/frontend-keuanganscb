@@ -150,7 +150,8 @@ export default {
     top_up: 'top up',
     nominal: 'nominal',
     sure_need_submission_head: 'are you sure this form need submission?',
-    sure_need_submission_body: 'yes if needed, no if not'
+    sure_need_submission_body: 'yes if needed, no if not',
+    update_balance: 'update balance'
   },
   helper: {
     messages: {
