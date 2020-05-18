@@ -208,7 +208,7 @@ export default {
         })
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -222,7 +222,7 @@ export default {
         })
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -236,7 +236,7 @@ export default {
         })
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -250,7 +250,7 @@ export default {
         })
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     }

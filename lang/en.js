@@ -1,4 +1,7 @@
 export default {
+  alert: {
+    error: 'an error occured: ',
+  },
   components: {
     button: {
       text: 'button',

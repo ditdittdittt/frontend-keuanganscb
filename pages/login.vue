@@ -137,7 +137,7 @@ export default {
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString()
+        this.messages = `${this.$translate('alert.error')}` + e.toString()
         this.alert = true
       }
     }

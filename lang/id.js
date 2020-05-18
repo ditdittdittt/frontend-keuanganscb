@@ -1,4 +1,7 @@
 export default {
+  alert: {
+    error: 'terjadi kesalahan: ',
+  },
   components: {
     button: {
       text: 'tombol',
