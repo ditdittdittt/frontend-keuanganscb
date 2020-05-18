@@ -15,7 +15,8 @@ export default {
       update: 'update',
       sure_button_yes: 'yes',
       sure_button_no: 'no',
-      already_paid: 'already paid'
+      already_paid: 'already paid',
+      reject: 'reject'
     },
     row: {
       text: 'row'
@@ -27,15 +28,17 @@ export default {
         petty_cash: 'petty cash table',
         budget_code: 'budget code table',
         role: 'role table',
-        user: 'user table'
+        user: 'user table',
+        bank: 'bank table'
       },
       subtitle: {
         request: 'list requesting fund',
         submission: 'list submission fund',
         petty_cash: 'list petty cash',
         budget_code: 'list budget code',
-        role: 'list role',
-        user: 'list user'
+        role: 'list of role',
+        user: 'list of user',
+        bank: 'list of bank'
       }
     },
     form: {
@@ -44,14 +47,16 @@ export default {
         submission: 'form fund submission',
         petty_cash: 'form petty cash',
         role: 'form role',
-        budget_code: 'budget code'
+        budget_code: 'form budget code',
+        bank: 'form bank account'
       },
       subtitle: {
         request: 'fill this form to create request form',
         submission: 'fill this form to create submission form',
         petty_cash: 'fill this form to create petty cash form',
         role: 'fill this form to create role',
-        budget_code: 'fill this form to create budget code form'
+        budget_code: 'fill this form to create budget code form',
+        bank: 'fill this form to create bank account'
       }
     }
   },
@@ -134,7 +139,15 @@ export default {
     number: 'number',
     role: 'role',
     confirm_password: 'confirm password',
-    code: 'code'
+    code: 'code',
+    sure_reject_head: 'are you sure to reject this form?',
+    sure_reject_body: 'this form cannot be restore after got rejected',
+    sure_paid_head: 'are you sure the money already paid?',
+    sure_paid_body: 'you cannot undo after you confirm',
+    paid_at: 'paid at',
+    information: 'information',
+    top_up: 'top up',
+    nominal: 'nominal'
   },
   helper: {
     messages: {
@@ -151,7 +164,8 @@ export default {
     division: 'current division you are working in office',
     role: 'your role in this software',
     nik: 'identity number in your id card',
-    address: 'your residential address'
+    address: 'your residential address',
+    multiple_bank: 'separate them with commas for more than one data'
   },
   export: {
     pdf: 'export to PDF',

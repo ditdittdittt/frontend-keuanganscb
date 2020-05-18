@@ -81,8 +81,8 @@ export default {
       search: '',
       headers: [
         {
-          text: `${this.$translate('text.date', 'capitalize')}`,
-          value: 'date'
+          text: `${this.$translate('text.created_at', 'capitalize')}`,
+          value: 'created_at'
         },
         {
           text: `${this.$translate('text.allocation', 'capitalize')}`,

@@ -8,7 +8,9 @@
               <logo />
             </v-col>
             <v-col cols="7" class="white--text">
-              <span class="font-weight-bold overline">Sekolah Cendekia Baznas</span>
+              <span class="font-weight-bold overline"
+                >Sekolah Cendekia Baznas</span
+              >
             </v-col>
           </v-row>
         </v-container>
@@ -27,7 +29,9 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-light">{{ item.title }}</v-list-item-title>
+              <v-list-item-title class="font-weight-light">{{
+                item.title
+              }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -38,19 +42,19 @@
             <v-list-item>
               <v-list-item-title
                 class="caption font-weight-black text-capitalize"
-              >{{ $translate('text.setting') }}</v-list-item-title>
-              <v-list-item-action>
-                <v-btn icon x-small @click.stop="theme = !theme">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </v-list-item-action>
+                >{{ $translate('text.setting') }}</v-list-item-title
+              >
+              <v-btn class="mx-1" icon x-small @click.stop="$router.go(0)">
+                <v-icon>mdi-refresh</v-icon>
+              </v-btn>
+              <v-btn class="mx-1" icon x-small @click.stop="theme = !theme">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item>
               <v-list-item-title class="caption pa-0 text-capitalize">
-                {{
-                $translate('text.theme')
-                }}
+                {{ $translate('text.theme') }}
               </v-list-item-title>
             </v-list-item>
             <v-container class="py-0">
@@ -64,9 +68,9 @@
                 <template v-slot:label>
                   <div class="caption">
                     {{
-                    preferences.theme.darkMode
-                    ? $translate('text.dark', 'capitalize')
-                    : $translate('text.light', 'capitalize')
+                      preferences.theme.darkMode
+                        ? $translate('text.dark', 'capitalize')
+                        : $translate('text.light', 'capitalize')
                     }}
                   </div>
                 </template>
@@ -74,9 +78,7 @@
             </v-container>
             <v-list-item>
               <v-list-item-title class="caption pa-0 text-capitalize">
-                {{
-                $translate('text.language')
-                }}
+                {{ $translate('text.language') }}
               </v-list-item-title>
             </v-list-item>
             <v-container class="py-0">
@@ -96,20 +98,24 @@
             <v-list-item>
               <v-list-item-title
                 class="caption font-weight-black text-capitalize"
-              >{{ $translate('text.color') }}</v-list-item-title>
+                >{{ $translate('text.color') }}</v-list-item-title
+              >
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item>
               <v-list-item-title class="caption pa-0 text-capitalize">
-                {{
-                $translate('text.primary')
-                }}
+                {{ $translate('text.primary') }}
               </v-list-item-title>
             </v-list-item>
             <v-container class="px-5">
               <v-item-group v-model="preferences.theme.color.primary" mandatory>
                 <v-row>
-                  <v-col v-for="color in colors" :key="color" cols="3" class="pa-0 my-2">
+                  <v-col
+                    v-for="color in colors"
+                    :key="color"
+                    cols="3"
+                    class="pa-0 my-2"
+                  >
                     <v-item v-slot:default="{ active, toggle }" :value="color">
                       <v-card
                         class="mx-1"
@@ -128,15 +134,21 @@
             </v-container>
             <v-list-item>
               <v-list-item-title class="caption pa-0 text-capitalize">
-                {{
-                $translate('text.secondary')
-                }}
+                {{ $translate('text.secondary') }}
               </v-list-item-title>
             </v-list-item>
             <v-container class="px-5">
-              <v-item-group v-model="preferences.theme.color.secondary" mandatory>
+              <v-item-group
+                v-model="preferences.theme.color.secondary"
+                mandatory
+              >
                 <v-row>
-                  <v-col v-for="color in colors" :key="color" cols="3" class="pa-0 my-2">
+                  <v-col
+                    v-for="color in colors"
+                    :key="color"
+                    cols="3"
+                    class="pa-0 my-2"
+                  >
                     <v-item v-slot:default="{ active, toggle }" :value="color">
                       <v-card
                         class="mx-1"
@@ -155,15 +167,18 @@
             </v-container>
             <v-list-item>
               <v-list-item-title class="caption pa-0 text-capitalize">
-                {{
-                $translate('text.accent')
-                }}
+                {{ $translate('text.accent') }}
               </v-list-item-title>
             </v-list-item>
             <v-container class="px-5">
               <v-item-group v-model="preferences.theme.color.accent" mandatory>
                 <v-row>
-                  <v-col v-for="color in colors" :key="color" cols="3" class="pa-0 my-2">
+                  <v-col
+                    v-for="color in colors"
+                    :key="color"
+                    cols="3"
+                    class="pa-0 my-2"
+                  >
                     <v-item v-slot:default="{ active, toggle }" :value="color">
                       <v-card
                         class="mx-1"
@@ -188,7 +203,13 @@
         <v-spacer></v-spacer>
         <span class="caption">{{ pageName }}</span>
         <v-spacer></v-spacer>
-        <v-btn small color="secondary" :to="'/user/profile'" class="mx-2" active-class="accent">
+        <v-btn
+          small
+          color="secondary"
+          :to="'/user/profile'"
+          class="mx-2"
+          active-class="accent"
+        >
           <v-icon small>mdi-account</v-icon>
         </v-btn>
         <v-btn small color="secondary" @click.stop="theme = !theme">
@@ -306,6 +327,11 @@ export default {
           icon: 'mdi-account-cog',
           title: 'Management Role',
           to: '/management/role'
+        },
+        {
+          icon: 'mdi-bank',
+          title: 'Management Bank',
+          to: '/management/bank'
         }
       ]
     }

@@ -15,7 +15,8 @@ export default {
       update: 'perbarui',
       sure_button_yes: 'ya',
       sure_button_no: 'tidak',
-      already_paid: 'telah dibayarkan'
+      already_paid: 'telah dibayarkan',
+      reject: 'tolak'
     },
     row: {
       text: 'baris'
@@ -27,7 +28,8 @@ export default {
         petty_cash: 'tabel petty cash',
         budget_code: 'tabel kode anggaran',
         role: 'tabel peran',
-        user: 'tabel pengguna'
+        user: 'tabel pengguna',
+        bank: 'tabel rekening bank'
       },
       subtitle: {
         request: 'daftar pengajuan dana',
@@ -35,7 +37,8 @@ export default {
         petty_cash: 'daftar pengajuan uang belanja kecil',
         budget_code: 'daftar kode anggaran',
         role: 'daftar peran',
-        user: 'daftar pengguna'
+        user: 'daftar pengguna',
+        bank: 'daftar rekening bank'
       }
     },
     form: {
@@ -44,14 +47,16 @@ export default {
         submission: 'formulir submisi dana',
         petty_cash: 'formulir petty cash',
         role: 'formulir peran',
-        budget_code: 'formulir kode budget'
+        budget_code: 'formulir kode anggaran',
+        bank: 'formulir akun bank'
       },
       subtitle: {
         request: 'isi formulir untuk mengajukan dana',
         submission: 'isi formulir untuk submisi dana',
         petty_cash: 'isi formulir untuk pengajuan uang belanja kecil',
         role: 'isi formulit peran',
-        budget_code: 'isi formulir untuk membuat kode anggaran'
+        budget_code: 'isi formulir untuk membuat kode anggaran',
+        bank: 'isi formulir untuk membuat akun bank'
       }
     }
   },
@@ -135,7 +140,17 @@ export default {
     number: 'nomor',
     role: 'peran',
     confirm_password: 'konfirmasi password',
-    code: 'Kode'
+    code: 'Kode',
+    sure_reject_head: 'apakah kamu yakin untuk menolak form ini?',
+    sure_reject_body:
+      'form tidak bisa dikembalikan setelah melakukan penolakan',
+    sure_paid_head: 'apakah kamu yakin uang sudah diterima?',
+    sure_paid_body: 'form tidak bisa dikembalikan setelah melakukan konfirmasi',
+    paid_at: 'dibayarkan saat',
+    information: 'informasi',
+    top_up: 'isi saldo',
+    nominal: 'nominal'
+
   },
   helper: {
     messages: {
@@ -152,7 +167,8 @@ export default {
     division: 'divisi pada tempat kerja',
     role: 'peran pada penggunaan software',
     nik: 'nomor induk kependudukan',
-    address: 'alamat tempat tinggal'
+    address: 'alamat tempat tinggal',
+    multiple_bank: 'pisahkan dengan koma untuk data yang lebih dari satu'
   },
   export: {
     pdf: 'ekspor ke PDF',

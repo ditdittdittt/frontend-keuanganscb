@@ -5,10 +5,10 @@
       <v-col cols="12" sm="6" md="4">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
           <v-card-title class="text-uppercase">{{
-            $translate('components.form.title.budget_code')
+            $translate('components.form.title.bank')
           }}</v-card-title>
           <v-card-subtitle class="overline">{{
-            $translate('components.form.subtitle.budget_code')
+            $translate('components.form.subtitle.bank')
           }}</v-card-subtitle>
         </v-card>
         <v-card raised class="back-card px-md-5">
@@ -18,46 +18,54 @@
               <v-row>
                 <v-col cols="12">
                   <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.code') }}
+                    {{ $translate('text.bank_name') }}
                   </div>
                   <v-text-field
-                    v-model="input.code"
-                    prepend-inner-icon="mdi-code-brackets"
-                    clearable
-                    counter
-                    solo
-                    :rules="[rules.required]"
-                    :label="$translate('text.code', 'capitalize')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.name') }}
-                  </div>
-                  <v-text-field
-                    v-model="input.name"
-                    prepend-inner-icon="mdi-alphabetical"
-                    clearable
-                    counter
-                    solo
-                    :rules="[rules.required]"
-                    :label="$translate('text.name', 'capitalize')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.balance') }}
-                  </div>
-                  <v-text-field
-                    v-model="input.balance"
+                    v-model="input.bank_name"
                     prepend-inner-icon="mdi-cash"
-                    prefix="Rp"
-                    type="number"
                     clearable
                     solo
-                    :rules="[rules.required, rules.positive]"
-                    :label="$translate('text.balance', 'capitalize')"
-                    :hint="input.balance | currency"
+                    :rules="[rules.required]"
+                    :label="$translate('text.bank_name', 'capitalize')"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.bank_code') }}
+                  </div>
+                  <v-text-field
+                    v-model="input.bank_code"
+                    prepend-inner-icon="mdi-cash"
+                    clearable
+                    solo
+                    :rules="[rules.required]"
+                    :label="$translate('text.bank_code', 'capitalize')"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.account_number') }}
+                  </div>
+                  <v-text-field
+                    v-model="input.account_number"
+                    prepend-inner-icon="mdi-cash"
+                    clearable
+                    solo
+                    :rules="[rules.required]"
+                    :label="$translate('text.account_number', 'capitalize')"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.account_owner') }}
+                  </div>
+                  <v-text-field
+                    v-model="input.account_owner"
+                    prepend-inner-icon="mdi-cash"
+                    clearable
+                    solo
+                    :rules="[rules.required]"
+                    :label="$translate('text.account_owner', 'capitalize')"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -78,13 +86,13 @@
       </v-col>
 
       <!-- All budget list -->
-      <v-col cols="12" sm="6" md="8">
+      <v-col cols="12" md="8">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
           <v-card-title class="text-uppercase">
-            <span>{{ $translate('components.table.title.budget_code') }}</span>
+            <span>{{ $translate('components.table.title.bank') }}</span>
           </v-card-title>
           <v-card-subtitle class="overline">{{
-            $translate('components.table.subtitle.budget_code')
+            $translate('components.table.subtitle.bank')
           }}</v-card-subtitle>
           <v-card-text class="px-5">
             <v-text-field
@@ -113,13 +121,6 @@
                   @click.stop="deleteBudgetCode(item.id)"
                   >Delete</v-btn
                 >
-                <v-icon
-                  small
-                  class="mr-2"
-                  @click.stop="openDialogTopUp(item.id)"
-                >
-                  mdi-plus
-                </v-icon>
               </template>
             </v-data-table>
           </v-card-text>
@@ -131,63 +132,6 @@
         ></snackbar-alert>
       </v-col>
     </v-row>
-    <template>
-      <v-row justify="center">
-        <v-dialog v-model="dialogTopUp" persistent max-width="600">
-          <v-card>
-            <v-card-title class="title text-capitalize">{{
-              $translate('text.top_up')
-              }}</v-card-title>
-            <v-card-text class="overline">
-              <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.top_up') }}
-                    </div>
-                    <v-text-field
-                      v-model="topUpInput.nominal"
-                      prepend-inner-icon="mdi-cash"
-                      prefix="Rp"
-                      type="number"
-                      clearable
-                      solo
-                      :label="$translate('text.nominal', 'capitalize')"
-                      :rules="[rules.required]"
-                      :hint="topUpInput.nominal | currency"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-row class="mx-0">
-                <v-col class="px-0" cols="6">
-                  <v-btn
-                    color="accent"
-                    text
-                    block
-                    @click="closeDialogTopUp()"
-                  >{{ $translate('components.button.sure_button_no') }}</v-btn
-                  >
-                </v-col>
-                <v-col class="px-0" cols="6">
-                  <v-btn
-                    color="secondary"
-                    text
-                    block
-                    @click.stop="topUp()"
-                  >{{
-                    $translate('components.button.sure_button_yes')
-                    }}</v-btn
-                  >
-                </v-col>
-              </v-row>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </template>
   </v-container>
 </template>
 <script>
@@ -195,22 +139,11 @@ export default {
   filters: {
     currency(value) {
       if (value === null || value === '') return 'Rp 0'
-      if (value < 0) {
-        const result = Number(value)
-          .toString()
-          .match(/\d{1,3}(?=(\d{3})*$)/g)
-          .join('.')
-        return '-' + 'Rp ' + result + ',00'
-      }
-      try {
-        const result = Number(value)
-          .toString()
-          .match(/\d{1,3}(?=(\d{3})*$)/g)
-          .join('.')
-        return 'Rp ' + result + ',00'
-      } catch (e) {
-        return 'Rp ~'
-      }
+      const result = Number(value)
+        .toString()
+        .match(/\d{1,3}(?=(\d{3})*$)/g)
+        .join('.')
+      return 'Rp ' + result + ',00'
     },
     capitalize(value) {
       if (!value) return ''
@@ -229,31 +162,30 @@ export default {
       search: '',
       today: null,
       valid: true,
-      dialogTopUp: false,
       input: {
         code: null,
         name: null,
         balance: null
-      },
-      topUpInput: {
-        id: null,
-        nominal: null
       },
       modal: {
         date: false
       },
       headers: [
         {
-          text: `${this.$translate('text.code', 'capitalize')}`,
-          value: 'code'
+          text: `${this.$translate('text.bank_code', 'capitalize')}`,
+          value: 'bank_code'
         },
         {
-          text: `${this.$translate('text.name', 'capitalize')}`,
-          value: 'name'
+          text: `${this.$translate('text.bank_name', 'capitalize')}`,
+          value: 'bank_name'
         },
         {
-          text: `${this.$translate('text.balance', 'capitalize')}`,
-          value: 'balance'
+          text: `${this.$translate('text.account_number', 'capitalize')}`,
+          value: 'account_number'
+        },
+        {
+          text: `${this.$translate('text.account_owner', 'capitalize')}`,
+          value: 'account_owner'
         },
         {
           text: `${this.$translate('text.action', 'capitalize')}`,
@@ -277,7 +209,7 @@ export default {
   methods: {
     async getAllBudgetCode() {
       try {
-        this.items = await this.$api('budget', 'index', null)
+        this.items = await this.$api('rekening', 'index', null)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
@@ -292,14 +224,14 @@ export default {
         return
       }
       try {
-        const result = await this.$api('budget', 'store', this.input)
+        const result = await this.$api('rekening', 'store', this.input)
         if (result.status === 201) {
           this.success = true
           this.messages = 'Budget code berhasil di simpan'
           this.alert = true
           this.$refs.form.reset()
         }
-        await this.getAllBudgetCode()
+        this.getAllBudgetCode()
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
@@ -308,7 +240,7 @@ export default {
     },
     async deleteBudgetCode(id) {
       try {
-        const result = await this.$api('budget', 'delete', id)
+        const result = await this.$api('rekening', 'delete', id)
         if (result.status === 200) {
           this.success = true
           this.messages = 'Budget code berhasil di hapus'
@@ -319,33 +251,6 @@ export default {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
         this.alert = true
-      }
-    },
-    openDialogTopUp(budgetCodeId) {
-      this.dialogTopUp = true
-      this.topUpInput.id = budgetCodeId
-    },
-    closeDialogTopUp() {
-      this.dialogTopUp = false
-      this.topUpInput.id = null
-      this.topUpInput.nominal = null
-    },
-    async topUp() {
-      try {
-        const result = await this.$api('budget', 'topup', this.topUpInput)
-        if (result.status === 201) {
-          this.success = true
-          this.messages = 'Budget code berhasil di simpan'
-          this.alert = true
-          this.$refs.form.reset()
-        }
-        await this.getAllBudgetCode()
-        this.closeDialogTopUp()
-      } catch (e) {
-        this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
-        this.alert = true
-        console.log(e)
       }
     }
   }

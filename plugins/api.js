@@ -55,16 +55,22 @@ export default ({ app }, inject) => {
             return Request.delete(data)
           case 'verifyaspic':
             return Request.verifyAsPic(data)
-          case 'verifyascashier':
-            return Request.verifyAsCashier(data)
           case 'verifyasheaddept':
             return Request.verifyAsHeadDept(data)
           case 'verifyasverificator':
             return Request.verifyAsVerificator(data)
-          case 'verifyalreadypaid':
+          case 'verifyasheadoffice':
+            return Request.verifyAsHeadOffice(data)
+          case 'verifyascashier':
+            return Request.verifyAsCashier(data)
+          case 'alreadypaid':
             return Request.verifyAlreadyPaid(data)
+          case 'reject':
+            return Request.reject(data)
           case 'count':
             return Request.count()
+          case 'cancel':
+            return Request.cancel(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -92,8 +98,16 @@ export default ({ app }, inject) => {
             return Submission.verifyAsHeadDept(data)
           case 'verifyasverificator':
             return Submission.verifyAsVerificator(data)
+          case 'verifyascashier':
+            return Submission.verifyAsCashier(data)
+          case 'alreadypaid':
+            return Submission.verifyAlreadyPaid(data)
+          case 'reject':
+            return Submission.reject(data)
           case 'count':
             return Submission.count()
+          case 'cancel':
+            return Submission.cancel(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -119,10 +133,14 @@ export default ({ app }, inject) => {
             return Petty.verifyAsManagerOps(data)
           case 'verifyascashier':
             return Petty.verifyAsCashier(data)
-          case 'verifyalreadypaid':
-            return Petty.verifyAlreadyPaid(data)
           case 'count':
             return Petty.count()
+          case 'reject':
+            return Petty.reject(data)
+          case 'alreadypaid':
+            return Petty.alreadyPaid(data)
+          case 'cancel':
+            return Petty.cancel(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -138,6 +156,23 @@ export default ({ app }, inject) => {
             return Budget.store(data)
           case 'delete':
             return Budget.delete(data)
+          case 'topup':
+            return Budget.topUp(data)
+          default:
+            console.error(
+              `Unknown ${target} action : ${action} in '~/plugins/api.js'`
+            )
+            break
+        }
+        break
+      case 'rekening':
+        switch (action) {
+          case 'index':
+            return Rekening.getAllRekening()
+          case 'store':
+            return Rekening.store(data)
+          case 'delete':
+            return Rekening.delete(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -198,7 +233,6 @@ export default ({ app }, inject) => {
       return app.$auth
         .logout()
         .then((response) => {
-          console.log(response)
           return response
         })
         .catch((error) => {
@@ -283,18 +317,23 @@ export default ({ app }, inject) => {
       console.log('[Request] Creating a new request')
       const body = new FormData()
       body.append('allocation', data.allocation)
-      body.append('date', data.date)
       body.append('method', data.method)
       body.append('amount', data.amount)
       body.append('attachment', data.attachment)
       body.append('notes', data.notes)
+      for (let i = 0; i < data.budgets.length; i++) {
+        body.append(
+          'details[' + i + '][budget_code_id]',
+          data.budgets[i].code.id
+        )
+        body.append('details[' + i + '][nominal]', data.budgets[i].nominal)
+      }
       if (data.method === 'transfer') {
         body.append('bank_name', data.bank_name)
         body.append('bank_code', data.bank_code)
         body.append('account_number', data.account_number)
         body.append('account_owner', data.account_owner)
       }
-      body.append('budget_code_id', data.budget_code.id)
       return app
         .$axios({
           method: 'post',
@@ -312,7 +351,6 @@ export default ({ app }, inject) => {
       console.log('[Request] Show a request with specified id')
 
       return app.$axios.$get('/form/request/' + data).then((response) => {
-        console.log(response)
         return response.form_request
       })
     },
@@ -368,7 +406,7 @@ export default ({ app }, inject) => {
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id +'/confirm',
+          url: '/form/request/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -386,7 +424,7 @@ export default ({ app }, inject) => {
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id +'/confirm',
+          url: '/form/request/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -404,7 +442,7 @@ export default ({ app }, inject) => {
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id +'/confirm',
+          url: '/form/request/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -422,7 +460,25 @@ export default ({ app }, inject) => {
       return app
         .$axios({
           method: 'post',
-          url: '/form/request/' + data.id +'/confirm',
+          url: '/form/request/' + data.id + '/confirm',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    verifyAsHeadOffice(data) {
+      console.log('[Request] Verify as Head Office')
+      const body = new FormData()
+      body.append('is_confirmed_head_office', 1)
+      body.append('signature', data.signature.data)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id + '/confirm',
           data: body
         })
         .then((response) => {
@@ -435,8 +491,24 @@ export default ({ app }, inject) => {
     verifyAlreadyPaid(data) {
       console.log('[Request] Verify already paid')
       const body = new FormData()
-      body.append('status_id', 3)
-      body.append('signature', data.signature.data)
+      body.append('status_id', 4)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    reject(data) {
+      console.log('[Request] Reject Form Request')
+      const body = new FormData()
+      body.append('status_id', 7)
       return app
         .$axios({
           method: 'post',
@@ -455,6 +527,23 @@ export default ({ app }, inject) => {
 
       return app.$axios
         .$get('/form/request/count')
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    cancel(data) {
+      console.log('[Request] Cancel Form Request')
+      const body = new FormData()
+      body.append('status_id', 8)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
         .then((response) => {
           return response
         })
@@ -613,11 +702,80 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
+    verifyAsCashier(data) {
+      console.log('[Submission] Verify as Cashier')
+      const body = new FormData()
+      body.append('is_confirmed_cashier', 1)
+      body.append('signature', data.signature.data)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id + '/confirm',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    verifyAlreadyPaid(data) {
+      console.log('[Submission] Verify already paid')
+      const body = new FormData()
+      body.append('status_id', 6)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    reject(data) {
+      console.log('[Submission] Reject Form Submission')
+      const body = new FormData()
+      body.append('status_id', 7)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
     count() {
       console.log('[Submission] Get count for all submission forms')
 
       return app.$axios
         .$get('/form/submission/count')
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    cancel(data) {
+      console.log('[Submission] Cancel Form Submission')
+      const body = new FormData()
+      body.append('status_id', 8)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/submission/' + data.id,
+          data: body
+        })
         .then((response) => {
           return response
         })
@@ -643,7 +801,6 @@ export default ({ app }, inject) => {
       console.log('[Petty] Creating a new petty cash')
       let amount = 0
       const body = new FormData()
-      body.append('date', data.date)
       body.append('allocation', data.allocation)
       for (let i = 0; i < data.budgets.length; i++) {
         body.append(
@@ -669,7 +826,6 @@ export default ({ app }, inject) => {
     },
     show(data) {
       console.log('[Petty] Show a petty cash with specified id')
-
       return app.$axios.$get('/form/petty-cash/' + data).then((response) => {
         return response.form_petty_cash
       })
@@ -770,17 +926,11 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    verifyAlreadyPaid(data) {
-      console.log('[Petty] Verify already paid')
-      const body = new FormData()
-      body.append('status_id', 3)
-      body.append('signature', data.signature.data)
-      return app
-        .$axios({
-          method: 'post',
-          url: '/form/petty-cash/' + data.id + '/confirm',
-          data: body
-        })
+    count() {
+      console.log('[Petty] Get count for all petty forms')
+
+      return app.$axios
+        .$get('/form/petty-cash/count')
         .then((response) => {
           return response
         })
@@ -788,12 +938,54 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    count() {
-      console.log('[Petty] Get count for all petty forms')
-
-      return app.$axios
-        .$get('/form/petty-cash/count')
+    reject(data) {
+      console.log('[Petty] Reject this petty form')
+      const body = new FormData()
+      body.append('status_id', 7)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
         .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    alreadyPaid(data) {
+      console.log('[Petty] Reject this petty form')
+      const body = new FormData()
+      body.append('status_id', 6)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    cancel(data) {
+      console.log('[Petty] Cancel this petty form')
+      const body = new FormData()
+      body.append('status_id', 8)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/petty-cash/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          console.log(response)
           return response
         })
         .catch((error) => {
@@ -817,6 +1009,7 @@ export default ({ app }, inject) => {
       const body = new FormData()
       body.append('code', data.code)
       body.append('name', data.name)
+      body.append('balance', data.balance)
       return app
         .$axios({
           method: 'post',
@@ -836,6 +1029,71 @@ export default ({ app }, inject) => {
         .$axios({
           method: 'delete',
           url: '/budget-code/' + data,
+          data: null
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    topUp(data) {
+      console.log('[Budget] Top Up Budget Code')
+      const body = new FormData()
+      body.append('nominal', data.nominal)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/budget-code/' + data.id + '/topUp',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    }
+  }
+
+  /**
+   * Rekening Interface
+   */
+  const Rekening = {
+    getAllRekening() {
+      console.log('[Rekening] Get all Rekening code')
+      return app.$axios.$get('/rekening').then((response) => {
+        console.log(response)
+        return response.rekening
+      })
+    },
+    store(data) {
+      console.log('[Rekening] store Rekening code')
+      const body = new FormData()
+      body.append('bank_code', data.bank_code)
+      body.append('bank_name', data.bank_name)
+      body.append('account_number', data.account_number)
+      body.append('account_owner', data.account_owner)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/rekening',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    delete(data) {
+      console.log('[Rekening] Get all Rekening code')
+      return app
+        .$axios({
+          method: 'delete',
+          url: '/rekening/' + data,
           data: null
         })
         .then((response) => {

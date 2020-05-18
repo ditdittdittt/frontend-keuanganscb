@@ -1,26 +1,28 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">{{
-        $translate('components.form.title.submission')
-      }}</v-card-title>
-      <v-card-subtitle class="overline">{{
-        $translate('components.form.subtitle.submission')
-      }}</v-card-subtitle>
+      <v-card-title class="text-uppercase">
+        {{ $translate('components.form.title.submission') }}
+      </v-card-title>
+      <v-card-subtitle class="overline">
+        {{ $translate('components.form.subtitle.submission') }}
+      </v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
         <v-form ref="form" v-model="valid">
           <v-row>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
                 {{ $translate('text.form') + ' ' + $translate('text.request') }}
               </div>
               <v-combobox
                 v-model="input.request"
                 prepend-inner-icon="mdi-newspaper-plus"
+                append-outer-icon="mdi-eye"
                 :items="form.request"
+                item-text="number"
                 solo
                 :rules="[rules.required]"
                 :label="$translate('text.number', 'capitalize')"
@@ -28,50 +30,12 @@
                 auto-select-first
                 cache-items
                 return-object
-                @change="setMinDate()"
+                @click:append-outer="showRequest(input.request)"
               >
-                <template v-slot:item="{ item }">{{ item.number }}</template>
-                <template v-slot:selection="{ item }">{{
-                  item.number
-                }}</template>
-              </v-combobox>
-            </v-col>
-            <v-col cols="12" md="3">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.date') }}
-              </div>
-              <v-dialog
-                ref="date"
-                v-model="modal.date"
-                :return-value.sync="input.date"
-                persistent
-                width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="input.date"
-                    prepend-inner-icon="mdi-calendar-clock"
-                    :rules="[rules.required]"
-                    :label="$translate('text.date', 'capitalize')"
-                    readonly
-                    solo
-                    clearable
-                    v-on="on"
-                  ></v-text-field>
+                <template v-slot:selection="{ item }">
+                  {{ item.number }}
                 </template>
-                <v-date-picker v-model="input.date" scrollable :min="today">
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal.date = false">{{
-                    $translate('components.button.cancel')
-                  }}</v-btn>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.date.save(input.date)"
-                    >OK</v-btn
-                  >
-                </v-date-picker>
-              </v-dialog>
+              </v-combobox>
             </v-col>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
@@ -194,6 +158,73 @@
         >
       </v-card-actions>
     </v-card>
+    <v-dialog v-model="modal.request" max-width="600" persistent>
+      <v-card>
+        <v-card-title class="text-uppercase title">
+          {{ $translate('components.form.title.request') }}
+        </v-card-title>
+        <v-card-text>
+          <div class="spacing-xsmall"></div>
+          <div class="caption primary--text text-capitalize">
+            {{ $translate('text.information') }}
+          </div>
+          <v-simple-table>
+            <template v-slot:default>
+              <tbody>
+                <tr>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.allocation') }}
+                  </td>
+                  <td class="text-capitalize">
+                    {{ currentRequest.allocation }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.payment_type') }}
+                  </td>
+                  <td>{{ currentRequest.method }}</td>
+                </tr>
+                <tr>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.amount') }}
+                  </td>
+                  <td>{{ currentRequest.amount }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+          <v-divider></v-divider>
+          <div class="spacing-xsmall"></div>
+          <div class="caption primary--text text-capitalize">
+            {{ $translate('text.budget_code') }}
+          </div>
+          <v-simple-table>
+            <template v-slot:default>
+              <tbody>
+                <template v-for="(detail, i) in currentRequest.details">
+                  <tr :key="'detail' + i">
+                    <td>{{ detail.budget_code.code }}</td>
+                    <td>{{ detail.budget_code.name }}</td>
+                    <td>{{ detail.nominal }}</td>
+                  </tr>
+                </template>
+              </tbody>
+            </template>
+          </v-simple-table>
+          <v-divider></v-divider>
+        </v-card-text>
+        <v-card-actions>
+          <v-row class="ma-0">
+            <v-col>
+              <v-btn block color="secondary" @click.stop="modal.request = false"
+                >Tutup</v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <snackbar-alert
       v-model="alert"
       :success="success"
@@ -228,12 +259,9 @@ export default {
       messages: '',
       today: null,
       valid: true,
-      modal: {
-        date: false
-      },
       input: {
+        budgets: [{ code: null, nominal: null, balance: null }],
         request: null,
-        date: null,
         allocation: null,
         used: null,
         balance: null,
@@ -247,20 +275,22 @@ export default {
           value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
+      },
+      currentRequest: {},
+      modal: {
+        request: false
       }
     }
   },
   mounted() {
-    this.initValue()
     this.getAllRequestForms()
   },
   methods: {
-    initValue() {
-      this.today = new Date().toISOString()
-    },
-    setMinDate() {
-      this.today = this.input.request.date
-      this.input.date = null
+    showRequest() {
+      if (this.input.request != null) {
+        this.modal.request = true
+        this.currentRequest = this.$copy(this.input.request)
+      }
     },
     async storeSubmission() {
       if (!this.$refs.form.validate()) {
@@ -290,6 +320,9 @@ export default {
     async getAllRequestForms() {
       try {
         this.form.request = await this.$api('request', 'index', null)
+        this.form.request = this.form.request.filter(function(form) {
+          return form.status_id === 4
+        })
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

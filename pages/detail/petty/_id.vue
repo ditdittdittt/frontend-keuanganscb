@@ -58,6 +58,26 @@
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.created_at') }}
+                    </div>
+                    <span>
+                      {{
+                        input.created_at ||
+                          $vuetify.lang.t('$vuetify.noDataText')
+                      }}
+                    </span>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.paid_at') }}
+                    </div>
+                    <span>
+                      {{ input.date || $vuetify.lang.t('$vuetify.noDataText') }}
+                    </span>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
                       {{ $translate('text.status') }}
                     </div>
                     <span>
@@ -171,52 +191,51 @@
       </v-col>
     </v-row>
     <div class="spacing-small"></div>
-    <v-row v-if="checkEditAble()">
-      <v-col>
+    <v-row>
+      <v-col v-if="checkVerifyManagerOps()">
         <v-btn
           block
           dark
           elevation="8"
           x-large
           color="accent"
-          @click.stop="openDialogSureDelete()"
-          >{{ $translate('components.button.delete') }}</v-btn
-        >
+          @click.stop="openDialogSureReject()"
+          >{{ $translate('components.button.reject') }}
+        </v-btn>
       </v-col>
-      <v-col v-if="checkEditAble()">
+      <v-col v-if="checkIfUserWantToConfirmAlreadyPaid()">
         <v-btn
           block
           dark
           elevation="8"
           x-large
-          color="secondary"
-          :to="'/update/petty/' + $route.params.id"
-          >{{ $translate('components.button.update') }}</v-btn
-        >
+          color="accent"
+          @click.stop="openDialogSureAlreadyPaid()"
+          >{{ $translate('components.button.already_paid') }}
+        </v-btn>
       </v-col>
-    </v-row>
-    <v-row v-if="checkStatus()">
-      <v-col>
+      <v-col v-if="checkVerifyPic()">
         <v-btn
           block
           dark
           elevation="8"
           x-large
-          color="secondary"
-          @click.stop="openDialogSureVerify('alreadyPaid')"
-          >{{ $translate('components.button.already_paid') }}</v-btn
+          color="accent"
+          @click.stop="cancelPettyCashForm()"
+          >{{ $translate('components.button.cancel') }}</v-btn
         >
       </v-col>
     </v-row>
+
     <template>
       <v-row justify="center">
-        <v-dialog v-model="dialogSureDelete" persistent max-width="600">
+        <v-dialog v-model="dialogSureReject" persistent max-width="600">
           <v-card>
             <v-card-title class="title text-capitalize">{{
-              $translate('text.sure_delete_head')
+              $translate('text.sure_reject_head')
             }}</v-card-title>
             <v-card-text class="overline">{{
-              $translate('text.sure_delete_body')
+              $translate('text.sure_reject_body')
             }}</v-card-text>
             <v-card-actions>
               <v-row class="mx-0">
@@ -225,7 +244,7 @@
                     color="accent"
                     text
                     block
-                    @click="closeDialogSureDelete()"
+                    @click="closeDialogSureReject()"
                     >{{ $translate('components.button.sure_button_no') }}</v-btn
                   >
                 </v-col>
@@ -234,7 +253,7 @@
                     color="secondary"
                     text
                     block
-                    @click="deletePettyCash()"
+                    @click.stop="rejectPettyCashForm()"
                     >{{
                       $translate('components.button.sure_button_yes')
                     }}</v-btn
@@ -246,6 +265,46 @@
         </v-dialog>
       </v-row>
     </template>
+
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialogSureAlreadyPaid" persistent max-width="600">
+          <v-card>
+            <v-card-title class="title text-capitalize">{{
+              $translate('text.sure_paid_head')
+            }}</v-card-title>
+            <v-card-text class="overline">{{
+              $translate('text.sure_paid_body')
+            }}</v-card-text>
+            <v-card-actions>
+              <v-row class="mx-0">
+                <v-col class="px-0" cols="6">
+                  <v-btn
+                    color="accent"
+                    text
+                    block
+                    @click="closeDialogSureAlreadyPaid()"
+                    >{{ $translate('components.button.sure_button_no') }}</v-btn
+                  >
+                </v-col>
+                <v-col class="px-0" cols="6">
+                  <v-btn
+                    color="secondary"
+                    text
+                    block
+                    @click.stop="alreadyPaidPettyCashForm()"
+                    >{{
+                      $translate('components.button.sure_button_yes')
+                    }}</v-btn
+                  >
+                </v-col>
+              </v-row>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template>
+
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureVerify" persistent max-width="600">
@@ -322,7 +381,8 @@ export default {
     return {
       alert: false,
       success: false,
-      dialogSureDelete: false,
+      dialogSureReject: false,
+      dialogSureAlreadyPaid: false,
       dialogSureVerify: false,
       messages: '',
       headers: [
@@ -369,11 +429,17 @@ export default {
       this.signature.isEmpty = true
       this.signature.data = null
     },
-    openDialogSureDelete() {
-      this.dialogSureDelete = true
+    openDialogSureReject() {
+      this.dialogSureReject = true
     },
-    closeDialogSureDelete() {
-      this.dialogSureDelete = false
+    closeDialogSureReject() {
+      this.dialogSureReject = false
+    },
+    openDialogSureAlreadyPaid() {
+      this.dialogSureAlreadyPaid = true
+    },
+    closeDialogSureAlreadyPaid() {
+      this.dialogSureAlreadyPaid = false
     },
     rerender() {
       this.key++
@@ -386,29 +452,6 @@ export default {
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
         this.alert = true
       }
-    },
-    async deletePettyCash() {
-      try {
-        await this.$api('petty', 'delete', this.$route.params.id)
-        this.closeDialogSureDelete()
-        this.$router.replace('/all/petty')
-      } catch (e) {
-        this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
-        this.alert = true
-      }
-    },
-    checkEditAble() {
-      if (
-        (this.input.is_confirmed_pic === 0 &&
-          this.input.is_confirmed_manager_ops === 0 &&
-          this.input.is_confirmed_cashier === 0 &&
-          this.input.user_id === this.$auth.user.id) ||
-        this.$auth.user.id === 1
-      ) {
-        return true
-      }
-      return false
     },
     async verifyAsPic() {
       if (this.signature.isEmpty === true || this.signature == null) {
@@ -458,16 +501,6 @@ export default {
         }
       }
     },
-    async verifyAlreadyPaid() {
-      try {
-        await this.$api('petty', 'verifyalreadypaid', this.input)
-        this.input.signature = this.$copy(this.signature)
-      } catch (e) {
-        this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
-        this.alert = true
-      }
-    },
     async verifyAs() {
       switch (this.verifyRole) {
         case 'pic':
@@ -479,9 +512,6 @@ export default {
         case 'cashier':
           await this.verifyAsCashier()
           break
-        case 'alreadyPaid':
-          await this.verifyAlreadyPaid()
-          break
         default:
           this.verifyRole = ''
       }
@@ -489,25 +519,86 @@ export default {
       await this.getPettyCashForm()
       this.closeDialogSureVerify()
     },
-    checkVerifyPic() {
-      if (this.input.is_confirmed_pic === 0) {
-        return true
+    async rejectPettyCashForm() {
+      try {
+        await this.$api('petty', 'reject', this.input)
+        await this.getPettyCashForm()
+        this.dialogSureReject = false
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
       }
     },
-    checkVerifyCashier() {
-      if (this.input.is_confirmed_cashier === 0) {
+    async alreadyPaidPettyCashForm() {
+      try {
+        await this.$api('petty', 'alreadypaid', this.input)
+        await this.getPettyCashForm()
+        this.dialogSureAlreadyPaid = false
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async cancelPettyCashForm() {
+      try {
+        await this.$api('petty', 'cancel', this.input)
+        await this.getPettyCashForm()
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    checkVerifyPic() {
+      if (
+        this.input.is_confirmed_pic === 0 &&
+        this.input.status_id === 1 &&
+        (this.$auth.user.id === this.input.pic.id ||
+          this.checkIfUserRoleIsAdmin())
+      ) {
         return true
       }
     },
     checkVerifyManagerOps() {
-      if (this.input.is_confirmed_manager_ops === 0) {
+      if (
+        this.input.is_confirmed_manager_ops === 0 &&
+        this.input.is_confirmed_pic === 1 &&
+        this.input.status_id === 1 &&
+        (this.checkIfUserRoleIsManagerOps() || this.checkIfUserRoleIsAdmin())
+      ) {
         return true
       }
     },
-    checkStatus() {
-      if (this.input.status_id === 2) {
+    checkVerifyCashier() {
+      if (
+        this.input.is_confirmed_cashier === 0 &&
+        this.input.is_confirmed_pic === 1 &&
+        this.input.is_confirmed_manager_ops === 1 &&
+        this.input.status_id === 2 &&
+        (this.checkIfUserRoleIsCashier() || this.checkIfUserRoleIsAdmin())
+      ) {
         return true
       }
+    },
+    checkIfUserWantToConfirmAlreadyPaid() {
+      if (
+        (this.checkIfUserRoleIsAdmin() ||
+          this.$auth.user.id === this.input.pic.id) &&
+        this.input.status_id === 3
+      ) {
+        return true
+      }
+    },
+    checkIfUserRoleIsAdmin() {
+      return this.$auth.user.roles_list.includes('admin')
+    },
+    checkIfUserRoleIsManagerOps() {
+      return this.$auth.user.roles_list.includes('manager_ops')
+    },
+    checkIfUserRoleIsCashier() {
+      return this.$auth.user.roles_list.includes('cashier')
     }
   }
 }

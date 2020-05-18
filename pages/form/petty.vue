@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">
-        {{ $translate('components.form.title.petty_cash') }}
-      </v-card-title>
-      <v-card-subtitle class="overline">
-        {{ $translate('components.form.subtitle.petty_cash') }}
-      </v-card-subtitle>
+      <v-card-title class="text-uppercase">{{
+        $translate('components.form.title.petty_cash')
+      }}</v-card-title>
+      <v-card-subtitle class="overline">{{
+        $translate('components.form.subtitle.petty_cash')
+      }}</v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
@@ -27,43 +27,6 @@
                 :label="$translate('text.allocation', 'capitalize')"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">
-                {{ $translate('text.date') }}
-              </div>
-              <v-dialog
-                ref="date"
-                v-model="modal.date"
-                :return-value.sync="input.date"
-                persistent
-                width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="input.date"
-                    prepend-inner-icon="mdi-calendar-clock"
-                    :rules="[rules.required]"
-                    :label="$translate('text.date', 'capitalize')"
-                    readonly
-                    solo
-                    clearable
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker v-model="input.date" scrollable :min="today">
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal.date = false">{{
-                    $translate('components.button.cancel')
-                  }}</v-btn>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.date.save(input.date)"
-                    >OK</v-btn
-                  >
-                </v-date-picker>
-              </v-dialog>
-            </v-col>
           </v-row>
           <template v-for="(budget, i) in input.budgets">
             <v-row :key="'budget-' + i">
@@ -82,12 +45,12 @@
                   auto-select-first
                   cache-items
                 >
-                  <template v-slot:item="{ item }">{{
-                    item.code + ' - ' + item.name
-                  }}</template>
-                  <template v-slot:selection="{ item }">{{
-                    item.code + ' - ' + item.name
-                  }}</template>
+                  <template v-slot:item="{ item }">
+                    {{ item.code + ' - ' + item.name }}
+                  </template>
+                  <template v-slot:selection="{ item }">
+                    {{ item.code + ' - ' + item.name }}
+                  </template>
                 </v-combobox>
               </v-col>
               <v-col cols="12" md="6" sm="6">
@@ -129,7 +92,7 @@
                 elevation="8"
                 dark
                 color="secondary"
-                @click.stop="addBuget()"
+                @click.stop="addBudget()"
                 >{{ $translate('components.button.add') + ' item' }}</v-btn
               >
             </v-col>
@@ -188,16 +151,12 @@ export default {
       valid: true,
       input: {
         allocation: null,
-        date: null,
         budgets: [
           {
             code: null,
             nominal: null
           }
         ]
-      },
-      modal: {
-        date: false
       },
       rules: {
         positive: (value) =>
@@ -208,20 +167,16 @@ export default {
     }
   },
   mounted() {
-    this.initValue()
     this.getBudgetList()
   },
   methods: {
-    addBuget() {
+    addBudget() {
       this.input.budgets.push({ code: null, name: null, nominal: null })
     },
     deleteBudget() {
       if (this.input.budgets.length > 1) {
         this.input.budgets.pop()
       }
-    },
-    initValue() {
-      this.today = new Date().toISOString()
     },
     async storePetty() {
       if (!this.$refs.form.validate()) {
