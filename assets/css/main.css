@@ -18,6 +18,10 @@
   background: #555;
 }
 
+.spacing-xssmall {
+  height: 10px;
+}
+
 .spacing-xsmall {
   height: 20px;
 }

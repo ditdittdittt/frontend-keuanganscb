@@ -164,8 +164,10 @@
                 >
                   <template v-slot:selection="{ item }">
                     <v-chip label color="accent">
-                      <span class="font-weight-bold">{{ item.bank_code }}</span>
-                      <span>{{ '-' + item.account_number }}</span>
+                      <span class="font-weight-bold">{{
+                        item.account - owner
+                      }}</span>
+                      <span>{{ ' - ' + item.account_number }}</span>
                     </v-chip>
                   </template>
                 </v-select>

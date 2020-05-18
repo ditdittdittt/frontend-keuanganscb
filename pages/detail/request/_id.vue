@@ -53,11 +53,22 @@
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.payment_type') }}
                     </div>
-                    <v-chip label small class="overline">
+                    <div class="spacing-xssmall"></div>
+                    <v-btn v-if="input.method === 'cash'" disabled small>
                       {{
                         input.method || $vuetify.lang.t('$vuetify.noDataText')
                       }}
-                    </v-chip>
+                    </v-btn>
+                    <v-btn
+                      v-if="input.method === 'transfer'"
+                      color="secondary"
+                      small
+                      @click.stop="dialogRekening = true"
+                    >
+                      {{
+                        input.method || $vuetify.lang.t('$vuetify.noDataText')
+                      }}
+                    </v-btn>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
@@ -117,53 +128,6 @@
                       }}
                     </span>
                   </v-col>
-
-                  <template v-if="input.method === 'transfer'">
-                    <v-col cols="12" md="6">
-                      <div class="caption primary--text text-capitalize">
-                        {{ $translate('text.bank_code') }}
-                      </div>
-                      <span>
-                        {{
-                          input.bank_code ||
-                            $vuetify.lang.t('$vuetify.noDataText')
-                        }}
-                      </span>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <div class="caption primary--text text-capitalize">
-                        {{ $translate('text.bank_name') }}
-                      </div>
-                      <span>
-                        {{
-                          input.bank_name ||
-                            $vuetify.lang.t('$vuetify.noDataText')
-                        }}
-                      </span>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <div class="caption primary--text text-capitalize">
-                        {{ $translate('text.account_number') }}
-                      </div>
-                      <span>
-                        {{
-                          input.account_number ||
-                            $vuetify.lang.t('$vuetify.noDataText')
-                        }}
-                      </span>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <div class="caption primary--text text-capitalize">
-                        {{ $translate('text.account_owner') }}
-                      </div>
-                      <span>
-                        {{
-                          input.account_owner ||
-                            $vuetify.lang.t('$vuetify.noDataText')
-                        }}
-                      </span>
-                    </v-col>
-                  </template>
 
                   <v-col cols="12">
                     <div class="caption primary--text text-capitalize">
@@ -347,6 +311,7 @@
       :success="success"
       :messages="messages"
     ></snackbar-alert>
+
     <!-- Dialog -->
     <template>
       <v-row justify="center">
@@ -386,7 +351,6 @@
         </v-dialog>
       </v-row>
     </template>
-
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureNeedSubmission" max-width="600">
@@ -466,6 +430,56 @@
         </v-dialog>
       </v-row>
     </template>
+
+    <!-- Dialog Rekening -->
+    <template>
+      <v-dialog v-model="dialogRekening" max-width="600" persistent>
+        <v-card>
+          <v-card-title class="text-uppercase title">
+            {{ $translate('text.bank_account') }}
+          </v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col
+                v-for="(rek, i) in rekening"
+                :key="'rekening' + i"
+                cols="12"
+                md="6"
+              >
+                <v-list color="accent" dark>
+                  <v-list-item three-line>
+                    <v-list-item-content>
+                      <v-list-item-title>{{
+                        rek.bank_name + ' (' + rek.bank_code + ')'
+                      }}</v-list-item-title>
+                      <v-list-item-subtitle>
+                        {{ rek.account_number }}
+                      </v-list-item-subtitle>
+                      <v-list-item-subtitle>
+                        {{ rek.account_owner }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-actions>
+            <v-row class="ma-0">
+              <v-col>
+                <v-btn
+                  dark
+                  color="secondary"
+                  block
+                  @click.stop="dialogRekening = false"
+                  >{{ $translate('components.button.close') }}</v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </template>
   </v-container>
 </template>
 <script>
@@ -499,6 +513,7 @@ export default {
       dialogSureReject: false,
       dialogSureNeedSubmission: false,
       dialogSureVerify: false,
+      dialogRekening: false,
       messages: '',
       headers: [
         {
@@ -529,13 +544,35 @@ export default {
         isEmpty: true,
         data: null
       },
-      key: 0
+      key: 0,
+      rekening: []
     }
   },
   mounted() {
     this.getRequestForm()
   },
   methods: {
+    initValue() {
+      const bankCode = this.splitCsv(this.input.bank_code)
+      const bankName = this.splitCsv(this.input.bank_name)
+      const accountNumber = this.splitCsv(this.input.account_number)
+      const accountOwner = this.splitCsv(this.input.account_owner)
+
+      for (let i = 0; i < bankCode.length; i++) {
+        this.rekening.push({
+          bank_code: bankCode[i],
+          bank_name: bankName[i],
+          account_number: accountNumber[i],
+          account_owner: accountOwner[i]
+        })
+      }
+    },
+    splitCsv(data) {
+      if (data) {
+        return data.split(',')
+      }
+      return null
+    },
     openDialogSureVerify(role) {
       this.verifyRole = role
       this.dialogSureVerify = true
@@ -563,10 +600,15 @@ export default {
     rerender() {
       this.key++
     },
-    async getRequestForm() {
+    getRequestForm() {
       try {
-        this.input = await this.$api('request', 'show', this.$route.params.id)
-        console.log(this.input)
+        this.$api('request', 'show', this.$route.params.id)
+          .then((response) => {
+            this.input = response
+          })
+          .then((_) => {
+            this.initValue()
+          })
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

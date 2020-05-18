@@ -151,7 +151,8 @@ export default {
     nominal: 'nominal',
     sure_need_submission_head: 'are you sure this form need submission?',
     sure_need_submission_body: 'yes if needed, no if not',
-    update_balance: 'update balance'
+    update_balance: 'update balance',
+    bank_account: 'bank account'
   },
   helper: {
     messages: {

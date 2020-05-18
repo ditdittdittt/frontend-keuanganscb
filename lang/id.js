@@ -152,7 +152,8 @@ export default {
     top_up: 'isi saldo',
     nominal: 'nominal',
     sure_need_submission_head: 'apakah form ini membutuh submisi?',
-    sure_need_submission_body: 'ya jika membutuhkan, tidak jika tidak'
+    sure_need_submission_body: 'ya jika membutuhkan, tidak jika tidak',
+    bank_account: 'rekening bank'
   },
   helper: {
     messages: {
