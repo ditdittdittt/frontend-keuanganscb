@@ -1,4 +1,12 @@
 export default {
+  alert: {
+    error: 'an error occured: ',
+    login: {
+      success: 'login successful',
+      error: 'login failed',
+      warning: 'incorrect email or password'
+    }
+  },
   components: {
     button: {
       text: 'button',
@@ -17,7 +25,7 @@ export default {
       sure_button_no: 'no',
       already_paid: 'already paid',
       reject: 'reject',
-      need_submission: 'is this form need submission?'
+      need_submission: 'does this form need submission?'
     },
     row: {
       text: 'row'
@@ -129,10 +137,10 @@ export default {
     account_number: 'account number',
     account_owner: 'account owner',
     status: 'status',
-    sure_delete_head: 'are you sure to delete this form?',
-    sure_delete_body: 'this form cannot be restore',
-    sure_verify_head: 'are you sure to verify this form?',
-    sure_verify_body: 'this form cannot be modify after you verify',
+    sure_delete_head: 'delete this form?',
+    sure_delete_body: 'this form cannot be restored',
+    sure_verify_head: 'verify this form?',
+    sure_verify_body: 'this form cannot be modified after verified',
     current_file: 'Current file',
     back: 'back',
     positive: 'must have a positive value',
@@ -141,15 +149,15 @@ export default {
     role: 'role',
     confirm_password: 'confirm password',
     code: 'code',
-    sure_reject_head: 'are you sure to reject this form?',
-    sure_reject_body: 'this form cannot be restore after got rejected',
-    sure_paid_head: 'are you sure the money already paid?',
+    sure_reject_head: 'reject this form?',
+    sure_reject_body: 'this form cannot be restored after rejected',
+    sure_paid_head: 'are you sure it is already paid?',
     sure_paid_body: 'you cannot undo after you confirm',
     paid_at: 'paid at',
     information: 'information',
     top_up: 'top up',
     nominal: 'nominal',
-    sure_need_submission_head: 'are you sure this form need submission?',
+    sure_need_submission_head: 'does this form need submission?',
     sure_need_submission_body: 'yes if needed, no if not',
     update_balance: 'update balance',
     bank_account: 'bank account'
@@ -157,10 +165,10 @@ export default {
   helper: {
     messages: {
       attachment_file: 'click to choose file',
-      amount_in_word: 'automaticly filled',
-      auto: 'automaticly filled'
+      amount_in_word: 'automatically filled',
+      auto: 'automatically filled'
     },
-    name: 'your full name',
+    name: 'full name',
     username: 'alias or nickname',
     email: 'use correct email',
     wrong_email: 'email format is not correct',
@@ -171,7 +179,7 @@ export default {
     role: 'your role in this software',
     nik: 'identity number in your id card',
     address: 'your residential address',
-    multiple_bank: 'separate them with commas for more than one data'
+    multiple_bank: 'separate with commas for multiple data'
   },
   export: {
     pdf: 'export to PDF',

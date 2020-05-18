@@ -1,4 +1,12 @@
 export default {
+  alert: {
+    error: 'terjadi kesalahan: ',
+    login: {
+      success: 'login berhasil',
+      error: 'login gagal',
+      warning: 'email atau password salah'
+    }
+  },
   components: {
     button: {
       text: 'tombol',
@@ -15,7 +23,7 @@ export default {
       update: 'perbarui',
       sure_button_yes: 'ya',
       sure_button_no: 'tidak',
-      already_paid: 'telah dibayarkan',
+      already_paid: 'dibayarkan',
       reject: 'tolak',
       need_submission: 'apakah form ini membutuhkan submisi?'
     },
@@ -129,11 +137,11 @@ export default {
     account_number: 'nomor rekening',
     account_owner: 'pemilik rekening',
     status: 'status',
-    sure_delete_head: 'apakah anda yakin untuk menghapus form ini?',
-    sure_delete_body: 'form ini tidak dapat dikembalikan',
-    sure_verify_head: 'apakah anda yakin untuk memverifikasi form ini?',
+    sure_delete_head: 'hapus form ini?',
+    sure_delete_body: 'form ini tidak dapat dipulihkan',
+    sure_verify_head: 'verifikasi form ini?',
     sure_verify_body:
-      'form ini tidak bisa diubah kembali setelah anda melakukan verifikasi',
+      'form ini tidak bisa diubah setelah diverifikasi',
     current_file: 'berkas saat ini',
     back: 'kembali',
     positive: 'harus bernilai positif',
@@ -142,16 +150,16 @@ export default {
     role: 'peran',
     confirm_password: 'konfirmasi password',
     code: 'Kode',
-    sure_reject_head: 'apakah kamu yakin untuk menolak form ini?',
+    sure_reject_head: 'tolak form ini?',
     sure_reject_body:
-      'form tidak bisa dikembalikan setelah melakukan penolakan',
-    sure_paid_head: 'apakah kamu yakin uang sudah diterima?',
+      'form ini tidak bisa dipulihkan setelah ditolak',
+    sure_paid_head: 'anda yakin uang sudah diterima?',
     sure_paid_body: 'form tidak bisa dikembalikan setelah melakukan konfirmasi',
     paid_at: 'dibayarkan saat',
     information: 'informasi',
     top_up: 'isi saldo',
     nominal: 'nominal',
-    sure_need_submission_head: 'apakah form ini membutuh submisi?',
+    sure_need_submission_head: 'apakah form ini butuh submisi?',
     sure_need_submission_body: 'ya jika membutuhkan, tidak jika tidak',
     bank_account: 'rekening bank'
   },
