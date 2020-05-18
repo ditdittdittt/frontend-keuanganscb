@@ -61,7 +61,7 @@
     </v-row>
     <v-dialog v-model="modal.user" width="600px" persistent>
       <v-card>
-        <v-card-title class="text-capitalize headline">
+        <v-card-title class="text-uppercase title">
           {{ $translate('text.user') }}
         </v-card-title>
         <v-card-text>
@@ -94,9 +94,16 @@
                 </tr>
                 <tr>
                   <td class="caption font-weight-bold text-capitalize">
-                    {{ $translate('text.position') }}
+                    {{ $translate('text.role') }}
                   </td>
-                  <td class="text-capitalize">{{ user.position }}</td>
+                  <td class="text-capitalize">
+                    <template v-for="(role, i) in user.roles">
+                      <span :key="'role' + i">
+                        {{ role.name }}
+                      </span>
+                      <br :key="'br' + i" />
+                    </template>
+                  </td>
                 </tr>
                 <tr>
                   <td class="caption font-weight-bold text-uppercase">
@@ -115,13 +122,17 @@
           </v-simple-table>
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            dark
-            color="secondary"
-            block
-            @click.stop="modal.user = false"
-            >{{ $translate('components.button.close') }}</v-btn
-          >
+          <v-row class="ma-0">
+            <v-col>
+              <v-btn
+                dark
+                color="secondary"
+                block
+                @click.stop="modal.user = false"
+                >{{ $translate('components.button.close') }}</v-btn
+              >
+            </v-col>
+          </v-row>
         </v-card-actions>
       </v-card>
     </v-dialog>

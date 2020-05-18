@@ -4,8 +4,12 @@
       <!-- New Budget -->
       <v-col cols="12" sm="6" md="4">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-          <v-card-title class="text-uppercase">{{ $translate('components.form.title.bank') }}</v-card-title>
-          <v-card-subtitle class="overline">{{ $translate('components.form.subtitle.bank') }}</v-card-subtitle>
+          <v-card-title class="text-uppercase">{{
+            $translate('components.form.title.bank')
+          }}</v-card-title>
+          <v-card-subtitle class="overline">{{
+            $translate('components.form.subtitle.bank')
+          }}</v-card-subtitle>
         </v-card>
         <v-card raised class="back-card px-md-5">
           <v-card-text>
@@ -13,9 +17,9 @@
             <v-form ref="form" v-model="valid">
               <v-row>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.bank_name') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.bank_name') }}
+                  </div>
                   <v-text-field
                     v-model="input.bank_name"
                     prepend-inner-icon="mdi-cash"
@@ -26,9 +30,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.bank_code') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.bank_code') }}
+                  </div>
                   <v-text-field
                     v-model="input.bank_code"
                     prepend-inner-icon="mdi-cash"
@@ -39,9 +43,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.account_number') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.account_number') }}
+                  </div>
                   <v-text-field
                     v-model="input.account_number"
                     prepend-inner-icon="mdi-cash"
@@ -52,9 +56,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.account_owner') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.account_owner') }}
+                  </div>
                   <v-text-field
                     v-model="input.account_owner"
                     prepend-inner-icon="mdi-cash"
@@ -75,7 +79,8 @@
               color="secondary"
               elevation="8"
               @click.stop="storeBudgetCode"
-            >{{ $translate('components.button.add') }}</v-btn>
+              >{{ $translate('components.button.add') }}</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -86,7 +91,9 @@
           <v-card-title class="text-uppercase">
             <span>{{ $translate('components.table.title.bank') }}</span>
           </v-card-title>
-          <v-card-subtitle class="overline">{{ $translate('components.table.subtitle.bank') }}</v-card-subtitle>
+          <v-card-subtitle class="overline">{{
+            $translate('components.table.subtitle.bank')
+          }}</v-card-subtitle>
           <v-card-text class="px-5">
             <v-text-field
               v-model="search"
@@ -103,14 +110,26 @@
           <v-card-text>
             <div class="spacing-medium"></div>
             <v-data-table :headers="headers" :items="items" :search="search">
-              <template v-slot:item.balance="{ item }">{{ item.balance | currency }}</template>
+              <template v-slot:item.balance="{ item }">{{
+                item.balance | currency
+              }}</template>
               <template v-slot:item.id="{ item }">
-                <v-btn color="secondary" small text @click.stop="deleteBudgetCode(item.id)">Delete</v-btn>
+                <v-btn
+                  color="secondary"
+                  small
+                  text
+                  @click.stop="deleteBudgetCode(item.id)"
+                  >Delete</v-btn
+                >
               </template>
             </v-data-table>
           </v-card-text>
         </v-card>
-        <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+        <snackbar-alert
+          v-model="alert"
+          :success="success"
+          :messages="messages"
+        ></snackbar-alert>
       </v-col>
     </v-row>
   </v-container>

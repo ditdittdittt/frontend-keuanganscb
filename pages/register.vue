@@ -3,19 +3,25 @@
     <v-row justify="center" align="center" align-content="center">
       <v-col cols="12" sm="10" md="8" lg="6" align-self="center">
         <v-card class="pa-5" flat>
-          <v-card-title class="headline font-weight-bold text-uppercase text-center">
+          <v-card-title
+            class="headline font-weight-bold text-uppercase text-center"
+          >
             <v-spacer></v-spacer>
             <span>Register</span>
             <v-divider class="mx-2" vertical></v-divider>
             <span class="green--text">SCB</span>
             <v-spacer></v-spacer>
           </v-card-title>
-          <v-card-subtitle class="caption text-center">Isi data dengan sebenar-benarnya</v-card-subtitle>
+          <v-card-subtitle class="caption text-center"
+            >Isi data dengan sebenar-benarnya</v-card-subtitle
+          >
           <v-card-text>
             <v-form ref="form" aria-autocomplete="on">
               <v-row>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">{{ $translate('text.name') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.name') }}
+                  </div>
                   <v-text-field
                     v-model="input.name"
                     prepend-inner-icon="mdi-face"
@@ -29,9 +35,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.username') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.username') }}
+                  </div>
                   <v-text-field
                     v-model="input.username"
                     prepend-inner-icon="mdi-account"
@@ -44,7 +50,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">{{ $translate('text.email') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.email') }}
+                  </div>
                   <v-text-field
                     v-model="input.email"
                     prepend-inner-icon="mdi-email"
@@ -57,9 +65,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.password') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.password') }}
+                  </div>
                   <v-text-field
                     v-model="input.password"
                     prepend-inner-icon="mdi-lock"
@@ -74,9 +82,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.confirm_password') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.confirm_password') }}
+                  </div>
                   <v-text-field
                     v-model="input.confirm"
                     prepend-inner-icon="mdi-lock"
@@ -90,9 +98,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.division') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.division') }}
+                  </div>
                   <v-text-field
                     v-model="input.division"
                     prepend-inner-icon="mdi-office-building"
@@ -105,7 +113,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-uppercase">{{ $translate('text.nik') }}</div>
+                  <div class="caption primary--text text-uppercase">
+                    {{ $translate('text.nik') }}
+                  </div>
                   <v-text-field
                     v-model="input.nik"
                     prepend-inner-icon="mdi-card-account-details"
@@ -119,9 +129,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.address') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.address') }}
+                  </div>
                   <v-textarea
                     v-model="input.address"
                     solo
@@ -145,15 +155,22 @@
               elevation="8"
               type="submit"
               @click.stop="register()"
-            >Register</v-btn>
+              >Register</v-btn
+            >
           </v-card-actions>
           <v-card-actions>
-            <v-btn outlined block color="primary" @click.stop="$router.go(-1)">Kembali</v-btn>
+            <v-btn outlined block color="primary" @click.stop="$router.go(-1)"
+              >Kembali</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
   </v-container>
 </template>
 <script>

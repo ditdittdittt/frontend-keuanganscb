@@ -21,6 +21,7 @@
                 v-model="input.request"
                 prepend-inner-icon="mdi-newspaper-plus"
                 :items="form.request"
+                item-text="number"
                 solo
                 :rules="[rules.required]"
                 :label="
@@ -31,14 +32,7 @@
                 clearable
                 auto-select-first
                 cache-items
-              >
-                <template v-slot:item="{ item }">{{
-                  item.id + ' - ' + item.allocation
-                }}</template>
-                <template v-slot:selection="{ item }">{{
-                  item.id + ' - ' + item.allocation
-                }}</template>
-              </v-combobox>
+              ></v-combobox>
             </v-col>
             <v-col cols="12" md="3">
               <div class="caption primary--text text-capitalize">

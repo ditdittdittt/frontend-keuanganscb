@@ -72,10 +72,7 @@
                       {{ $translate('text.paid_at') }}
                     </div>
                     <span>
-                      {{
-                        input.date ||
-                          $vuetify.lang.t('$vuetify.noDataText')
-                      }}
+                      {{ input.date || $vuetify.lang.t('$vuetify.noDataText') }}
                     </span>
                   </v-col>
 
@@ -203,7 +200,7 @@
           x-large
           color="accent"
           @click.stop="openDialogSureReject()"
-        >{{ $translate('components.button.reject') }}
+          >{{ $translate('components.button.reject') }}
         </v-btn>
       </v-col>
       <v-col v-if="checkIfUserWantToConfirmAlreadyPaid()">
@@ -214,7 +211,7 @@
           x-large
           color="accent"
           @click.stop="openDialogSureAlreadyPaid()"
-        >{{ $translate('components.button.already_paid') }}
+          >{{ $translate('components.button.already_paid') }}
         </v-btn>
       </v-col>
       <v-col v-if="checkVerifyPic()">
@@ -225,7 +222,8 @@
           x-large
           color="accent"
           @click.stop="cancelPettyCashForm()"
-        >{{ $translate('components.button.cancel') }}</v-btn>
+          >{{ $translate('components.button.cancel') }}</v-btn
+        >
       </v-col>
     </v-row>
 
@@ -274,10 +272,10 @@
           <v-card>
             <v-card-title class="title text-capitalize">{{
               $translate('text.sure_paid_head')
-              }}</v-card-title>
+            }}</v-card-title>
             <v-card-text class="overline">{{
               $translate('text.sure_paid_body')
-              }}</v-card-text>
+            }}</v-card-text>
             <v-card-actions>
               <v-row class="mx-0">
                 <v-col class="px-0" cols="6">
@@ -286,7 +284,7 @@
                     text
                     block
                     @click="closeDialogSureAlreadyPaid()"
-                  >{{ $translate('components.button.sure_button_no') }}</v-btn
+                    >{{ $translate('components.button.sure_button_no') }}</v-btn
                   >
                 </v-col>
                 <v-col class="px-0" cols="6">
@@ -295,8 +293,8 @@
                     text
                     block
                     @click.stop="alreadyPaidPettyCashForm()"
-                  >{{
-                    $translate('components.button.sure_button_yes')
+                    >{{
+                      $translate('components.button.sure_button_yes')
                     }}</v-btn
                   >
                 </v-col>
@@ -554,22 +552,42 @@ export default {
       }
     },
     checkVerifyPic() {
-      if (this.input.is_confirmed_pic === 0 && this.input.status_id === 1 && (this.$auth.user.id === this.input.pic.id || this.checkIfUserRoleIsAdmin())) {
+      if (
+        this.input.is_confirmed_pic === 0 &&
+        this.input.status_id === 1 &&
+        (this.$auth.user.id === this.input.pic.id ||
+          this.checkIfUserRoleIsAdmin())
+      ) {
         return true
       }
     },
     checkVerifyManagerOps() {
-      if (this.input.is_confirmed_manager_ops === 0 && this.input.is_confirmed_pic === 1 && this.input.status_id === 1 && (this.checkIfUserRoleIsManagerOps() || this.checkIfUserRoleIsAdmin())) {
+      if (
+        this.input.is_confirmed_manager_ops === 0 &&
+        this.input.is_confirmed_pic === 1 &&
+        this.input.status_id === 1 &&
+        (this.checkIfUserRoleIsManagerOps() || this.checkIfUserRoleIsAdmin())
+      ) {
         return true
       }
     },
     checkVerifyCashier() {
-      if (this.input.is_confirmed_cashier === 0 && this.input.is_confirmed_pic === 1 && this.input.is_confirmed_manager_ops === 1 && this.input.status_id === 2 && (this.checkIfUserRoleIsCashier() || this.checkIfUserRoleIsAdmin())) {
+      if (
+        this.input.is_confirmed_cashier === 0 &&
+        this.input.is_confirmed_pic === 1 &&
+        this.input.is_confirmed_manager_ops === 1 &&
+        this.input.status_id === 2 &&
+        (this.checkIfUserRoleIsCashier() || this.checkIfUserRoleIsAdmin())
+      ) {
         return true
       }
     },
     checkIfUserWantToConfirmAlreadyPaid() {
-      if ((this.checkIfUserRoleIsAdmin() || this.$auth.user.id === this.input.pic.id) && this.input.status_id === 3) {
+      if (
+        (this.checkIfUserRoleIsAdmin() ||
+          this.$auth.user.id === this.input.pic.id) &&
+        this.input.status_id === 3
+      ) {
         return true
       }
     },
@@ -585,6 +603,4 @@ export default {
   }
 }
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

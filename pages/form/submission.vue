@@ -2,14 +2,10 @@
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
       <v-card-title class="text-uppercase">
-        {{
-        $translate('components.form.title.submission')
-        }}
+        {{ $translate('components.form.title.submission') }}
       </v-card-title>
       <v-card-subtitle class="overline">
-        {{
-        $translate('components.form.subtitle.submission')
-        }}
+        {{ $translate('components.form.subtitle.submission') }}
       </v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
@@ -17,14 +13,16 @@
         <div class="spacing-medium"></div>
         <v-form ref="form" v-model="valid">
           <v-row>
-            <v-col cols="12" md="3">
-              <div
-                class="caption primary--text text-capitalize"
-              >{{ $translate('text.form') + ' ' + $translate('text.request') }}</div>
+            <v-col cols="12" md="6">
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.form') + ' ' + $translate('text.request') }}
+              </div>
               <v-combobox
                 v-model="input.request"
                 prepend-inner-icon="mdi-newspaper-plus"
+                append-outer-icon="mdi-eye"
                 :items="form.request"
+                item-text="number"
                 solo
                 :rules="[rules.required]"
                 :label="$translate('text.number', 'capitalize')"
@@ -32,17 +30,17 @@
                 auto-select-first
                 cache-items
                 return-object
+                @click:append-outer="showRequest(input.request)"
               >
-                <template v-slot:item="{ item }">{{ item.number }}</template>
                 <template v-slot:selection="{ item }">
-                  {{
-                  item.number
-                  }}
+                  {{ item.number }}
                 </template>
               </v-combobox>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.allocation') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.allocation') }}
+              </div>
               <v-text-field
                 v-model="input.allocation"
                 prepend-inner-icon="mdi-basket"
@@ -56,7 +54,9 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.use') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.use') }}
+              </div>
               <v-text-field
                 v-model="input.used"
                 prepend-inner-icon="mdi-cash"
@@ -72,9 +72,9 @@
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
                 {{
-                $translate('text.amount_in_word') +
-                ' ' +
-                $translate('text.use', 'capitalize')
+                  $translate('text.amount_in_word') +
+                    ' ' +
+                    $translate('text.use', 'capitalize')
                 }}
               </div>
               <v-text-field
@@ -92,7 +92,9 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.balance') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.balance') }}
+              </div>
               <v-text-field
                 v-model="input.balance"
                 prepend-inner-icon="mdi-cash-multiple"
@@ -108,9 +110,9 @@
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
                 {{
-                $translate('text.amount_in_word') +
-                ' ' +
-                $translate('text.balance', 'capitalize')
+                  $translate('text.amount_in_word') +
+                    ' ' +
+                    $translate('text.balance', 'capitalize')
                 }}
               </div>
               <v-text-field
@@ -130,7 +132,9 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <div class="caption primary--text text-capitalize">{{ $translate('text.note') }}</div>
+              <div class="caption primary--text text-capitalize">
+                {{ $translate('text.note') }}
+              </div>
               <v-textarea
                 v-model="input.notes"
                 counter
@@ -150,10 +154,82 @@
           color="secondary"
           elevation="8"
           @click.stop="storeSubmission()"
-        >{{ $translate('components.button.submit') }}</v-btn>
+          >{{ $translate('components.button.submit') }}</v-btn
+        >
       </v-card-actions>
     </v-card>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <v-dialog v-model="modal.request" max-width="600" persistent>
+      <v-card>
+        <v-card-title class="text-uppercase title">
+          {{ $translate('components.form.title.request') }}
+        </v-card-title>
+        <v-card-text>
+          <div class="spacing-xsmall"></div>
+          <div class="caption primary--text text-capitalize">
+            {{ $translate('text.information') }}
+          </div>
+          <v-simple-table>
+            <template v-slot:default>
+              <tbody>
+                <tr>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.allocation') }}
+                  </td>
+                  <td class="text-capitalize">
+                    {{ currentRequest.allocation }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.payment_type') }}
+                  </td>
+                  <td>{{ currentRequest.method }}</td>
+                </tr>
+                <tr>
+                  <td class="caption font-weight-bold text-capitalize">
+                    {{ $translate('text.amount') }}
+                  </td>
+                  <td>{{ currentRequest.amount }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+          <v-divider></v-divider>
+          <div class="spacing-xsmall"></div>
+          <div class="caption primary--text text-capitalize">
+            {{ $translate('text.budget_code') }}
+          </div>
+          <v-simple-table>
+            <template v-slot:default>
+              <tbody>
+                <template v-for="(detail, i) in currentRequest.details">
+                  <tr :key="'detail' + i">
+                    <td>{{ detail.budget_code.code }}</td>
+                    <td>{{ detail.budget_code.name }}</td>
+                    <td>{{ detail.nominal }}</td>
+                  </tr>
+                </template>
+              </tbody>
+            </template>
+          </v-simple-table>
+          <v-divider></v-divider>
+        </v-card-text>
+        <v-card-actions>
+          <v-row class="ma-0">
+            <v-col>
+              <v-btn block color="secondary" @click.stop="modal.request = false"
+                >Tutup</v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
   </v-container>
 </template>
 <script>
@@ -200,18 +276,22 @@ export default {
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`
       },
-      choosenRequestForm: {}
+      currentRequest: {},
+      modal: {
+        request: false
+      }
     }
   },
   mounted() {
     this.getAllRequestForms()
   },
-  watch: {
-    'input.request': function() {
-      this.getChoosenRequestForm()
-    }
-  },
   methods: {
+    showRequest() {
+      if (this.input.request != null) {
+        this.modal.request = true
+        this.currentRequest = this.$copy(this.input.request)
+      }
+    },
     async storeSubmission() {
       if (!this.$refs.form.validate()) {
         this.success = false
@@ -220,7 +300,7 @@ export default {
         return
       }
       try {
-        // const result = await this.$api('submission', 'store', this.input)
+        const result = await this.$api('submission', 'store', this.input)
         if (result.status === 201) {
           this.success = true
           this.messages = 'Berhasil membuat form submission'
@@ -243,15 +323,6 @@ export default {
         this.form.request = this.form.request.filter(function(form) {
           return form.status_id === 4
         })
-      } catch (e) {
-        this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
-        this.alert = true
-      }
-    },
-    async getChoosenRequestForm() {
-      try {
-        this.choosenRequestForm = await this.$api('request', 'show', this.input.request.id)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

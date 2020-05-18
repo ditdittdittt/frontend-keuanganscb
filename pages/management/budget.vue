@@ -4,8 +4,12 @@
       <!-- New Budget -->
       <v-col cols="12" sm="6" md="4">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-          <v-card-title class="text-uppercase">{{ $translate('components.form.title.budget_code') }}</v-card-title>
-          <v-card-subtitle class="overline">{{ $translate('components.form.subtitle.budget_code') }}</v-card-subtitle>
+          <v-card-title class="text-uppercase">{{
+            $translate('components.form.title.budget_code')
+          }}</v-card-title>
+          <v-card-subtitle class="overline">{{
+            $translate('components.form.subtitle.budget_code')
+          }}</v-card-subtitle>
         </v-card>
         <v-card raised class="back-card px-md-5">
           <v-card-text>
@@ -13,7 +17,9 @@
             <v-form ref="form" v-model="valid">
               <v-row>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">{{ $translate('text.code') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.code') }}
+                  </div>
                   <v-text-field
                     v-model="input.code"
                     prepend-inner-icon="mdi-code-brackets"
@@ -25,7 +31,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">{{ $translate('text.name') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.name') }}
+                  </div>
                   <v-text-field
                     v-model="input.name"
                     prepend-inner-icon="mdi-alphabetical"
@@ -37,9 +45,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.balance') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.balance') }}
+                  </div>
                   <v-text-field
                     v-model="input.balance"
                     prepend-inner-icon="mdi-cash"
@@ -63,7 +71,8 @@
               color="secondary"
               elevation="8"
               @click.stop="storeBudgetCode"
-            >{{ $translate('components.button.add') }}</v-btn>
+              >{{ $translate('components.button.add') }}</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -74,9 +83,9 @@
           <v-card-title class="text-uppercase">
             <span>{{ $translate('components.table.title.budget_code') }}</span>
           </v-card-title>
-          <v-card-subtitle
-            class="overline"
-          >{{ $translate('components.table.subtitle.budget_code') }}</v-card-subtitle>
+          <v-card-subtitle class="overline">{{
+            $translate('components.table.subtitle.budget_code')
+          }}</v-card-subtitle>
           <v-card-text class="px-5">
             <v-text-field
               v-model="search"
@@ -93,14 +102,26 @@
           <v-card-text>
             <div class="spacing-medium"></div>
             <v-data-table :headers="headers" :items="items" :search="search">
-              <template v-slot:item.balance="{ item }">{{ item.balance | currency }}</template>
+              <template v-slot:item.balance="{ item }">{{
+                item.balance | currency
+              }}</template>
               <template v-slot:item.id="{ item }">
-                <v-btn color="secondary" small text @click.stop="deleteBudgetCode(item.id)">Delete</v-btn>
+                <v-btn
+                  color="secondary"
+                  small
+                  text
+                  @click.stop="deleteBudgetCode(item.id)"
+                  >Delete</v-btn
+                >
               </template>
             </v-data-table>
           </v-card-text>
         </v-card>
-        <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+        <snackbar-alert
+          v-model="alert"
+          :success="success"
+          :messages="messages"
+        ></snackbar-alert>
       </v-col>
     </v-row>
   </v-container>

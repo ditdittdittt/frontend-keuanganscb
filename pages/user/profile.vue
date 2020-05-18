@@ -20,9 +20,14 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.name') }}</v-badge>
+                      >{{ $translate('text.name') }}</v-badge
+                    >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.name" class="text-capitalize">{{ input.name }}</v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    v-if="!edit.name"
+                    class="text-capitalize"
+                    >{{ input.name }}</v-list-item-subtitle
+                  >
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.name"
@@ -34,14 +39,21 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-btn v-if="!edit.name" text small @click.stop="edit.name = true">Edit</v-btn>
+                  <v-btn
+                    v-if="!edit.name"
+                    text
+                    small
+                    @click.stop="edit.name = true"
+                    >Edit</v-btn
+                  >
                   <v-btn
                     v-else
                     dark
                     color="secondary"
                     small
                     @click.stop="edit.name = false"
-                  >{{ $translate('components.button.done') }}</v-btn>
+                    >{{ $translate('components.button.done') }}</v-btn
+                  >
                 </v-list-item-action>
               </v-list-item>
 
@@ -55,12 +67,11 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.username') }}</v-badge>
+                      >{{ $translate('text.username') }}</v-badge
+                    >
                   </v-list-item-title>
                   <v-list-item-subtitle v-if="!edit.username">
-                    {{
-                    input.username
-                    }}
+                    {{ input.username }}
                   </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
@@ -73,14 +84,21 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-btn v-if="!edit.username" text small @click.stop="edit.username = true">Edit</v-btn>
+                  <v-btn
+                    v-if="!edit.username"
+                    text
+                    small
+                    @click.stop="edit.username = true"
+                    >Edit</v-btn
+                  >
                   <v-btn
                     v-else
                     dark
                     color="secondary"
                     small
                     @click.stop="edit.username = false"
-                  >{{ $translate('components.button.done') }}</v-btn>
+                    >{{ $translate('components.button.done') }}</v-btn
+                  >
                 </v-list-item-action>
               </v-list-item>
 
@@ -94,12 +112,11 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.email') }}</v-badge>
+                      >{{ $translate('text.email') }}</v-badge
+                    >
                   </v-list-item-title>
                   <v-list-item-subtitle v-if="!edit.email">
-                    {{
-                    input.email
-                    }}
+                    {{ input.email }}
                   </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
@@ -112,14 +129,21 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-btn v-if="!edit.email" text small @click.stop="edit.email = true">Edit</v-btn>
+                  <v-btn
+                    v-if="!edit.email"
+                    text
+                    small
+                    @click.stop="edit.email = true"
+                    >Edit</v-btn
+                  >
                   <v-btn
                     v-else
                     dark
                     color="secondary"
                     small
                     @click.stop="edit.email = false"
-                  >{{ $translate('components.button.done') }}</v-btn>
+                    >{{ $translate('components.button.done') }}</v-btn
+                  >
                 </v-list-item-action>
               </v-list-item>
 
@@ -140,12 +164,14 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.division') }}</v-badge>
+                      >{{ $translate('text.division') }}</v-badge
+                    >
                   </v-list-item-title>
                   <v-list-item-subtitle
                     v-if="!edit.division"
                     class="text-capitalize"
-                  >{{ input.division }}</v-list-item-subtitle>
+                    >{{ input.division }}</v-list-item-subtitle
+                  >
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.division"
@@ -157,14 +183,21 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-btn v-if="!edit.division" text small @click.stop="edit.division = true">Edit</v-btn>
+                  <v-btn
+                    v-if="!edit.division"
+                    text
+                    small
+                    @click.stop="edit.division = true"
+                    >Edit</v-btn
+                  >
                   <v-btn
                     v-else
                     dark
                     color="secondary"
                     small
                     @click.stop="edit.division = false"
-                  >{{ $translate('components.button.done') }}</v-btn>
+                    >{{ $translate('components.button.done') }}</v-btn
+                  >
                 </v-list-item-action>
               </v-list-item>
 
@@ -185,12 +218,11 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.nik') }}</v-badge>
+                      >{{ $translate('text.nik') }}</v-badge
+                    >
                   </v-list-item-title>
                   <v-list-item-subtitle v-if="!edit.nik">
-                    {{
-                    input.nik
-                    }}
+                    {{ input.nik }}
                   </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
@@ -203,14 +235,21 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-btn v-if="!edit.nik" text small @click.stop="edit.nik = true">Edit</v-btn>
+                  <v-btn
+                    v-if="!edit.nik"
+                    text
+                    small
+                    @click.stop="edit.nik = true"
+                    >Edit</v-btn
+                  >
                   <v-btn
                     v-else
                     dark
                     color="secondary"
                     small
                     @click.stop="edit.nik = false"
-                  >{{ $translate('components.button.done') }}</v-btn>
+                    >{{ $translate('components.button.done') }}</v-btn
+                  >
                 </v-list-item-action>
               </v-list-item>
 
@@ -224,12 +263,11 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.address') }}</v-badge>
+                      >{{ $translate('text.address') }}</v-badge
+                    >
                   </v-list-item-title>
                   <v-list-item-subtitle v-if="!edit.address">
-                    {{
-                    input.address
-                    }}
+                    {{ input.address }}
                   </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
@@ -242,14 +280,21 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-btn v-if="!edit.address" text small @click.stop="edit.address = true">Edit</v-btn>
+                  <v-btn
+                    v-if="!edit.address"
+                    text
+                    small
+                    @click.stop="edit.address = true"
+                    >Edit</v-btn
+                  >
                   <v-btn
                     v-else
                     dark
                     color="secondary"
                     small
                     @click.stop="edit.address = false"
-                  >{{ $translate('components.button.done') }}</v-btn>
+                    >{{ $translate('components.button.done') }}</v-btn
+                  >
                 </v-list-item-action>
               </v-list-item>
             </v-list>
@@ -259,16 +304,12 @@
           <v-row>
             <v-col>
               <v-btn color="accent" block @click.stop="reset()">
-                {{
-                $translate('components.button.reset')
-                }}
+                {{ $translate('components.button.reset') }}
               </v-btn>
             </v-col>
             <v-col>
               <v-btn dark color="secondary" block @click.stop="updateUser()">
-                {{
-                $translate('components.button.save')
-                }}
+                {{ $translate('components.button.save') }}
               </v-btn>
             </v-col>
           </v-row>
@@ -279,14 +320,16 @@
     <v-card raised>
       <v-card-actions class="pa-0">
         <v-btn block color="accent" x-large @click="logOut()">
-          {{
-          $translate('components.button.logout')
-          }}
+          {{ $translate('components.button.logout') }}
         </v-btn>
       </v-card-actions>
     </v-card>
     <div class="spacing-medium"></div>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
   </v-container>
 </template>
 <script>

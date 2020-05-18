@@ -44,7 +44,7 @@
         <div class="spacing-medium"></div>
         <v-data-table :headers="headers" :items="items" :search="search">
           <template v-slot:item.amount="{ item }">
-              {{ item.amount | currency }}
+            {{ item.amount | currency }}
           </template>
           <template v-slot:item.id="{ item }">
             <v-btn

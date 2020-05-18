@@ -144,8 +144,8 @@ export default {
     sure_reject_body: 'this form cannot be restore after got rejected',
     sure_paid_head: 'are you sure the money already paid?',
     sure_paid_body: 'you cannot undo after you confirm',
-    paid_at: 'paid at'
-
+    paid_at: 'paid at',
+    information: 'informasi'
   },
   helper: {
     messages: {

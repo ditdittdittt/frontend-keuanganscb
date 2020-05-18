@@ -6,7 +6,9 @@
           <v-card-title class="text-uppercase">
             <span>{{ $translate('components.table.title.user') }}</span>
           </v-card-title>
-          <v-card-subtitle class="overline">{{ $translate('components.table.subtitle.user') }}</v-card-subtitle>
+          <v-card-subtitle class="overline">{{
+            $translate('components.table.subtitle.user')
+          }}</v-card-subtitle>
           <v-card-text class="px-5">
             <v-text-field
               v-model="search"
@@ -29,7 +31,8 @@
                   text
                   small
                   @click.stop="popupUser(item)"
-                >{{ $translate('text.view') }}</v-btn>
+                  >{{ $translate('text.view') }}</v-btn
+                >
               </template>
             </v-data-table>
           </v-card-text>
@@ -61,7 +64,8 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.name') }}</v-badge>
+                      >{{ $translate('text.name') }}</v-badge
+                    >
                   </td>
                   <td v-if="state.edit">
                     <v-text-field v-model="input.name" dense></v-text-field>
@@ -76,7 +80,8 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.username') }}</v-badge>
+                      >{{ $translate('text.username') }}</v-badge
+                    >
                   </td>
                   <td v-if="state.edit">
                     <v-text-field v-model="input.username" dense></v-text-field>
@@ -91,7 +96,8 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.email') }}</v-badge>
+                      >{{ $translate('text.email') }}</v-badge
+                    >
                   </td>
                   <td v-if="state.edit">
                     <v-text-field v-model="input.email" dense></v-text-field>
@@ -106,7 +112,8 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.division') }}</v-badge>
+                      >{{ $translate('text.division') }}</v-badge
+                    >
                   </td>
                   <td v-if="state.edit">
                     <v-text-field v-model="input.division" dense></v-text-field>
@@ -121,26 +128,31 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.role') }}</v-badge>
+                      >{{ $translate('text.role') }}</v-badge
+                    >
                   </td>
                   <td v-if="state.edit">
                     <v-select
-                      v-model="input.role"
+                      v-model="input.roles"
                       cache-items
                       item-text="name"
                       item-value="name"
                       :items="roles"
+                      multiple
+                      class="caption"
                       dense
+                      return-object
                     >
-                      <template v-slot:selection="{ item }">
-                        <span>{{ item.name | beauty }}</span>
-                      </template>
-                      <template v-slot:item="{ item }">
-                        <span>{{ item.name | beauty }}</span>
-                      </template>
                     </v-select>
                   </td>
-                  <td v-else>{{ user.role }}</td>
+                  <td v-else class="text-capitalize">
+                    <template v-for="(role, i) in user.roles">
+                      <span :key="'role' + i">
+                        {{ role.name }}
+                      </span>
+                      <br :key="'br' + i" />
+                    </template>
+                  </td>
                 </tr>
                 <tr>
                   <td class="caption font-weight-bold text-uppercase">
@@ -150,7 +162,8 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.nik') }}</v-badge>
+                      >{{ $translate('text.nik') }}</v-badge
+                    >
                   </td>
                   <td v-if="state.edit">
                     <v-text-field v-model="input.nik" dense></v-text-field>
@@ -165,7 +178,8 @@
                       color="red"
                       :offset-x="-4"
                       :offset-y="8"
-                    >{{ $translate('text.address') }}</v-badge>
+                      >{{ $translate('text.address') }}</v-badge
+                    >
                   </td>
                   <td v-if="state.edit">
                     <v-text-field v-model="input.address" dense></v-text-field>
@@ -184,13 +198,12 @@
                 color="red"
                 block
                 @click.stop="deleteUser(input.id)"
-              >{{ $translate('components.button.delete') }}</v-btn>
+                >{{ $translate('components.button.delete') }}</v-btn
+              >
             </v-col>
             <v-col>
               <v-btn dark color="secondary" block @click.stop="updateUser">
-                {{
-                $translate('components.button.update')
-                }}
+                {{ $translate('components.button.update') }}
               </v-btn>
             </v-col>
           </v-row>
@@ -201,13 +214,18 @@
                 color="accent"
                 block
                 @click.stop="modal.user = false"
-              >{{ $translate('components.button.close') }}</v-btn>
+                >{{ $translate('components.button.close') }}</v-btn
+              >
             </v-col>
           </v-row>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+    <snackbar-alert
+      v-model="alert"
+      :success="success"
+      :messages="messages"
+    ></snackbar-alert>
   </v-container>
 </template>
 

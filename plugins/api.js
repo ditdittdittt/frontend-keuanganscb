@@ -988,7 +988,7 @@ export default ({ app }, inject) => {
         .catch((error) => {
           throw new Error(error)
         })
-    },
+    }
   }
 
   /**
