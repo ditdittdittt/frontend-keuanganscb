@@ -1,8 +1,9 @@
 <template>
   <v-container>
     <v-row align="start">
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="7">
         <v-row>
+          <!-- Information -->
           <v-col cols="12">
             <v-card>
               <v-card-title class="text-capitalize primary white--text">
@@ -27,7 +28,7 @@
               </v-card-title>
               <v-card-text>
                 <v-row>
-                  <v-col cols="12">
+                  <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.number') }}
                     </div>
@@ -106,7 +107,7 @@
                       <v-icon small>mdi-open-in-new</v-icon>
                     </v-btn>
                   </v-col>
-                  <v-col cols="12">
+                  <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.note') }}
                     </div>
@@ -116,50 +117,54 @@
                       }}
                     </span>
                   </v-col>
-                  <v-col v-if="input.method === 'Transfer'" cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.bank_code') }}
-                    </div>
-                    <span>
-                      {{
-                        input.bank_code ||
-                          $vuetify.lang.t('$vuetify.noDataText')
-                      }}
-                    </span>
-                  </v-col>
-                  <v-col v-if="input.method === 'Transfer'" cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.bank_name') }}
-                    </div>
-                    <span>
-                      {{
-                        input.bank_name ||
-                          $vuetify.lang.t('$vuetify.noDataText')
-                      }}
-                    </span>
-                  </v-col>
-                  <v-col v-if="input.method === 'Transfer'" cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.account_number') }}
-                    </div>
-                    <span>
-                      {{
-                        input.account_number ||
-                          $vuetify.lang.t('$vuetify.noDataText')
-                      }}
-                    </span>
-                  </v-col>
-                  <v-col v-if="input.method === 'Transfer'" cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.account_owner') }}
-                    </div>
-                    <span>
-                      {{
-                        input.account_owner ||
-                          $vuetify.lang.t('$vuetify.noDataText')
-                      }}
-                    </span>
-                  </v-col>
+
+                  <template v-if="input.method === 'transfer'">
+                    <v-col cols="12" md="6">
+                      <div class="caption primary--text text-capitalize">
+                        {{ $translate('text.bank_code') }}
+                      </div>
+                      <span>
+                        {{
+                          input.bank_code ||
+                            $vuetify.lang.t('$vuetify.noDataText')
+                        }}
+                      </span>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="caption primary--text text-capitalize">
+                        {{ $translate('text.bank_name') }}
+                      </div>
+                      <span>
+                        {{
+                          input.bank_name ||
+                            $vuetify.lang.t('$vuetify.noDataText')
+                        }}
+                      </span>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="caption primary--text text-capitalize">
+                        {{ $translate('text.account_number') }}
+                      </div>
+                      <span>
+                        {{
+                          input.account_number ||
+                            $vuetify.lang.t('$vuetify.noDataText')
+                        }}
+                      </span>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="caption primary--text text-capitalize">
+                        {{ $translate('text.account_owner') }}
+                      </div>
+                      <span>
+                        {{
+                          input.account_owner ||
+                            $vuetify.lang.t('$vuetify.noDataText')
+                        }}
+                      </span>
+                    </v-col>
+                  </template>
+
                   <v-col cols="12">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.status') }}
@@ -175,12 +180,13 @@
               </v-card-text>
             </v-card>
           </v-col>
+          <!-- Table -->
           <v-col cols="12">
             <v-card>
-              <v-card-title>
-                <div class="caption primary--text text-capitalize">
+              <v-card-title class="text-capitalize primary white--text">
+                <span>
                   {{ $translate('text.budget') }}
-                </div>
+                </span>
               </v-card-title>
               <v-card-text>
                 <v-row justify="center">
@@ -192,73 +198,11 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12">
-            <v-card>
-              <v-card-title>
-                <div class="caption primary--text text-capitalize">
-                  {{ $translate('text.verification') }}
-                </div>
-              </v-card-title>
-              <v-card-text>
-                <v-row justify="center">
-                  <v-col v-if="checkVerifyPic()" cols="12" md="6">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('pic')"
-                      >{{ $translate('text.pic') }}</v-btn
-                    >
-                  </v-col>
-                  <v-col v-if="checkVerifyVerificator()" cols="12" md="6">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('verificator')"
-                      >{{ $translate('text.verificator') }}</v-btn
-                    >
-                  </v-col>
-                  <v-col v-if="checkVerifyHeadDept()" cols="12" md="6">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('headDept')"
-                      >{{ $translate('text.head_dept') }}</v-btn
-                    >
-                  </v-col>
-                  <v-col v-if="checkVerifyCashier()" cols="12" md="6">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('cashier')"
-                      >{{ $translate('text.cashier') }}</v-btn
-                    >
-                  </v-col>
-                  <v-col v-if="checkVerifyHeadOffice()" cols="12" md="6">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('headOffice')"
-                      >{{ $translate('text.head_office') }}</v-btn
-                    >
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="5">
         <v-row>
+          <!-- PIC -->
           <v-col cols="12">
             <v-card>
               <v-card-title class="text-capitalize primary white--text">{{
@@ -288,12 +232,82 @@
               </v-card-text>
             </v-card>
           </v-col>
+          <!-- Verification -->
+          <v-col cols="12">
+            <v-card>
+              <v-card-title>
+                <div class="caption primary--text text-capitalize">
+                  {{ $translate('text.verification') }}
+                </div>
+              </v-card-title>
+              <v-card-text>
+                <v-row justify="center">
+                  <v-col v-if="checkVerifyPic()" cols="12">
+                    <v-btn
+                      large
+                      elevation="8"
+                      block
+                      color="secondary"
+                      @click.stop="openDialogSureVerify('pic')"
+                      >{{ $translate('text.pic') }}</v-btn
+                    >
+                  </v-col>
+                  <v-col v-if="checkVerifyVerificator()" cols="12">
+                    <v-btn
+                      large
+                      elevation="8"
+                      block
+                      color="secondary"
+                      @click.stop="openDialogSureVerify('verificator')"
+                      >{{ $translate('text.verificator') }}</v-btn
+                    >
+                  </v-col>
+                  <v-col v-if="checkVerifyHeadDept()" cols="12">
+                    <v-btn
+                      large
+                      elevation="8"
+                      block
+                      color="secondary"
+                      @click.stop="openDialogSureVerify('headDept')"
+                      >{{ $translate('text.head_dept') }}</v-btn
+                    >
+                  </v-col>
+                  <v-col v-if="checkVerifyCashier()" cols="12">
+                    <v-btn
+                      large
+                      elevation="8"
+                      block
+                      color="secondary"
+                      @click.stop="openDialogSureVerify('cashier')"
+                      >{{ $translate('text.cashier') }}</v-btn
+                    >
+                  </v-col>
+                  <v-col v-if="checkVerifyHeadOffice()" cols="12">
+                    <v-btn
+                      large
+                      elevation="8"
+                      block
+                      color="secondary"
+                      @click.stop="openDialogSureVerify('headOffice')"
+                      >{{ $translate('text.head_office') }}</v-btn
+                    >
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
     <div class="spacing-small"></div>
     <v-row>
-      <v-col v-if="checkVerifyHeadOffice() || checkVerifyVerificator() || checkVerifyHeadDept()">
+      <v-col
+        v-if="
+          checkVerifyHeadOffice() ||
+            checkVerifyVerificator() ||
+            checkVerifyHeadDept()
+        "
+      >
         <v-btn
           block
           dark
@@ -375,7 +389,7 @@
 
     <template>
       <v-row justify="center">
-        <v-dialog v-model="dialogSureNeedSubmission"  max-width="600">
+        <v-dialog v-model="dialogSureNeedSubmission" max-width="600">
           <v-card>
             <v-card-title class="title text-capitalize">{{
               $translate('text.sure_need_submission_head')
@@ -552,6 +566,7 @@ export default {
     async getRequestForm() {
       try {
         this.input = await this.$api('request', 'show', this.$route.params.id)
+        console.log(this.input)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
@@ -765,8 +780,7 @@ export default {
     },
     checkIfRequestFormNeedSubmission() {
       if (
-        (this.checkIfUserRoleIsAdmin() ||
-          this.checkIfUserRoleIsCashier()) &&
+        (this.checkIfUserRoleIsAdmin() || this.checkIfUserRoleIsCashier()) &&
         this.input.status_id === 3
       ) {
         return true
