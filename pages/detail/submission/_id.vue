@@ -333,6 +333,12 @@
             <v-card-text>
               <signature-pad :key="key" v-model="signature"></signature-pad>
             </v-card-text>
+            <v-card-text>
+              <v-container class="text-center">
+                <span v-if="signature.isEmpty">Belum ada tanda tangan</span>
+                <span v-else>Tanda tangan siap disimpan</span>
+              </v-container>
+            </v-card-text>
             <v-card-actions>
               <v-row class="mx-0">
                 <v-col class="px-0" cols="6">

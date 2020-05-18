@@ -227,7 +227,7 @@ export default {
         const result = await this.$api('rekening', 'store', this.input)
         if (result.status === 201) {
           this.success = true
-          this.messages = 'Budget code berhasil di simpan'
+          this.messages = 'Rekening berhasil di simpan'
           this.alert = true
           this.$refs.form.reset()
         }
@@ -243,7 +243,7 @@ export default {
         const result = await this.$api('rekening', 'delete', id)
         if (result.status === 200) {
           this.success = true
-          this.messages = 'Budget code berhasil di hapus'
+          this.messages = 'Rekening berhasil di hapus'
           this.alert = true
         }
         this.getAllBudgetCode()

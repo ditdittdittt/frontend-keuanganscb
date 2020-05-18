@@ -184,9 +184,6 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12" class="text-center">
-            <v-date-picker :value="input.date"></v-date-picker>
-          </v-col>
         </v-row>
       </v-col>
     </v-row>
