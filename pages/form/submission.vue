@@ -96,14 +96,14 @@
                 {{ $translate('text.balance') }}
               </div>
               <v-text-field
-                v-model="input.balance"
+                :value="input.balance"
                 prepend-inner-icon="mdi-cash-multiple"
                 prefix="Rp"
                 solo
-                :rules="[rules.required]"
                 :label="$translate('text.balance', 'capitalize')"
                 :hint="input.balance | currency"
                 type="number"
+                readonly
                 clearable
               ></v-text-field>
             </v-col>
@@ -279,6 +279,15 @@ export default {
       currentRequest: {},
       modal: {
         request: false
+      }
+    }
+  },
+  watch: {
+    'input.used'() {
+      if (this.input.request) {
+        this.input.balance = this.input.request.amount - this.input.used
+      } else {
+        this.input.balance = this.input.used
       }
     }
   },
