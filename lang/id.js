@@ -147,7 +147,10 @@ export default {
     sure_paid_head: 'apakah kamu yakin uang sudah diterima?',
     sure_paid_body: 'form tidak bisa dikembalikan setelah melakukan konfirmasi',
     paid_at: 'dibayarkan saat',
-    information: 'informasi'
+    information: 'informasi',
+    top_up: 'isi saldo',
+    nominal: 'nominal'
+
   },
   helper: {
     messages: {

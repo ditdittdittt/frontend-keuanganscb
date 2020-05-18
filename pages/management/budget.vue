@@ -113,6 +113,13 @@
                   @click.stop="deleteBudgetCode(item.id)"
                   >Delete</v-btn
                 >
+                <v-icon
+                  small
+                  class="mr-2"
+                  @click.stop="openDialogTopUp(item.id)"
+                >
+                  mdi-plus
+                </v-icon>
               </template>
             </v-data-table>
           </v-card-text>
@@ -124,6 +131,63 @@
         ></snackbar-alert>
       </v-col>
     </v-row>
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialogTopUp" persistent max-width="600">
+          <v-card>
+            <v-card-title class="title text-capitalize">{{
+              $translate('text.top_up')
+              }}</v-card-title>
+            <v-card-text class="overline">
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.top_up') }}
+                    </div>
+                    <v-text-field
+                      v-model="topUpInput.nominal"
+                      prepend-inner-icon="mdi-cash"
+                      prefix="Rp"
+                      type="number"
+                      clearable
+                      solo
+                      :label="$translate('text.nominal', 'capitalize')"
+                      :rules="[rules.required]"
+                      :hint="topUpInput.nominal | currency"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-row class="mx-0">
+                <v-col class="px-0" cols="6">
+                  <v-btn
+                    color="accent"
+                    text
+                    block
+                    @click="closeDialogTopUp()"
+                  >{{ $translate('components.button.sure_button_no') }}</v-btn
+                  >
+                </v-col>
+                <v-col class="px-0" cols="6">
+                  <v-btn
+                    color="secondary"
+                    text
+                    block
+                    @click.stop="topUp()"
+                  >{{
+                    $translate('components.button.sure_button_yes')
+                    }}</v-btn
+                  >
+                </v-col>
+              </v-row>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template>
   </v-container>
 </template>
 <script>
@@ -165,10 +229,15 @@ export default {
       search: '',
       today: null,
       valid: true,
+      dialogTopUp: false,
       input: {
         code: null,
         name: null,
         balance: null
+      },
+      topUpInput: {
+        id: null,
+        nominal: null
       },
       modal: {
         date: false
@@ -230,7 +299,7 @@ export default {
           this.alert = true
           this.$refs.form.reset()
         }
-        this.getAllBudgetCode()
+        await this.getAllBudgetCode()
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
@@ -250,6 +319,33 @@ export default {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
         this.alert = true
+      }
+    },
+    openDialogTopUp(budgetCodeId) {
+      this.dialogTopUp = true
+      this.topUpInput.id = budgetCodeId
+    },
+    closeDialogTopUp() {
+      this.dialogTopUp = false
+      this.topUpInput.id = null
+      this.topUpInput.nominal = null
+    },
+    async topUp() {
+      try {
+        const result = await this.$api('budget', 'topup', this.topUpInput)
+        if (result.status === 201) {
+          this.success = true
+          this.messages = 'Budget code berhasil di simpan'
+          this.alert = true
+          this.$refs.form.reset()
+        }
+        await this.getAllBudgetCode()
+        this.closeDialogTopUp()
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+        console.log(e)
       }
     }
   }
