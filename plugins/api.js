@@ -156,6 +156,8 @@ export default ({ app }, inject) => {
             return Budget.store(data)
           case 'delete':
             return Budget.delete(data)
+          case 'topup':
+            return Budget.topUp(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -1027,6 +1029,23 @@ export default ({ app }, inject) => {
           method: 'delete',
           url: '/budget-code/' + data,
           data: null
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    topUp(data) {
+      console.log('[Budget] Top Up Budget Code')
+      const body = new FormData()
+      body.append('nominal', data.nominal)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/budget-code/' + data.id + '/topUp',
+          data: body
         })
         .then((response) => {
           return response

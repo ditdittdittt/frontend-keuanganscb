@@ -145,7 +145,9 @@ export default {
     sure_paid_head: 'are you sure the money already paid?',
     sure_paid_body: 'you cannot undo after you confirm',
     paid_at: 'paid at',
-    information: 'informasi'
+    information: 'information',
+    top_up: 'top up',
+    nominal: 'nominal'
   },
   helper: {
     messages: {
