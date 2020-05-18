@@ -78,7 +78,7 @@
               dark
               color="secondary"
               elevation="8"
-              @click.stop="storeBudgetCode"
+              @click.stop="storeRekening"
               >{{ $translate('components.button.add') }}</v-btn
             >
           </v-card-actions>
@@ -118,7 +118,7 @@
                   color="secondary"
                   small
                   text
-                  @click.stop="deleteBudgetCode(item.id)"
+                  @click.stop="deleteRekening(item.id)"
                   >Delete</v-btn
                 >
               </template>
@@ -204,10 +204,10 @@ export default {
     }
   },
   mounted() {
-    this.getAllBudgetCode()
+    this.getAllRekening()
   },
   methods: {
-    async getAllBudgetCode() {
+    async getAllRekening() {
       try {
         this.items = await this.$api('rekening', 'index', null)
       } catch (e) {
@@ -216,7 +216,7 @@ export default {
         this.alert = true
       }
     },
-    async storeBudgetCode() {
+    async storeRekening() {
       if (!this.$refs.form.validate()) {
         this.success = false
         this.messages = 'Form belum valid'
@@ -231,14 +231,14 @@ export default {
           this.alert = true
           this.$refs.form.reset()
         }
-        this.getAllBudgetCode()
+        this.getAllRekening()
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
         this.alert = true
       }
     },
-    async deleteBudgetCode(id) {
+    async deleteRekening(id) {
       try {
         const result = await this.$api('rekening', 'delete', id)
         if (result.status === 200) {
@@ -246,7 +246,7 @@ export default {
           this.messages = 'Rekening berhasil di hapus'
           this.alert = true
         }
-        this.getAllBudgetCode()
+        this.getAllRekening()
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)

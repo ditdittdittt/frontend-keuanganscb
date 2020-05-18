@@ -150,7 +150,6 @@ export default {
     information: 'informasi',
     top_up: 'isi saldo',
     nominal: 'nominal'
-
   },
   helper: {
     messages: {

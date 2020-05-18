@@ -147,65 +147,22 @@
           </v-row>
           <template v-if="input.method === 'transfer'">
             <v-row>
-              <v-col cols="12" sm="6">
-                <div class="caption primary--text text-capitalize">
-                  {{ $translate('text.bank_name') }}
-                </div>
-                <v-text-field
-                  v-model="input.bank_name"
-                  prepend-inner-icon="mdi-cash"
-                  clearable
-                  solo
-                  :rules="[rules.required]"
-                  persistent-hint
-                  :hint="$translate('helper.multiple_bank')"
-                  :label="$translate('text.bank_name', 'capitalize')"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <div class="caption primary--text text-capitalize">
-                  {{ $translate('text.bank_code') }}
-                </div>
-                <v-text-field
-                  v-model="input.bank_code"
-                  prepend-inner-icon="mdi-cash"
-                  clearable
-                  solo
-                  :rules="[rules.required]"
-                  persistent-hint
-                  :hint="$translate('helper.multiple_bank')"
-                  :label="$translate('text.bank_code', 'capitalize')"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
+              <v-col>
                 <div class="caption primary--text text-capitalize">
                   {{ $translate('text.account_number') }}
                 </div>
-                <v-text-field
-                  v-model="input.account_number"
-                  prepend-inner-icon="mdi-cash"
-                  clearable
-                  solo
-                  :rules="[rules.required]"
-                  persistent-hint
-                  :hint="$translate('helper.multiple_bank')"
+                <v-select
+                  v-model="input.rekening"
+                  :items="rekening"
+                  item-text="account_number"
+                  :menu-props="{ maxHeight: '400' }"
                   :label="$translate('text.account_number', 'capitalize')"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <div class="caption primary--text text-capitalize">
-                  {{ $translate('text.account_owner') }}
-                </div>
-                <v-text-field
-                  v-model="input.account_owner"
-                  prepend-inner-icon="mdi-cash"
-                  clearable
+                  multiple
                   solo
-                  :rules="[rules.required]"
                   persistent-hint
-                  :hint="$translate('helper.multiple_bank')"
-                  :label="$translate('text.account_owner', 'capitalize')"
-                ></v-text-field>
+                  return-object
+                >
+                </v-select>
               </v-col>
             </v-row>
           </template>
@@ -299,11 +256,9 @@ export default {
         amount: null,
         notes: null,
         attachment: null,
-        bank_code: null,
-        bank_name: null,
-        account_number: null,
-        account_owner: null
+        rekening: null
       },
+      rekening: [],
       rules: {
         positive: (value) =>
           value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
@@ -314,6 +269,7 @@ export default {
   },
   mounted() {
     this.getBudgetList()
+    this.getAllRekening()
   },
   methods: {
     calculateSum() {
@@ -330,6 +286,15 @@ export default {
     deleteBudget() {
       if (this.input.budgets.length > 1) {
         this.input.budgets.pop()
+      }
+    },
+    async getAllRekening() {
+      try {
+        this.rekening = await this.$api('rekening', 'index', null)
+      } catch (e) {
+        this.success = false
+        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
       }
     },
     async storeRequest() {

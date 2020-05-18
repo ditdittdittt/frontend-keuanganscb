@@ -329,10 +329,24 @@ export default ({ app }, inject) => {
         body.append('details[' + i + '][nominal]', data.budgets[i].nominal)
       }
       if (data.method === 'transfer') {
-        body.append('bank_name', data.bank_name)
-        body.append('bank_code', data.bank_code)
-        body.append('account_number', data.account_number)
-        body.append('account_owner', data.account_owner)
+        let bankCode = ''
+        let bankName = ''
+        let accountNumber = ''
+        let accountOwner = ''
+        for (let i = 0; i < data.rekening.length - 1; i++) {
+          bankCode += data.rekening[i].bank_code + ','
+          bankName += data.rekening[i].bank_name + ','
+          accountNumber += data.rekening[i].account_number + ','
+          accountOwner += data.rekening[i].account_owner + ','
+        }
+        bankCode += data.rekening[data.rekening.length - 1].bank_code
+        bankName += data.rekening[data.rekening.length - 1].bank_name
+        accountNumber += data.rekening[data.rekening.length - 1].account_number
+        accountOwner += data.rekening[data.rekening.length - 1].account_owner
+        body.append('bank_name', bankName)
+        body.append('bank_code', bankCode)
+        body.append('account_number', accountNumber)
+        body.append('account_owner', accountOwner)
       }
       return app
         .$axios({
