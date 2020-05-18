@@ -158,7 +158,8 @@ export default {
   helper: {
     messages: {
       attachment_file: 'klik untuk memilih lampiran',
-      amount_in_word: 'otomatis terisi'
+      amount_in_word: 'otomatis terisi',
+      auto: 'otomatis terisi'
     },
     name: 'nama lengkap',
     username: 'nama panggilan atau singkatan',

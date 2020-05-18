@@ -157,7 +157,8 @@ export default {
   helper: {
     messages: {
       attachment_file: 'click to choose file',
-      amount_in_word: 'automaticly filled'
+      amount_in_word: 'automaticly filled',
+      auto: 'automaticly filled'
     },
     name: 'your full name',
     username: 'alias or nickname',

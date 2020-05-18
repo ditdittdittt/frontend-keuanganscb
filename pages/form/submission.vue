@@ -23,6 +23,7 @@
                 append-outer-icon="mdi-eye"
                 :items="form.request"
                 item-text="number"
+                item-value="number"
                 solo
                 :rules="[rules.required]"
                 :label="$translate('text.number', 'capitalize')"
@@ -30,11 +31,9 @@
                 auto-select-first
                 cache-items
                 return-object
+                @change="setArrayBudgets()"
                 @click:append-outer="showRequest(input.request)"
               >
-                <template v-slot:selection="{ item }">
-                  {{ item.number }}
-                </template>
               </v-combobox>
             </v-col>
             <v-col cols="12" md="6">
@@ -52,21 +51,75 @@
               ></v-text-field>
             </v-col>
           </v-row>
+          <!-- Request Details -->
+          <template v-if="input.request">
+            <v-row>
+              <template v-for="(detail, i) in input.request.details">
+                <v-col :key="'sub-bc-' + i" cols="12" md="4">
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.budget_code') + ' [' + (i + 1) + ']' }}
+                  </div>
+                  <v-text-field
+                    prepend-inner-icon="mdi-newspaper-variant"
+                    :value="
+                      detail.budget_code.code + '-' + detail.budget_code.name
+                    "
+                    :label="$translate('text.budget_code', 'capitalize')"
+                    :messages="$translate('helper.messages.auto', 'capitalize')"
+                    solo
+                    readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col :key="'sub-bc-nm-' + i" cols="12" md="4">
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.use') + ' [' + (i + 1) + ']' }}
+                  </div>
+                  <v-text-field
+                    v-model="input.budgets[i].nominal"
+                    solo
+                    type="number"
+                    prepend-inner-icon="mdi-cash"
+                    :rules="[rules.required]"
+                    :label="$translate('text.use', 'capitalize')"
+                    :messages="input.budgets[i].nominal | currency"
+                    clearable
+                    @change="calculateSingleBalance(i)"
+                  ></v-text-field>
+                </v-col>
+                <v-col :key="'sub-bc-bl-' + i" cols="12" md="4">
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.balance') + ' [' + (i + 1) + ']' }}
+                  </div>
+                  <v-text-field
+                    :value="input.budgets[i].balance"
+                    solo
+                    type="number"
+                    prepend-inner-icon="mdi-cash"
+                    :label="$translate('text.balance', 'capitalize')"
+                    :messages="input.budgets[i].balance | currency"
+                    :hint="$translate('helper.messages.auto', 'capitalize')"
+                    readonly
+                  ></v-text-field>
+                </v-col>
+                <v-divider :key="'div-' + i"></v-divider>
+              </template>
+            </v-row>
+          </template>
+          <!-- Total -->
           <v-row>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
-                {{ $translate('text.use') }}
+                {{ 'total ' + $translate('text.use') }}
               </div>
               <v-text-field
-                v-model="input.used"
+                :value="input.use"
                 prepend-inner-icon="mdi-cash"
                 prefix="Rp"
                 solo
-                :rules="[rules.required, rules.positive]"
                 :label="$translate('text.use', 'capitalize')"
-                :hint="input.used | currency"
+                :hint="input.use | currency"
                 type="number"
-                clearable
+                readonly
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
@@ -78,22 +131,20 @@
                 }}
               </div>
               <v-text-field
-                :value="$terbilang(input.used) | capitalize"
+                :value="$terbilang(input.use) | capitalize"
                 :label="
                   $translate('text.amount_in_word', 'capitalize') +
                     ' ' +
                     $translate('text.use')
                 "
-                :messages="
-                  $translate('helper.messages.amount_in_word', 'capitalize')
-                "
+                :messages="$translate('helper.messages.auto', 'capitalize')"
                 readonly
                 solo
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
-                {{ $translate('text.balance') }}
+                {{ 'total ' + $translate('text.balance') }}
               </div>
               <v-text-field
                 :value="input.balance"
@@ -104,7 +155,6 @@
                 :hint="input.balance | currency"
                 type="number"
                 readonly
-                clearable
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
@@ -122,14 +172,14 @@
                     ' ' +
                     $translate('text.balance')
                 "
-                :messages="
-                  $translate('helper.messages.amount_in_word', 'capitalize')
-                "
+                :messages="$translate('helper.messages.auto', 'capitalize')"
                 readonly
                 solo
               ></v-text-field>
             </v-col>
           </v-row>
+
+          <!-- Notes -->
           <v-row>
             <v-col cols="12">
               <div class="caption primary--text text-capitalize">
@@ -237,11 +287,16 @@ export default {
   filters: {
     currency(value) {
       if (value == null || value === '') return 'Rp 0'
-      const result = value
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result
+      if (value.toString().split('.').length > 1) return 'Rp ~'
+      try {
+        const result = value
+          .toString()
+          .match(/\d{1,3}(?=(\d{3})*$)/g)
+          .join('.')
+        return 'Rp ' + result
+      } catch (error) {
+        return 'Rp ~'
+      }
     },
     capitalize(value) {
       if (!value) return ''
@@ -257,13 +312,15 @@ export default {
       alert: false,
       success: false,
       messages: '',
-      today: null,
       valid: true,
       input: {
         budgets: [{ code: null, nominal: null, balance: null }],
-        request: null,
+        request: {
+          number: null,
+          details: []
+        },
         allocation: null,
-        used: null,
+        use: null,
         balance: null,
         notes: null
       },
@@ -283,11 +340,10 @@ export default {
     }
   },
   watch: {
-    'input.used'() {
+    'input.use'() {
+      if (isNaN(this.input.request.amount) || isNaN(this.input.use)) return
       if (this.input.request) {
-        this.input.balance = this.input.request.amount - this.input.used
-      } else {
-        this.input.balance = this.input.used
+        this.input.balance = this.input.request.amount - this.input.use
       }
     }
   },
@@ -295,11 +351,35 @@ export default {
     this.getAllRequestForms()
   },
   methods: {
-    showRequest() {
-      if (this.input.request != null) {
-        this.modal.request = true
-        this.currentRequest = this.$copy(this.input.request)
+    setArrayBudgets() {
+      if (this.input.request) {
+        this.input.budgets = Array.from({
+          length: this.input.request.details.length
+        }).fill({
+          code: null,
+          nominal: null,
+          balance: null
+        })
       }
+    },
+    calculateTotalUse() {
+      let sum = 0
+      for (let i = 0; i < this.input.budgets.length; i++) {
+        sum += parseInt(this.input.budgets[i].nominal, 10)
+      }
+      this.input.use = sum
+    },
+    calculateSingleBalance(i) {
+      if (i === null) return
+      this.input.budgets[i].balance =
+        this.input.request.details[i].nominal - this.input.budgets[i].nominal
+
+      this.calculateTotalUse()
+    },
+    showRequest() {
+      if (this.input.request == null) return
+      this.modal.request = true
+      this.currentRequest = this.$copy(this.input.request)
     },
     async storeSubmission() {
       if (!this.$refs.form.validate()) {
