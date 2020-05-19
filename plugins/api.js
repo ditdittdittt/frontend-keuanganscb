@@ -601,13 +601,22 @@ export default ({ app }, inject) => {
     },
     store(data) {
       console.log('[Submission] Creating a new submission')
+      console.log(data)
       const body = new FormData()
       body.append('form_request_id', data.request.id)
-      body.append('date', data.date)
       body.append('allocation', data.allocation)
-      body.append('used', data.used)
+      body.append('used', data.use)
       body.append('balance', data.balance)
       body.append('notes', data.notes)
+      for (let i = 0; i < data.budgets.length; i++) {
+        body.append(
+          'details[' + i + '][budget_code_id]',
+          data.budgets[i].code.id
+        )
+        body.append('details[' + i + '][used]', data.budgets[i].used)
+        body.append('details[' + i + '][balance]', data.budgets[i].balance)
+      }
+
       return app
         .$axios({
           method: 'post',
