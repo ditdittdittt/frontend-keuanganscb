@@ -32,7 +32,7 @@
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.number') }}
                     </div>
-                    <span>
+                    <span class="font-weight-bold">
                       {{
                         input.number || $vuetify.lang.t('$vuetify.noDataText')
                       }}
@@ -72,15 +72,17 @@
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.amount') }}
+                      {{ $translate('text.status') }}
                     </div>
-                    <div>{{ input.amount | currency }}</div>
-                    <span class="caption">
-                      {{
-                        $terbilang(input.amount) ||
-                          $vuetify.lang.t('$vuetify.noDataText') | capitalize
-                      }}
-                    </span>
+                    <div class="spacing-xssmall"></div>
+                    <v-chip color="accent" label>
+                      <span class="caption">
+                        {{
+                          input.status.status ||
+                            $vuetify.lang.t('$vuetify.noDataText')
+                        }}
+                      </span>
+                    </v-chip>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
@@ -101,22 +103,17 @@
                       input.date || $vuetify.lang.t('$vuetify.noDataText')
                     }}</span>
                   </v-col>
-                  <v-col v-if="input.attachment" cols="12" md="6">
+                  <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.file') }}
+                      {{ $translate('text.amount') }}
                     </div>
-                    <span class="text-capitalize">
-                      {{ $translate('text.view') }}
+                    <div>{{ input.amount | currency }}</div>
+                    <span class="caption">
+                      {{
+                        $terbilang(input.amount) ||
+                          $vuetify.lang.t('$vuetify.noDataText') | capitalize
+                      }}
                     </span>
-                    <v-btn
-                      color="accent"
-                      icon
-                      x-small
-                      :href="input.attachment"
-                      target="_blank"
-                    >
-                      <v-icon small>mdi-open-in-new</v-icon>
-                    </v-btn>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
@@ -128,17 +125,19 @@
                       }}
                     </span>
                   </v-col>
-
-                  <v-col cols="12">
+                  <v-col v-if="input.attachment" cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.status') }}
+                      {{ $translate('text.file') }}
                     </div>
-                    <span>
-                      {{
-                        input.status.status ||
-                          $vuetify.lang.t('$vuetify.noDataText')
-                      }}
-                    </span>
+                    <div class="spacing-xssmall"></div>
+                    <v-btn
+                      color="secondary"
+                      small
+                      :href="input.attachment"
+                      target="_blank"
+                    >
+                      {{ $translate('text.view') }}
+                    </v-btn>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -353,7 +352,11 @@
         <v-dialog v-model="dialogSureNeedSubmission" max-width="600" persistent>
           <v-card>
             <v-card-title class="title text-capitalize">
-              {{ $translate('text.sure_need_submission_head') }}
+              <span>{{ $translate('text.sure_need_submission_head') }} </span>
+              <v-spacer></v-spacer>
+              <v-btn icon @click="dialogSureNeedSubmission = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </v-card-title>
             <v-card-text class="overline">
               {{ $translate('text.sure_need_submission_body') }}

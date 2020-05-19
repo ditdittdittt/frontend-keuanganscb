@@ -29,11 +29,11 @@
               </v-card-title>
               <v-card-text>
                 <v-row>
-                  <v-col cols="12">
+                  <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.number') }}
                     </div>
-                    <span>
+                    <span class="font-weight-bold">
                       {{
                         input.number || $vuetify.lang.t('$vuetify.noDataText')
                       }}
@@ -54,7 +54,27 @@
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.amount') }}
                     </div>
-                    <span>{{ input.amount | currency }}</span>
+                    <div>{{ input.amount | currency }}</div>
+                    <span class="caption">
+                      {{
+                        $terbilang(input.amount) ||
+                          $vuetify.lang.t('$vuetify.noDataText') | capitalize
+                      }}
+                    </span>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.status') }}
+                    </div>
+                    <div class="spacing-xssmall"></div>
+                    <v-chip color="accent" label>
+                      <span class="caption">
+                        {{
+                          input.status.status ||
+                            $vuetify.lang.t('$vuetify.noDataText')
+                        }}
+                      </span>
+                    </v-chip>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
@@ -74,18 +94,6 @@
                     <span>{{
                       input.date || $vuetify.lang.t('$vuetify.noDataText')
                     }}</span>
-                  </v-col>
-
-                  <v-col cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.status') }}
-                    </div>
-                    <span>
-                      {{
-                        input.status.status ||
-                          $vuetify.lang.t('$vuetify.noDataText')
-                      }}
-                    </span>
                   </v-col>
                 </v-row>
               </v-card-text>

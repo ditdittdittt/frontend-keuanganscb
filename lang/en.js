@@ -42,6 +42,9 @@ export default {
     managementUser: {
       update: 'User updated',
       show: 'Failed to show list of user'
+    },
+    validation: {
+      textTooLong: 'Text too long'
     }
   },
   components: {

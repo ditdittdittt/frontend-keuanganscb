@@ -33,7 +33,7 @@ export default ({ app }, inject) => {
           case 'roles':
             return User.roles()
           case 'delete':
-            return User.delete()
+            return User.delete(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -196,6 +196,7 @@ export default ({ app }, inject) => {
   const User = {
     register(data) {
       console.log('[User] Registering a new user.')
+      console.log(data)
       const body = new FormData()
       body.append('name', data.name)
       body.append('username', data.username)
@@ -203,7 +204,7 @@ export default ({ app }, inject) => {
       body.append('password', data.password)
       body.append('c_password', data.confirm)
       body.append('division', data.division)
-      body.append('role', data.role)
+      body.append('role', 'pic')
       body.append('nik', data.nik)
       body.append('address', data.address)
       return app

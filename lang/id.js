@@ -42,6 +42,9 @@ export default {
     managementUser: {
       update: 'Berhasil mengupdate user',
       show: 'Gagal menampilkan daftar peran user'
+    },
+    validation: {
+      textTooLong: 'Kata terlalu panjang'
     }
   },
   components: {

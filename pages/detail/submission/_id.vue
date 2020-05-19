@@ -35,7 +35,7 @@
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.number') }}
                     </div>
-                    <span>
+                    <span class="font-weight-bold">
                       {{
                         input.number || $vuetify.lang.t('$vuetify.noDataText')
                       }}
@@ -56,21 +56,27 @@
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.request') }}
                     </div>
-                    <v-icon small class="mr-1">mdi-newspaper-plus</v-icon>
-                    <span>
+                    <div class="spacing-xssmall"></div>
+                    <v-btn color="secondary" small @click.stop="popUpRequest()">
                       {{
-                        input.form_request.allocation ||
+                        input.form_request.number ||
                           $vuetify.lang.t('$vuetify.noDataText')
                       }}
-                    </span>
-                    <v-btn
-                      color="accent"
-                      icon
-                      x-small
-                      :to="'/detail/request/' + input.form_request.id"
-                    >
-                      <v-icon small>mdi-open-in-new</v-icon>
                     </v-btn>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.status') }}
+                    </div>
+                    <div class="spacing-xssmall"></div>
+                    <v-chip color="accent" label>
+                      <span class="caption">
+                        {{
+                          input.status.status ||
+                            $vuetify.lang.t('$vuetify.noDataText')
+                        }}
+                      </span>
+                    </v-chip>
                   </v-col>
                   <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
@@ -371,6 +377,94 @@
         </v-dialog>
       </v-row>
     </template>
+
+    <!-- Dialog Request -->
+    <template>
+      <v-dialog v-model="dialogRequest" max-width="600" persistent>
+        <v-card>
+          <v-card-title class="text-uppercase title">{{
+            $translate('text.request')
+          }}</v-card-title>
+          <v-card-text>
+            <div class="spacing-xsmall"></div>
+            <div class="caption primary--text text-capitalize">
+              {{ $translate('text.information') }}
+            </div>
+            <v-simple-table>
+              <template v-slot:default>
+                <tbody>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.allocation') }}
+                    </td>
+                    <td class="text-capitalize">
+                      {{ currentRequest.allocation }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.payment_type') }}
+                    </td>
+                    <td>{{ currentRequest.method }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.amount') }}
+                    </td>
+                    <td>{{ currentRequest.amount | currency }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.paid_at') }}
+                    </td>
+                    <td>{{ currentRequest.date }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.number') }}
+                    </td>
+                    <td>{{ currentRequest.number }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.number') + ' invoice' }}
+                    </td>
+                    <td>{{ currentRequest.invoice_number }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.request') }}
+                    </td>
+                    <td>
+                      <v-btn
+                        color="secondary"
+                        x-small
+                        :to="'/detail/request/' + currentRequest.id"
+                      >
+                        {{ $translate('text.view') }}
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-card-text>
+          <v-card-actions>
+            <v-row class="ma-0">
+              <v-col>
+                <v-btn
+                  dark
+                  color="secondary"
+                  block
+                  @click.stop="dialogRequest = false"
+                  >{{ $translate('components.button.close') }}</v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </template>
   </v-container>
 </template>
 <script>
@@ -414,9 +508,12 @@ export default {
       dialogSureReject: false,
       dialogSureAlreadyPaid: false,
       dialogSureVerify: false,
+      dialogRequest: false,
+      currentRequest: {},
       input: {
         form_request: {},
         pic: {},
+        status: {},
         used: '',
         balance: '',
         signature: {}
@@ -460,6 +557,10 @@ export default {
     rerender() {
       this.key++
     },
+    popUpRequest() {
+      this.currentRequest = this.$copy(this.input.form_request)
+      this.dialogRequest = true
+    },
     async getSubmissionForm() {
       try {
         this.input = await this.$api(
@@ -467,7 +568,7 @@ export default {
           'show',
           this.$route.params.id
         )
-        console.log(this.input)
+        this.input = this.$copy(this.input)
       } catch (e) {
         this.success = false
         this.messages = `${this.$translate(

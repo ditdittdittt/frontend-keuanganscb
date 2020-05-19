@@ -112,37 +112,6 @@
                     :hint="$translate('helper.division', 'capitalize')"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12">
-                  <div class="caption primary--text text-uppercase">
-                    {{ $translate('text.nik') }}
-                  </div>
-                  <v-text-field
-                    v-model="input.nik"
-                    prepend-inner-icon="mdi-card-account-details"
-                    solo
-                    :label="preffix + generatedNIK"
-                    type="number"
-                    counter
-                    :rules="[]"
-                    :hint="$translate('helper.nik', 'capitalize')"
-                    @keyup.enter="register()"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.address') }}
-                  </div>
-                  <v-textarea
-                    v-model="input.address"
-                    solo
-                    type="text"
-                    :label="preffix + generatedAddress"
-                    counter
-                    :rules="[]"
-                    :hint="$translate('helper.address', 'capitalize')"
-                    @keyup.enter="register()"
-                  ></v-textarea>
-                </v-col>
               </v-row>
             </v-form>
           </v-card-text>
@@ -282,8 +251,6 @@ export default {
         numeric: true
       })
     this.fake.email = chance.email({ domain: 'example.com' })
-    this.fake.nik = chance.string({ length: 16, numeric: true })
-    this.fake.address = chance.address() + ' ' + chance.province({ full: true })
   },
   methods: {
     async register() {
@@ -293,9 +260,13 @@ export default {
         this.alert = true
         return
       }
-
       try {
-        await this.$api('user', 'register', this.input)
+        const result = await this.$api('user', 'register', this.input)
+        if (result.status === 201) {
+          this.success = false
+          this.messages = 'User berhasil dibuat'
+          this.alert = true
+        }
       } catch (e) {
         this.success = false
         this.messages = 'Gagal register user'

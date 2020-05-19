@@ -5,14 +5,10 @@
       <v-col cols="12" sm="6" md="4">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
           <v-card-title class="text-uppercase">
-            {{
-            $translate('components.form.title.budget_code')
-            }}
+            {{ $translate('components.form.title.budget_code') }}
           </v-card-title>
           <v-card-subtitle class="overline">
-            {{
-            $translate('components.form.subtitle.budget_code')
-            }}
+            {{ $translate('components.form.subtitle.budget_code') }}
           </v-card-subtitle>
         </v-card>
         <v-card raised class="back-card px-md-5">
@@ -21,7 +17,9 @@
             <v-form ref="form" v-model="valid">
               <v-row>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">{{ $translate('text.code') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.code') }}
+                  </div>
                   <v-text-field
                     v-model="input.code"
                     prepend-inner-icon="mdi-code-brackets"
@@ -33,7 +31,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">{{ $translate('text.name') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.name') }}
+                  </div>
                   <v-text-field
                     v-model="input.name"
                     prepend-inner-icon="mdi-alphabetical"
@@ -45,9 +45,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.balance') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.balance') }}
+                  </div>
                   <v-text-field
                     v-model="input.balance"
                     prepend-inner-icon="mdi-cash"
@@ -71,7 +71,8 @@
               color="secondary"
               elevation="8"
               @click.stop="storeBudgetCode"
-            >{{ $translate('components.button.add') }}</v-btn>
+              >{{ $translate('components.button.add') }}</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -83,9 +84,7 @@
             <span>{{ $translate('components.table.title.budget_code') }}</span>
           </v-card-title>
           <v-card-subtitle class="overline">
-            {{
-            $translate('components.table.subtitle.budget_code')
-            }}
+            {{ $translate('components.table.subtitle.budget_code') }}
           </v-card-subtitle>
           <v-card-text class="px-5">
             <v-text-field
@@ -104,19 +103,34 @@
             <div class="spacing-medium"></div>
             <v-data-table :headers="headers" :items="items" :search="search">
               <template v-slot:item.balance="{ item }">
-                {{
-                item.balance | currency
-                }}
+                <span>{{ item.balance | currency }}</span>
               </template>
               <template v-slot:item.id="{ item }">
-                <v-btn color="secondary" small text @click.stop="deleteBudgetCode(item.id)">Delete</v-btn>
-                <v-icon small class="mr-2" @click.stop="openDialogTopUp(item.id)">mdi-plus</v-icon>
-                <v-icon small class="mr-2" @click.stop="openDialogUpdate(item.id)">mdi-pencil</v-icon>
+                <v-btn
+                  color="secondary"
+                  small
+                  icon
+                  @click.stop="openDialogUpdate(item.id)"
+                >
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn
+                  color="red"
+                  small
+                  icon
+                  @click.stop="deleteBudgetCode(item.id)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
               </template>
             </v-data-table>
           </v-card-text>
         </v-card>
-        <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+        <snackbar-alert
+          v-model="alert"
+          :success="success"
+          :messages="messages"
+        ></snackbar-alert>
       </v-col>
     </v-row>
     <template>
@@ -124,17 +138,15 @@
         <v-dialog v-model="dialogTopUp" persistent max-width="600">
           <v-card>
             <v-card-title class="title text-capitalize">
-              {{
-              $translate('text.top_up')
-              }}
+              {{ $translate('text.top_up') }}
             </v-card-title>
             <v-card-text class="overline">
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <div
-                      class="caption primary--text text-capitalize"
-                    >{{ $translate('text.top_up') }}</div>
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.top_up') }}
+                    </div>
                     <v-text-field
                       v-model="topUpInput.nominal"
                       prepend-inner-icon="mdi-cash"
@@ -158,13 +170,12 @@
                     text
                     block
                     @click="closeDialogTopUp()"
-                  >{{ $translate('components.button.sure_button_no') }}</v-btn>
+                    >{{ $translate('components.button.sure_button_no') }}</v-btn
+                  >
                 </v-col>
                 <v-col class="px-0" cols="6">
                   <v-btn color="secondary" text block @click.stop="topUp()">
-                    {{
-                    $translate('components.button.sure_button_yes')
-                    }}
+                    {{ $translate('components.button.sure_button_yes') }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -178,17 +189,15 @@
         <v-dialog v-model="dialogUpdate" persistent max-width="600">
           <v-card>
             <v-card-title class="title text-capitalize">
-              {{
-              $translate('text.update_balance')
-              }}
+              {{ $translate('text.update_balance') }}
             </v-card-title>
             <v-card-text class="overline">
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <div
-                      class="caption primary--text text-capitalize"
-                    >{{ $translate('text.update_balance') }}</div>
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.update_balance') }}
+                    </div>
                     <v-text-field
                       v-model="updateInput.balance"
                       prepend-inner-icon="mdi-cash"
@@ -212,13 +221,17 @@
                     text
                     block
                     @click="closeDialogUpdate()"
-                  >{{ $translate('components.button.sure_button_no') }}</v-btn>
+                    >{{ $translate('components.button.sure_button_no') }}</v-btn
+                  >
                 </v-col>
                 <v-col class="px-0" cols="6">
-                  <v-btn color="secondary" text block @click.stop="updateBalance()">
-                    {{
-                    $translate('components.button.sure_button_yes')
-                    }}
+                  <v-btn
+                    color="secondary"
+                    text
+                    block
+                    @click.stop="updateBalance()"
+                  >
+                    {{ $translate('components.button.sure_button_yes') }}
                   </v-btn>
                 </v-col>
               </v-row>
