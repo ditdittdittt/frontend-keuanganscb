@@ -236,16 +236,6 @@
                       >{{ $translate('text.head_dept') }}</v-btn
                     >
                   </v-col>
-                  <v-col v-if="checkVerifyCashier()" cols="12">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('cashier')"
-                      >{{ $translate('text.cashier') }}</v-btn
-                    >
-                  </v-col>
                   <v-col v-if="checkVerifyHeadOffice()" cols="12">
                     <v-btn
                       large
@@ -254,6 +244,16 @@
                       color="secondary"
                       @click.stop="openDialogSureVerify('headOffice')"
                       >{{ $translate('text.head_office') }}</v-btn
+                    >
+                  </v-col>
+                  <v-col v-if="checkVerifyCashier()" cols="12">
+                    <v-btn
+                      large
+                      elevation="8"
+                      block
+                      color="secondary"
+                      @click.stop="openDialogSureVerify('cashier')"
+                      >{{ $translate('text.cashier') }}</v-btn
                     >
                   </v-col>
                 </v-row>
@@ -567,6 +567,7 @@ export default {
       const bankName = this.splitCsv(this.input.bank_name) ?? []
       const accountNumber = this.splitCsv(this.input.account_number) ?? []
       const accountOwner = this.splitCsv(this.input.account_owner) ?? []
+      this.rekening = []
       for (let i = 0; i < bankCode.length; i++) {
         this.rekening.push({
           bank_code: bankCode[i],

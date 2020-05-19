@@ -194,6 +194,16 @@
                       >{{ $translate('text.head_office') }}</v-btn
                     >
                   </v-col>
+                  <v-col v-if="checkVerifyCashier()" cols="12">
+                    <v-btn
+                      large
+                      elevation="8"
+                      block
+                      color="secondary"
+                      @click.stop="openDialogSureVerify('cashier')"
+                      >{{ $translate('text.cashier') }}</v-btn
+                    >
+                  </v-col>
                 </v-row>
               </v-card-text>
             </v-card>
@@ -459,6 +469,7 @@ export default {
           'show',
           this.$route.params.id
         )
+        console.log(this.input)
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan saat mengirim data ke server'
