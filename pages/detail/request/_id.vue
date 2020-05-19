@@ -611,10 +611,10 @@ export default {
     },
     getRequestForm() {
       try {
+        this.rekening = []
         this.$api('request', 'show', this.$route.params.id)
           .then((response) => {
             this.input = response
-            console.log(this.input)
           })
           .then((_) => {
             this.initValue()
