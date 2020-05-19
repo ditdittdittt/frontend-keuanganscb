@@ -82,6 +82,7 @@
                     :label="$translate('text.use', 'capitalize')"
                     :messages="input.budgets[i].nominal | currency"
                     clearable
+                    @change="setSingleBudget(i)"
                   ></v-text-field>
                 </v-col>
                 <v-col :key="'sub-bc-bl-' + i" cols="12" md="4">
@@ -351,19 +352,26 @@ export default {
   methods: {
     setArrayBudgets() {
       if (this.input.request) {
-        this.input.budgets = Array.from({
-          length: this.input.request.details.length
-        }).fill({
-          id: null,
-          nominal: null,
-          balance: null
-        })
+        this.input.budgets = this.$copy(
+          Array.from({
+            length: this.input.request.details.length
+          }).fill({
+            id: null,
+            nominal: null,
+            balance: null
+          })
+        )
       }
     },
     calculateTotalUse() {
       let sum = 0
       for (let i = 0; i < this.input.budgets.length; i++) {
-        sum += parseInt(this.input.budgets[i].nominal, 10)
+        if (
+          isNaN(this.input.budgets[i].nominal) ||
+          this.input.budgets[i].nominal == null
+        )
+          sum += 0
+        else sum += parseInt(this.input.budgets[i].nominal, 10)
       }
       this.input.use = sum
     },
