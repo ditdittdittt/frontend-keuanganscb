@@ -50,7 +50,7 @@
                   :label="$translate('text.budget_nominal', 'capitalize')"
                   :hint="input.budgets[i].nominal | currency"
                   clearable
-                  @change="calculateSum()"
+                  @change="() => {calculateSum(); checkIfBudgetNominalBelowBudgeBalance(input.budgets[i])}"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -336,6 +336,13 @@ export default {
       } catch (e) {
         this.success = false
         this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    checkIfBudgetNominalBelowBudgeBalance(budget){
+      if(Number(budget.nominal) > Number(budget.code.balance)){
+        this.success = false
+        this.messages = 'Nominal lebih besar dari pada balance pada budget code ' + budget.code.code
         this.alert = true
       }
     }
