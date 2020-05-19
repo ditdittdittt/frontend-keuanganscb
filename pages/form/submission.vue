@@ -263,7 +263,6 @@
             </template>
           </v-simple-table>
           <v-divider></v-divider>
-          <pre>{{ currentRequest }}</pre>
         </v-card-text>
         <v-card-actions>
           <v-row class="ma-0">
