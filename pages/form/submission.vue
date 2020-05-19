@@ -57,7 +57,7 @@
               <template v-for="(detail, i) in input.request.details">
                 <v-col :key="'sub-bc-' + i" cols="12" md="4">
                   <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.budget_code') + ' [' + (i + 1) + ']' }}
+                    {{ '[' + (i + 1) + '] ' + $translate('text.budget_code') }}
                   </div>
                   <v-text-field
                     prepend-inner-icon="mdi-newspaper-variant"
@@ -72,7 +72,7 @@
                 </v-col>
                 <v-col :key="'sub-bc-nm-' + i" cols="12" md="4">
                   <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.use') + ' [' + (i + 1) + ']' }}
+                    {{ '[' + (i + 1) + '] ' + $translate('text.use') }}
                   </div>
                   <v-text-field
                     v-model="input.budgets[i].nominal"
@@ -88,7 +88,7 @@
                 </v-col>
                 <v-col :key="'sub-bc-bl-' + i" cols="12" md="4">
                   <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.balance') + ' [' + (i + 1) + ']' }}
+                    {{ '[' + (i + 1) + '] ' + $translate('text.balance') }}
                   </div>
                   <v-text-field
                     :value="input.budgets[i].balance"

@@ -13,7 +13,7 @@
         <div class="spacing-medium"></div>
         <v-form ref="form" v-model="valid">
           <v-row>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="12">
               <div class="caption primary--text text-capitalize">
                 {{ $translate('text.allocation') }}
               </div>
