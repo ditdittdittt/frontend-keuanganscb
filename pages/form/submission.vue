@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">
-        {{ $translate('components.form.title.submission') }}
-      </v-card-title>
-      <v-card-subtitle class="overline">
-        {{ $translate('components.form.subtitle.submission') }}
-      </v-card-subtitle>
+      <v-card-title class="text-uppercase">{{
+        $translate('components.form.title.submission')
+      }}</v-card-title>
+      <v-card-subtitle class="overline">{{
+        $translate('components.form.subtitle.submission')
+      }}</v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
@@ -33,8 +33,7 @@
                 return-object
                 @change="setArrayBudgets()"
                 @click:append-outer="showRequest(input.request)"
-              >
-              </v-combobox>
+              ></v-combobox>
             </v-col>
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
@@ -83,7 +82,6 @@
                     :label="$translate('text.use', 'capitalize')"
                     :messages="input.budgets[i].nominal | currency"
                     clearable
-                    @change="setSingleBudget(i)"
                   ></v-text-field>
                 </v-col>
                 <v-col :key="'sub-bc-bl-' + i" cols="12" md="4">
@@ -210,9 +208,9 @@
     </v-card>
     <v-dialog v-model="modal.request" max-width="600" persistent>
       <v-card>
-        <v-card-title class="text-uppercase title">
-          {{ $translate('components.form.title.request') }}
-        </v-card-title>
+        <v-card-title class="text-uppercase title">{{
+          $translate('components.form.title.request')
+        }}</v-card-title>
         <v-card-text>
           <div class="spacing-xsmall"></div>
           <div class="caption primary--text text-capitalize">
@@ -384,7 +382,10 @@ export default {
     async storeSubmission() {
       if (!this.$refs.form.validate()) {
         this.success = false
-        this.messages = 'Terdapat kesalahan saat validasi data'
+        this.messages = `${this.$translate(
+          'alert.formSubmission.error',
+          'capitalize'
+        )}`
         this.alert = true
         return
       }
@@ -392,17 +393,25 @@ export default {
         const result = await this.$api('submission', 'store', this.input)
         if (result.status === 201) {
           this.success = true
-          this.messages = 'Berhasil membuat form submission'
+          this.messages = `${this.$translate(
+            'alert.formSubmission.success',
+            'capitalize'
+          )}`
           this.alert = true
           this.$refs.form.reset()
         } else {
           this.success = false
-          this.messages = 'Gagal membuat form submission'
+          this.messages = `${this.$translate(
+            'alert.formSubmission.failed',
+            'capitalize'
+          )}`
           this.alert = true
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -414,7 +423,9 @@ export default {
         })
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     }

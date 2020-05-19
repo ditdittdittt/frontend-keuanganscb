@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">{{
-        $translate('components.form.title.petty_cash')
-      }}</v-card-title>
-      <v-card-subtitle class="overline">{{
-        $translate('components.form.subtitle.petty_cash')
-      }}</v-card-subtitle>
+      <v-card-title class="text-uppercase">
+        {{ $translate('components.form.title.petty_cash') }}
+      </v-card-title>
+      <v-card-subtitle class="overline">
+        {{ $translate('components.form.subtitle.petty_cash') }}
+      </v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
@@ -45,12 +45,12 @@
                   auto-select-first
                   cache-items
                 >
-                  <template v-slot:item="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
-                  <template v-slot:selection="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
+                  <template v-slot:item="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
+                  <template v-slot:selection="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
                 </v-combobox>
               </v-col>
               <v-col cols="12" md="6" sm="6">
@@ -190,7 +190,7 @@ export default {
     async storePetty() {
       if (!this.$refs.form.validate()) {
         this.success = false
-        this.messages = 'Terdapat kesalahan saat validasi data'
+        this.messages = `${this.$translate('alert.error', 'capitalize')}`
         this.alert = true
         return
       }
@@ -198,17 +198,25 @@ export default {
         const result = await this.$api('petty', 'store', this.input)
         if (result.status === 201) {
           this.success = true
-          this.messages = 'Berhasil membuat form petty cash'
+          this.messages = `${this.$translate(
+            'alert.formPetty.success',
+            'capitalize'
+          )}`
           this.alert = true
           this.$refs.form.reset()
         } else {
           this.success = false
-          this.messages = 'Gagal membuat form petty cash'
+          this.messages = `${this.$translate(
+            'alert.formPetty.failed',
+            'capitalize'
+          )}`
           this.alert = true
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -217,7 +225,9 @@ export default {
         this.data.budgetList = await this.$api('budget', 'index', null)
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     }

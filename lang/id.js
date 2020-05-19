@@ -13,6 +13,21 @@ export default {
     detail: {
       sign: 'Gagal karena tidak ada tanda tangan',
       getError: 'Terjadi kesalahan saat mengirim data ke server'
+    },
+    formPetty: {
+      success: 'Berhasil membuat form petty cash',
+      failed: 'Gagal membuat form petty cash'
+    },
+    formRequest: {
+      success: 'Berhasil membuat form request',
+      failed: 'Gagal membuat form request',
+      error: 'Terdapat kesalahan saat validasi data',
+      overBalance: 'Nominal lebih besar dari pada balance pada budget code '
+    },
+    formSubmission: {
+      success: 'Berhasil membuat form submission',
+      failed: 'Gagal membuat form submission',
+      error: 'Terdapat kesalahan saat validasi data'
     }
   },
   components: {
