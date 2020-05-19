@@ -314,16 +314,6 @@ export default {
           to: '/all/petty'
         },
         {
-          icon: 'mdi-cash-usd',
-          title: 'Management Budget',
-          to: '/management/budget'
-        },
-        {
-          icon: 'mdi-account-details',
-          title: 'Management User',
-          to: '/management/user'
-        },
-        {
           icon: 'mdi-bank',
           title: 'Management Bank',
           to: '/management/bank'
@@ -377,6 +367,7 @@ export default {
     }
   },
   mounted() {
+    this.initMenu()
     this.loadPreferences()
   },
   methods: {
@@ -404,7 +395,31 @@ export default {
           localStorage.removeItem('preferences')
         }
       }
-    }
+    },
+    initMenu() {
+      if (this.$auth.user.roles_list.includes('admin') || this.$auth.user.roles_list.includes('head_office')) {
+        this.menu.push(
+          {
+            icon: 'mdi-cash-usd',
+            title: 'Management Budget',
+            to: '/management/budget'
+          },
+          {
+            icon: 'mdi-account-details',
+            title: 'Management User',
+            to: '/management/user'
+          }
+        )
+      } else if (this.$auth.user.roles_list.includes('head_dept')) {
+        this.menu.push(
+          {
+            icon: 'mdi-cash-usd',
+            title: 'Management Budget',
+            to: '/management/budget'
+          },
+        )
+      }
+    },
   },
   head() {
     return {
