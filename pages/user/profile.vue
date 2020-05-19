@@ -318,7 +318,8 @@ export default {
         await this.$api('user', 'show')
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -327,13 +328,18 @@ export default {
         const result = await this.$api('user', 'update', this.input)
         if (result.status === 200) {
           this.success = true
-          this.messages = 'Berhasil mengupdate user'
+          this.messages = `${this.$translate('alert.update.success')}`
           this.alert = true
           this.getUser()
+        } else {
+          this.success = false
+          this.messages = `${this.$translate('alert.update.error')}`
+          this.alert = true
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -342,7 +348,8 @@ export default {
         await this.$api('user', 'logout')
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     }
