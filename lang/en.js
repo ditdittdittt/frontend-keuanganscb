@@ -28,6 +28,20 @@ export default {
       success: 'Success created a submission form',
       failed: 'Failed create a submission form',
       error: 'Error occured when validating data'
+    },
+    managementBank: {
+      save: 'Account has been saved',
+      delete: 'Account has been deleted',
+      store: 'Form is not valid'
+    },
+    managementBudget: {
+      save: 'Budget code has been saved',
+      delete: 'Budget code has been deleted',
+      store: 'Form is not valid'
+    },
+    managementUser: {
+      update: 'User updated',
+      show: 'Failed to show list of user'
     }
   },
   components: {
