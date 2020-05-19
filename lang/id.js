@@ -5,6 +5,10 @@ export default {
       success: 'login berhasil',
       error: 'login gagal',
       warning: 'email atau password salah'
+    },
+    update: {
+      success: 'data berhasil diperbarui',
+      error: 'gagal memperbarui data'
     }
   },
   components: {

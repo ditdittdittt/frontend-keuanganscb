@@ -5,6 +5,10 @@ export default {
       success: 'login successful',
       error: 'login failed',
       warning: 'incorrect email or password'
+    },
+    update: {
+      success: 'data updated successfully',
+      error: 'failed to update data'
     }
   },
   components: {
