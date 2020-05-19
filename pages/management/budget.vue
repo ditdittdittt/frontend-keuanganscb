@@ -4,12 +4,16 @@
       <!-- New Budget -->
       <v-col cols="12" sm="6" md="4">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-          <v-card-title class="text-uppercase">{{
+          <v-card-title class="text-uppercase">
+            {{
             $translate('components.form.title.budget_code')
-          }}</v-card-title>
-          <v-card-subtitle class="overline">{{
+            }}
+          </v-card-title>
+          <v-card-subtitle class="overline">
+            {{
             $translate('components.form.subtitle.budget_code')
-          }}</v-card-subtitle>
+            }}
+          </v-card-subtitle>
         </v-card>
         <v-card raised class="back-card px-md-5">
           <v-card-text>
@@ -17,9 +21,7 @@
             <v-form ref="form" v-model="valid">
               <v-row>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.code') }}
-                  </div>
+                  <div class="caption primary--text text-capitalize">{{ $translate('text.code') }}</div>
                   <v-text-field
                     v-model="input.code"
                     prepend-inner-icon="mdi-code-brackets"
@@ -31,9 +33,7 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.name') }}
-                  </div>
+                  <div class="caption primary--text text-capitalize">{{ $translate('text.name') }}</div>
                   <v-text-field
                     v-model="input.name"
                     prepend-inner-icon="mdi-alphabetical"
@@ -45,9 +45,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
-                    {{ $translate('text.balance') }}
-                  </div>
+                  <div
+                    class="caption primary--text text-capitalize"
+                  >{{ $translate('text.balance') }}</div>
                   <v-text-field
                     v-model="input.balance"
                     prepend-inner-icon="mdi-cash"
@@ -71,8 +71,7 @@
               color="secondary"
               elevation="8"
               @click.stop="storeBudgetCode"
-              >{{ $translate('components.button.add') }}</v-btn
-            >
+            >{{ $translate('components.button.add') }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -83,9 +82,11 @@
           <v-card-title class="text-uppercase">
             <span>{{ $translate('components.table.title.budget_code') }}</span>
           </v-card-title>
-          <v-card-subtitle class="overline">{{
+          <v-card-subtitle class="overline">
+            {{
             $translate('components.table.subtitle.budget_code')
-          }}</v-card-subtitle>
+            }}
+          </v-card-subtitle>
           <v-card-text class="px-5">
             <v-text-field
               v-model="search"
@@ -102,56 +103,38 @@
           <v-card-text>
             <div class="spacing-medium"></div>
             <v-data-table :headers="headers" :items="items" :search="search">
-              <template v-slot:item.balance="{ item }">{{
+              <template v-slot:item.balance="{ item }">
+                {{
                 item.balance | currency
-              }}</template>
+                }}
+              </template>
               <template v-slot:item.id="{ item }">
-                <v-btn
-                  color="secondary"
-                  small
-                  text
-                  @click.stop="deleteBudgetCode(item.id)"
-                  >Delete</v-btn
-                >
-                <v-icon
-                  small
-                  class="mr-2"
-                  @click.stop="openDialogTopUp(item.id)"
-                >
-                  mdi-plus
-                </v-icon>
-                <v-icon
-                  small
-                  class="mr-2"
-                  @click.stop="openDialogUpdate(item.id)"
-                >
-                  mdi-pencil
-                </v-icon>
+                <v-btn color="secondary" small text @click.stop="deleteBudgetCode(item.id)">Delete</v-btn>
+                <v-icon small class="mr-2" @click.stop="openDialogTopUp(item.id)">mdi-plus</v-icon>
+                <v-icon small class="mr-2" @click.stop="openDialogUpdate(item.id)">mdi-pencil</v-icon>
               </template>
             </v-data-table>
           </v-card-text>
         </v-card>
-        <snackbar-alert
-          v-model="alert"
-          :success="success"
-          :messages="messages"
-        ></snackbar-alert>
+        <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
       </v-col>
     </v-row>
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogTopUp" persistent max-width="600">
           <v-card>
-            <v-card-title class="title text-capitalize">{{
+            <v-card-title class="title text-capitalize">
+              {{
               $translate('text.top_up')
-              }}</v-card-title>
+              }}
+            </v-card-title>
             <v-card-text class="overline">
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.top_up') }}
-                    </div>
+                    <div
+                      class="caption primary--text text-capitalize"
+                    >{{ $translate('text.top_up') }}</div>
                     <v-text-field
                       v-model="topUpInput.nominal"
                       prepend-inner-icon="mdi-cash"
@@ -175,19 +158,14 @@
                     text
                     block
                     @click="closeDialogTopUp()"
-                  >{{ $translate('components.button.sure_button_no') }}</v-btn
-                  >
+                  >{{ $translate('components.button.sure_button_no') }}</v-btn>
                 </v-col>
                 <v-col class="px-0" cols="6">
-                  <v-btn
-                    color="secondary"
-                    text
-                    block
-                    @click.stop="topUp()"
-                  >{{
+                  <v-btn color="secondary" text block @click.stop="topUp()">
+                    {{
                     $translate('components.button.sure_button_yes')
-                    }}</v-btn
-                  >
+                    }}
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-card-actions>
@@ -199,16 +177,18 @@
       <v-row justify="center">
         <v-dialog v-model="dialogUpdate" persistent max-width="600">
           <v-card>
-            <v-card-title class="title text-capitalize">{{
+            <v-card-title class="title text-capitalize">
+              {{
               $translate('text.update_balance')
-              }}</v-card-title>
+              }}
+            </v-card-title>
             <v-card-text class="overline">
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.update_balance') }}
-                    </div>
+                    <div
+                      class="caption primary--text text-capitalize"
+                    >{{ $translate('text.update_balance') }}</div>
                     <v-text-field
                       v-model="updateInput.balance"
                       prepend-inner-icon="mdi-cash"
@@ -232,19 +212,14 @@
                     text
                     block
                     @click="closeDialogUpdate()"
-                  >{{ $translate('components.button.sure_button_no') }}</v-btn
-                  >
+                  >{{ $translate('components.button.sure_button_no') }}</v-btn>
                 </v-col>
                 <v-col class="px-0" cols="6">
-                  <v-btn
-                    color="secondary"
-                    text
-                    block
-                    @click.stop="updateBalance()"
-                  >{{
+                  <v-btn color="secondary" text block @click.stop="updateBalance()">
+                    {{
                     $translate('components.button.sure_button_yes')
-                    }}</v-btn
-                  >
+                    }}
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-card-actions>
@@ -349,14 +324,19 @@ export default {
         this.items = await this.$api('budget', 'index', null)
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     },
     async storeBudgetCode() {
       if (!this.$refs.form.validate()) {
         this.success = false
-        this.messages = 'Form belum valid'
+        this.messages = `${this.$translate(
+          'alert.managementBudget.store',
+          'capitalize'
+        )}`
         this.alert = true
         return
       }
@@ -364,14 +344,19 @@ export default {
         const result = await this.$api('budget', 'store', this.input)
         if (result.status === 201) {
           this.success = true
-          this.messages = 'Budget code berhasil di simpan'
+          this.messages = `${this.$translate(
+            'alert.managementBudget.save',
+            'capitalize'
+          )}`
           this.alert = true
           this.$refs.form.reset()
         }
         await this.getAllBudgetCode()
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -380,13 +365,18 @@ export default {
         const result = await this.$api('budget', 'delete', id)
         if (result.status === 200) {
           this.success = true
-          this.messages = 'Budget code berhasil di hapus'
+          this.messages = `${this.$translate(
+            'alert.managementBudget.delete',
+            'capitalize'
+          )}`
           this.alert = true
         }
         this.getAllBudgetCode()
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -413,7 +403,10 @@ export default {
         const result = await this.$api('budget', 'topup', this.topUpInput)
         if (result.status === 201) {
           this.success = true
-          this.messages = 'Budget code berhasil di simpan'
+          this.messages = `${this.$translate(
+            'alert.managementBudget.save',
+            'capitalize'
+          )}`
           this.alert = true
           this.$refs.form.reset()
         }
@@ -421,17 +414,22 @@ export default {
         this.closeDialogTopUp()
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
         console.log(e)
       }
     },
-    async updateBalance(){
+    async updateBalance() {
       try {
         const result = await this.$api('budget', 'update', this.updateInput)
         if (result.status === 201) {
           this.success = true
-          this.messages = 'Budget code berhasil di simpan'
+          this.messages = `${this.$translate(
+            'alert.managementBudget.save',
+            'capitalize'
+          )}`
           this.alert = true
           this.$refs.form.reset()
         }
@@ -439,7 +437,9 @@ export default {
         this.closeDialogUpdate()
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
         console.log(e)
       }

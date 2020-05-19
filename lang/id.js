@@ -28,6 +28,20 @@ export default {
       success: 'Berhasil membuat form submission',
       failed: 'Gagal membuat form submission',
       error: 'Terdapat kesalahan saat validasi data'
+    },
+    managementBank: {
+      save: 'Rekening berhasil di simpan',
+      delete: 'Rekening berhasil di hapus',
+      store: 'Form belum valid'
+    },
+    managementBudget: {
+      save: 'Budget code berhasil di simpan',
+      delete: 'Budget code berhasil di hapus',
+      store: 'Form belum valid'
+    },
+    managementUser: {
+      update: 'Berhasil mengupdate user',
+      show: 'Gagal menampilkan daftar peran user'
     }
   },
   components: {
