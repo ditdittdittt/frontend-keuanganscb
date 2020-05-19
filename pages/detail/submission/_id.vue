@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row align="start">
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="7">
         <v-row>
           <v-col cols="12">
             <v-card>
@@ -112,7 +112,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="5">
         <v-row>
           <!-- PIC -->
           <v-col cols="12">
@@ -154,7 +154,7 @@
               </v-card-title>
               <v-card-text>
                 <v-row justify="center">
-                  <v-col v-if="checkVerifyPic()" cols="12" md="6">
+                  <v-col v-if="checkVerifyPic()" cols="12">
                     <v-btn
                       large
                       elevation="8"
@@ -164,7 +164,7 @@
                       >{{ $translate('text.pic') }}</v-btn
                     >
                   </v-col>
-                  <v-col v-if="checkVerifyVerificator()" cols="12" md="6">
+                  <v-col v-if="checkVerifyVerificator()" cols="12">
                     <v-btn
                       large
                       elevation="8"
@@ -174,7 +174,7 @@
                       >{{ $translate('text.verificator') }}</v-btn
                     >
                   </v-col>
-                  <v-col v-if="checkVerifyHeadDept()" cols="12" md="6">
+                  <v-col v-if="checkVerifyHeadDept()" cols="12">
                     <v-btn
                       large
                       elevation="8"
@@ -184,7 +184,7 @@
                       >{{ $translate('text.head_dept') }}</v-btn
                     >
                   </v-col>
-                  <v-col v-if="checkVerifyHeadOffice()" cols="12" md="6">
+                  <v-col v-if="checkVerifyHeadOffice()" cols="12">
                     <v-btn
                       large
                       elevation="8"
@@ -375,6 +375,10 @@ export default {
     currency(value) {
       if (value == null || value === '') return 'Rp 0'
       if (value.toString().split('.').length > 2) return 'Rp ~'
+      else if (value.toString().split('.').length > 1) {
+        value = value.toString().split('.')
+        value = value[0]
+      }
       try {
         const result = value
           .toString()
