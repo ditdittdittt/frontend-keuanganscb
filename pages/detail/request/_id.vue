@@ -489,6 +489,7 @@ export default {
   },
   filters: {
     currency(value) {
+      const minus = Number(value) < 0
       if (value == null || value === '') return 'Rp 0'
       if (value.toString().split('.').length > 2) return 'Rp ~'
       else if (value.toString().split('.').length > 1) {
@@ -500,7 +501,7 @@ export default {
           .toString()
           .match(/\d{1,3}(?=(\d{3})*$)/g)
           .join('.')
-        return 'Rp ' + result
+        return 'Rp ' + (minus === true ? '-' : '') + result
       } catch (error) {
         return 'Rp ~'
       }
