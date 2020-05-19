@@ -397,7 +397,10 @@ export default {
       }
     },
     initMenu() {
-      if (this.$auth.user.roles_list.includes('admin') || this.$auth.user.roles_list.includes('head_office')) {
+      if (
+        this.$auth.user.roles_list.includes('admin') ||
+        this.$auth.user.roles_list.includes('head_office')
+      ) {
         this.menu.push(
           {
             icon: 'mdi-cash-usd',
@@ -411,15 +414,13 @@ export default {
           }
         )
       } else if (this.$auth.user.roles_list.includes('head_dept')) {
-        this.menu.push(
-          {
-            icon: 'mdi-cash-usd',
-            title: 'Management Budget',
-            to: '/management/budget'
-          },
-        )
+        this.menu.push({
+          icon: 'mdi-cash-usd',
+          title: 'Management Budget',
+          to: '/management/budget'
+        })
       }
-    },
+    }
   },
   head() {
     return {

@@ -609,11 +609,7 @@ export default ({ app }, inject) => {
       body.append('balance', data.balance)
       body.append('notes', data.notes)
       for (let i = 0; i < data.budgets.length; i++) {
-        // TODO: Ini my friend
-        body.append(
-          'details[' + i + '][budget_code_id]',
-          data.budgets[i].code.id
-        )
+        body.append('details[' + i + '][budget_code_id]', data.budgets[i].id)
         body.append('details[' + i + '][used]', data.budgets[i].nominal)
         body.append('details[' + i + '][balance]', data.budgets[i].balance)
       }

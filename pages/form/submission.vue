@@ -315,7 +315,7 @@ export default {
       messages: '',
       valid: true,
       input: {
-        budgets: [{ code: null, nominal: null, balance: null }],
+        budgets: [{ id: null, nominal: null, balance: null }],
         request: {
           number: null,
           details: []
@@ -357,7 +357,7 @@ export default {
         this.input.budgets = Array.from({
           length: this.input.request.details.length
         }).fill({
-          code: null,
+          id: null,
           nominal: null,
           balance: null
         })
@@ -374,7 +374,7 @@ export default {
       if (i === null || i >= this.input.budgets.length) return
       this.input.budgets[i].balance =
         this.input.request.details[i].nominal - this.input.budgets[i].nominal
-      this.input.budgets[i].code = this.input.request.details[i].budget_code_id
+      this.input.budgets[i].id = this.input.request.details[i].budget_code_id
       this.calculateTotalUse()
     },
     showRequest() {
