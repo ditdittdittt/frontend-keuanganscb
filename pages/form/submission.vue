@@ -83,7 +83,7 @@
                     :label="$translate('text.use', 'capitalize')"
                     :messages="input.budgets[i].nominal | currency"
                     clearable
-                    @change="calculateSingleBalance(i)"
+                    @change="setSingleBudget(i)"
                   ></v-text-field>
                 </v-col>
                 <v-col :key="'sub-bc-bl-' + i" cols="12" md="4">
@@ -263,6 +263,7 @@
             </template>
           </v-simple-table>
           <v-divider></v-divider>
+          <pre>{{ currentRequest }}</pre>
         </v-card-text>
         <v-card-actions>
           <v-row class="ma-0">
@@ -369,11 +370,11 @@ export default {
       }
       this.input.use = sum
     },
-    calculateSingleBalance(i) {
-      if (i === null) return
+    setSingleBudget(i) {
+      if (i === null || i >= this.input.budgets.length) return
       this.input.budgets[i].balance =
         this.input.request.details[i].nominal - this.input.budgets[i].nominal
-
+      this.input.budgets[i].code = this.input.request.details[i].budget_code_id
       this.calculateTotalUse()
     },
     showRequest() {

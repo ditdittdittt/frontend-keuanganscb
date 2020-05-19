@@ -290,8 +290,9 @@
           x-large
           color="accent"
           @click.stop="openDialogSureNeedSubmission()"
-          >{{ $translate('components.button.need_submission') }}</v-btn
         >
+          {{ 'form submission' }}
+        </v-btn>
       </v-col>
       <v-col v-if="checkVerifyPic()">
         <v-btn
@@ -353,7 +354,7 @@
     </template>
     <template>
       <v-row justify="center">
-        <v-dialog v-model="dialogSureNeedSubmission" max-width="600">
+        <v-dialog v-model="dialogSureNeedSubmission" max-width="600" persistent>
           <v-card>
             <v-card-title class="title text-capitalize">{{
               $translate('text.sure_need_submission_head')
@@ -490,12 +491,17 @@ export default {
   },
   filters: {
     currency(value) {
-      if (value === null || value === '') return 'Rp 0'
-      const result = Number(value)
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result
+      if (value == null || value === '') return 'Rp 0'
+      if (value.toString().split('.').length > 1) return 'Rp ~'
+      try {
+        const result = value
+          .toString()
+          .match(/\d{1,3}(?=(\d{3})*$)/g)
+          .join('.')
+        return 'Rp ' + result
+      } catch (error) {
+        return 'Rp ~'
+      }
     },
     capitalize(value) {
       if (!value) return ''
@@ -553,11 +559,11 @@ export default {
   },
   methods: {
     initValue() {
-      const bankCode = this.splitCsv(this.input.bank_code)
-      const bankName = this.splitCsv(this.input.bank_name)
-      const accountNumber = this.splitCsv(this.input.account_number)
-      const accountOwner = this.splitCsv(this.input.account_owner)
-
+      const bankCode = this.splitCsv(this.input.bank_code) ?? []
+      const bankName = this.splitCsv(this.input.bank_name) ?? []
+      const accountNumber = this.splitCsv(this.input.account_number) ?? []
+      const accountOwner = this.splitCsv(this.input.account_owner) ?? []
+      console.log(this.input)
       for (let i = 0; i < bankCode.length; i++) {
         this.rekening.push({
           bank_code: bankCode[i],

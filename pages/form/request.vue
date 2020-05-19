@@ -50,7 +50,12 @@
                   :label="$translate('text.budget_nominal', 'capitalize')"
                   :hint="input.budgets[i].nominal | currency"
                   clearable
-                  @change="() => {calculateSum(); checkIfBudgetNominalBelowBudgeBalance(input.budgets[i])}"
+                  @change="
+                    () => {
+                      calculateSum()
+                      checkIfBudgetNominalBelowBudgeBalance(input.budgets[i])
+                    }
+                  "
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -154,9 +159,10 @@
                 <v-select
                   v-model="input.rekening"
                   :items="rekening"
-                  item-text="account_number"
+                  item-text="account_owner"
                   :menu-props="{ maxHeight: '400' }"
                   :label="$translate('text.account_number', 'capitalize')"
+                  :rules="[rules.required]"
                   multiple
                   solo
                   persistent-hint
@@ -165,7 +171,7 @@
                   <template v-slot:selection="{ item }">
                     <v-chip label color="accent">
                       <span class="font-weight-bold">{{
-                        item.account - owner
+                        item.account_owner
                       }}</span>
                       <span>{{ ' - ' + item.account_number }}</span>
                     </v-chip>
@@ -339,10 +345,12 @@ export default {
         this.alert = true
       }
     },
-    checkIfBudgetNominalBelowBudgeBalance(budget){
-      if(Number(budget.nominal) > Number(budget.code.balance)){
+    checkIfBudgetNominalBelowBudgeBalance(budget) {
+      if (Number(budget.nominal) > Number(budget.code.balance)) {
         this.success = false
-        this.messages = 'Nominal lebih besar dari pada balance pada budget code ' + budget.code.code
+        this.messages =
+          'Nominal lebih besar dari pada balance pada budget code ' +
+          budget.code.code
         this.alert = true
       }
     }
