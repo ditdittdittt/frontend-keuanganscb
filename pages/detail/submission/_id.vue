@@ -6,9 +6,9 @@
           <v-col cols="12">
             <v-card>
               <v-card-title class="text-capitalize primary white--text">
-                <span>
-                  {{ $translate('components.form.title.submission') }}
-                </span>
+                <span>{{
+                  $translate('components.form.title.submission')
+                }}</span>
                 <v-spacer></v-spacer>
                 <v-menu bottom left>
                   <template v-slot:activator="{ on }">
@@ -22,9 +22,9 @@
                         $export('pdf', 'submission', $route.params.id)
                       "
                     >
-                      <v-list-item-title class="text-capitalize">
-                        {{ $translate('export.pdf') }}
-                      </v-list-item-title>
+                      <v-list-item-title class="text-capitalize">{{
+                        $translate('export.pdf')
+                      }}</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -117,9 +117,9 @@
           <!-- PIC -->
           <v-col cols="12">
             <v-card>
-              <v-card-title class="text-capitalize primary white--text">
-                {{ $translate('text.pic') }}
-              </v-card-title>
+              <v-card-title class="text-capitalize primary white--text">{{
+                $translate('text.pic')
+              }}</v-card-title>
               <v-card-text>
                 <v-row>
                   <v-col cols="12" md="12">
@@ -258,12 +258,12 @@
       <v-row justify="center">
         <v-dialog v-model="dialogSureReject" persistent max-width="600">
           <v-card>
-            <v-card-title class="title text-capitalize">{{
-              $translate('text.sure_reject_head')
-            }}</v-card-title>
-            <v-card-text class="overline">{{
-              $translate('text.sure_reject_body')
-            }}</v-card-text>
+            <v-card-title class="title text-capitalize">
+              {{ $translate('text.sure_reject_head') }}
+            </v-card-title>
+            <v-card-text class="overline">
+              {{ $translate('text.sure_reject_body') }}
+            </v-card-text>
             <v-card-actions>
               <v-row class="mx-0">
                 <v-col class="px-0" cols="6">
@@ -281,10 +281,9 @@
                     text
                     block
                     @click.stop="rejectSubmissionForm()"
-                    >{{
-                      $translate('components.button.sure_button_yes')
-                    }}</v-btn
                   >
+                    {{ $translate('components.button.sure_button_yes') }}
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-card-actions>
@@ -297,12 +296,12 @@
       <v-row justify="center">
         <v-dialog v-model="dialogSureAlreadyPaid" persistent max-width="600">
           <v-card>
-            <v-card-title class="title text-capitalize">{{
-              $translate('text.sure_paid_head')
-            }}</v-card-title>
-            <v-card-text class="overline">{{
-              $translate('text.sure_paid_body')
-            }}</v-card-text>
+            <v-card-title class="title text-capitalize">
+              {{ $translate('text.sure_paid_head') }}
+            </v-card-title>
+            <v-card-text class="overline">
+              {{ $translate('text.sure_paid_body') }}
+            </v-card-text>
             <v-card-actions>
               <v-row class="mx-0">
                 <v-col class="px-0" cols="6">
@@ -320,10 +319,9 @@
                     text
                     block
                     @click.stop="alreadyPaidSubmissionForm()"
-                    >{{
-                      $translate('components.button.sure_button_yes')
-                    }}</v-btn
                   >
+                    {{ $translate('components.button.sure_button_yes') }}
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-card-actions>
@@ -336,12 +334,12 @@
       <v-row justify="center">
         <v-dialog v-model="dialogSureVerify" persistent max-width="600">
           <v-card>
-            <v-card-title class="title text-capitalize">
-              {{ $translate('text.sure_verify_head') }}
-            </v-card-title>
-            <v-card-text class="overline">
-              {{ $translate('text.sure_verify_body') }}
-            </v-card-text>
+            <v-card-title class="title text-capitalize">{{
+              $translate('text.sure_verify_head')
+            }}</v-card-title>
+            <v-card-text class="overline">{{
+              $translate('text.sure_verify_body')
+            }}</v-card-text>
             <v-card-text>
               <signature-pad :key="key" v-model="signature"></signature-pad>
             </v-card-text>
@@ -363,9 +361,9 @@
                   >
                 </v-col>
                 <v-col class="px-0" cols="6">
-                  <v-btn color="secondary" text block @click="verifyAs()">
-                    {{ $translate('components.button.sure_button_yes') }}
-                  </v-btn>
+                  <v-btn color="secondary" text block @click="verifyAs()">{{
+                    $translate('components.button.sure_button_yes')
+                  }}</v-btn>
                 </v-col>
               </v-row>
             </v-card-actions>
@@ -472,14 +470,17 @@ export default {
         console.log(this.input)
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan saat mengirim data ke server'
+        this.messages = `${this.$translate(
+          'alert.detail.getError',
+          'capitalize'
+        )}`
         this.alert = true
       }
     },
     async verifyAsPic() {
       if (this.signature.isEmpty === true || this.signature == null) {
         this.success = false
-        this.messages = 'Gagal karena tidak ada tanda tangan'
+        this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
         this.alert = true
       } else {
         try {
@@ -487,7 +488,9 @@ export default {
           await this.$api('submission', 'verifyaspic', this.input)
         } catch (e) {
           this.success = false
-          this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+          this.messages =
+            `${this.$translate('alert.error', 'capitalize')}` +
+            e.toString().slice(0, 10)
           this.alert = true
         }
       }
@@ -495,7 +498,7 @@ export default {
     async verifyAsVerificator() {
       if (this.signature.isEmpty === true || this.signature == null) {
         this.success = false
-        this.messages = 'Gagal karena tidak ada tanda tangan'
+        this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
         this.alert = true
       } else {
         try {
@@ -503,7 +506,9 @@ export default {
           await this.$api('submission', 'verifyasverificator', this.input)
         } catch (e) {
           this.success = false
-          this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+          this.messages =
+            `${this.$translate('alert.error', 'capitalize')}` +
+            e.toString().slice(0, 10)
           this.alert = true
         }
       }
@@ -511,7 +516,7 @@ export default {
     async verifyAsHeadOffice() {
       if (this.signature.isEmpty === true || this.signature == null) {
         this.success = false
-        this.messages = 'Gagal karena tidak ada tanda tangan'
+        this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
         this.alert = true
       } else {
         try {
@@ -519,7 +524,9 @@ export default {
           await this.$api('submission', 'verifyasheadoffice', this.input)
         } catch (e) {
           this.success = false
-          this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+          this.messages =
+            `${this.$translate('alert.error', 'capitalize')}` +
+            e.toString().slice(0, 10)
           this.alert = true
         }
       }
@@ -527,7 +534,7 @@ export default {
     async verifyAsHeadDept() {
       if (this.signature.isEmpty === true || this.signature == null) {
         this.success = false
-        this.messages = 'Gagal karena tidak ada tanda tangan'
+        this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
         this.alert = true
       } else {
         try {
@@ -535,7 +542,9 @@ export default {
           await this.$api('submission', 'verifyasheaddept', this.input)
         } catch (e) {
           this.success = false
-          this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+          this.messages =
+            `${this.$translate('alert.error', 'capitalize')}` +
+            e.toString().slice(0, 10)
           this.alert = true
         }
       }
@@ -543,7 +552,7 @@ export default {
     async verifyAsCashier() {
       if (this.signature.isEmpty === true || this.signature == null) {
         this.success = false
-        this.messages = 'Gagal karena tidak ada tanda tangan'
+        this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
         this.alert = true
       } else {
         try {
@@ -551,7 +560,9 @@ export default {
           await this.$api('submission', 'verifyascashier', this.input)
         } catch (e) {
           this.success = false
-          this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+          this.messages =
+            `${this.$translate('alert.error', 'capitalize')}` +
+            e.toString().slice(0, 10)
           this.alert = true
         }
       }
@@ -587,7 +598,9 @@ export default {
         this.dialogSureReject = false
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -598,7 +611,9 @@ export default {
         this.dialogSureAlreadyPaid = false
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -608,7 +623,9 @@ export default {
         await this.getSubmissionForm()
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
         this.alert = true
       }
     },

@@ -9,6 +9,10 @@ export default {
     update: {
       success: 'data updated successfully',
       error: 'failed to update data'
+    },
+    detail: {
+      sign: 'process failed, sign needed',
+      getError: 'failed to send data to the server'
     }
   },
   components: {

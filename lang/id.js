@@ -9,6 +9,10 @@ export default {
     update: {
       success: 'data berhasil diperbarui',
       error: 'gagal memperbarui data'
+    },
+    detail: {
+      sign: 'Gagal karena tidak ada tanda tangan',
+      getError: 'Terjadi kesalahan saat mengirim data ke server'
     }
   },
   components: {
@@ -144,8 +148,7 @@ export default {
     sure_delete_head: 'hapus form ini?',
     sure_delete_body: 'form ini tidak dapat dipulihkan',
     sure_verify_head: 'verifikasi form ini?',
-    sure_verify_body:
-      'form ini tidak bisa diubah setelah diverifikasi',
+    sure_verify_body: 'form ini tidak bisa diubah setelah diverifikasi',
     current_file: 'berkas saat ini',
     back: 'kembali',
     positive: 'harus bernilai positif',
@@ -155,8 +158,7 @@ export default {
     confirm_password: 'konfirmasi password',
     code: 'Kode',
     sure_reject_head: 'tolak form ini?',
-    sure_reject_body:
-      'form ini tidak bisa dipulihkan setelah ditolak',
+    sure_reject_body: 'form ini tidak bisa dipulihkan setelah ditolak',
     sure_paid_head: 'anda yakin uang sudah diterima?',
     sure_paid_body: 'form tidak bisa dikembalikan setelah melakukan konfirmasi',
     paid_at: 'dibayarkan saat',
