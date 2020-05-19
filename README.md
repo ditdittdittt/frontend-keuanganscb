@@ -109,6 +109,9 @@ Alfian Hamam Akbar
 * i18n International Localization
 
 Intan Aida Rahmani
+* Page Design and Layout
+* Theming
+* API Integration
 
 Muhammad Naufal Shidqi
 
