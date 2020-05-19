@@ -11,8 +11,23 @@ export default {
       error: 'failed to update data'
     },
     detail: {
-      sign: 'process failed, sign needed',
+      sign: 'process failed, signature needed',
       getError: 'failed to send data to the server'
+    },
+    formPetty: {
+      success: 'Success created a petty cash form',
+      failed: 'Failed create a petty cash form'
+    },
+    formRequest: {
+      success: 'Success created a request form',
+      failed: 'Failed create a request form',
+      error: 'Error occured when validating data',
+      overBalance: 'the requested fund is greater than the available balance'
+    },
+    formSubmission: {
+      success: 'Success created a submission form',
+      failed: 'Failed create a submission form',
+      error: 'Error occured when validating data'
     }
   },
   components: {
