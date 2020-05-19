@@ -54,6 +54,22 @@
               :to="'/detail/request/' + item.id"
               >Detail</v-btn
             >
+            <v-btn
+              v-if="isAdmin"
+              color="accent"
+              small
+              text
+              :to="'/update/request/' + item.id"
+              >{{ $translate('components.button.update') }}</v-btn
+            >
+            <v-btn
+              v-if="isAdmin"
+              color="red"
+              small
+              text
+              @click.stop="deleteRequest(item.id)"
+              >{{ $translate('components.button.delete') }}</v-btn
+            >
           </template>
         </v-data-table>
       </v-card-text>
@@ -132,6 +148,13 @@ export default {
       items: []
     }
   },
+  computed: {
+    isAdmin() {
+      return this.$auth.user.roles_list
+        .map((role) => role.toLowerCase())
+        .includes('admin')
+    }
+  },
   mounted() {
     this.getAllRequestForms()
   },
@@ -139,6 +162,17 @@ export default {
     async getAllRequestForms() {
       try {
         this.items = await this.$api('request', 'index', null)
+      } catch (e) {
+        this.success = false
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.toString().slice(0, 10)
+        this.alert = true
+      }
+    },
+    async deleteRequest(id) {
+      try {
+        await this.$api('request', 'delete', id)
       } catch (e) {
         this.success = false
         this.messages =
