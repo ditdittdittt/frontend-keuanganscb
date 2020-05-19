@@ -31,7 +31,7 @@
               </v-card-title>
               <v-card-text>
                 <v-row>
-                  <v-col cols="12">
+                  <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.number') }}
                     </div>
@@ -96,7 +96,7 @@
                       }}
                     </span>
                   </v-col>
-                  <v-col cols="12">
+                  <v-col cols="12" md="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.note') }}
                     </div>
@@ -110,6 +110,41 @@
               </v-card-text>
             </v-card>
           </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-row>
+          <!-- PIC -->
+          <v-col cols="12">
+            <v-card>
+              <v-card-title class="text-capitalize primary white--text">
+                {{ $translate('text.pic') }}
+              </v-card-title>
+              <v-card-text>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.name') }}
+                    </div>
+                    <span>{{ input.pic.name }}</span>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.division') }}
+                    </div>
+                    <span>{{ input.pic.division }}</span>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.email') }}
+                    </div>
+                    <span>{{ input.pic.email }}</span>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <!-- Verification -->
           <v-col cols="12">
             <v-card>
               <v-card-title>
@@ -158,39 +193,6 @@
                       @click="openDialogSureVerify('headOffice')"
                       >{{ $translate('text.head_office') }}</v-btn
                     >
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-row>
-          <v-col cols="12">
-            <v-card>
-              <v-card-title class="text-capitalize primary white--text">
-                {{ $translate('text.pic') }}
-              </v-card-title>
-              <v-card-text>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.name') }}
-                    </div>
-                    <span>{{ input.pic.name }}</span>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.division') }}
-                    </div>
-                    <span>{{ input.pic.division }}</span>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <div class="caption primary--text text-capitalize">
-                      {{ $translate('text.email') }}
-                    </div>
-                    <span>{{ input.pic.email }}</span>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -371,12 +373,17 @@ export default {
   },
   filters: {
     currency(value) {
-      if (value === null || value === '') return 'Rp 0'
-      const result = Number(value)
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result
+      if (value == null || value === '') return 'Rp 0'
+      if (value.toString().split('.').length > 2) return 'Rp ~'
+      try {
+        const result = value
+          .toString()
+          .match(/\d{1,3}(?=(\d{3})*$)/g)
+          .join('.')
+        return 'Rp ' + result
+      } catch (error) {
+        return 'Rp ~'
+      }
     },
     capitalize(value) {
       if (!value) return ''

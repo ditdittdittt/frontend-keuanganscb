@@ -492,7 +492,11 @@ export default {
   filters: {
     currency(value) {
       if (value == null || value === '') return 'Rp 0'
-      if (value.toString().split('.').length > 1) return 'Rp ~'
+      if (value.toString().split('.').length > 2) return 'Rp ~'
+      else if (value.toString().split('.').length > 1) {
+        value = value.toString().split('.')
+        value = value[0]
+      }
       try {
         const result = value
           .toString()
@@ -563,7 +567,6 @@ export default {
       const bankName = this.splitCsv(this.input.bank_name) ?? []
       const accountNumber = this.splitCsv(this.input.account_number) ?? []
       const accountOwner = this.splitCsv(this.input.account_owner) ?? []
-      console.log(this.input)
       for (let i = 0; i < bankCode.length; i++) {
         this.rekening.push({
           bank_code: bankCode[i],
@@ -611,6 +614,7 @@ export default {
         this.$api('request', 'show', this.$route.params.id)
           .then((response) => {
             this.input = response
+            console.log(this.input)
           })
           .then((_) => {
             this.initValue()
