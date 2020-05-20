@@ -1081,7 +1081,7 @@ export default ({ app }, inject) => {
         })
     },
     delete(data) {
-      console.log('[Budget] Get all budget code')
+      console.log('[Budget] Delete budget code')
       return app
         .$axios({
           method: 'delete',
