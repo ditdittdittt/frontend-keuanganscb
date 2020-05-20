@@ -43,17 +43,17 @@ Sistem kami berbasis website di mana user terkait harus mendaftar akun terlebih 
 -   Request
 
 -   Submission
-    ![Activity Submission](./public/activity_diagram_submission.png)
+    ![Activity Submission](./screenshot/activity_diagram_submission.png)
 -   Petty Cash
-    ![Activity Petty Cash](./public/activity_diagram_petty_cash.png)
+    ![Activity Petty Cash](./scrrenshoot/activity_diagram_petty_cash.png)
 
 ### Class Diagram
 
-![Class Diagram](./public/class_diagram.png)
+![Class Diagram](./screenshoot/class_diagram.png)
 
 ### Entity Relationship Diagram
 
-![ERD](./public/erd_final.jpg)
+![ERD](./screenshoot/erd_final.jpg)
 
 ## Fitur Umum
 
