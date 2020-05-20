@@ -540,6 +540,7 @@ export default {
       dialogSureAlreadyPaid: false,
       dialogSureVerify: false,
       dialogRequest: false,
+      rawData: false,
       currentRequest: {},
       input: {
         form_request: {},

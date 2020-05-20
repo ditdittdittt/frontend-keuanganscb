@@ -152,7 +152,7 @@
                     <v-btn
                       color="secondary"
                       small
-                      :to="'/detail/submission/' + input.form_submission.id"
+                      @click.stop="popUpSubmission()"
                     >
                       {{
                         input.form_submission.number
@@ -509,6 +509,94 @@
       </v-dialog>
     </template>
 
+    <!-- Dialog Request -->
+    <template>
+      <v-dialog v-model="dialogSubmission" max-width="600" persistent>
+        <v-card>
+          <v-card-title class="text-uppercase title">{{
+            $translate('text.submission')
+          }}</v-card-title>
+          <v-card-text>
+            <div class="spacing-xsmall"></div>
+            <div class="caption primary--text text-capitalize">
+              {{ $translate('text.information') }}
+            </div>
+            <v-simple-table>
+              <template v-slot:default>
+                <tbody>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.allocation') }}
+                    </td>
+                    <td class="text-capitalize">
+                      {{ currentSubmission.allocation }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.use') }}
+                    </td>
+                    <td>{{ currentSubmission.used | currency }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.balance') }}
+                    </td>
+                    <td>{{ currentSubmission.balance | currency }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.paid_at') }}
+                    </td>
+                    <td>{{ currentSubmission.date }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.number') }}
+                    </td>
+                    <td>{{ currentSubmission.number }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.number') + ' invoice' }}
+                    </td>
+                    <td>{{ currentSubmission.invoice_number }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      {{ $translate('text.submission') }}
+                    </td>
+                    <td>
+                      <v-btn
+                        color="secondary"
+                        x-small
+                        :to="'/detail/submission/' + currentSubmission.id"
+                      >
+                        {{ $translate('text.view') }}
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-card-text>
+          <v-card-actions>
+            <v-row class="ma-0">
+              <v-col>
+                <v-btn
+                  dark
+                  color="secondary"
+                  block
+                  @click.stop="dialogSubmission = false"
+                  >{{ $translate('components.button.close') }}</v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </template>
+
     <!-- Raw Data -->
     <v-dialog
       v-model="rawData"
@@ -573,6 +661,7 @@ export default {
       dialogSureNeedSubmission: false,
       dialogSureVerify: false,
       dialogRekening: false,
+      dialogSubmission: false,
       rawData: false,
       messages: '',
       headers: [
@@ -604,6 +693,7 @@ export default {
         isEmpty: true,
         data: null
       },
+      currentSubmission: {},
       key: 0,
       rekening: []
     }
@@ -659,6 +749,10 @@ export default {
     },
     rerender() {
       this.key++
+    },
+    popUpSubmission() {
+      this.currentSubmission = this.$copy(this.input.form_submission)
+      this.dialogSubmission = true
     },
     getRequestForm() {
       try {
