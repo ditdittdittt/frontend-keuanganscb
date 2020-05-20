@@ -6,9 +6,9 @@
           <v-card-title class="text-uppercase">
             <span>{{ $translate('components.table.title.user') }}</span>
           </v-card-title>
-          <v-card-subtitle class="overline">{{
-            $translate('components.table.subtitle.user')
-          }}</v-card-subtitle>
+          <v-card-subtitle class="overline">
+            {{ $translate('components.table.subtitle.user') }}
+          </v-card-subtitle>
           <v-card-text class="px-5">
             <v-text-field
               v-model="search"
@@ -142,49 +142,14 @@
                       class="caption"
                       dense
                       return-object
-                    >
-                    </v-select>
+                    ></v-select>
                   </td>
-                  <td v-else class="text-capitalize">
+                  <td v-else class="overline">
                     <template v-for="(role, i) in user.roles">
-                      <span :key="'role' + i">
-                        {{ role.name }}
-                      </span>
+                      <span :key="'role' + i">{{ role.name }}</span>
                       <br :key="'br' + i" />
                     </template>
                   </td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-uppercase">
-                    <v-badge
-                      :value="different(user.nik, input.nik)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.nik') }}</v-badge
-                    >
-                  </td>
-                  <td v-if="state.edit">
-                    <v-text-field v-model="input.nik" dense></v-text-field>
-                  </td>
-                  <td v-else>{{ user.nik }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    <v-badge
-                      :value="different(user.address, input.address)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.address') }}</v-badge
-                    >
-                  </td>
-                  <td v-if="state.edit">
-                    <v-text-field v-model="input.address" dense></v-text-field>
-                  </td>
-                  <td v-else>{{ user.address }}</td>
                 </tr>
               </tbody>
             </template>
@@ -202,9 +167,9 @@
               >
             </v-col>
             <v-col>
-              <v-btn dark color="secondary" block @click.stop="updateUser">
-                {{ $translate('components.button.update') }}
-              </v-btn>
+              <v-btn dark color="secondary" block @click.stop="updateUser">{{
+                $translate('components.button.update')
+              }}</v-btn>
             </v-col>
           </v-row>
           <v-row v-else class="ma-0">
@@ -280,18 +245,14 @@ export default {
         username: null,
         email: null,
         division: null,
-        role: null,
-        nik: null,
-        address: null
+        role: null
       },
       input: {
         name: null,
         username: null,
         email: null,
         division: null,
-        role: null,
-        nik: null,
-        address: null
+        role: null
       }
     }
   },
@@ -314,26 +275,45 @@ export default {
         const result = await this.$api('user', 'update', this.input)
         if (result.status === 200) {
           this.success = true
-          this.messages = 'Berhasil mengupdate user'
+          this.messages = `${this.$translate(
+            'alert.managementUser.update',
+            'capitalize'
+          )}`
           this.alert = true
-
-          this.input = this.$copy(result.data.user)
-          this.user = this.$copy(this.input)
+          this.modal.user = false
         }
         await this.getAllUsers()
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
     async deleteUser(id) {
       try {
-        await this.$api('user', 'update', id)
+        const result = await this.$api('user', 'delete', id)
+        if (result.status === 200) {
+          this.success = true
+          this.messages = `${this.$translate(
+            'alert.delete.success',
+            'capitalize'
+          )}`
+          this.alert = true
+        } else {
+          this.success = false
+          this.messages = `${this.$translate(
+            'alert.delete.error',
+            'capitalize'
+          )}`
+          this.alert = true
+        }
+        this.modal.user = false
         await this.getAllUsers()
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
@@ -341,10 +321,10 @@ export default {
       try {
         const { users } = await this.$api('user', 'all')
         this.items = users
-        console.log(this.items)
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
@@ -356,7 +336,10 @@ export default {
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Gagal menampilkan daftar peran user'
+        this.messages = `${this.$translate(
+          'alert.managementUser.show',
+          'capitalize'
+        )}`
         this.alert = true
       }
     }

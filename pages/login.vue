@@ -21,7 +21,7 @@
             >Masukan akun yang telah terdaftar</v-card-subtitle
           >
           <v-card-text>
-            <v-form ref="form" aria-autocomplete="on">
+            <v-form ref="form">
               <v-row>
                 <v-col cols="12">
                   <div class="caption primary--text text-capitalize">
@@ -120,7 +120,10 @@ export default {
     async login() {
       if (!this.$refs.form.validate()) {
         this.success = false
-        this.messages = 'Data belum valid'
+        this.messages = `${this.$translate(
+          'alert.login.warning',
+          'capitalize'
+        )}`
         this.alert = true
         return
       }
@@ -128,11 +131,17 @@ export default {
         const result = await this.$api('user', 'login', this.input)
         if (result.status === 200) {
           this.success = true
-          this.messages = 'Berhasil login'
+          this.messages = `${this.$translate(
+            'alert.login.success',
+            'capitalize'
+          )}`
           this.alert = true
         } else {
           this.success = false
-          this.messages = 'Gagal login'
+          this.messages = `${this.$translate(
+            'alert.login.error',
+            'capitalize'
+          )}`
           this.alert = true
         }
       } catch (e) {

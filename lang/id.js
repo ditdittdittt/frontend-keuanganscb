@@ -1,6 +1,58 @@
 export default {
   alert: {
     error: 'terjadi kesalahan: ',
+<<<<<<< HEAD
+=======
+    login: {
+      success: 'login berhasil',
+      error: 'login gagal',
+      warning: 'email atau password salah'
+    },
+    update: {
+      success: 'data berhasil diperbarui',
+      error: 'gagal memperbarui data'
+    },
+    delete: {
+      success: 'data berhasil dihapus',
+      error: 'gagal menghapus data'
+    },
+    detail: {
+      sign: 'Gagal karena tidak ada tanda tangan',
+      getError: 'Terjadi kesalahan saat mengirim data ke server'
+    },
+    formPetty: {
+      success: 'Berhasil membuat form petty cash',
+      failed: 'Gagal membuat form petty cash'
+    },
+    formRequest: {
+      success: 'Berhasil membuat form request',
+      failed: 'Gagal membuat form request',
+      error: 'Terdapat kesalahan saat validasi data',
+      overBalance: 'Nominal lebih besar dari pada balance pada budget code '
+    },
+    formSubmission: {
+      success: 'Berhasil membuat form submission',
+      failed: 'Gagal membuat form submission',
+      error: 'Terdapat kesalahan saat validasi data'
+    },
+    managementBank: {
+      save: 'Rekening berhasil di simpan',
+      delete: 'Rekening berhasil di hapus',
+      store: 'Form belum valid'
+    },
+    managementBudget: {
+      save: 'Budget code berhasil di simpan',
+      delete: 'Budget code berhasil di hapus',
+      store: 'Form belum valid'
+    },
+    managementUser: {
+      update: 'Berhasil mengupdate user',
+      show: 'Gagal menampilkan daftar peran user'
+    },
+    validation: {
+      textTooLong: 'Kata terlalu panjang'
+    }
+>>>>>>> v2
   },
   components: {
     button: {
@@ -18,8 +70,9 @@ export default {
       update: 'perbarui',
       sure_button_yes: 'ya',
       sure_button_no: 'tidak',
-      already_paid: 'telah dibayarkan',
-      reject: 'tolak'
+      already_paid: 'dibayarkan',
+      reject: 'tolak',
+      need_submission: 'apakah form ini membutuhkan submisi?'
     },
     row: {
       text: 'baris'
@@ -131,11 +184,10 @@ export default {
     account_number: 'nomor rekening',
     account_owner: 'pemilik rekening',
     status: 'status',
-    sure_delete_head: 'apakah anda yakin untuk menghapus form ini?',
-    sure_delete_body: 'form ini tidak dapat dikembalikan',
-    sure_verify_head: 'apakah anda yakin untuk memverifikasi form ini?',
-    sure_verify_body:
-      'form ini tidak bisa diubah kembali setelah anda melakukan verifikasi',
+    sure_delete_head: 'hapus form ini?',
+    sure_delete_body: 'form ini tidak dapat dipulihkan',
+    sure_verify_head: 'verifikasi form ini?',
+    sure_verify_body: 'form ini tidak bisa diubah setelah diverifikasi',
     current_file: 'berkas saat ini',
     back: 'kembali',
     positive: 'harus bernilai positif',
@@ -144,21 +196,24 @@ export default {
     role: 'peran',
     confirm_password: 'konfirmasi password',
     code: 'Kode',
-    sure_reject_head: 'apakah kamu yakin untuk menolak form ini?',
-    sure_reject_body:
-      'form tidak bisa dikembalikan setelah melakukan penolakan',
-    sure_paid_head: 'apakah kamu yakin uang sudah diterima?',
+    sure_reject_head: 'tolak form ini?',
+    sure_reject_body: 'form ini tidak bisa dipulihkan setelah ditolak',
+    sure_paid_head: 'anda yakin uang sudah diterima?',
     sure_paid_body: 'form tidak bisa dikembalikan setelah melakukan konfirmasi',
     paid_at: 'dibayarkan saat',
     information: 'informasi',
     top_up: 'isi saldo',
-    nominal: 'nominal'
-
+    nominal: 'nominal',
+    sure_need_submission_head: 'apakah form ini butuh submisi?',
+    sure_need_submission_body: 'ya jika membutuhkan, tidak jika tidak',
+    bank_account: 'rekening bank',
+    rawData: 'Data Mentah'
   },
   helper: {
     messages: {
       attachment_file: 'klik untuk memilih lampiran',
-      amount_in_word: 'otomatis terisi'
+      amount_in_word: 'otomatis terisi',
+      auto: 'otomatis terisi'
     },
     name: 'nama lengkap',
     username: 'nama panggilan atau singkatan',

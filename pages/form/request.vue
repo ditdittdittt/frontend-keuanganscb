@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">{{
-        $translate('components.form.title.request')
-      }}</v-card-title>
-      <v-card-subtitle class="overline">{{
-        $translate('components.form.subtitle.request')
-      }}</v-card-subtitle>
+      <v-card-title class="text-uppercase">
+        {{ $translate('components.form.title.request') }}
+      </v-card-title>
+      <v-card-subtitle class="overline">
+        {{ $translate('components.form.subtitle.request') }}
+      </v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
@@ -29,12 +29,12 @@
                   auto-select-first
                   cache-items
                 >
-                  <template v-slot:item="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
-                  <template v-slot:selection="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
+                  <template v-slot:item="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
+                  <template v-slot:selection="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
                 </v-combobox>
               </v-col>
               <v-col cols="12" md="6" sm="6">
@@ -50,7 +50,12 @@
                   :label="$translate('text.budget_nominal', 'capitalize')"
                   :hint="input.budgets[i].nominal | currency"
                   clearable
-                  @change="calculateSum()"
+                  @change="
+                    () => {
+                      calculateSum()
+                      checkIfBudgetNominalBelowBudgeBalance(input.budgets[i])
+                    }
+                  "
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -147,65 +152,31 @@
           </v-row>
           <template v-if="input.method === 'transfer'">
             <v-row>
-              <v-col cols="12" sm="6">
-                <div class="caption primary--text text-capitalize">
-                  {{ $translate('text.bank_name') }}
-                </div>
-                <v-text-field
-                  v-model="input.bank_name"
-                  prepend-inner-icon="mdi-cash"
-                  clearable
-                  solo
-                  :rules="[rules.required]"
-                  persistent-hint
-                  :hint="$translate('helper.multiple_bank')"
-                  :label="$translate('text.bank_name', 'capitalize')"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <div class="caption primary--text text-capitalize">
-                  {{ $translate('text.bank_code') }}
-                </div>
-                <v-text-field
-                  v-model="input.bank_code"
-                  prepend-inner-icon="mdi-cash"
-                  clearable
-                  solo
-                  :rules="[rules.required]"
-                  persistent-hint
-                  :hint="$translate('helper.multiple_bank')"
-                  :label="$translate('text.bank_code', 'capitalize')"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
+              <v-col>
                 <div class="caption primary--text text-capitalize">
                   {{ $translate('text.account_number') }}
                 </div>
-                <v-text-field
-                  v-model="input.account_number"
-                  prepend-inner-icon="mdi-cash"
-                  clearable
-                  solo
-                  :rules="[rules.required]"
-                  persistent-hint
-                  :hint="$translate('helper.multiple_bank')"
+                <v-select
+                  v-model="input.rekening"
+                  :items="rekening"
+                  item-text="account_owner"
+                  :menu-props="{ maxHeight: '400' }"
                   :label="$translate('text.account_number', 'capitalize')"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <div class="caption primary--text text-capitalize">
-                  {{ $translate('text.account_owner') }}
-                </div>
-                <v-text-field
-                  v-model="input.account_owner"
-                  prepend-inner-icon="mdi-cash"
-                  clearable
-                  solo
                   :rules="[rules.required]"
+                  multiple
+                  solo
                   persistent-hint
-                  :hint="$translate('helper.multiple_bank')"
-                  :label="$translate('text.account_owner', 'capitalize')"
-                ></v-text-field>
+                  return-object
+                >
+                  <template v-slot:selection="{ item }">
+                    <v-chip label color="accent">
+                      <span class="font-weight-bold">
+                        {{ item.account_owner }}
+                      </span>
+                      <span>{{ ' - ' + item.account_number }}</span>
+                    </v-chip>
+                  </template>
+                </v-select>
               </v-col>
             </v-row>
           </template>
@@ -261,14 +232,19 @@
 export default {
   filters: {
     currency(value) {
+      const minus = Number(value) < 0
       if (value == null || value === '') return 'Rp 0'
-      if (value.toString().split('.').length > 1) return 'Rp ~'
+      if (value.toString().split('.').length > 2) return 'Rp ~'
+      else if (value.toString().split('.').length > 1) {
+        value = value.toString().split('.')
+        value = value[0]
+      }
       try {
         const result = value
           .toString()
           .match(/\d{1,3}(?=(\d{3})*$)/g)
           .join('.')
-        return 'Rp ' + result
+        return 'Rp ' + (minus === true ? '-' : '') + result
       } catch (error) {
         return 'Rp ~'
       }
@@ -299,11 +275,9 @@ export default {
         amount: null,
         notes: null,
         attachment: null,
-        bank_code: null,
-        bank_name: null,
-        account_number: null,
-        account_owner: null
+        rekening: null
       },
+      rekening: [],
       rules: {
         positive: (value) =>
           value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
@@ -314,6 +288,7 @@ export default {
   },
   mounted() {
     this.getBudgetList()
+    this.getAllRekening()
   },
   methods: {
     calculateSum() {
@@ -332,10 +307,23 @@ export default {
         this.input.budgets.pop()
       }
     },
+    async getAllRekening() {
+      try {
+        this.rekening = await this.$api('rekening', 'index', null)
+      } catch (e) {
+        this.success = false
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
+        this.alert = true
+      }
+    },
     async storeRequest() {
       if (!this.$refs.form.validate()) {
         this.success = false
-        this.messages = 'Terdapat kesalahan saat validasi data'
+        this.messages = `${this.$translate(
+          'alert.formRequest.error',
+          'capitalize'
+        )}`
         this.alert = true
         return
       }
@@ -343,17 +331,24 @@ export default {
         const result = await this.$api('request', 'store', this.input)
         if (result.status === 201) {
           this.success = true
-          this.messages = 'Berhasil membuat form request'
+          this.messages = `${this.$translate(
+            'alert.formRequest.success',
+            'capitalize'
+          )}`
           this.alert = true
           this.$refs.form.reset()
         } else {
           this.success = false
-          this.messages = 'Gagal membuat form request'
+          this.messages = `${this.$translate(
+            'alert.formRequest.failed',
+            'capitalize'
+          )}`
           this.alert = true
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
@@ -362,7 +357,18 @@ export default {
         this.data.budgetList = await this.$api('budget', 'index', null)
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
+        this.alert = true
+      }
+    },
+    checkIfBudgetNominalBelowBudgeBalance(budget) {
+      if (Number(budget.nominal) > Number(budget.code.balance)) {
+        this.success = false
+        this.messages = `${this.$translate(
+          'alert.formRequest.overBalance',
+          'capitalize'
+        )}`
         this.alert = true
       }
     }

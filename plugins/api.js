@@ -33,7 +33,7 @@ export default ({ app }, inject) => {
           case 'roles':
             return User.roles()
           case 'delete':
-            return User.delete()
+            return User.delete(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -63,8 +63,10 @@ export default ({ app }, inject) => {
             return Request.verifyAsHeadOffice(data)
           case 'verifyascashier':
             return Request.verifyAsCashier(data)
-          case 'alreadypaid':
-            return Request.verifyAlreadyPaid(data)
+          case 'confirmneedsubmission':
+            return Request.confirmNeedSubmission(data)
+          case 'confirmnoneedsubmission':
+            return Request.confirmNoNeedSubmission(data)
           case 'reject':
             return Request.reject(data)
           case 'count':
@@ -154,6 +156,8 @@ export default ({ app }, inject) => {
             return Budget.getBudgetList()
           case 'store':
             return Budget.store(data)
+          case 'update':
+            return Budget.update(data)
           case 'delete':
             return Budget.delete(data)
           case 'topup':
@@ -192,6 +196,7 @@ export default ({ app }, inject) => {
   const User = {
     register(data) {
       console.log('[User] Registering a new user.')
+      console.log(data)
       const body = new FormData()
       body.append('name', data.name)
       body.append('username', data.username)
@@ -199,7 +204,7 @@ export default ({ app }, inject) => {
       body.append('password', data.password)
       body.append('c_password', data.confirm)
       body.append('division', data.division)
-      body.append('role', data.role)
+      body.append('role', 'pic')
       body.append('nik', data.nik)
       body.append('address', data.address)
       return app
@@ -329,10 +334,24 @@ export default ({ app }, inject) => {
         body.append('details[' + i + '][nominal]', data.budgets[i].nominal)
       }
       if (data.method === 'transfer') {
-        body.append('bank_name', data.bank_name)
-        body.append('bank_code', data.bank_code)
-        body.append('account_number', data.account_number)
-        body.append('account_owner', data.account_owner)
+        let bankCode = ''
+        let bankName = ''
+        let accountNumber = ''
+        let accountOwner = ''
+        for (let i = 0; i < data.rekening.length - 1; i++) {
+          bankCode += data.rekening[i].bank_code + ','
+          bankName += data.rekening[i].bank_name + ','
+          accountNumber += data.rekening[i].account_number + ','
+          accountOwner += data.rekening[i].account_owner + ','
+        }
+        bankCode += data.rekening[data.rekening.length - 1].bank_code
+        bankName += data.rekening[data.rekening.length - 1].bank_name
+        accountNumber += data.rekening[data.rekening.length - 1].account_number
+        accountOwner += data.rekening[data.rekening.length - 1].account_owner
+        body.append('bank_name', bankName)
+        body.append('bank_code', bankCode)
+        body.append('account_number', accountNumber)
+        body.append('account_owner', accountOwner)
       }
       return app
         .$axios({
@@ -488,10 +507,27 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    verifyAlreadyPaid(data) {
-      console.log('[Request] Verify already paid')
+    confirmNeedSubmission(data) {
+      console.log('[Request] Confirm need submission')
       const body = new FormData()
       body.append('status_id', 4)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/form/request/' + data.id,
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    confirmNoNeedSubmission(data) {
+      console.log('[Request] Confirm no need submission')
+      const body = new FormData()
+      body.append('status_id', 6)
       return app
         .$axios({
           method: 'post',
@@ -566,13 +602,18 @@ export default ({ app }, inject) => {
     },
     store(data) {
       console.log('[Submission] Creating a new submission')
+      console.log(data)
       const body = new FormData()
       body.append('form_request_id', data.request.id)
-      body.append('date', data.date)
       body.append('allocation', data.allocation)
-      body.append('used', data.used)
+      body.append('used', data.use)
       body.append('balance', data.balance)
       body.append('notes', data.notes)
+      for (let i = 0; i < data.budgets.length; i++) {
+        body.append('details[' + i + '][budget_code_id]', data.budgets[i].id)
+        body.append('details[' + i + '][used]', data.budgets[i].nominal)
+        body.append('details[' + i + '][balance]', data.budgets[i].balance)
+      }
       return app
         .$axios({
           method: 'post',
@@ -1014,6 +1055,23 @@ export default ({ app }, inject) => {
         .$axios({
           method: 'post',
           url: '/budget-code',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    update(data) {
+      console.log('[Budget] Update balance')
+      const body = new FormData()
+      body.append('balance', data.balance)
+      return app
+        .$axios({
+          method: 'post',
+          url: '/budget-code/' + data.id,
           data: body
         })
         .then((response) => {

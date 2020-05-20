@@ -103,7 +103,17 @@ const numberInWords = (angka) => {
 }
 
 Vue.prototype.$terbilang = (angka) => {
-  if (angka == null || angka == '') return ''
+  // Check null value
+  if (angka == null || angka == '' || isNaN(angka)) return ''
+
+  // Check minus
+  let prefix = ''
+  if (parseInt(angka, 10) < 0) {
+    prefix = 'minus '
+    angka = parseInt(angka, 10) * -1
+  }
+
+  // Do the work
   const bagian = angka.toString().split('.')
   let hasil = ''
   for (let i = 0; i < bagian.length; i++) {
@@ -113,5 +123,5 @@ Vue.prototype.$terbilang = (angka) => {
     }
   }
 
-  return hasil + 'rupiah'
+  return prefix + hasil + 'rupiah'
 }

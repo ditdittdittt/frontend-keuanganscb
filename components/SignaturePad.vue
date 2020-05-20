@@ -24,7 +24,7 @@
             id="signature"
             ref="signaturePad"
             height="300px"
-            width="300px"
+            width="100%"
             :options="options"
           />
           <v-overlay :absolute="true" :value="isLoading" :opacity="0.9">

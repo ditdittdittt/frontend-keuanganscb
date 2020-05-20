@@ -12,21 +12,21 @@
           </template>
           <v-list>
             <v-list-item @click.stop="$export('pdf', 'petty', null)">
-              <v-list-item-title class="text-capitalize">{{
-                $translate('export.pdf')
-              }}</v-list-item-title>
+              <v-list-item-title class="text-capitalize">
+                {{ $translate('export.pdf') }}
+              </v-list-item-title>
             </v-list-item>
             <v-list-item @click.stop="$export('excel', 'petty', null)">
-              <v-list-item-title class="text-capitalize">{{
-                $translate('export.excel')
-              }}</v-list-item-title>
+              <v-list-item-title class="text-capitalize">
+                {{ $translate('export.excel') }}
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </v-card-title>
-      <v-card-subtitle class="overline">{{
-        $translate('components.table.subtitle.petty_cash')
-      }}</v-card-subtitle>
+      <v-card-subtitle class="overline">
+        {{ $translate('components.table.subtitle.petty_cash') }}
+      </v-card-subtitle>
       <v-card-text class="px-5">
         <v-text-field
           v-model="search"
@@ -43,12 +43,20 @@
       <v-card-text>
         <div class="spacing-medium"></div>
         <v-data-table :headers="headers" :items="items" :search="search">
-          <template v-slot:item.amount="{ item }">
-            {{ item.amount | currency }}
-          </template>
+          <template v-slot:item.amount="{ item }">{{
+            item.amount | currency
+          }}</template>
           <template v-slot:item.id="{ item }">
             <v-btn color="secondary" small text :to="'/detail/petty/' + item.id"
               >Detail</v-btn
+            >
+            <v-btn
+              v-if="isAdmin && isAllowedToDelete(item.status.id)"
+              color="red"
+              small
+              text
+              @click.stop="deleteRequest(item.id)"
+              >{{ $translate('components.button.delete') }}</v-btn
             >
           </template>
         </v-data-table>
@@ -65,12 +73,22 @@
 export default {
   filters: {
     currency(value) {
-      if (value === null || value === '') return 'Rp 0'
-      const result = Number(value)
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result + ',00'
+      const minus = Number(value) < 0
+      if (value == null || value === '') return 'Rp 0'
+      if (value.toString().split('.').length > 2) return 'Rp ~'
+      else if (value.toString().split('.').length > 1) {
+        value = value.toString().split('.')
+        value = value[0]
+      }
+      try {
+        const result = value
+          .toString()
+          .match(/\d{1,3}(?=(\d{3})*$)/g)
+          .join('.')
+        return 'Rp ' + (minus === true ? '-' : '') + result
+      } catch (error) {
+        return 'Rp ~'
+      }
     }
   },
   data() {
@@ -114,16 +132,38 @@ export default {
       items: []
     }
   },
+  computed: {
+    isAdmin() {
+      return this.$auth.user.roles_list
+        .map((role) => role.toLowerCase())
+        .includes('admin')
+    }
+  },
   mounted() {
     this.getAllPettyCashForms()
   },
   methods: {
+    isAllowedToDelete(status) {
+      const prohibitedStatus = [7, 8]
+      return prohibitedStatus.includes(Number(status))
+    },
     async getAllPettyCashForms() {
       try {
         this.items = await this.$api('petty', 'index', null)
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
+        this.alert = true
+      }
+    },
+    async deleteRequest(id) {
+      try {
+        await this.$api('petty', 'delete', id)
+      } catch (e) {
+        this.success = false
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     }

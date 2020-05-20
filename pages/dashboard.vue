@@ -6,13 +6,13 @@
           <v-card color="accent" dark class="pa-5">
             <v-list-item two-line>
               <v-list-item-content>
-                <v-list-item-title class="headline font-weight-black">
-                  {{ item.value }}
-                </v-list-item-title>
+                <v-list-item-title class="headline font-weight-black">{{
+                  item.value
+                }}</v-list-item-title>
                 <v-divider></v-divider>
-                <v-list-item-subtitle class="body-2 text-capitalize">
-                  {{ $translate('text.' + item.name) }}
-                </v-list-item-subtitle>
+                <v-list-item-subtitle class="body-2 text-capitalize">{{
+                  $translate('text.' + item.name)
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <v-icon large>{{ item.icon }}</v-icon>
@@ -30,9 +30,9 @@
               >Divisi Keuangan</span
             >
             <v-divider vertical class="mx-2"></v-divider>
-            <span class="text-uppercase font-weight-black">
-              {{ $translate('text.user') }}
-            </span>
+            <span class="text-uppercase font-weight-black">{{
+              $translate('text.user')
+            }}</span>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -45,97 +45,11 @@
           </v-card-title>
           <v-card-text>
             <v-data-table :items="items" :headers="headers" :search="search">
-              <template v-slot:item.id="{ item }">
-                <v-btn
-                  color="secondary"
-                  text
-                  small
-                  @click.stop="popupUser(item)"
-                  >{{ $translate('text.view') }}</v-btn
-                >
-              </template>
             </v-data-table>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="modal.user" width="600px" persistent>
-      <v-card>
-        <v-card-title class="text-uppercase title">
-          {{ $translate('text.user') }}
-        </v-card-title>
-        <v-card-text>
-          <v-simple-table>
-            <template v-slot:default>
-              <tbody>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    {{ $translate('text.name') }}
-                  </td>
-                  <td class="text-capitalize">{{ user.name }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    {{ $translate('text.username') }}
-                  </td>
-                  <td>{{ user.username }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    {{ $translate('text.email') }}
-                  </td>
-                  <td>{{ user.email }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    {{ $translate('text.division') }}
-                  </td>
-                  <td class="text-capitalize">{{ user.division }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    {{ $translate('text.role') }}
-                  </td>
-                  <td class="text-capitalize">
-                    <template v-for="(role, i) in user.roles">
-                      <span :key="'role' + i">
-                        {{ role.name }}
-                      </span>
-                      <br :key="'br' + i" />
-                    </template>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-uppercase">
-                    {{ $translate('text.nik') }}
-                  </td>
-                  <td>{{ user.nik }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    {{ $translate('text.address') }}
-                  </td>
-                  <td>{{ user.address }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-card-text>
-        <v-card-actions>
-          <v-row class="ma-0">
-            <v-col>
-              <v-btn
-                dark
-                color="secondary"
-                block
-                @click.stop="modal.user = false"
-                >{{ $translate('components.button.close') }}</v-btn
-              >
-            </v-col>
-          </v-row>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <snackbar-alert
       v-model="alert"
       :success="success"
@@ -169,21 +83,9 @@ export default {
         {
           text: `${this.$translate('text.division', 'capitalize')}`,
           value: 'division'
-        },
-        {
-          text: `${this.$translate('text.action', 'capitalize')}`,
-          value: 'id',
-          sortable: false,
-          align: 'center'
         }
       ],
-      items: [],
-
-      modal: {
-        user: false
-      },
-
-      user: {}
+      items: []
     }
   },
   mounted() {
@@ -193,10 +95,6 @@ export default {
     this.getAllUsers()
   },
   methods: {
-    popupUser(user) {
-      this.user = user
-      this.modal.user = true
-    },
     async getAllUsers() {
       try {
         const { users } = await this.$api('user', 'all')
@@ -208,7 +106,7 @@ export default {
         })
       } catch (e) {
         this.success = false
-        this.messages = `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString()
         this.alert = true
       }
     },
@@ -222,7 +120,7 @@ export default {
         })
       } catch (e) {
         this.success = false
-        this.messages = `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString()
         this.alert = true
       }
     },
@@ -236,7 +134,7 @@ export default {
         })
       } catch (e) {
         this.success = false
-        this.messages = `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString()
         this.alert = true
       }
     },
@@ -250,7 +148,7 @@ export default {
         })
       } catch (e) {
         this.success = false
-        this.messages = `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString()
         this.alert = true
       }
     }

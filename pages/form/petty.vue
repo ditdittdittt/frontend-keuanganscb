@@ -1,19 +1,19 @@
 <template>
   <v-container>
     <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
-      <v-card-title class="text-uppercase">{{
-        $translate('components.form.title.petty_cash')
-      }}</v-card-title>
-      <v-card-subtitle class="overline">{{
-        $translate('components.form.subtitle.petty_cash')
-      }}</v-card-subtitle>
+      <v-card-title class="text-uppercase">
+        {{ $translate('components.form.title.petty_cash') }}
+      </v-card-title>
+      <v-card-subtitle class="overline">
+        {{ $translate('components.form.subtitle.petty_cash') }}
+      </v-card-subtitle>
     </v-card>
     <v-card raised class="back-card px-md-5">
       <v-card-text>
         <div class="spacing-medium"></div>
         <v-form ref="form" v-model="valid">
           <v-row>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="12">
               <div class="caption primary--text text-capitalize">
                 {{ $translate('text.allocation') }}
               </div>
@@ -45,12 +45,12 @@
                   auto-select-first
                   cache-items
                 >
-                  <template v-slot:item="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
-                  <template v-slot:selection="{ item }">
-                    {{ item.code + ' - ' + item.name }}
-                  </template>
+                  <template v-slot:item="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
+                  <template v-slot:selection="{ item }">{{
+                    item.code + ' - ' + item.name
+                  }}</template>
                 </v-combobox>
               </v-col>
               <v-col cols="12" md="6" sm="6">
@@ -123,12 +123,22 @@
 export default {
   filters: {
     currency(value) {
+      const minus = Number(value) < 0
       if (value == null || value === '') return 'Rp 0'
-      const result = value
-        .toString()
-        .match(/\d{1,3}(?=(\d{3})*$)/g)
-        .join('.')
-      return 'Rp ' + result
+      if (value.toString().split('.').length > 2) return 'Rp ~'
+      else if (value.toString().split('.').length > 1) {
+        value = value.toString().split('.')
+        value = value[0]
+      }
+      try {
+        const result = value
+          .toString()
+          .match(/\d{1,3}(?=(\d{3})*$)/g)
+          .join('.')
+        return 'Rp ' + (minus === true ? '-' : '') + result
+      } catch (error) {
+        return 'Rp ~'
+      }
     },
     capitalize(value) {
       if (!value) return ''
@@ -181,7 +191,7 @@ export default {
     async storePetty() {
       if (!this.$refs.form.validate()) {
         this.success = false
-        this.messages = 'Terdapat kesalahan saat validasi data'
+        this.messages = `${this.$translate('alert.error', 'capitalize')}`
         this.alert = true
         return
       }
@@ -189,17 +199,24 @@ export default {
         const result = await this.$api('petty', 'store', this.input)
         if (result.status === 201) {
           this.success = true
-          this.messages = 'Berhasil membuat form petty cash'
+          this.messages = `${this.$translate(
+            'alert.formPetty.success',
+            'capitalize'
+          )}`
           this.alert = true
           this.$refs.form.reset()
         } else {
           this.success = false
-          this.messages = 'Gagal membuat form petty cash'
+          this.messages = `${this.$translate(
+            'alert.formPetty.failed',
+            'capitalize'
+          )}`
           this.alert = true
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
@@ -208,7 +225,8 @@ export default {
         this.data.budgetList = await this.$api('budget', 'index', null)
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     }

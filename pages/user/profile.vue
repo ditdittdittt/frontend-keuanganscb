@@ -178,6 +178,8 @@
                       dense
                       :type="'text'"
                       autofocus
+                      counter
+                      :rules="[rules.toolong]"
                       :placeholder="$translate('text.division', 'capitalize')"
                     ></v-text-field>
                   </v-list-item-subtitle>
@@ -201,102 +203,19 @@
                 </v-list-item-action>
               </v-list-item>
 
+              <!-- Role -->
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="overline font-weight-bold">
+                    {{ $translate('text.role') }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle class="text-uppercase">
+                    {{ roleList }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
               <div class="spacing-small"></div>
-              <v-subheader class="primary--text caption text-capitalize">
-                {{ $translate('text.additional_information') }}
-                <v-spacer></v-spacer>
-              </v-subheader>
-              <v-divider></v-divider>
-
-              <!-- NIK -->
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="overline font-weight-bold">
-                    <v-badge
-                      :value="different(user.nik, input.nik)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.nik') }}</v-badge
-                    >
-                  </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.nik">
-                    {{ input.nik }}
-                  </v-list-item-subtitle>
-                  <v-list-item-subtitle v-else>
-                    <v-text-field
-                      v-model="input.nik"
-                      dense
-                      :type="'number'"
-                      autofocus
-                      :placeholder="$translate('text.nik', 'uppercase')"
-                    ></v-text-field>
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-btn
-                    v-if="!edit.nik"
-                    text
-                    small
-                    @click.stop="edit.nik = true"
-                    >Edit</v-btn
-                  >
-                  <v-btn
-                    v-else
-                    dark
-                    color="secondary"
-                    small
-                    @click.stop="edit.nik = false"
-                    >{{ $translate('components.button.done') }}</v-btn
-                  >
-                </v-list-item-action>
-              </v-list-item>
-
-              <!-- Address -->
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="overline font-weight-bold">
-                    <v-badge
-                      :value="different(user.address, input.address)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.address') }}</v-badge
-                    >
-                  </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.address">
-                    {{ input.address }}
-                  </v-list-item-subtitle>
-                  <v-list-item-subtitle v-else>
-                    <v-text-field
-                      v-model="input.address"
-                      dense
-                      :type="'text'"
-                      autofocus
-                      :placeholder="$translate('text.address', 'capitalize')"
-                    ></v-text-field>
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-btn
-                    v-if="!edit.address"
-                    text
-                    small
-                    @click.stop="edit.address = true"
-                    >Edit</v-btn
-                  >
-                  <v-btn
-                    v-else
-                    dark
-                    color="secondary"
-                    small
-                    @click.stop="edit.address = false"
-                    >{{ $translate('components.button.done') }}</v-btn
-                  >
-                </v-list-item-action>
-              </v-list-item>
             </v-list>
           </v-form>
         </v-col>
@@ -350,28 +269,33 @@ export default {
         username: '',
         email: '',
         division: '',
-        nik: '',
-        address: ''
+        roles_list: []
       },
       edit: {
         name: false,
         username: false,
         email: false,
-        division: false,
-        nik: false,
-        address: false
+        division: false
       },
       input: {
         name: '',
         username: '',
         email: '',
         division: '',
-        nik: '',
-        address: ''
+        roles_list: []
       },
       rules: {
-        required: (value) => !!value || `${this.$translate('text.required')}`
+        required: (value) => !!value || `${this.$translate('text.required')}`,
+        toolong: (value) =>
+          value.length <= 20 ||
+          `${this.$translate('alert.validation.textTooLong')} maximum 20`
       }
+    }
+  },
+  computed: {
+    roleList() {
+      if (this.input.roles_list) return this.input.roles_list.join(', ')
+      else return null
     }
   },
   mounted() {
@@ -394,7 +318,8 @@ export default {
         await this.$api('user', 'show')
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -403,15 +328,18 @@ export default {
         const result = await this.$api('user', 'update', this.input)
         if (result.status === 200) {
           this.success = true
-          this.messages = 'Berhasil mengupdate user'
+          this.messages = `${this.$translate('alert.update.success')}`
           this.alert = true
-
-          this.input = this.$copy(result.data.user)
-          this.user = this.$copy(this.input)
+          this.getUser()
+        } else {
+          this.success = false
+          this.messages = `${this.$translate('alert.update.error')}`
+          this.alert = true
         }
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     },
@@ -420,7 +348,8 @@ export default {
         await this.$api('user', 'logout')
       } catch (e) {
         this.success = false
-        this.messages = 'Terjadi kesalahan : ' + e.toString().slice(0, 10)
+        this.messages =
+          `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
         this.alert = true
       }
     }
