@@ -251,9 +251,9 @@ export default {
 
           // Color handler
           color: {
-            primary: '#3f51b5',
-            secondary: '#3f51b5',
-            accent: '#3f51b5',
+            primary: '#004547',
+            secondary: '#feba0f',
+            accent: '#004547',
             error: '#f44336',
             warning: '#ffc107',
             info: '#2196f3',
@@ -264,6 +264,8 @@ export default {
 
       // List color for theme
       colors: [
+        '#004547',
+        '#feba0f',
         '#3f51b5',
         '#4caf50',
         '#8bc34a',
