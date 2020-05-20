@@ -55,7 +55,7 @@
               >Detail</v-btn
             >
             <v-btn
-              v-if="isAdmin"
+              v-if="isAdmin && isAllowedToDelete(item.status.id)"
               color="red"
               small
               text
@@ -151,6 +151,10 @@ export default {
     this.getAllRequestForms()
   },
   methods: {
+    isAllowedToDelete(status) {
+      const prohibitedStatus = [7, 8]
+      return prohibitedStatus.includes(Number(status))
+    },
     async getAllRequestForms() {
       try {
         this.items = await this.$api('request', 'index', null)
