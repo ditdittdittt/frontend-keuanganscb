@@ -120,14 +120,6 @@
                 <span>{{ item.balance | currency }}</span>
               </template>
               <template v-slot:item.id="{ item }">
-                <v-btn
-                  color="red"
-                  small
-                  text
-                  @click.stop="deleteBudgetCode(item.id)"
-                >
-                  {{ $translate('components.button.delete') }}
-                </v-btn>
               </template>
               <template v-if="edit" v-slot:body="{}">
                 <tbody
