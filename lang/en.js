@@ -1,6 +1,6 @@
 export default {
   alert: {
-    error: 'an error occured: ',
+    error: 'an error has occured: ',
     login: {
       success: 'login successful',
       error: 'login failed',
@@ -104,12 +104,12 @@ export default {
         bank: 'form bank account'
       },
       subtitle: {
-        request: 'fill this form to create request form',
-        submission: 'fill this form to create submission form',
-        petty_cash: 'fill this form to create petty cash form',
-        role: 'fill this form to create role',
-        budget_code: 'fill this form to create budget code form',
-        bank: 'fill this form to create bank account'
+        request: 'fill this form to create a request form',
+        submission: 'fill this form to create a submission form',
+        petty_cash: 'fill this form to create a petty cash form',
+        role: 'fill this form to create a new role',
+        budget_code: 'fill this form to create a budget code form',
+        bank: 'fill this form to register a new bank account'
       }
     }
   },
@@ -132,7 +132,7 @@ export default {
     attachment_file: 'attachment file',
     fund: 'fund',
     submission: 'submission',
-    use: 'use',
+    use: 'usage',
     petty_cash: 'petty cash',
     amount_in_word: 'amount in word',
     setting: 'setting',
@@ -182,13 +182,13 @@ export default {
     account_owner: 'account owner',
     status: 'status',
     sure_delete_head: 'delete this form?',
-    sure_delete_body: 'this form cannot be restored',
+    sure_delete_body: 'after deleted, this form cannot be restored',
     sure_verify_head: 'verify this form?',
     sure_verify_body: 'this form cannot be modified after verified',
     current_file: 'Current file',
     back: 'back',
     positive: 'must have a positive value',
-    convert_to_image: 'converting to image',
+    convert_to_image: 'converting to image, please wait',
     number: 'number',
     role: 'role',
     confirm_password: 'confirm password',
@@ -196,13 +196,13 @@ export default {
     sure_reject_head: 'reject this form?',
     sure_reject_body: 'this form cannot be restored after rejected',
     sure_paid_head: 'are you sure it is already paid?',
-    sure_paid_body: 'you cannot undo after you confirm',
+    sure_paid_body: 'you cannot undo action after you have confirmed',
     paid_at: 'paid at',
     information: 'information',
     top_up: 'top up',
     nominal: 'nominal',
     sure_need_submission_head: 'does this form need submission?',
-    sure_need_submission_body: 'yes if needed, no if not',
+    sure_need_submission_body: 'select yes if needed, no if not needed',
     update_balance: 'update balance',
     bank_account: 'bank account',
     rawData: 'Raw Data'
@@ -217,7 +217,7 @@ export default {
     username: 'alias or nickname',
     email: 'use correct email',
     wrong_email: 'email format is not correct',
-    password: 'use strong password',
+    password: 'please use a strong password',
     confirm_password: 're-type your password',
     different_password: 'password does not match',
     division: 'current division you are working in office',
