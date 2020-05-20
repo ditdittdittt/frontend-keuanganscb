@@ -238,7 +238,7 @@
                   <td class="caption font-weight-bold text-capitalize">
                     {{ $translate('text.amount') }}
                   </td>
-                  <td>{{ currentRequest.amount }}</td>
+                  <td>{{ currentRequest.amount | currency }}</td>
                 </tr>
               </tbody>
             </template>
@@ -423,8 +423,7 @@ export default {
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
@@ -437,8 +436,7 @@ export default {
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     }

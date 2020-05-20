@@ -10,6 +10,10 @@ export default {
       success: 'data updated successfully',
       error: 'failed to update data'
     },
+    delete: {
+      success: 'data deleted successfully',
+      error: 'failed to delete data'
+    },
     detail: {
       sign: 'process failed, signature needed',
       getError: 'failed to send data to the server'

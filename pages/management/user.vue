@@ -280,26 +280,40 @@ export default {
             'capitalize'
           )}`
           this.alert = true
-          this.getAllUsers()
+          this.modal.user = false
         }
         await this.getAllUsers()
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
     async deleteUser(id) {
       try {
-        await this.$api('user', 'delete', id)
+        const result = await this.$api('user', 'delete', id)
+        if (result.status === 200) {
+          this.success = true
+          this.messages = `${this.$translate(
+            'alert.delete.success',
+            'capitalize'
+          )}`
+          this.alert = true
+        } else {
+          this.success = false
+          this.messages = `${this.$translate(
+            'alert.delete.error',
+            'capitalize'
+          )}`
+          this.alert = true
+        }
+        this.modal.user = false
         await this.getAllUsers()
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
@@ -310,8 +324,7 @@ export default {
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },

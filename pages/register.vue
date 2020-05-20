@@ -263,7 +263,7 @@ export default {
       try {
         const result = await this.$api('user', 'register', this.input)
         if (result.status === 201) {
-          this.success = false
+          this.success = true
           this.messages = 'User berhasil dibuat'
           this.alert = true
         }

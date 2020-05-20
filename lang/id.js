@@ -10,6 +10,10 @@ export default {
       success: 'data berhasil diperbarui',
       error: 'gagal memperbarui data'
     },
+    delete: {
+      success: 'data berhasil dihapus',
+      error: 'gagal menghapus data'
+    },
     detail: {
       sign: 'Gagal karena tidak ada tanda tangan',
       getError: 'Terjadi kesalahan saat mengirim data ke server'

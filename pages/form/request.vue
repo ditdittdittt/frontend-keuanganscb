@@ -313,8 +313,7 @@ export default {
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
@@ -349,8 +348,7 @@ export default {
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
@@ -360,8 +358,7 @@ export default {
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
       }
     },
