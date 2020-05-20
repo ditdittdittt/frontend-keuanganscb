@@ -203,7 +203,8 @@ export default {
     nominal: 'nominal',
     sure_need_submission_head: 'apakah form ini butuh submisi?',
     sure_need_submission_body: 'ya jika membutuhkan, tidak jika tidak',
-    bank_account: 'rekening bank'
+    bank_account: 'rekening bank',
+    rawData: 'Data Mentah'
   },
   helper: {
     messages: {

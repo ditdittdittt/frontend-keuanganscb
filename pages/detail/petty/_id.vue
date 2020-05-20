@@ -24,6 +24,11 @@
                         $translate('export.pdf')
                       }}</v-list-item-title>
                     </v-list-item>
+                    <v-list-item @click.stop="rawData = true">
+                      <v-list-item-title class="text-capitalize">
+                        {{ $translate('text.rawData') }}
+                      </v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
               </v-card-title>
@@ -235,6 +240,7 @@
       </v-col>
     </v-row>
 
+    <!-- Dialog Sure Reject -->
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureReject" persistent max-width="600">
@@ -273,6 +279,7 @@
       </v-row>
     </template>
 
+    <!-- Dialog Already Paid -->
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureAlreadyPaid" persistent max-width="600">
@@ -311,6 +318,7 @@
       </v-row>
     </template>
 
+    <!-- Dialog Sure Verify -->
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureVerify" persistent max-width="600">
@@ -352,11 +360,33 @@
         </v-dialog>
       </v-row>
     </template>
+    <!-- Alert -->
     <snackbar-alert
       v-model="alert"
       :success="success"
       :messages="messages"
     ></snackbar-alert>
+
+    <!-- Raw Data -->
+    <v-dialog
+      v-model="rawData"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="accent">
+          <v-btn icon dark @click="rawData = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ $translate('text.rawData') }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-card-text>
+          <pre>{{ input }}</pre>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -400,6 +430,7 @@ export default {
       dialogSureReject: false,
       dialogSureAlreadyPaid: false,
       dialogSureVerify: false,
+      rawData: false,
       messages: '',
       headers: [
         {

@@ -204,7 +204,8 @@ export default {
     sure_need_submission_head: 'does this form need submission?',
     sure_need_submission_body: 'yes if needed, no if not',
     update_balance: 'update balance',
-    bank_account: 'bank account'
+    bank_account: 'bank account',
+    rawData: 'Raw Data'
   },
   helper: {
     messages: {

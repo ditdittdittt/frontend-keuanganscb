@@ -23,6 +23,11 @@
                         {{ $translate('export.pdf') }}
                       </v-list-item-title>
                     </v-list-item>
+                    <v-list-item @click.stop="rawData = true">
+                      <v-list-item-title class="text-capitalize">
+                        {{ $translate('text.rawData') }}
+                      </v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
               </v-card-title>
@@ -136,7 +141,26 @@
                       :href="input.attachment"
                       target="_blank"
                     >
-                      {{ $translate('text.view') }}
+                      {{ $translate('text.view') + ' file' }}
+                    </v-btn>
+                  </v-col>
+                  <v-col v-if="input.form_submission" cols="12" md="6">
+                    <div class="caption primary--text text-capitalize">
+                      {{ $translate('text.submission') }}
+                    </div>
+                    <div class="spacing-xssmall"></div>
+                    <v-btn
+                      color="secondary"
+                      small
+                      :to="'/detail/submission/' + input.form_submission.id"
+                    >
+                      {{
+                        input.form_submission.number
+                          ? input.form_submission.number
+                          : `${$translate('text.view')} ${$translate(
+                              'text.submission'
+                            )}`
+                      }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -302,6 +326,7 @@
         >
       </v-col>
     </v-row>
+
     <!-- Alert -->
     <snackbar-alert
       v-model="alert"
@@ -347,6 +372,8 @@
         </v-dialog>
       </v-row>
     </template>
+
+    <!-- Dialog Sure Need Submission -->
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureNeedSubmission" max-width="600" persistent>
@@ -388,6 +415,8 @@
         </v-dialog>
       </v-row>
     </template>
+
+    <!-- Dialog Sure Verify -->
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialogSureVerify" persistent max-width="600">
@@ -479,6 +508,27 @@
         </v-card>
       </v-dialog>
     </template>
+
+    <!-- Raw Data -->
+    <v-dialog
+      v-model="rawData"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="accent">
+          <v-btn icon dark @click="rawData = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ $translate('text.rawData') }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-card-text>
+          <pre>{{ input }}</pre>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -523,6 +573,7 @@ export default {
       dialogSureNeedSubmission: false,
       dialogSureVerify: false,
       dialogRekening: false,
+      rawData: false,
       messages: '',
       headers: [
         {
