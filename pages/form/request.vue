@@ -369,7 +369,6 @@ export default {
           'alert.formRequest.overBalance',
           'capitalize'
         )}`
-        budget.code.code
         this.alert = true
       }
     }
