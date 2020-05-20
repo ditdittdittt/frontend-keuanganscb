@@ -51,7 +51,7 @@
               >Detail</v-btn
             >
             <v-btn
-              v-if="isAdmin"
+              v-if="isAdmin && isAllowedToDelete(item.status.id)"
               color="red"
               small
               text
@@ -143,6 +143,10 @@ export default {
     this.getAllPettyCashForms()
   },
   methods: {
+    isAllowedToDelete(status) {
+      const prohibitedStatus = [7, 8]
+      return prohibitedStatus.includes(Number(status))
+    },
     async getAllPettyCashForms() {
       try {
         this.items = await this.$api('petty', 'index', null)
