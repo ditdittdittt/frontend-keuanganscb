@@ -1,8 +1,6 @@
 export default {
   alert: {
     error: 'terjadi kesalahan: ',
-<<<<<<< HEAD
-=======
     login: {
       success: 'login berhasil',
       error: 'login gagal',
@@ -52,7 +50,6 @@ export default {
     validation: {
       textTooLong: 'Kata terlalu panjang'
     }
->>>>>>> v2
   },
   components: {
     button: {

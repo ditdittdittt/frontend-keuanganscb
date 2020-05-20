@@ -1,8 +1,6 @@
 export default {
   alert: {
     error: 'an error occured: ',
-<<<<<<< HEAD
-=======
     login: {
       success: 'login successful',
       error: 'login failed',
@@ -52,7 +50,6 @@ export default {
     validation: {
       textTooLong: 'Text too long'
     }
->>>>>>> v2
   },
   components: {
     button: {
