@@ -5,6 +5,21 @@
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
           <v-card-title class="text-uppercase">
             <span>{{ $translate('components.table.title.user') }}</span>
+            <v-spacer></v-spacer>
+            <v-menu bottom left>
+              <template v-slot:activator="{ on }">
+                <v-btn dark icon v-on="on">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item @click.stop="rawData = true">
+                  <v-list-item-title class="text-capitalize">
+                    {{ $translate('text.rawData') }}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-card-title>
           <v-card-subtitle class="overline">
             {{ $translate('components.table.subtitle.user') }}
@@ -186,6 +201,26 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- Raw Data -->
+    <v-dialog
+      v-model="rawData"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="accent">
+          <v-btn icon dark @click="rawData = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ $translate('text.rawData') }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-card-text>
+          <pre>{{ items }}</pre>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <snackbar-alert
       v-model="alert"
       :success="success"
@@ -206,6 +241,7 @@ export default {
     return {
       alert: false,
       success: false,
+      rawData: false,
       messages: '',
       search: '',
       headers: [
