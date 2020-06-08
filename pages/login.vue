@@ -18,8 +18,32 @@
             <v-spacer></v-spacer>
           </v-card-title>
           <v-card-subtitle class="caption text-center"
-            >Masukan akun yang telah terdaftar</v-card-subtitle
+            >Masukan akun yang telah terdaftar di
+            <a href="https://www.cendekiabaznas.sch.id/"
+              >website SCB</a
+            ></v-card-subtitle
           >
+          <v-card-actions>
+            <v-row justify="center" style="ma-0">
+              <v-col cols="6">
+                <v-btn
+                  large
+                  color="secondary"
+                  block
+                  dark
+                  elevation="8"
+                  @click.stop="login('sso')"
+                  >AKUN SCB</v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-card-actions>
+          <v-card-text class="text-center">
+            <span class="caption">
+              Atau login dengan menggunakan akun khusus Keuangan SCB anda pada
+              form di bawah
+            </span>
+          </v-card-text>
           <v-card-text>
             <v-form ref="form">
               <v-row>
@@ -35,7 +59,7 @@
                     counter
                     :rules="[rules.required, rules.email]"
                     autofocus
-                    @keyup.enter="login()"
+                    @keyup.enter="login('local')"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -117,8 +141,9 @@ export default {
   },
   mounted() {},
   methods: {
-    async login() {
-      if (!this.$refs.form.validate()) {
+    async login(strategy) {
+      if (strategy == null) strategy = 'local'
+      if (!this.$refs.form.validate() && strategy === 'local') {
         this.success = false
         this.messages = `${this.$translate(
           'alert.login.warning',
@@ -128,7 +153,7 @@ export default {
         return
       }
       try {
-        const result = await this.$api('user', 'login', this.input)
+        const result = await this.$api('user', strategy, this.input)
         if (result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(
