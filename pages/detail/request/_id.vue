@@ -211,7 +211,12 @@
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.email') }}
                     </div>
-                    <span>{{ input.pic.email }}</span>
+                    <a
+                      text
+                      class="text-lowercase text--secondary pa-0 ma-0 font-weight-regular"
+                      :href="'mailto:' + input.pic.email"
+                      >{{ input.pic.email }}</a
+                    >
                   </v-col>
                 </v-row>
               </v-card-text>
