@@ -12,14 +12,14 @@
 */
 
 export default ({ app }, inject) => {
-  const api = (target, action, data, user) => {
+  const api = (target, action, data, other) => {
     target = target.toLowerCase()
     action = action.toLowerCase()
     switch (target) {
       case 'user':
         switch (action) {
           case 'login':
-            return User.login(data)
+            return User.login(data, other)
           case 'logout':
             return User.logout()
           case 'register':
@@ -46,7 +46,7 @@ export default ({ app }, inject) => {
           case 'index':
             return Request.index()
           case 'store':
-            return Request.store(data, user)
+            return Request.store(data)
           case 'show':
             return Request.show(data)
           case 'update':
@@ -220,10 +220,11 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    login(data) {
-      console.log('[User] Login into SCB app.')
+    login(data, strategy) {
+      console.log('[User] Login into SCB app with strategy : ' + strategy)
+      console.log(app.$auth)
       return app.$auth
-        .loginWith('local', {
+        .loginWith(strategy, {
           data
         })
         .then((response) => {

@@ -165,6 +165,22 @@ export default {
             propertyName: 'success'
           }
         }
+      },
+      sso: {
+        scheme: '~/schemes/ssoScheme.js',
+        endpoints: {
+          login: {
+            url: '/auth/login',
+            method: 'post',
+            propertyName: 'token'
+          },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: {
+            url: '/auth/getUser',
+            method: 'post',
+            propertyName: 'success'
+          }
+        }
       }
     }
   },
