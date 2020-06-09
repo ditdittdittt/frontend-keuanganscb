@@ -309,6 +309,7 @@ export default {
     async updateUser() {
       try {
         const result = await this.$api('user', 'update', this.input)
+        await this.$api('user', 'changeroles', this.input)
         if (result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(
