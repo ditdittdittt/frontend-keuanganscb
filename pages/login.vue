@@ -152,6 +152,7 @@ export default {
   mounted() {},
   methods: {
     async login() {
+      // use local if not defined
       if (this.strategy == null) this.strategy = 'local'
       if (!this.$refs.form.validate()) {
         this.success = false

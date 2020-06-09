@@ -222,7 +222,6 @@ export default ({ app }, inject) => {
     },
     login(data, strategy) {
       console.log('[User] Login into SCB app with strategy : ' + strategy)
-      console.log(app.$auth)
       return app.$auth
         .loginWith(strategy, {
           data
