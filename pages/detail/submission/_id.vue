@@ -751,7 +751,6 @@ export default {
     async cancelSubmissionForm() {
       try {
         const result = await this.$api('submission', 'cancel', this.input)
-        console.log(result)
         await this.getSubmissionForm()
       } catch (e) {
         this.success = false

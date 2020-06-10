@@ -235,7 +235,6 @@ export default {
   mounted() {
     const chance = require('chance').Chance()
     this.fake.name = chance.name({ middle: true, nationality: 'en' })
-    // Change the name if contains prohibited word
     const prohibited = ['jesus', 'allah']
     while (prohibited.some((value) => this.fake.name.includes(value))) {
       this.fake.name = chance.name({ middle: true, nationality: 'en' })

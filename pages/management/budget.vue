@@ -388,7 +388,7 @@
                       <div
                         class="text-center caption text-secondary text-capitalize"
                       >
-                        {{ $translate('text.no_log')}}
+                        {{ $translate('text.no_log') }}
                       </div>
                     </template>
                   </v-expansion-panel-content>
@@ -570,7 +570,6 @@ export default {
         const result = await this.$api('budget', 'log', id)
         if (result) {
           this.currentBudgetLog = this.$copy(result)
-          console.log(this.currentBudgetLog)
         }
       } catch (e) {
         this.success = false
