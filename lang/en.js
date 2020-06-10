@@ -206,7 +206,8 @@ export default {
     update_balance: 'update balance',
     bank_account: 'bank account',
     rawData: 'Raw Data',
-    history_log: 'history log'
+    history_log: 'history log',
+    no_log: 'there is no log'
   },
   helper: {
     messages: {

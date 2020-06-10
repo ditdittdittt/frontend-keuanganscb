@@ -206,7 +206,8 @@ export default {
       'pilih ya jika membutuhkan, tidak jika tidak dibutuhkan',
     bank_account: 'rekening bank',
     rawData: 'Data Mentah',
-    history_log: 'pencatatan'
+    history_log: 'pencatatan',
+    no_log: 'tidak ada log'
   },
   helper: {
     messages: {

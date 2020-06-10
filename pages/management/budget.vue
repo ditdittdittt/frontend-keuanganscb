@@ -388,7 +388,7 @@
                       <div
                         class="text-center caption text-secondary text-capitalize"
                       >
-                        Belum ada log
+                        {{ $translate('text.no_log')}}
                       </div>
                     </template>
                   </v-expansion-panel-content>
