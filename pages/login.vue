@@ -17,9 +17,13 @@
             <span class="green--text">SCB</span>
             <v-spacer></v-spacer>
           </v-card-title>
-          <v-card-subtitle class="caption text-center"
-            >Masukan akun yang telah terdaftar</v-card-subtitle
-          >
+          <v-card-subtitle class="caption text-center">
+            <div class="pt-5">
+              Masukan akun yang telah terdaftar di
+              <a href="https://www.cendekiabaznas.sch.id/">website SCB</a> atau
+              akun yang telah terdaftar di sistem ini.
+            </div>
+          </v-card-subtitle>
           <v-card-text>
             <v-form ref="form">
               <v-row>
@@ -54,6 +58,35 @@
                     @click:append="show = !show"
                     @keyup.enter="login()"
                   ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <div class="caption primary--text text-capitalize">
+                    Login dengan menggunakan ?
+                  </div>
+                  <v-radio-group v-model="strategy" row>
+                    <!--
+                      Code dibawah ini digunakan untuk mengaktifkan
+                      Single Sign On dari website SCB. Hanya saja, fitur
+                      itu belum bisa diimplementasikan dengan benar karena
+                        1. package @nuxt/auth masih belum menjelaskan
+                           dengan detail bagaimana cara membuat custom
+                           SSO. Sejauh ini, file yg sudah dicoba di buat
+                           ada di ~/scheme/ssoStrategy.js
+                        2. SSO dari website utama SCB tidak memberikan
+                           kemampuan redirect url, sehingga sulit untuk
+                           mengontrol session
+                    -->
+                    <!-- <v-radio value="sso">
+                      <template v-slot:label>
+                        <span class="caption">Akun Single Sign On SCB</span>
+                      </template>
+                    </v-radio> -->
+                    <v-radio value="local">
+                      <template v-slot:label>
+                        <span class="caption">Akun Sistem Keuangan SCB</span>
+                      </template>
+                    </v-radio>
+                  </v-radio-group>
                 </v-col>
               </v-row>
             </v-form>
@@ -99,6 +132,7 @@ export default {
       alert: false,
       success: false,
       messages: '',
+      strategy: 'local',
       show: false,
       input: {
         email: null,
@@ -118,6 +152,8 @@ export default {
   mounted() {},
   methods: {
     async login() {
+      // use local if not defined
+      if (this.strategy == null) this.strategy = 'local'
       if (!this.$refs.form.validate()) {
         this.success = false
         this.messages = `${this.$translate(
@@ -128,8 +164,13 @@ export default {
         return
       }
       try {
-        const result = await this.$api('user', 'login', this.input)
-        if (result.status === 200) {
+        const result = await this.$api(
+          'user',
+          'login',
+          this.input,
+          this.strategy
+        )
+        if (result.status != null || result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(
             'alert.login.success',

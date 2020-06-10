@@ -307,7 +307,7 @@ export default {
       return a !== b
     },
     initValue() {
-      this.user = this.$auth.$state.user
+      this.user = this.$copy(this.$auth.$state.user)
       this.input = this.$copy(this.user)
     },
     reset() {
@@ -327,6 +327,7 @@ export default {
       try {
         const result = await this.$api('user', 'update', this.input)
         if (result.status === 200) {
+          this.user = this.$copy(result.data.user)
           this.success = true
           this.messages = `${this.$translate('alert.update.success')}`
           this.alert = true

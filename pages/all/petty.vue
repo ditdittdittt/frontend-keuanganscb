@@ -21,6 +21,11 @@
                 {{ $translate('export.excel') }}
               </v-list-item-title>
             </v-list-item>
+            <v-list-item @click.stop="rawData = true">
+              <v-list-item-title class="text-capitalize">
+                {{ $translate('text.rawData') }}
+              </v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-menu>
       </v-card-title>
@@ -62,6 +67,26 @@
         </v-data-table>
       </v-card-text>
     </v-card>
+    <!-- Raw Data -->
+    <v-dialog
+      v-model="rawData"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="accent">
+          <v-btn icon dark @click="rawData = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ $translate('text.rawData') }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-card-text>
+          <pre>{{ items }}</pre>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <snackbar-alert
       v-model="alert"
       :success="success"
@@ -95,6 +120,7 @@ export default {
     return {
       alert: false,
       success: false,
+      rawData: false,
       messages: '',
       search: '',
       headers: [

@@ -5,14 +5,10 @@
       <v-col cols="12" sm="6" md="4">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
           <v-card-title class="text-uppercase">
-            {{
-            $translate('components.form.title.bank')
-            }}
+            <span>{{ $translate('components.form.title.bank') }}</span>
           </v-card-title>
           <v-card-subtitle class="overline">
-            {{
-            $translate('components.form.subtitle.bank')
-            }}
+            {{ $translate('components.form.subtitle.bank') }}
           </v-card-subtitle>
         </v-card>
         <v-card raised class="back-card px-md-5">
@@ -21,9 +17,9 @@
             <v-form ref="form" v-model="valid">
               <v-row>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.bank_name') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.bank_name') }}
+                  </div>
                   <v-text-field
                     v-model="input.bank_name"
                     prepend-inner-icon="mdi-cash"
@@ -34,9 +30,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.bank_code') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.bank_code') }}
+                  </div>
                   <v-text-field
                     v-model="input.bank_code"
                     prepend-inner-icon="mdi-cash"
@@ -47,9 +43,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.account_number') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.account_number') }}
+                  </div>
                   <v-text-field
                     v-model="input.account_number"
                     prepend-inner-icon="mdi-cash"
@@ -60,9 +56,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <div
-                    class="caption primary--text text-capitalize"
-                  >{{ $translate('text.account_owner') }}</div>
+                  <div class="caption primary--text text-capitalize">
+                    {{ $translate('text.account_owner') }}
+                  </div>
                   <v-text-field
                     v-model="input.account_owner"
                     prepend-inner-icon="mdi-cash"
@@ -83,7 +79,8 @@
               color="secondary"
               elevation="8"
               @click.stop="storeRekening"
-            >{{ $translate('components.button.add') }}</v-btn>
+              >{{ $translate('components.button.add') }}</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -93,11 +90,24 @@
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
           <v-card-title class="text-uppercase">
             <span>{{ $translate('components.table.title.bank') }}</span>
+            <v-spacer></v-spacer>
+            <v-menu bottom left>
+              <template v-slot:activator="{ on }">
+                <v-btn dark icon v-on="on">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item @click.stop="rawData = true">
+                  <v-list-item-title class="text-capitalize">
+                    {{ $translate('text.rawData') }}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-card-title>
           <v-card-subtitle class="overline">
-            {{
-            $translate('components.table.subtitle.bank')
-            }}
+            {{ $translate('components.table.subtitle.bank') }}
           </v-card-subtitle>
           <v-card-text class="px-5">
             <v-text-field
@@ -116,19 +126,47 @@
             <div class="spacing-medium"></div>
             <v-data-table :headers="headers" :items="items" :search="search">
               <template v-slot:item.balance="{ item }">
-                {{
-                item.balance | currency
-                }}
+                {{ item.balance | currency }}
               </template>
               <template v-slot:item.id="{ item }">
-                <v-btn color="secondary" small text @click.stop="deleteRekening(item.id)">Delete</v-btn>
+                <v-btn
+                  color="secondary"
+                  small
+                  text
+                  @click.stop="deleteRekening(item.id)"
+                  >Delete</v-btn
+                >
               </template>
             </v-data-table>
           </v-card-text>
         </v-card>
-        <snackbar-alert v-model="alert" :success="success" :messages="messages"></snackbar-alert>
+        <snackbar-alert
+          v-model="alert"
+          :success="success"
+          :messages="messages"
+        ></snackbar-alert>
       </v-col>
     </v-row>
+    <!-- Raw Data -->
+    <v-dialog
+      v-model="rawData"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="accent">
+          <v-btn icon dark @click="rawData = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ $translate('text.rawData') }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-card-text>
+          <pre>{{ items }}</pre>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -155,6 +193,7 @@ export default {
     return {
       alert: false,
       success: false,
+      rawData: false,
       messages: '',
       search: '',
       today: null,

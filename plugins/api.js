@@ -12,14 +12,14 @@
 */
 
 export default ({ app }, inject) => {
-  const api = (target, action, data, user) => {
+  const api = (target, action, data, other) => {
     target = target.toLowerCase()
     action = action.toLowerCase()
     switch (target) {
       case 'user':
         switch (action) {
           case 'login':
-            return User.login(data)
+            return User.login(data, other)
           case 'logout':
             return User.logout()
           case 'register':
@@ -32,6 +32,8 @@ export default ({ app }, inject) => {
             return User.getAll()
           case 'roles':
             return User.roles()
+          case 'changeroles':
+            return User.changeRoles(data)
           case 'delete':
             return User.delete(data)
           default:
@@ -46,7 +48,7 @@ export default ({ app }, inject) => {
           case 'index':
             return Request.index()
           case 'store':
-            return Request.store(data, user)
+            return Request.store(data)
           case 'show':
             return Request.show(data)
           case 'update':
@@ -220,10 +222,10 @@ export default ({ app }, inject) => {
           throw new Error(error)
         })
     },
-    login(data) {
-      console.log('[User] Login into SCB app.')
+    login(data, strategy) {
+      console.log('[User] Login into SCB app with strategy : ' + strategy)
       return app.$auth
-        .loginWith('local', {
+        .loginWith(strategy, {
           data
         })
         .then((response) => {
@@ -290,6 +292,58 @@ export default ({ app }, inject) => {
         .catch((error) => {
           throw new Error(error)
         })
+    },
+    async changeRoles(data) {
+      console.log('[User] Change user roles.')
+      const listRoles = {
+        admin: false,
+        head_office: false,
+        head_dept: false,
+        manager_ops: false,
+        pic: false,
+        verificator: false
+      }
+      if (data.roles) {
+        for (let i = 0; i < data.roles.length; i++) {
+          const body = new FormData()
+          body.append('user_id', data.id)
+          body.append('role_name', data.roles[i].name)
+          listRoles[data.roles[i].name] = true
+          await app
+            .$axios({
+              method: 'post',
+              url: '/users/assign-role',
+              data: body
+            })
+            .then((response) => {
+              return response
+            })
+            .catch((error) => {
+              throw new Error(error)
+            })
+        }
+
+        for (const role in listRoles) {
+          const body = new FormData()
+          body.append('user_id', data.id)
+          body.append('role_name', role)
+          if (!listRoles[role]) {
+            await app
+              .$axios({
+                method: 'post',
+                url: '/users/remove-role',
+                data: body
+              })
+              .then((response) => {
+                return response
+              })
+              .catch((error) => {
+                throw new Error(error)
+              })
+          }
+        }
+      }
+      return true
     },
     delete(data) {
       console.log('[User] Delete a user')
