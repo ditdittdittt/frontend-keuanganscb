@@ -86,7 +86,7 @@
       </v-col>
 
       <!-- All budget list -->
-      <v-col cols="12" md="8">
+      <v-col cols="12" sm="6" md="8">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
           <v-card-title class="text-uppercase">
             <span>{{ $translate('components.table.title.bank') }}</span>
@@ -171,6 +171,7 @@
 </template>
 <script>
 export default {
+  middleware: 'role',
   filters: {
     currency(value) {
       if (value === null || value === '') return 'Rp 0'

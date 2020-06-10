@@ -934,8 +934,8 @@ export default {
     },
     checkVerifyPic() {
       if (
-        this.input.is_confirmed_pic === 0 &&
-        this.input.status_id === 1 &&
+        parseInt(this.input.is_confirmed_pic, 10) === 0 &&
+        parseInt(this.input.status_id, 10) === 1 &&
         (this.$auth.user.id === this.input.pic.id ||
           this.checkIfUserRoleIsAdmin())
       ) {
@@ -944,9 +944,9 @@ export default {
     },
     checkVerifyHeadDept() {
       if (
-        this.input.is_confirmed_head_dept === 0 &&
-        this.input.is_confirmed_pic === 1 &&
-        this.input.status_id === 1 &&
+        parseInt(this.input.is_confirmed_head_dept, 10) === 0 &&
+        parseInt(this.input.is_confirmed_pic, 10) === 1 &&
+        parseInt(this.input.status_id, 10) === 1 &&
         (this.checkIfUserRoleIsHeadDept() ||
           this.checkIfUserRoleIsHeadOffice() ||
           this.checkIfUserRoleIsAdmin())
@@ -956,10 +956,10 @@ export default {
     },
     checkVerifyVerificator() {
       if (
-        this.input.is_confirmed_verificator === 0 &&
-        this.input.is_confirmed_pic === 1 &&
-        this.input.is_confirmed_head_dept === 1 &&
-        this.input.status_id === 1 &&
+        parseInt(this.input.is_confirmed_verificator, 10) === 0 &&
+        parseInt(this.input.is_confirmed_pic, 10) === 1 &&
+        parseInt(this.input.is_confirmed_head_dept, 10) === 1 &&
+        parseInt(this.input.status_id, 10) === 1 &&
         (this.checkIfUserRoleIsAdmin() || this.checkIfUserRoleIsVerificator())
       ) {
         return true
@@ -967,11 +967,11 @@ export default {
     },
     checkVerifyHeadOffice() {
       if (
-        this.input.is_confirmed_head_office === 0 &&
-        this.input.is_confirmed_pic === 1 &&
-        this.input.is_confirmed_head_dept === 1 &&
-        this.input.is_confirmed_verificator === 1 &&
-        this.input.status_id === 1 &&
+        parseInt(this.input.is_confirmed_head_office, 10) === 0 &&
+        parseInt(this.input.is_confirmed_pic, 10) === 1 &&
+        parseInt(this.input.is_confirmed_head_dept, 10) === 1 &&
+        parseInt(this.input.is_confirmed_verificator, 10) === 1 &&
+        parseInt(this.input.status_id, 10) === 1 &&
         (this.checkIfUserRoleIsHeadOffice() || this.checkIfUserRoleIsAdmin())
       ) {
         return true
@@ -979,12 +979,12 @@ export default {
     },
     checkVerifyCashier() {
       if (
-        this.input.is_confirmed_cashier === 0 &&
-        this.input.is_confirmed_pic === 1 &&
-        this.input.is_confirmed_head_dept === 1 &&
-        this.input.is_confirmed_verificator === 1 &&
-        this.input.is_confirmed_head_office === 1 &&
-        this.input.status_id === 2 &&
+        parseInt(this.input.is_confirmed_cashier, 10) === 0 &&
+        parseInt(this.input.is_confirmed_pic, 10) === 1 &&
+        parseInt(this.input.is_confirmed_head_dept, 10) === 1 &&
+        parseInt(this.input.is_confirmed_verificator, 10) === 1 &&
+        parseInt(this.input.is_confirmed_head_office, 10) === 1 &&
+        parseInt(this.input.status_id, 10) === 2 &&
         (this.checkIfUserRoleIsCashier() || this.checkIfUserRoleIsAdmin())
       ) {
         return true
@@ -993,7 +993,7 @@ export default {
     checkIfRequestFormNeedSubmission() {
       if (
         (this.checkIfUserRoleIsAdmin() || this.checkIfUserRoleIsCashier()) &&
-        this.input.status_id === 3
+        parseInt(this.input.status_id, 10) === 3
       ) {
         return true
       }

@@ -314,11 +314,6 @@ export default {
           icon: 'mdi-cash-multiple',
           title: 'All Petty',
           to: '/all/petty'
-        },
-        {
-          icon: 'mdi-bank',
-          title: 'Management Bank',
-          to: '/management/bank'
         }
       ]
     }
@@ -413,9 +408,17 @@ export default {
             icon: 'mdi-account-details',
             title: 'Management User',
             to: '/management/user'
+          },
+          {
+            icon: 'mdi-bank',
+            title: 'Management Bank',
+            to: '/management/bank'
           }
         )
-      } else if (this.$auth.user.roles_list.includes('head_dept')) {
+      } else if (
+        this.$auth.user.roles_list.includes('head_dept') ||
+        this.$auth.user.roles_list.includes('manager_ops')
+      ) {
         this.menu.push({
           icon: 'mdi-cash-usd',
           title: 'Management Budget',

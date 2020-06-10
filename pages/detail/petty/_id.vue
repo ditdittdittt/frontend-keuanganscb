@@ -612,8 +612,8 @@ export default {
     },
     checkVerifyPic() {
       if (
-        this.input.is_confirmed_pic === 0 &&
-        this.input.status_id === 1 &&
+        parseInt(this.input.is_confirmed_pic, 10) === 0 &&
+        parseInt(this.input.status_id, 10) === 1 &&
         (this.$auth.user.id === this.input.pic.id ||
           this.checkIfUserRoleIsAdmin())
       ) {
@@ -622,9 +622,9 @@ export default {
     },
     checkVerifyManagerOps() {
       if (
-        this.input.is_confirmed_manager_ops === 0 &&
-        this.input.is_confirmed_pic === 1 &&
-        this.input.status_id === 1 &&
+        parseInt(this.input.is_confirmed_manager_ops, 10) === 0 &&
+        parseInt(this.input.is_confirmed_pic, 10) === 1 &&
+        parseInt(this.input.status_id, 10) === 1 &&
         (this.checkIfUserRoleIsManagerOps() || this.checkIfUserRoleIsAdmin())
       ) {
         return true
@@ -632,10 +632,10 @@ export default {
     },
     checkVerifyCashier() {
       if (
-        this.input.is_confirmed_cashier === 0 &&
-        this.input.is_confirmed_pic === 1 &&
-        this.input.is_confirmed_manager_ops === 1 &&
-        this.input.status_id === 2 &&
+        parseInt(this.input.is_confirmed_cashier, 10) === 0 &&
+        parseInt(this.input.is_confirmed_pic, 10) === 1 &&
+        parseInt(this.input.is_confirmed_manager_ops, 10) === 1 &&
+        parseInt(this.input.status_id, 10) === 2 &&
         (this.checkIfUserRoleIsCashier() || this.checkIfUserRoleIsAdmin())
       ) {
         return true
@@ -645,7 +645,7 @@ export default {
       if (
         (this.checkIfUserRoleIsAdmin() ||
           this.$auth.user.id === this.input.pic.id) &&
-        this.input.status_id === 3
+        parseInt(this.input.status_id, 10) === 3
       ) {
         return true
       }
@@ -662,6 +662,4 @@ export default {
   }
 }
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

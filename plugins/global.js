@@ -27,26 +27,38 @@ const exportPDF = (form, id) => {
   switch (form) {
     case 'request':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/export/form-request/pdf')
+        window.open(
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-request/pdf'
+        )
       else
         window.open(
-          'http://54.169.75.0/api/v1/export/form-request/' + id + '/pdf'
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-request/' +
+            id +
+            '/pdf'
         )
       break
     case 'submission':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/export/form-submission/pdf')
+        window.open(
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-submission/pdf'
+        )
       else
         window.open(
-          'http://54.169.75.0/api/v1/export/form-submission/' + id + '/pdf'
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-submission/' +
+            id +
+            '/pdf'
         )
       break
     case 'petty':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/export/form-petty-cash/pdf')
+        window.open(
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-petty-cash/pdf'
+        )
       else
         window.open(
-          'http://54.169.75.0/api/v1/export/form-petty-cash/' + id + '/pdf'
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-petty-cash/' +
+            id +
+            '/pdf'
         )
       break
   }
@@ -56,26 +68,38 @@ const exportExcel = (form, id) => {
   switch (form) {
     case 'request':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/export/form-request/excel')
+        window.open(
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-request/excel'
+        )
       else
         window.open(
-          'http://54.169.75.0/api/v1/export/form-request' + id + '/excel'
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-request' +
+            id +
+            '/excel'
         )
       break
     case 'submission':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/export/form-submission/excel')
+        window.open(
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-submission/excel'
+        )
       else
         window.open(
-          'http://54.169.75.0/api/v1/export/form-submission/' + id + '/excel'
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-submission/' +
+            id +
+            '/excel'
         )
       break
     case 'petty':
       if (id === null)
-        window.open('http://54.169.75.0/api/v1/export/form-petty-cash/excel')
+        window.open(
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-petty-cash/excel'
+        )
       else
         window.open(
-          'http://54.169.75.0/api/v1/export/form-petty-cash/' + id + '/excel'
+          'https://keuangan-api.cendekiabaznas.sch.id/api/v1/export/form-petty-cash/' +
+            id +
+            '/excel'
         )
       break
   }

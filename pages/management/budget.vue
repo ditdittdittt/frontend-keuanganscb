@@ -390,6 +390,21 @@
                       >
                         {{ $translate('text.no_log') }}
                       </div>
+                      <div class="spacing-small"></div>
+                      <div>
+                        <v-btn
+                          color="red"
+                          dark
+                          block
+                          @click="deleteBudgetCode(currentLogItem.id)"
+                        >
+                          {{
+                            $translate('components.button.delete') +
+                              ' ' +
+                              $translate('text.budget')
+                          }}
+                        </v-btn>
+                      </div>
                     </template>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -403,6 +418,7 @@
 </template>
 <script>
 export default {
+  middleware: 'role',
   filters: {
     currency(value) {
       if (value === null || value === '') return 'Rp 0'
@@ -532,6 +548,7 @@ export default {
             'capitalize'
           )}`
           this.alert = true
+          this.modal.log = false
         }
         this.getAllBudgetCode()
       } catch (e) {

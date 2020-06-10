@@ -231,6 +231,7 @@
 
 <script>
 export default {
+  middleware: 'role',
   filters: {
     beauty(value) {
       if (value == null || value === '') return ''
