@@ -163,27 +163,7 @@ export default {
         return
       }
       try {
-        const result = await this.$api(
-          'user',
-          'login',
-          this.input,
-          this.strategy
-        )
-        if (result) {
-          this.success = true
-          this.messages = `${this.$translate(
-            'alert.login.success',
-            'capitalize'
-          )}`
-          this.alert = true
-        } else {
-          this.success = false
-          this.messages = `${this.$translate(
-            'alert.login.error',
-            'capitalize'
-          )}`
-          this.alert = true
-        }
+        await this.$api('user', 'login', this.input, this.strategy)
       } catch (e) {
         this.success = false
         this.messages = `${this.$translate('alert.error')}` + e.toString()
