@@ -169,7 +169,7 @@ export default {
           this.input,
           this.strategy
         )
-        if (result.status != null || result.status === 200) {
+        if (result) {
           this.success = true
           this.messages = `${this.$translate(
             'alert.login.success',
