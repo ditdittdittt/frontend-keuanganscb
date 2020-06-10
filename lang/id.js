@@ -202,9 +202,11 @@ export default {
     top_up: 'isi saldo',
     nominal: 'nominal',
     sure_need_submission_head: 'apakah form ini butuh submisi?',
-    sure_need_submission_body: 'pilih ya jika membutuhkan, tidak jika tidak dibutuhkan',
+    sure_need_submission_body:
+      'pilih ya jika membutuhkan, tidak jika tidak dibutuhkan',
     bank_account: 'rekening bank',
-    rawData: 'Data Mentah'
+    rawData: 'Data Mentah',
+    history_log: 'pencatatan'
   },
   helper: {
     messages: {

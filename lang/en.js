@@ -205,7 +205,8 @@ export default {
     sure_need_submission_body: 'select yes if needed, no if not needed',
     update_balance: 'update balance',
     bank_account: 'bank account',
-    rawData: 'Raw Data'
+    rawData: 'Raw Data',
+    history_log: 'history log'
   },
   helper: {
     messages: {

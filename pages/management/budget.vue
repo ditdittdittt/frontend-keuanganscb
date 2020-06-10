@@ -119,8 +119,6 @@
               <template v-slot:item.balance="{ item }">
                 <span>{{ item.balance | currency }}</span>
               </template>
-              <template v-slot:item.id="{ item }">
-              </template>
               <template v-if="edit" v-slot:body="{}">
                 <tbody
                   v-if="
@@ -210,14 +208,195 @@
                   </template>
                 </tbody>
               </template>
+              <template v-slot:item.id="{ item }">
+                <v-btn color="secondary" small text @click.stop="viewLog(item)">
+                  {{ $translate('text.history_log') }}
+                </v-btn>
+              </template>
             </v-data-table>
           </v-card-text>
         </v-card>
+        <!-- Alert -->
         <snackbar-alert
           v-model="alert"
           :success="success"
           :messages="messages"
         ></snackbar-alert>
+
+        <!-- Dialog Log -->
+        <v-dialog v-model="modal.log" persistent max-width="600">
+          <v-card>
+            <v-card-title class="text-capitalize">
+              <span>Detail</span>
+              <v-spacer></v-spacer>
+              <v-btn icon small @click.stop="modal.log = false"
+                ><v-icon>mdi-close</v-icon></v-btn
+              >
+            </v-card-title>
+            <v-card-text>
+              <v-divider></v-divider>
+              <v-simple-table>
+                <template v-slot:default>
+                  <tbody>
+                    <tr>
+                      <td class="caption font-weight-bold text-capitalize">
+                        {{ $translate('text.code') }}
+                      </td>
+                      <td class="caption">{{ currentLogItem.code }}</td>
+                    </tr>
+                    <tr>
+                      <td class="caption font-weight-bold text-capitalize">
+                        {{ $translate('text.name') }}
+                      </td>
+                      <td class="caption">{{ currentLogItem.name }}</td>
+                    </tr>
+                    <tr>
+                      <td class="caption font-weight-bold text-capitalize">
+                        {{ $translate('text.created_at') }}
+                      </td>
+                      <td class="caption">{{ currentLogItem.created_at }}</td>
+                    </tr>
+                    <tr>
+                      <td class="caption font-weight-bold text-capitalize">
+                        {{ $translate('text.updated_at') }}
+                      </td>
+                      <td class="caption">{{ currentLogItem.updated_at }}</td>
+                    </tr>
+                    <tr>
+                      <td class="caption font-weight-bold text-capitalize">
+                        {{ $translate('text.balance') }}
+                      </td>
+                      <td class="caption">
+                        {{ currentLogItem.balance | currency }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+              <v-divider></v-divider>
+              <div class="spacing-xsmall"></div>
+              <v-expansion-panels>
+                <v-expansion-panel>
+                  <v-expansion-panel-header
+                    class="caption font-weight-bold text-capitalize"
+                    >{{
+                      $translate('text.history_log')
+                    }}</v-expansion-panel-header
+                  >
+                  <v-expansion-panel-content>
+                    <template v-if="currentBudgetLog.length">
+                      <template v-for="(item, i) in currentBudgetLog">
+                        <div
+                          :key="'budget-log-' + item.id + '-' + i"
+                          class="spacing-xsmall"
+                        ></div>
+                        <v-card :key="'budget-log-' + i" outlined>
+                          <v-card-text>
+                            <v-row>
+                              <v-col
+                                cols="12"
+                                xs="4"
+                                sm="6"
+                                class="py-0 text-capitalize font-weight-bold caption"
+                                >{{ $translate('text.nominal') }}</v-col
+                              >
+                              <v-col
+                                cols="12"
+                                xs="8"
+                                sm="6"
+                                class="py-0 overline"
+                                >{{ item.nominal | currency }}</v-col
+                              >
+                            </v-row>
+                            <v-divider></v-divider>
+                            <v-row>
+                              <v-col
+                                cols="12"
+                                xs="4"
+                                sm="6"
+                                class="py-0 text-capitalize font-weight-bold caption"
+                                >{{ $translate('text.number') }}</v-col
+                              >
+                              <v-col
+                                cols="12"
+                                xs="8"
+                                sm="6"
+                                class="py-0 overline"
+                                >{{ item.number }}</v-col
+                              >
+                            </v-row>
+                            <v-divider></v-divider>
+                            <v-row>
+                              <v-col
+                                cols="12"
+                                xs="4"
+                                sm="6"
+                                class="py-0 text-capitalize font-weight-bold caption"
+                                >{{ $translate('text.payment_type') }}</v-col
+                              >
+                              <v-col
+                                cols="12"
+                                xs="8"
+                                sm="6"
+                                class="py-0 overline"
+                                >{{ item.type }}</v-col
+                              >
+                            </v-row>
+                            <v-divider></v-divider>
+                            <v-row>
+                              <v-col
+                                cols="12"
+                                xs="4"
+                                sm="6"
+                                class="py-0 text-capitalize font-weight-bold caption"
+                                >{{ $translate('text.created_at') }}</v-col
+                              >
+                              <v-col
+                                cols="12"
+                                xs="8"
+                                sm="6"
+                                class="py-0 overline"
+                                >{{ item.created_at }}</v-col
+                              >
+                            </v-row>
+                            <v-divider></v-divider>
+                            <v-row>
+                              <v-col
+                                cols="12"
+                                xs="4"
+                                sm="6"
+                                class="py-0 text-capitalize font-weight-bold caption"
+                                >{{ $translate('text.updated_at') }}</v-col
+                              >
+                              <v-col
+                                cols="12"
+                                xs="8"
+                                sm="6"
+                                class="py-0 overline"
+                                >{{ item.updated_at }}</v-col
+                              >
+                            </v-row>
+                          </v-card-text>
+                        </v-card>
+                        <div
+                          :key="'budget-space-' + i"
+                          class="spacing-xsmall"
+                        ></div>
+                      </template>
+                    </template>
+                    <template v-else>
+                      <div
+                        class="text-center caption text-secondary text-capitalize"
+                      >
+                        Belum ada log
+                      </div>
+                    </template>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
   </v-container>
@@ -266,9 +445,13 @@ export default {
         name: null,
         balance: null
       },
+      isLoading: false,
       modal: {
-        date: false
+        date: false,
+        log: false
       },
+      currentLogItem: {},
+      currentBudgetLog: [],
       headers: [
         {
           text: `${this.$translate('text.code', 'capitalize')}`,
@@ -305,12 +488,9 @@ export default {
     async getAllBudgetCode() {
       try {
         this.items = await this.$api('budget', 'index', null)
-        console.log(this.$vuetify.breakpoint)
       } catch (e) {
         this.success = false
-        this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error', 'capitalize')}` + e
         this.alert = true
       }
     },
@@ -338,9 +518,7 @@ export default {
         await this.getAllBudgetCode()
       } catch (e) {
         this.success = false
-        this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error', 'capitalize')}` + e
         this.alert = true
       }
     },
@@ -358,16 +536,13 @@ export default {
         this.getAllBudgetCode()
       } catch (e) {
         this.success = false
-        this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error', 'capitalize')}` + e
         this.alert = true
       }
     },
     async updateBalance(budgetCode) {
       try {
         const result = await this.$api('budget', 'update', budgetCode)
-        console.log(this.$vuetify.breakpoint)
         if (result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(
@@ -380,9 +555,26 @@ export default {
         await this.getAllBudgetCode()
       } catch (e) {
         this.success = false
-        this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error', 'capitalize')}` + e
+        this.alert = true
+      }
+    },
+    async viewLog(item) {
+      this.modal.log = true
+      this.currentLogItem = this.$copy(item)
+      this.currentBudgetLog = []
+      await this.getLogBudget(item.id)
+    },
+    async getLogBudget(id) {
+      try {
+        const result = await this.$api('budget', 'log', id)
+        if (result) {
+          this.currentBudgetLog = this.$copy(result)
+          console.log(this.currentBudgetLog)
+        }
+      } catch (e) {
+        this.success = false
+        this.messages = `${this.$translate('alert.error', 'capitalize')}` + e
         this.alert = true
       }
     }

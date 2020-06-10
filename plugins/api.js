@@ -164,6 +164,8 @@ export default ({ app }, inject) => {
             return Budget.delete(data)
           case 'topup':
             return Budget.topUp(data)
+          case 'log':
+            return Budget.log(data)
           default:
             console.error(
               `Unknown ${target} action : ${action} in '~/plugins/api.js'`
@@ -1095,9 +1097,25 @@ export default ({ app }, inject) => {
   const Budget = {
     getBudgetList() {
       console.log('[Budget] Get all budget code')
-      return app.$axios.$get('/budget-code').then((response) => {
-        return response.budget_code
-      })
+      return app.$axios
+        .$get('/budget-code')
+        .then((response) => {
+          return response.budget_code
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    },
+    log(id) {
+      console.log('[Budget] Get logs of a budget')
+      return app.$axios
+        .$get('/budget-code/' + id + '/logs')
+        .then((response) => {
+          return response.budget_code_log
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
     },
     store(data) {
       console.log('[Budget] store budget code')
