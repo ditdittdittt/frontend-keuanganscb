@@ -100,8 +100,9 @@ export default {
    */
   axios: {
     prefix: '/api/v1',
-    port: process.env.PORT || 80,
-    host: process.env.HOST || '18.141.140.18'
+    port: process.env.PORT || 443,
+    host: process.env.HOST || 'keuangan-api.cendekiabaznas.sch.id',
+    https: true
   },
   /*
    ** vuetify module configuration
