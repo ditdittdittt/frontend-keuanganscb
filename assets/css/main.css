@@ -1,21 +1,22 @@
 /* width */
 ::-webkit-scrollbar {
   width: 1px;
+  height: 6px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f3f3f3;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: rgb(230, 230, 230);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: rgb(179, 179, 179);
 }
 
 .spacing-xssmall {

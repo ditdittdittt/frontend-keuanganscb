@@ -48,7 +48,8 @@ export default {
       show: 'Gagal menampilkan daftar peran user'
     },
     validation: {
-      textTooLong: 'Kata terlalu panjang'
+      textTooLong: 'Kata terlalu panjang',
+      alphabetic: 'tolong gunakan huruf dan angka saja'
     }
   },
   components: {

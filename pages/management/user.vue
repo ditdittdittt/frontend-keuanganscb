@@ -172,7 +172,7 @@
         </v-card-text>
         <v-card-actions>
           <v-row v-if="state.edit" class="ma-0">
-            <template v-if="loading.updateUser">
+            <template v-if="loading.editUser">
               <circular-loading></circular-loading>
             </template>
             <template v-else>
@@ -277,7 +277,7 @@ export default {
       items: [],
       roles: [],
       loading: {
-        updateUser: false
+        editUser: false
       },
       modal: {
         user: false
@@ -317,11 +317,12 @@ export default {
     },
     async updateUser() {
       try {
-        this.loading.updateUser = true
+        this.loading.editUser = true
         const result = await this.$api('user', 'update', this.input)
-        this.$api('user', 'changeroles', this.input).then(
-          () => (this.loading.updateUser = false)
-        )
+        this.$api('user', 'changeroles', this.input).then(() => {
+          this.loading.editUser = false
+          this.modal.user = false
+        })
         if (result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(
@@ -340,7 +341,14 @@ export default {
     },
     async deleteUser(id) {
       try {
-        const result = await this.$api('user', 'delete', id)
+        this.loading.editUser = true
+        const result = await this.$api('user', 'delete', id).finally(
+          async () => {
+            await this.getAllUsers()
+            this.loading.editUser = false
+            this.modal.user = false
+          }
+        )
         if (result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(
@@ -356,7 +364,6 @@ export default {
           )}`
           this.alert = true
         }
-        this.getAllUsers()
       } catch (e) {
         this.success = false
         this.messages =
@@ -368,7 +375,6 @@ export default {
       try {
         this.$api('user', 'all').then(({ users }) => {
           this.items = users
-          this.modal.user = false
         })
       } catch (e) {
         this.success = false

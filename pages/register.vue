@@ -29,7 +29,7 @@
                     :label="preffix + generatedName"
                     type="text"
                     counter
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.alphabetic, rules.min3]"
                     :hint="$translate('helper.name', 'capitalize')"
                     autofocus
                   ></v-text-field>
@@ -45,7 +45,7 @@
                     :label="preffix + generatedUsername"
                     type="text"
                     counter
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.alphabetic, rules.min3]"
                     :hint="$translate('helper.username', 'capitalize')"
                   ></v-text-field>
                 </v-col>
@@ -76,7 +76,7 @@
                     :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show ? 'text' : 'password'"
                     counter
-                    :rules="[rules.required, rules.min]"
+                    :rules="[rules.required, rules.min6]"
                     :hint="$translate('helper.password', 'capitalize')"
                     @click:append="show = !show"
                   ></v-text-field>
@@ -114,6 +114,17 @@
                 </v-col>
               </v-row>
             </v-form>
+            <template v-if="errors != null">
+              <template v-if="errors.data != null">
+                <template v-if="errors.data.errors != null">
+                  <template v-for="(value, key, i) in errors.data.errors">
+                    <v-alert :key="'err' + i" prominent type="error" dense>
+                      {{ key + ': ' + value.join(', ') }}
+                    </v-alert>
+                  </template>
+                </template>
+              </template>
+            </template>
           </v-card-text>
           <v-card-actions>
             <template v-if="loading.registerUser">
@@ -176,30 +187,36 @@ export default {
         password: null,
         confirm: null,
         email: null,
-        division: null,
-        nik: null,
-        address: null
+        division: null
       },
       fake: {
         name: null,
         username: null,
         email: null,
         password: null,
-        division: null,
-        nik: null,
-        address: null
+        division: null
       },
+      user: {},
       rules: {
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`,
         confirm: (value) =>
           value === this.input.password ||
           `${this.$translate('helper.different_password', 'capitalize')}`,
-        min: (value) => (!!value && value.length >= 6) || 'Minimum 6',
+        min6: (value) => (!!value && value.length >= 6) || 'Minimum 6',
+        min3: (value) => (!!value && value.length >= 3) || 'Minimum 3',
+        alphabetic: (value) =>
+          /^[a-zA-Z0-9]+$/.test(value) ||
+          `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
         email: (value) =>
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
             value
           ) || `${this.$translate('helper.wrong_email', 'capitalize')}`
+      },
+      errors: {
+        data: {
+          errors: {}
+        }
       }
     }
   },
@@ -232,16 +249,6 @@ export default {
       return this.fake.division
         ? this.fake.division
         : this.$translate('text.division', 'capitalize')
-    },
-    generatedNIK() {
-      return this.fake.nik
-        ? this.fake.nik
-        : this.$translate('text.nik', 'uppercase')
-    },
-    generatedAddress() {
-      return this.fake.address
-        ? this.fake.address
-        : this.$translate('text.address', 'capitalize')
     }
   },
   mounted() {
@@ -279,14 +286,24 @@ export default {
           }
         )
         if (result.status === 201) {
+          this.errors.data.errors = {}
           this.success = true
           this.messages = 'User berhasil dibuat'
           this.alert = true
+          this.user = this.$copy(result.data.user)
+          this.user.password = this.input.password
+          this.loading.registerUser = true
+          this.$api('user', 'login', this.user, 'local').finally(
+            () => (this.loading.registerUser = false)
+          )
         }
       } catch (e) {
         this.success = false
         this.messages = 'Gagal register user'
         this.alert = true
+        this.errors = e
+        console.log(e)
+        this.loading.registerUser = false
       }
     }
   }

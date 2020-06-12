@@ -400,29 +400,27 @@ export default {
       ) {
         this.menu.push(
           {
-            icon: 'mdi-cash-usd',
-            title: 'Management Budget',
-            to: '/management/budget'
-          },
-          {
             icon: 'mdi-account-details',
             title: 'Management User',
             to: '/management/user'
           },
           {
-            icon: 'mdi-bank',
-            title: 'Management Bank',
-            to: '/management/bank'
+            icon: 'mdi-cash-usd',
+            title: 'Management Budget',
+            to: '/management/budget'
           }
         )
-      } else if (
+      }
+      if (
+        this.$auth.user.roles_list.includes('admin') ||
+        this.$auth.user.roles_list.includes('head_office') ||
         this.$auth.user.roles_list.includes('head_dept') ||
         this.$auth.user.roles_list.includes('manager_ops')
       ) {
         this.menu.push({
           icon: 'mdi-cash-usd',
-          title: 'Management Budget',
-          to: '/management/budget'
+          title: 'Management Bank',
+          to: '/management/bank'
         })
       }
     }

@@ -48,7 +48,8 @@ export default {
       show: 'Failed to show list of user'
     },
     validation: {
-      textTooLong: 'Text too long'
+      textTooLong: 'Text too long',
+      alphabetic: 'please use alphabets and numbers only'
     }
   },
   components: {

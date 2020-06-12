@@ -11,7 +11,7 @@ export default ({ store, route, redirect }) => {
         redirect('/login')
       }
       break
-    case 'management-bank':
+    case 'management-budget':
       if (
         !(
           user.roles_list.includes('admin') ||
@@ -21,7 +21,7 @@ export default ({ store, route, redirect }) => {
         redirect('/login')
       }
       break
-    case 'management-budget':
+    case 'management-bank':
       if (
         !(
           user.roles_list.includes('admin') ||

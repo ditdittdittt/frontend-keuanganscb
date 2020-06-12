@@ -438,21 +438,20 @@ export default {
   middleware: 'role',
   filters: {
     currency(value) {
-      if (value === null || value === '') return 'Rp 0'
-      if (value < 0) {
-        const result = Number(value)
-          .toString()
-          .match(/\d{1,3}(?=(\d{3})*$)/g)
-          .join('.')
-        return '-' + 'Rp ' + result + ',00'
+      const minus = Number(value) < 0
+      if (value == null || value === '') return 'Rp 0'
+      if (value.toString().split('.').length > 2) return 'Rp ~'
+      else if (value.toString().split('.').length > 1) {
+        value = value.toString().split('.')
+        value = value[0]
       }
       try {
-        const result = Number(value)
+        const result = value
           .toString()
           .match(/\d{1,3}(?=(\d{3})*$)/g)
           .join('.')
-        return 'Rp ' + result + ',00'
-      } catch (e) {
+        return 'Rp ' + (minus === true ? '-' : '') + result
+      } catch (error) {
         return 'Rp ~'
       }
     },

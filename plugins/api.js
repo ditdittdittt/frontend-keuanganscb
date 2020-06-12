@@ -219,7 +219,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     login(data, strategy) {
@@ -231,7 +231,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     logout() {
@@ -241,7 +241,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     show() {},
@@ -263,7 +263,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     getAll() {
@@ -273,7 +273,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     roles() {
@@ -283,7 +283,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     async changeRoles(data) {
@@ -311,7 +311,7 @@ export default ({ app }, inject) => {
               return response
             })
             .catch((error) => {
-              throw new Error(error)
+              throw error.response
             })
         }
 
@@ -330,7 +330,7 @@ export default ({ app }, inject) => {
                 return response
               })
               .catch((error) => {
-                throw new Error(error)
+                throw error.response
               })
           }
         }
@@ -348,7 +348,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     }
   }
@@ -406,7 +406,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     show(data) {
@@ -440,7 +440,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     delete(data) {
@@ -453,7 +453,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsPic(data) {
@@ -470,7 +470,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsVerificator(data) {
@@ -487,7 +487,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsCashier(data) {
@@ -504,7 +504,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsHeadDept(data) {
@@ -521,7 +521,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsHeadOffice(data) {
@@ -540,7 +540,7 @@ export default ({ app }, inject) => {
         })
         .catch((error) => {
           console.log('Nay')
-          throw new Error(error)
+          throw error.response
         })
     },
     confirmNeedSubmission(data) {
@@ -556,7 +556,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     confirmNoNeedSubmission(data) {
@@ -572,7 +572,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     reject(data) {
@@ -588,7 +588,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     count() {
@@ -598,7 +598,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     cancel(data) {
@@ -614,7 +614,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     }
   }
@@ -650,7 +650,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     show(data) {
@@ -677,7 +677,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     delete(data) {
@@ -690,7 +690,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsPic(data) {
@@ -707,7 +707,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsVerificator(data) {
@@ -724,7 +724,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsHeadOffice(data) {
@@ -741,7 +741,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsHeadDept(data) {
@@ -758,7 +758,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsCashier(data) {
@@ -775,7 +775,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAlreadyPaid(data) {
@@ -791,7 +791,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     reject(data) {
@@ -807,7 +807,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     count() {
@@ -817,7 +817,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     cancel(data) {
@@ -833,7 +833,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     }
   }
@@ -870,7 +870,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     show(data) {
@@ -902,7 +902,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     delete(data) {
@@ -915,7 +915,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsPic(data) {
@@ -932,7 +932,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsCashier(data) {
@@ -949,7 +949,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     verifyAsManagerOps(data) {
@@ -966,7 +966,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     count() {
@@ -976,7 +976,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     reject(data) {
@@ -992,7 +992,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     alreadyPaid(data) {
@@ -1008,7 +1008,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     cancel(data) {
@@ -1024,7 +1024,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     }
   }
@@ -1040,7 +1040,7 @@ export default ({ app }, inject) => {
           return response.budget_code
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     log(id) {
@@ -1050,7 +1050,7 @@ export default ({ app }, inject) => {
           return response.budget_code_log
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     store(data) {
@@ -1068,7 +1068,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     update(data) {
@@ -1084,7 +1084,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     delete(data) {
@@ -1098,7 +1098,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     topUp(data) {
@@ -1114,7 +1114,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     }
   }
@@ -1144,7 +1144,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     },
     delete(data) {
@@ -1158,7 +1158,7 @@ export default ({ app }, inject) => {
           return response
         })
         .catch((error) => {
-          throw new Error(error)
+          throw error.response
         })
     }
   }
