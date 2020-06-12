@@ -214,35 +214,44 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-
               <div class="spacing-small"></div>
             </v-list>
           </v-form>
         </v-col>
         <v-col cols="12">
-          <v-row>
-            <v-col>
-              <v-btn color="accent" block @click.stop="reset()">
-                {{ $translate('components.button.reset') }}
-              </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn dark color="secondary" block @click.stop="updateUser()">
-                {{ $translate('components.button.save') }}
-              </v-btn>
-            </v-col>
-          </v-row>
+          <template v-if="loading.updateProfile">
+            <circular-loading></circular-loading>
+          </template>
+          <template v-else>
+            <v-row>
+              <v-col>
+                <v-btn color="accent" block @click.stop="reset()">
+                  {{ $translate('components.button.reset') }}
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn dark color="secondary" block @click.stop="updateUser()">
+                  {{ $translate('components.button.save') }}
+                </v-btn>
+              </v-col>
+            </v-row>
+          </template>
         </v-col>
       </v-row>
     </v-card>
     <div class="spacing-small"></div>
-    <v-card raised>
-      <v-card-actions class="pa-0">
-        <v-btn block color="accent" x-large @click="logOut()">
-          {{ $translate('components.button.logout') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+    <template v-if="loading.logOut">
+      <circular-loading></circular-loading>
+    </template>
+    <template v-else>
+      <v-card raised>
+        <v-card-actions class="pa-0">
+          <v-btn block color="accent" x-large @click="logOut()">
+            {{ $translate('components.button.logout') }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </template>
     <div class="spacing-medium"></div>
     <snackbar-alert
       v-model="alert"
@@ -264,6 +273,10 @@ export default {
       alert: false,
       success: false,
       messages: '',
+      loading: {
+        logOut: false,
+        updateProfile: false
+      },
       user: {
         name: '',
         username: '',
@@ -299,8 +312,8 @@ export default {
     }
   },
   mounted() {
-    this.initValue()
     this.getUser()
+    this.initValue()
   },
   methods: {
     different(a, b) {
@@ -325,9 +338,16 @@ export default {
     },
     async updateUser() {
       try {
-        const result = await this.$api('user', 'update', this.input)
+        this.loading.updateProfile = true
+        const result = await this.$api('user', 'update', this.input).finally(
+          () => {
+            this.loading.updateProfile = false
+          }
+        )
         if (result.status === 200) {
+          const tmpRoles = this.$copy(this.user.roles_list)
           this.user = this.$copy(result.data.user)
+          this.user.roles_list = this.$copy(tmpRoles)
           this.success = true
           this.messages = `${this.$translate('alert.update.success')}`
           this.alert = true
@@ -344,9 +364,10 @@ export default {
         this.alert = true
       }
     },
-    async logOut() {
+    logOut() {
       try {
-        await this.$api('user', 'logout')
+        this.loading.logOut = true
+        this.$api('user', 'logout').finally(() => (this.loading.logOut = false))
       } catch (e) {
         this.success = false
         this.messages =

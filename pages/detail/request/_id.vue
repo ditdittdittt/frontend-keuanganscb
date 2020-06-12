@@ -33,7 +33,7 @@
               </v-card-title>
               <v-card-text>
                 <v-row>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.number') }}
                     </div>
@@ -43,7 +43,7 @@
                       }}
                     </span>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.allocation') }}
                     </div>
@@ -54,7 +54,7 @@
                       }}
                     </span>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.payment_type') }}
                     </div>
@@ -75,7 +75,7 @@
                       }}
                     </v-btn>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.status') }}
                     </div>
@@ -89,7 +89,7 @@
                       </span>
                     </v-chip>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.created_at') }}
                     </div>
@@ -100,7 +100,7 @@
                       }}
                     </span>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.paid_at') }}
                     </div>
@@ -108,7 +108,7 @@
                       input.date || $vuetify.lang.t('$vuetify.noDataText')
                     }}</span>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.amount') }}
                     </div>
@@ -120,7 +120,7 @@
                       }}
                     </span>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.note') }}
                     </div>
@@ -130,7 +130,7 @@
                       }}
                     </span>
                   </v-col>
-                  <v-col v-if="input.attachment" cols="12" md="6">
+                  <v-col v-if="input.attachment" cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.file') }}
                     </div>
@@ -144,7 +144,7 @@
                       {{ $translate('text.view') + ' file' }}
                     </v-btn>
                   </v-col>
-                  <v-col v-if="input.form_submission" cols="12" md="6">
+                  <v-col v-if="input.form_submission" cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.submission') }}
                     </div>
@@ -201,13 +201,13 @@
                     </div>
                     <span>{{ input.pic.name }}</span>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.division') }}
                     </div>
                     <span>{{ input.pic.division }}</span>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" sm="6">
                     <div class="caption primary--text text-capitalize">
                       {{ $translate('text.email') }}
                     </div>
@@ -231,58 +231,63 @@
                 </div>
               </v-card-title>
               <v-card-text>
-                <v-row justify="center">
-                  <v-col v-if="checkVerifyPic()" cols="12">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('pic')"
-                      >{{ $translate('text.pic') }}</v-btn
-                    >
-                  </v-col>
-                  <v-col v-if="checkVerifyVerificator()" cols="12">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('verificator')"
-                      >{{ $translate('text.verificator') }}</v-btn
-                    >
-                  </v-col>
-                  <v-col v-if="checkVerifyHeadDept()" cols="12">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('headDept')"
-                      >{{ $translate('text.head_dept') }}</v-btn
-                    >
-                  </v-col>
-                  <v-col v-if="checkVerifyHeadOffice()" cols="12">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('headOffice')"
-                      >{{ $translate('text.head_office') }}</v-btn
-                    >
-                  </v-col>
-                  <v-col v-if="checkVerifyCashier()" cols="12">
-                    <v-btn
-                      large
-                      elevation="8"
-                      block
-                      color="secondary"
-                      @click.stop="openDialogSureVerify('cashier')"
-                      >{{ $translate('text.cashier') }}</v-btn
-                    >
-                  </v-col>
-                </v-row>
+                <template v-if="loading.saveSignature">
+                  <circular-loading></circular-loading>
+                </template>
+                <template v-else>
+                  <v-row justify="center">
+                    <v-col v-if="checkVerifyPic()" cols="12">
+                      <v-btn
+                        large
+                        elevation="8"
+                        block
+                        color="secondary"
+                        @click.stop="openDialogSureVerify('pic')"
+                        >{{ $translate('text.pic') }}</v-btn
+                      >
+                    </v-col>
+                    <v-col v-if="checkVerifyVerificator()" cols="12">
+                      <v-btn
+                        large
+                        elevation="8"
+                        block
+                        color="secondary"
+                        @click.stop="openDialogSureVerify('verificator')"
+                        >{{ $translate('text.verificator') }}</v-btn
+                      >
+                    </v-col>
+                    <v-col v-if="checkVerifyHeadDept()" cols="12">
+                      <v-btn
+                        large
+                        elevation="8"
+                        block
+                        color="secondary"
+                        @click.stop="openDialogSureVerify('headDept')"
+                        >{{ $translate('text.head_dept') }}</v-btn
+                      >
+                    </v-col>
+                    <v-col v-if="checkVerifyHeadOffice()" cols="12">
+                      <v-btn
+                        large
+                        elevation="8"
+                        block
+                        color="secondary"
+                        @click.stop="openDialogSureVerify('headOffice')"
+                        >{{ $translate('text.head_office') }}</v-btn
+                      >
+                    </v-col>
+                    <v-col v-if="checkVerifyCashier()" cols="12">
+                      <v-btn
+                        large
+                        elevation="8"
+                        block
+                        color="secondary"
+                        @click.stop="openDialogSureVerify('cashier')"
+                        >{{ $translate('text.cashier') }}</v-btn
+                      >
+                    </v-col>
+                  </v-row>
+                </template>
               </v-card-text>
             </v-card>
           </v-col>
@@ -320,107 +325,50 @@
         >
       </v-col>
       <v-col v-if="checkVerifyPic()">
-        <v-btn
-          block
-          dark
-          elevation="8"
-          x-large
-          color="accent"
-          @click.stop="cancelRequestForm()"
-          >{{ $translate('components.button.cancel') }}</v-btn
-        >
+        <template v-if="loading.cancelForm">
+          <circular-loading></circular-loading>
+        </template>
+        <template v-else>
+          <v-btn
+            block
+            dark
+            elevation="8"
+            x-large
+            color="accent"
+            @click.stop="cancelRequestForm()"
+            >{{ $translate('components.button.cancel') }}</v-btn
+          >
+        </template>
       </v-col>
     </v-row>
-
     <!-- Alert -->
     <snackbar-alert
       v-model="alert"
       :success="success"
       :messages="messages"
     ></snackbar-alert>
-
-    <!-- Dialog -->
-    <template>
-      <v-row justify="center">
-        <v-dialog v-model="dialogSureReject" persistent max-width="600">
-          <v-card>
-            <v-card-title class="title text-capitalize">
-              {{ $translate('text.sure_reject_head') }}
-            </v-card-title>
-            <v-card-text class="overline">
-              {{ $translate('text.sure_reject_body') }}
-            </v-card-text>
-            <v-card-actions>
-              <v-row class="mx-0">
-                <v-col class="px-0" cols="6">
-                  <v-btn
-                    color="accent"
-                    text
-                    block
-                    @click="closeDialogSureReject()"
-                    >{{ $translate('components.button.sure_button_no') }}</v-btn
-                  >
-                </v-col>
-                <v-col class="px-0" cols="6">
-                  <v-btn
-                    color="secondary"
-                    text
-                    block
-                    @click.stop="rejectRequestForm()"
-                  >
-                    {{ $translate('components.button.sure_button_yes') }}
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </template>
-
+    <!-- Dialog Sure Reject -->
+    <dialog-alert
+      v-model="dialogSureReject"
+      :title="$translate('text.sure_reject_head')"
+      :message="$translate('text.sure_reject_body')"
+      :load="loading.rejectForm"
+      @no="dialogSureReject = false"
+      @yes="rejectRequestForm"
+    >
+      <circular-loading></circular-loading>
+    </dialog-alert>
     <!-- Dialog Sure Need Submission -->
-    <template>
-      <v-row justify="center">
-        <v-dialog v-model="dialogSureNeedSubmission" max-width="600" persistent>
-          <v-card>
-            <v-card-title class="title text-capitalize">
-              <span>{{ $translate('text.sure_need_submission_head') }} </span>
-              <v-spacer></v-spacer>
-              <v-btn icon @click="dialogSureNeedSubmission = false">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-card-title>
-            <v-card-text class="overline">
-              {{ $translate('text.sure_need_submission_body') }}
-            </v-card-text>
-            <v-card-actions>
-              <v-row class="mx-0">
-                <v-col class="px-0" cols="6">
-                  <v-btn
-                    color="accent"
-                    text
-                    block
-                    @click="confirmIfRequestFormNoNeedSubmission()"
-                    >{{ $translate('components.button.sure_button_no') }}</v-btn
-                  >
-                </v-col>
-                <v-col class="px-0" cols="6">
-                  <v-btn
-                    color="secondary"
-                    text
-                    block
-                    @click.stop="confirmIfRequestFormNeedSubmission()"
-                  >
-                    {{ $translate('components.button.sure_button_yes') }}
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </template>
-
+    <dialog-alert
+      v-model="dialogSureNeedSubmission"
+      :title="$translate('text.sure_need_submission_head')"
+      :message="$translate('text.sure_need_submission_body')"
+      :load="loading.confirmationSubmission"
+      @no="confirmIfRequestFormNoNeedSubmission"
+      @yes="confirmIfRequestFormNeedSubmission"
+    >
+      <circular-loading></circular-loading>
+    </dialog-alert>
     <!-- Dialog Sure Verify -->
     <template>
       <v-row justify="center">
@@ -433,13 +381,20 @@
               $translate('text.sure_verify_body')
             }}</v-card-text>
             <v-card-text>
-              <signature-pad :key="key" v-model="signature"></signature-pad>
-            </v-card-text>
-            <v-card-text>
-              <v-container class="text-center">
-                <span v-if="signature.isEmpty">Belum ada tanda tangan</span>
-                <span v-else>Tanda tangan siap disimpan</span>
-              </v-container>
+              <signature-pad :key="key" v-model="signature">
+                <template v-if="!loading.saveSignature">
+                  <span v-if="signature.isEmpty">
+                    <v-alert prominent type="error" class="subtitle">
+                      {{ $translate('text.no_signature_yet', 'capitalize') }}
+                    </v-alert>
+                  </span>
+                  <span v-else>
+                    <v-alert prominent type="success" class="subtitle">
+                      {{ $translate('text.signature_is_ready', 'capitalize') }}
+                    </v-alert>
+                  </span>
+                </template>
+              </signature-pad>
             </v-card-text>
             <v-card-actions>
               <v-row class="mx-0">
@@ -463,7 +418,6 @@
         </v-dialog>
       </v-row>
     </template>
-
     <!-- Dialog Rekening -->
     <template>
       <v-dialog v-model="dialogRekening" max-width="600" persistent>
@@ -479,21 +433,61 @@
                 cols="12"
                 md="6"
               >
-                <v-list color="accent" dark>
-                  <v-list-item three-line>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{ rek.bank_name + ' (' + rek.bank_code + ')' }}
-                      </v-list-item-title>
-                      <v-list-item-subtitle>{{
+                <v-card outlined>
+                  <v-card-text>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        xs="4"
+                        sm="6"
+                        class="py-0 text-capitalize font-weight-bold caption"
+                        >{{ $translate('text.bank_name') }}</v-col
+                      >
+                      <v-col cols="12" xs="8" sm="6" class="py-0 overline">
+                        {{ rek.bank_name }}
+                      </v-col>
+                    </v-row>
+                    <v-divider></v-divider>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        xs="4"
+                        sm="6"
+                        class="py-0 text-capitalize font-weight-bold caption"
+                        >{{ $translate('text.bank_code') }}</v-col
+                      >
+                      <v-col cols="12" xs="8" sm="6" class="py-0 overline">{{
+                        rek.bank_code
+                      }}</v-col>
+                    </v-row>
+                    <v-divider></v-divider>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        xs="4"
+                        sm="6"
+                        class="py-0 text-capitalize font-weight-bold caption"
+                        >{{ $translate('text.account_number') }}</v-col
+                      >
+                      <v-col cols="12" xs="8" sm="6" class="py-0 overline">{{
                         rek.account_number
-                      }}</v-list-item-subtitle>
-                      <v-list-item-subtitle>{{
+                      }}</v-col>
+                    </v-row>
+                    <v-divider></v-divider>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        xs="4"
+                        sm="6"
+                        class="py-0 text-capitalize font-weight-bold caption"
+                        >{{ $translate('text.account_owner') }}</v-col
+                      >
+                      <v-col cols="12" xs="8" sm="6" class="py-0 overline">{{
                         rek.account_owner
-                      }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
+                      }}</v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
               </v-col>
             </v-row>
           </v-card-text>
@@ -513,7 +507,6 @@
         </v-card>
       </v-dialog>
     </template>
-
     <!-- Dialog Request -->
     <template>
       <v-dialog v-model="dialogSubmission" max-width="600" persistent>
@@ -601,7 +594,6 @@
         </v-card>
       </v-dialog>
     </template>
-
     <!-- Raw Data -->
     <v-dialog
       v-model="rawData"
@@ -667,6 +659,12 @@ export default {
       dialogSureVerify: false,
       dialogRekening: false,
       dialogSubmission: false,
+      loading: {
+        saveSignature: false,
+        confirmationSubmission: false,
+        rejectForm: false,
+        cancelForm: false
+      },
       rawData: false,
       messages: '',
       headers: [
@@ -743,14 +741,8 @@ export default {
     openDialogSureReject() {
       this.dialogSureReject = true
     },
-    closeDialogSureReject() {
-      this.dialogSureReject = false
-    },
     openDialogSureNeedSubmission() {
       this.dialogSureNeedSubmission = true
-    },
-    closeDialogSureNeedSubmission() {
-      this.dialogSureNeedSubmission = false
     },
     rerender() {
       this.key++
@@ -759,10 +751,10 @@ export default {
       this.currentSubmission = this.$copy(this.input.form_submission)
       this.dialogSubmission = true
     },
-    getRequestForm() {
+    async getRequestForm() {
       try {
         this.rekening = []
-        this.$api('request', 'show', this.$route.params.id)
+        await this.$api('request', 'show', this.$route.params.id)
           .then((response) => {
             this.input = response
           })
@@ -776,120 +768,41 @@ export default {
         this.alert = true
       }
     },
-    async verifyAsPic() {
+    verifyAs() {
       if (this.signature.isEmpty === true || this.signature == null) {
         this.success = false
         this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
         this.alert = true
       } else {
         try {
+          this.loading.saveSignature = true
           this.input.signature = this.$copy(this.signature)
-          await this.$api('request', 'verifyaspic', this.input)
+          this.$api(
+            'request',
+            'verifyas' + this.verifyRole.toString().toLowerCase(),
+            this.input
+          ).finally(async () => {
+            await this.getRequestForm()
+            this.loading.saveSignature = false
+          })
         } catch (e) {
           this.success = false
           this.messages =
             `${this.$translate('alert.error', 'capitalize')}` + e.toString()
           this.alert = true
         }
-      }
-    },
-    async verifyAsVerificator() {
-      if (this.signature.isEmpty === true || this.signature == null) {
-        this.success = false
-        this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
-        this.alert = true
-      } else {
-        try {
-          this.input.signature = this.$copy(this.signature)
-          await this.$api('request', 'verifyasverificator', this.input)
-        } catch (e) {
-          this.success = false
-          this.messages =
-            `${this.$translate('alert.error', 'capitalize')}` + e.toString()
-          this.alert = true
-        }
-      }
-    },
-    async verifyAsCashier() {
-      if (this.signature.isEmpty === true || this.signature == null) {
-        this.success = false
-        this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
-        this.alert = true
-      } else {
-        try {
-          this.input.signature = this.$copy(this.signature)
-          await this.$api('request', 'verifyascashier', this.input)
-        } catch (e) {
-          this.success = false
-          this.messages =
-            `${this.$translate('alert.error', 'capitalize')}` + e.toString()
-          this.alert = true
-        }
-      }
-    },
-    async verifyAsHeadDept() {
-      if (this.signature.isEmpty === true || this.signature == null) {
-        this.success = false
-        this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
-        this.alert = true
-      } else {
-        try {
-          this.input.signature = this.$copy(this.signature)
-          await this.$api('request', 'verifyasheaddept', this.input)
-        } catch (e) {
-          this.success = false
-          this.messages =
-            `${this.$translate('alert.error', 'capitalize')}` + e.toString()
-          this.alert = true
-        }
-      }
-    },
-    async verifyAsHeadOffice() {
-      if (this.signature.isEmpty === true || this.signature == null) {
-        this.success = false
-        this.messages = `${this.$translate('alert.detail.sign', 'capitalize')}`
-        this.alert = true
-      } else {
-        try {
-          this.input.signature = this.$copy(this.signature)
-          await this.$api('request', 'verifyasheadoffice', this.input)
-        } catch (e) {
-          this.success = false
-          this.messages =
-            `${this.$translate('alert.error', 'capitalize')}` + e.toString()
-          this.alert = true
-        }
-      }
-    },
-    async verifyAs() {
-      switch (this.verifyRole) {
-        case 'pic':
-          await this.verifyAsPic()
-          break
-        case 'verificator':
-          await this.verifyAsVerificator()
-          break
-        case 'cashier':
-          await this.verifyAsCashier()
-          break
-        case 'headDept':
-          await this.verifyAsHeadDept()
-          break
-        case 'headOffice':
-          await this.verifyAsHeadOffice()
-          break
-        default:
-          this.verifyRole = ''
       }
       this.verifyRole = ''
-      await this.getRequestForm()
       this.closeDialogSureVerify()
     },
-    async rejectRequestForm() {
+    rejectRequestForm() {
       try {
-        await this.$api('request', 'reject', this.input)
-        await this.getRequestForm()
-        this.dialogSureReject = false
+        this.loading.rejectForm = true
+        this.$api('request', 'reject', this.input).finally(async () => {
+          this.loading.rejectForm = false
+          await this.getRequestForm()
+          this.dialogSureReject = false
+        })
       } catch (e) {
         this.success = false
         this.messages =
@@ -897,11 +810,16 @@ export default {
         this.alert = true
       }
     },
-    async confirmIfRequestFormNeedSubmission() {
+    confirmIfRequestFormNeedSubmission() {
       try {
-        await this.$api('request', 'confirmneedsubmission', this.input)
-        await this.getRequestForm()
-        this.closeDialogSureNeedSubmission()
+        this.loading.confirmationSubmission = true
+        this.$api('request', 'confirmneedsubmission', this.input).finally(
+          async () => {
+            await this.getRequestForm()
+            this.dialogSureNeedSubmission = false
+            this.loading.confirmationSubmission = false
+          }
+        )
       } catch (e) {
         this.success = false
         this.messages =
@@ -909,11 +827,16 @@ export default {
         this.alert = true
       }
     },
-    async confirmIfRequestFormNoNeedSubmission() {
+    confirmIfRequestFormNoNeedSubmission() {
       try {
-        await this.$api('request', 'confirmnoneedsubmission', this.input)
-        await this.getRequestForm()
-        this.closeDialogSureNeedSubmission()
+        this.loading.confirmationSubmission = true
+        this.$api('request', 'confirmnoneedsubmission', this.input).finally(
+          async () => {
+            await this.getRequestForm()
+            this.dialogSureNeedSubmission = false
+            this.loading.confirmationSubmission = false
+          }
+        )
       } catch (e) {
         this.success = false
         this.messages =
@@ -921,10 +844,13 @@ export default {
         this.alert = true
       }
     },
-    async cancelRequestForm() {
+    cancelRequestForm() {
       try {
-        await this.$api('request', 'cancel', this.input)
-        await this.getRequestForm()
+        this.loading.cancelForm = true
+        this.$api('request', 'cancel', this.input).finally(async () => {
+          await this.getRequestForm()
+          this.loading.cancelForm = false
+        })
       } catch (e) {
         this.success = false
         this.messages =

@@ -172,20 +172,25 @@
         </v-card-text>
         <v-card-actions>
           <v-row v-if="state.edit" class="ma-0">
-            <v-col>
-              <v-btn
-                dark
-                color="red"
-                block
-                @click.stop="deleteUser(input.id)"
-                >{{ $translate('components.button.delete') }}</v-btn
-              >
-            </v-col>
-            <v-col>
-              <v-btn dark color="secondary" block @click.stop="updateUser">{{
-                $translate('components.button.update')
-              }}</v-btn>
-            </v-col>
+            <template v-if="loading.updateUser">
+              <circular-loading></circular-loading>
+            </template>
+            <template v-else>
+              <v-col>
+                <v-btn
+                  dark
+                  color="red"
+                  block
+                  @click.stop="deleteUser(input.id)"
+                  >{{ $translate('components.button.delete') }}</v-btn
+                >
+              </v-col>
+              <v-col>
+                <v-btn dark color="secondary" block @click.stop="updateUser">{{
+                  $translate('components.button.update')
+                }}</v-btn>
+              </v-col>
+            </template>
           </v-row>
           <v-row v-else class="ma-0">
             <v-col>
@@ -271,6 +276,9 @@ export default {
       ],
       items: [],
       roles: [],
+      loading: {
+        updateUser: false
+      },
       modal: {
         user: false
       },
@@ -309,8 +317,11 @@ export default {
     },
     async updateUser() {
       try {
+        this.loading.updateUser = true
         const result = await this.$api('user', 'update', this.input)
-        await this.$api('user', 'changeroles', this.input)
+        this.$api('user', 'changeroles', this.input).then(
+          () => (this.loading.updateUser = false)
+        )
         if (result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(
@@ -318,9 +329,8 @@ export default {
             'capitalize'
           )}`
           this.alert = true
-          this.modal.user = false
         }
-        await this.getAllUsers()
+        this.getAllUsers()
       } catch (e) {
         this.success = false
         this.messages =
@@ -346,8 +356,7 @@ export default {
           )}`
           this.alert = true
         }
-        this.modal.user = false
-        await this.getAllUsers()
+        this.getAllUsers()
       } catch (e) {
         this.success = false
         this.messages =
@@ -355,10 +364,12 @@ export default {
         this.alert = true
       }
     },
-    async getAllUsers() {
+    getAllUsers() {
       try {
-        const { users } = await this.$api('user', 'all')
-        this.items = users
+        this.$api('user', 'all').then(({ users }) => {
+          this.items = users
+          this.modal.user = false
+        })
       } catch (e) {
         this.success = false
         this.messages =

@@ -28,6 +28,7 @@
                   clearable
                   auto-select-first
                   cache-items
+                  :loading="loading.detailBudget"
                 >
                   <template v-slot:item="{ item }">{{
                     item.code + ' - ' + item.name
@@ -167,6 +168,7 @@
                   solo
                   persistent-hint
                   return-object
+                  :loading="loading.allRekening"
                 >
                   <template v-slot:selection="{ item }">
                     <v-chip label color="accent">
@@ -210,15 +212,20 @@
         </v-form>
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn
-          block
-          x-large
-          dark
-          color="secondary"
-          elevation="8"
-          @click.stop="storeRequest()"
-          >{{ $translate('components.button.submit') }}</v-btn
-        >
+        <template v-if="loading.buttonStore">
+          <circular-loading></circular-loading>
+        </template>
+        <template v-else>
+          <v-btn
+            block
+            x-large
+            dark
+            color="secondary"
+            elevation="8"
+            @click.stop="storeRequest()"
+            >{{ $translate('components.button.submit') }}</v-btn
+          >
+        </template>
       </v-card-actions>
     </v-card>
     <snackbar-alert
@@ -264,6 +271,11 @@ export default {
       success: false,
       messages: '',
       today: null,
+      loading: {
+        buttonStore: false,
+        detailBudget: false,
+        allRekening: false
+      },
       valid: true,
       data: {
         budgetList: []
@@ -309,7 +321,10 @@ export default {
     },
     async getAllRekening() {
       try {
-        this.rekening = await this.$api('rekening', 'index', null)
+        this.loading.allRekening = true
+        this.rekening = await this.$api('rekening', 'index', null).finally(
+          () => (this.loading.allRekening = false)
+        )
       } catch (e) {
         this.success = false
         this.messages =
@@ -328,7 +343,13 @@ export default {
         return
       }
       try {
-        const result = await this.$api('request', 'store', this.input)
+        this.loading.buttonStore = true
+        const result = await this.$api('request', 'store', this.input).finally(
+          (response) => {
+            this.loading.buttonStore = false
+            return response
+          }
+        )
         if (result.status === 201) {
           this.success = true
           this.messages = `${this.$translate(
@@ -354,7 +375,10 @@ export default {
     },
     async getBudgetList() {
       try {
-        this.data.budgetList = await this.$api('budget', 'index', null)
+        this.loading.detailBudget = true
+        this.data.budgetList = await this.$api('budget', 'index', null).finally(
+          () => (this.loading.detailBudget = false)
+        )
       } catch (e) {
         this.success = false
         this.messages =

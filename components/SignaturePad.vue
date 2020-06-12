@@ -7,12 +7,12 @@
       align="center"
     >
       <v-col class="px-0">
-        <v-btn fab icon small @click="clear">
+        <v-btn fab icon small color="red" @click="clear">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-col>
       <v-col class="px-0">
-        <v-btn fab icon small @click="save">
+        <v-btn fab icon small color="green" @click="save">
           <v-icon>mdi-check</v-icon>
         </v-btn>
       </v-col>
@@ -37,6 +37,9 @@
             </v-row>
           </v-overlay>
         </v-card>
+        <v-card-text>
+          <slot></slot>
+        </v-card-text>
       </v-col>
     </v-row>
   </v-container>

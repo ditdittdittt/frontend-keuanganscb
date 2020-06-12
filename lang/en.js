@@ -207,7 +207,9 @@ export default {
     bank_account: 'bank account',
     rawData: 'Raw Data',
     history_log: 'history log',
-    no_log: 'there is no log'
+    no_log: 'there is no log',
+    no_signature_yet: 'no signature yet',
+    signature_is_ready: 'signature is ready to save'
   },
   helper: {
     messages: {
@@ -226,7 +228,8 @@ export default {
     role: 'your role in this software',
     nik: 'identity number in your id card',
     address: 'your residential address',
-    multiple_bank: 'separate with commas for multiple data'
+    multiple_bank: 'separate with commas for multiple data',
+    need_more_detail_in_table: 'if you need more detail, see it at table view'
   },
   export: {
     pdf: 'export to PDF',

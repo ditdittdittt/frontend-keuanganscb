@@ -116,20 +116,29 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn
-              large
-              color="secondary"
-              block
-              dark
-              elevation="8"
-              type="submit"
-              @click.stop="register()"
-              >Register</v-btn
-            >
+            <template v-if="loading.registerUser">
+              <circular-loading></circular-loading>
+            </template>
+            <template v-else>
+              <v-btn
+                large
+                color="secondary"
+                block
+                dark
+                elevation="8"
+                type="submit"
+                @click.stop="register()"
+                >Register</v-btn
+              >
+            </template>
           </v-card-actions>
           <v-card-actions>
-            <v-btn outlined block color="primary" @click.stop="$router.go(-1)"
-              >Kembali</v-btn
+            <v-btn
+              outlined
+              block
+              color="primary"
+              @click.stop="$router.replace('/login')"
+              >Kembali Login</v-btn
             >
           </v-card-actions>
         </v-card>
@@ -158,6 +167,9 @@ export default {
       alert: false,
       success: false,
       messages: '',
+      loading: {
+        registerUser: false
+      },
       input: {
         name: null,
         username: null,
@@ -260,7 +272,12 @@ export default {
         return
       }
       try {
-        const result = await this.$api('user', 'register', this.input)
+        this.loading.registerUser = true
+        const result = await this.$api('user', 'register', this.input).finally(
+          () => {
+            this.loading.registerUser = false
+          }
+        )
         if (result.status === 201) {
           this.success = true
           this.messages = 'User berhasil dibuat'

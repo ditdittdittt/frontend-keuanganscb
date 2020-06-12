@@ -31,6 +31,7 @@
                 auto-select-first
                 cache-items
                 return-object
+                :loading="loading.formRequest"
                 @change="setArrayBudgets()"
                 @click:append-outer="showRequest(input.request)"
               ></v-combobox>
@@ -196,15 +197,20 @@
         </v-form>
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn
-          block
-          x-large
-          dark
-          color="secondary"
-          elevation="8"
-          @click.stop="storeSubmission()"
-          >{{ $translate('components.button.submit') }}</v-btn
-        >
+        <template v-if="loading.buttonStore">
+          <circular-loading></circular-loading>
+        </template>
+        <template v-else>
+          <v-btn
+            block
+            x-large
+            dark
+            color="secondary"
+            elevation="8"
+            @click.stop="storeSubmission()"
+            >{{ $translate('components.button.submit') }}</v-btn
+          >
+        </template>
       </v-card-actions>
     </v-card>
     <v-dialog v-model="modal.request" max-width="600" persistent>
@@ -316,6 +322,10 @@ export default {
       alert: false,
       success: false,
       messages: '',
+      loading: {
+        buttonStore: false,
+        formRequest: false
+      },
       valid: true,
       input: {
         budgets: [{ id: null, nominal: null, balance: null }],
@@ -403,7 +413,15 @@ export default {
         return
       }
       try {
-        const result = await this.$api('submission', 'store', this.input)
+        this.loading.buttonStore = true
+        const result = await this.$api(
+          'submission',
+          'store',
+          this.input
+        ).finally((response) => {
+          this.loading.buttonStore = false
+          return response
+        })
         if (result.status === 201) {
           this.success = true
           this.messages = `${this.$translate(
@@ -429,9 +447,12 @@ export default {
     },
     async getAllRequestForms() {
       try {
-        this.form.request = await this.$api('request', 'index', null)
+        this.loading.formRequest = true
+        this.form.request = await this.$api('request', 'index', null).finally(
+          () => (this.loading.formRequest = false)
+        )
         this.form.request = this.form.request.filter(function(form) {
-          return form.status_id === 4
+          return parseInt(form.status_id, 10) === 4
         })
       } catch (e) {
         this.success = false

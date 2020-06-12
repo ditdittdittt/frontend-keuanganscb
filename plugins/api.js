@@ -535,9 +535,11 @@ export default ({ app }, inject) => {
           data: body
         })
         .then((response) => {
+          console.log('Yay')
           return response
         })
         .catch((error) => {
+          console.log('Nay')
           throw new Error(error)
         })
     },

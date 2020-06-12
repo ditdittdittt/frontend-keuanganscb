@@ -207,7 +207,9 @@ export default {
     bank_account: 'rekening bank',
     rawData: 'Data Mentah',
     history_log: 'pencatatan',
-    no_log: 'tidak ada log'
+    no_log: 'tidak ada log',
+    no_signature_yet: 'belum ada tanda tangan',
+    signature_is_ready: 'tanda tangan siap disimpan'
   },
   helper: {
     messages: {
@@ -226,7 +228,9 @@ export default {
     role: 'peran pada penggunaan software',
     nik: 'nomor induk kependudukan',
     address: 'alamat tempat tinggal',
-    multiple_bank: 'pisahkan dengan koma untuk data yang lebih dari satu'
+    multiple_bank: 'pisahkan dengan koma untuk data yang lebih dari satu',
+    need_more_detail_in_table:
+      'jika ingin melihat lebih lengkap, pilih table view'
   },
   export: {
     pdf: 'ekspor ke PDF',

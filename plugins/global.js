@@ -6,7 +6,11 @@ import Vue from 'vue'
 
 // ===================== Resgiter Component =====================
 import SnackbarAlert from '~/components/SnackbarAlert.vue'
+import CircularLoading from '~/components/CircularLoading.vue'
+import DialogAlert from '~/components/DialogAlert.vue'
 Vue.component('snackbar-alert', SnackbarAlert)
+Vue.component('circular-loading', CircularLoading)
+Vue.component('dialog-alert', DialogAlert)
 // ==============================================================
 
 // ===================== Helper Functions =====================

@@ -72,15 +72,20 @@
             </v-form>
           </v-card-text>
           <v-card-actions class="pa-5">
-            <v-btn
-              block
-              x-large
-              dark
-              color="secondary"
-              elevation="8"
-              @click.stop="storeRekening"
-              >{{ $translate('components.button.add') }}</v-btn
-            >
+            <template v-if="loading.buttonStore">
+              <circular-loading></circular-loading>
+            </template>
+            <template v-else>
+              <v-btn
+                block
+                x-large
+                dark
+                color="secondary"
+                elevation="8"
+                @click.stop="storeRekening"
+                >{{ $translate('components.button.add') }}</v-btn
+              >
+            </template>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -204,6 +209,9 @@ export default {
         name: null,
         balance: null
       },
+      loading: {
+        buttonStore: false
+      },
       modal: {
         date: false
       },
@@ -244,9 +252,12 @@ export default {
     this.getAllRekening()
   },
   methods: {
-    async getAllRekening() {
+    getAllRekening() {
       try {
-        this.items = await this.$api('rekening', 'index', null)
+        this.$api('rekening', 'index', null).then((response) => {
+          this.items = response
+          this.loading.buttonStore = false
+        })
       } catch (e) {
         this.success = false
         this.messages =
@@ -266,6 +277,7 @@ export default {
         return
       }
       try {
+        this.loading.buttonStore = true
         const result = await this.$api('rekening', 'store', this.input)
         if (result.status === 201) {
           this.success = true

@@ -63,11 +63,11 @@
               >Detail</v-btn
             >
             <v-btn
-              v-if="isAdmin && isAllowedToDelete(item.status.id)"
+              v-if="isAdmin && isAllowedToDelete(item.status.status)"
               color="red"
               small
               text
-              @click.stop="deleteRequest(item.id)"
+              @click.stop="popupDialogDelete(item.id)"
               >{{ $translate('components.button.delete') }}</v-btn
             >
           </template>
@@ -99,9 +99,24 @@
       :success="success"
       :messages="messages"
     ></snackbar-alert>
+    <dialog-alert
+      v-model="dialogDelete"
+      :title="$translate('text.sure_delete_head')"
+      :message="$translate('text.sure_delete_body')"
+      :load="loading.onDelete"
+      @no="dialogDelete = false"
+      @yes="deleteSubmission"
+    >
+      <circular-loading></circular-loading>
+    </dialog-alert>
   </v-container>
 </template>
 <script>
+import {
+  Terbayarkan,
+  MenungguSubmisi,
+  VerifikasiSubmisi
+} from '~/plugins/constant'
 export default {
   filters: {
     currency(value) {
@@ -130,6 +145,11 @@ export default {
       rawData: false,
       messages: '',
       search: '',
+      dialogDelete: false,
+      currentId: null,
+      loading: {
+        onDelete: false
+      },
       headers: [
         {
           text: `${this.$translate('text.date', 'capitalize')}`,
@@ -177,9 +197,13 @@ export default {
     this.getAllSubmissionForms()
   },
   methods: {
+    popupDialogDelete(id) {
+      this.dialogDelete = true
+      this.currentId = id
+    },
     isAllowedToDelete(status) {
-      const prohibitedStatus = [7, 8]
-      return prohibitedStatus.includes(Number(status))
+      const prohibitedStatus = [Terbayarkan, MenungguSubmisi, VerifikasiSubmisi]
+      return !prohibitedStatus.includes(status)
     },
     async getAllSubmissionForms() {
       try {
@@ -191,9 +215,14 @@ export default {
         this.alert = true
       }
     },
-    async deleteRequest(id) {
+    deleteSubmission(id) {
       try {
-        await this.$api('submission', 'delete', id)
+        this.loading.onDelete = true
+        this.$api('submission', 'delete', this.currentId).finally(() => {
+          this.getAllSubmissionForms()
+          this.dialogDelete = false
+          this.loading.onDelete = false
+        })
       } catch (e) {
         this.success = false
         this.messages =

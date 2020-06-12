@@ -92,15 +92,20 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn
-              large
-              color="secondary"
-              block
-              dark
-              elevation="8"
-              @click.stop="login()"
-              >Login</v-btn
-            >
+            <template v-if="loading.logIn">
+              <circular-loading></circular-loading>
+            </template>
+            <template v-else>
+              <v-btn
+                large
+                color="secondary"
+                block
+                dark
+                elevation="8"
+                @click.stop="login()"
+                >Login</v-btn
+              >
+            </template>
           </v-card-actions>
           <v-card-text class="text-center">
             <span class="caption">
@@ -132,6 +137,9 @@ export default {
       alert: false,
       success: false,
       messages: '',
+      loading: {
+        logIn: false
+      },
       strategy: 'local',
       show: false,
       input: {
@@ -151,7 +159,7 @@ export default {
   },
   mounted() {},
   methods: {
-    async login() {
+    login() {
       if (this.strategy == null) this.strategy = 'local'
       if (!this.$refs.form.validate()) {
         this.success = false
@@ -163,7 +171,10 @@ export default {
         return
       }
       try {
-        await this.$api('user', 'login', this.input, this.strategy)
+        this.loading.logIn = true
+        this.$api('user', 'login', this.input, this.strategy).finally(
+          () => (this.loading.logIn = false)
+        )
       } catch (e) {
         this.success = false
         this.messages = `${this.$translate('alert.error')}` + e.toString()
