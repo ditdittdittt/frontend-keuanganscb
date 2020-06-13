@@ -286,56 +286,26 @@ export default ({ app }, inject) => {
           throw error.response
         })
     },
-    async changeRoles(data) {
-      const listRoles = {
-        admin: false,
-        head_office: false,
-        head_dept: false,
-        manager_ops: false,
-        pic: false,
-        verificator: false
-      }
+    changeRoles(data) {
+      const body = new FormData()
       if (data.roles) {
         for (let i = 0; i < data.roles.length; i++) {
-          const body = new FormData()
           body.append('user_id', data.id)
-          body.append('role_name', data.roles[i].name)
-          listRoles[data.roles[i].name] = true
-          await app
-            .$axios({
-              method: 'post',
-              url: '/users/assign-role',
-              data: body
-            })
-            .then((response) => {
-              return response
-            })
-            .catch((error) => {
-              throw error.response
-            })
-        }
-
-        for (const role in listRoles) {
-          const body = new FormData()
-          body.append('user_id', data.id)
-          body.append('role_name', role)
-          if (!listRoles[role]) {
-            await app
-              .$axios({
-                method: 'post',
-                url: '/users/remove-role',
-                data: body
-              })
-              .then((response) => {
-                return response
-              })
-              .catch((error) => {
-                throw error.response
-              })
-          }
+          body.append('role_name[' + i + ']', data.roles[i].name)
         }
       }
-      return true
+      return app
+        .$axios({
+          method: 'post',
+          url: '/users/assign-role',
+          data: body
+        })
+        .then((response) => {
+          return response
+        })
+        .catch((error) => {
+          throw error.response
+        })
     },
     delete(data) {
       return app

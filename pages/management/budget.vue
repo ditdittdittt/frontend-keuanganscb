@@ -120,6 +120,7 @@
               :items="items"
               :search="search"
               :disable-sort="edit"
+              class="text-capitalize"
             >
               <template v-slot:item.balance="{ item }">
                 <span>{{ item.balance | currency }}</span>
@@ -272,7 +273,7 @@
                         {{ $translate('text.balance') }}
                       </td>
                       <td class="caption">
-                        {{ currentLogItem.balance }}
+                        {{ currentLogItem.balance | currency }}
                       </td>
                     </tr>
                   </tbody>
@@ -280,152 +281,93 @@
               </v-simple-table>
               <v-divider></v-divider>
               <div class="spacing-xsmall"></div>
-              <v-expansion-panels>
-                <v-expansion-panel>
-                  <v-expansion-panel-header
-                    class="caption font-weight-bold text-capitalize"
-                    >{{
-                      $translate('text.history_log')
-                    }}</v-expansion-panel-header
-                  >
-                  <v-expansion-panel-content>
-                    <template v-if="currentBudgetLog.length">
-                      <div class="text-center">
-                        <v-radio-group v-model="view" row>
-                          <v-radio label="List View" value="list"></v-radio>
-                          <v-radio label="Table View" value="table"></v-radio>
-                        </v-radio-group>
-                      </div>
-                      <template v-if="view === 'list'">
-                        <template
-                          v-for="(item, i) in currentBudgetLog.slice(0, 5)"
-                        >
-                          <div
-                            :key="'budget-log-' + item.id + '-' + i"
-                            class="spacing-xsmall"
-                          ></div>
-                          <v-card :key="'budget-log-' + i" outlined>
-                            <v-card-text>
-                              <v-row>
-                                <v-col
-                                  cols="12"
-                                  xs="4"
-                                  sm="6"
-                                  class="py-0 text-capitalize font-weight-bold caption"
-                                  >{{ $translate('text.nominal') }}</v-col
-                                >
-                                <v-col
-                                  cols="12"
-                                  xs="8"
-                                  sm="6"
-                                  class="py-0 overline"
-                                  >{{ item.nominal | currency }}</v-col
-                                >
-                              </v-row>
-                              <v-divider></v-divider>
-                              <v-row>
-                                <v-col
-                                  cols="12"
-                                  xs="4"
-                                  sm="6"
-                                  class="py-0 text-capitalize font-weight-bold caption"
-                                  >{{ $translate('text.number') }}</v-col
-                                >
-                                <v-col
-                                  cols="12"
-                                  xs="8"
-                                  sm="6"
-                                  class="py-0 overline"
-                                  >{{ item.number }}</v-col
-                                >
-                              </v-row>
-                              <v-divider></v-divider>
-                              <v-row>
-                                <v-col
-                                  cols="12"
-                                  xs="4"
-                                  sm="6"
-                                  class="py-0 text-capitalize font-weight-bold caption"
-                                  >{{ $translate('text.payment_type') }}</v-col
-                                >
-                                <v-col
-                                  cols="12"
-                                  xs="8"
-                                  sm="6"
-                                  class="py-0 overline"
-                                  >{{ item.type }}</v-col
-                                >
-                              </v-row>
-                              <v-divider></v-divider>
-                              <v-row>
-                                <v-col
-                                  cols="12"
-                                  xs="4"
-                                  sm="6"
-                                  class="py-0 text-capitalize font-weight-bold caption"
-                                  >{{ $translate('text.created_at') }}</v-col
-                                >
-                                <v-col
-                                  cols="12"
-                                  xs="8"
-                                  sm="6"
-                                  class="py-0 overline"
-                                  >{{ item.created_at }}</v-col
-                                >
-                              </v-row>
-                            </v-card-text>
-                          </v-card>
-                          <div
-                            :key="'budget-space-' + i"
-                            class="spacing-xsmall"
-                          ></div>
-                        </template>
-                        <div class="overline text-center">
-                          {{ $translate('helper.need_more_detail_in_table') }}
-                        </div>
-                      </template>
-                      <template v-else>
-                        <v-data-table
-                          :headers="headersBudgetLog"
-                          :items="currentBudgetLog"
-                          class="overline"
-                          style="font-size: 10px !important"
-                        ></v-data-table>
-                      </template>
-                    </template>
-                    <template v-else>
-                      <div
-                        class="text-center caption text-secondary text-capitalize"
+              <template v-if="currentBudgetLog.length">
+                <v-expansion-panels>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header
+                      class="caption font-weight-bold text-capitalize"
+                      >{{
+                        $translate('text.history_log')
+                      }}</v-expansion-panel-header
+                    >
+                    <v-expansion-panel-content>
+                      <v-text-field
+                        v-model="searchLog"
+                        append-icon="mdi-magnify"
+                        :label="$translate('text.search', 'capitalize')"
+                        solo
+                        single-line
+                        :light="!$vuetify.theme.dark"
+                        hide-details
+                        dense
+                      ></v-text-field>
+                      <v-data-table
+                        :headers="headersBudgetLog"
+                        :items="currentBudgetLog"
+                        :search="searchLog"
+                        class="text-capitalize"
                       >
-                        {{ $translate('text.no_log') }}
-                      </div>
-                      <div class="spacing-small"></div>
-                      <div class="text-center">
-                        <template v-if="loading.budgetLog">
-                          <v-progress-circular
-                            indeterminate
-                            color="secondary"
-                          ></v-progress-circular>
+                        <template v-slot:item.number="{ item }">
+                          <span class="overline">
+                            {{ item.number }}
+                          </span>
                         </template>
-                        <template v-else>
-                          <v-btn
-                            color="red"
-                            dark
-                            block
-                            @click="deleteBudgetCode(currentLogItem.id)"
-                          >
-                            {{
-                              $translate('components.button.delete') +
-                                ' ' +
-                                $translate('text.budget')
-                            }}
-                          </v-btn>
+                        <template v-slot:item.type="{ item }">
+                          <span class="overline">
+                            <span
+                              :class="
+                                item.type.toString().toUpperCase() === 'KREDIT'
+                                  ? 'red--text'
+                                  : 'green--text'
+                              "
+                            >
+                              {{ item.type }}
+                            </span>
+                          </span>
                         </template>
-                      </div>
-                    </template>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
+                        <template v-slot:item.nominal="{ item }">
+                          <span class="overline">
+                            {{ item.nominal | currency }}
+                          </span>
+                        </template>
+                        <template v-slot:item.created_at="{ item }">
+                          <span class="overline">
+                            {{ item.created_at }}
+                          </span>
+                        </template>
+                      </v-data-table>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-expansion-panels>
+              </template>
+              <template v-else>
+                <div class="text-center caption text-secondary text-capitalize">
+                  {{ $translate('text.no_log') }}
+                </div>
+                <div class="spacing-small"></div>
+                <div class="text-center">
+                  <template v-if="loading.budgetLog">
+                    <v-progress-circular
+                      indeterminate
+                      color="secondary"
+                    ></v-progress-circular>
+                  </template>
+                  <template v-else>
+                    <v-btn
+                      color="red"
+                      dark
+                      block
+                      @click="deleteBudgetCode(currentLogItem.id)"
+                    >
+                      {{
+                        $translate('components.button.delete') +
+                          ' ' +
+                          $translate('text.budget')
+                      }}
+                    </v-btn>
+                  </template>
+                </div>
+              </template>
             </v-card-text>
           </v-card>
         </v-dialog>
@@ -470,6 +412,7 @@ export default {
       success: false,
       messages: '',
       search: '',
+      searchLog: '',
       valid: true,
       edit: false,
       input: {
@@ -485,24 +428,23 @@ export default {
         date: false,
         log: false
       },
-      view: 'list',
       currentLogItem: {},
       currentBudgetLog: [],
       headers: [
         {
-          text: `${this.$translate('text.code', 'capitalize')}`,
+          text: `${this.$translate('text.code')}`,
           value: 'code'
         },
         {
-          text: `${this.$translate('text.name', 'capitalize')}`,
+          text: `${this.$translate('text.name')}`,
           value: 'name'
         },
         {
-          text: `${this.$translate('text.balance', 'capitalize')}`,
+          text: `${this.$translate('text.balance')}`,
           value: 'balance'
         },
         {
-          text: `${this.$translate('text.action', 'capitalize')}`,
+          text: `${this.$translate('text.action')}`,
           value: 'id',
           sortable: false,
           align: 'center'
@@ -511,16 +453,16 @@ export default {
       items: [],
       headersBudgetLog: [
         {
-          text: `${this.$translate('text.nominal')}`,
-          value: 'nominal'
-        },
-        {
           text: `${this.$translate('text.number')}`,
           value: 'number'
         },
         {
           text: `${this.$translate('text.payment_type')}`,
           value: 'type'
+        },
+        {
+          text: `${this.$translate('text.nominal')}`,
+          value: 'nominal'
         },
         {
           text: `${this.$translate('text.created_at')}`,
@@ -590,7 +532,10 @@ export default {
     },
     async deleteBudgetCode(id) {
       try {
-        const result = await this.$api('budget', 'delete', id)
+        this.loading.budgetLog = true
+        const result = await this.$api('budget', 'delete', id).finally(() => {
+          this.loading.budgetLog = false
+        })
         if (result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(

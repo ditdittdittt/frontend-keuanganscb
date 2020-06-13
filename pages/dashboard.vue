@@ -1,29 +1,101 @@
 <template>
   <v-container>
     <v-row>
-      <template v-for="(item, i) in summary">
-        <v-col :key="item.name + i" cols="12" sm="6" md="3">
-          <v-card color="accent" dark class="pa-5">
+      <v-col cols="12" sm="3">
+        <template v-if="loading.summaryUser">
+          <circular-loading></circular-loading>
+        </template>
+        <template v-else>
+          <v-card color="accent" dark>
             <v-list-item two-line>
               <v-list-item-content>
-                <v-list-item-title class="headline font-weight-black">{{
-                  item.value
+                <v-list-item-title class="body-1 font-weight-black">{{
+                  summary.user.value
                 }}</v-list-item-title>
                 <v-divider></v-divider>
-                <v-list-item-subtitle class="body-2 text-capitalize">{{
-                  $translate('text.' + item.name)
+                <v-list-item-subtitle class="overline text-capitalize">{{
+                  $translate('text.' + summary.user.name)
                 }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
-                <v-icon large>{{ item.icon }}</v-icon>
+                <v-icon>{{ summary.user.icon }}</v-icon>
               </v-list-item-action>
             </v-list-item>
           </v-card>
-        </v-col>
-      </template>
+        </template>
+      </v-col>
+      <v-col cols="12" sm="3">
+        <template v-if="loading.summaryRequest">
+          <circular-loading></circular-loading>
+        </template>
+        <template v-else>
+          <v-card color="accent" dark>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title class="body-1 font-weight-black">{{
+                  summary.request.value
+                }}</v-list-item-title>
+                <v-divider></v-divider>
+                <v-list-item-subtitle class="overline text-capitalize">{{
+                  $translate('text.' + summary.request.name)
+                }}</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-icon>{{ summary.request.icon }}</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+          </v-card>
+        </template>
+      </v-col>
+      <v-col cols="12" sm="3">
+        <template v-if="loading.summarySubmission">
+          <circular-loading></circular-loading>
+        </template>
+        <template v-else>
+          <v-card color="accent" dark>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title class="body-1 font-weight-black">{{
+                  summary.submission.value
+                }}</v-list-item-title>
+                <v-divider></v-divider>
+                <v-list-item-subtitle class="overline text-capitalize">{{
+                  $translate('text.' + summary.submission.name)
+                }}</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-icon>{{ summary.submission.icon }}</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+          </v-card>
+        </template>
+      </v-col>
+      <v-col cols="12" sm="3">
+        <template v-if="loading.summaryPetty">
+          <circular-loading></circular-loading>
+        </template>
+        <template v-else>
+          <v-card color="accent" dark>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title class="body-1 font-weight-black">{{
+                  summary.petty.value
+                }}</v-list-item-title>
+                <v-divider></v-divider>
+                <v-list-item-subtitle class="overline text-capitalize">{{
+                  $translate('text.' + summary.petty.name)
+                }}</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-icon>{{ summary.petty.icon }}</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+          </v-card>
+        </template>
+      </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col cols="12" sm="12" md="6">
         <v-card>
           <v-card-title class="title">
             <span class="text-uppercase primary--text font-weight-black"
@@ -41,11 +113,31 @@
               single-line
               hide-details
               solo
+              dense
             ></v-text-field>
           </v-card-title>
           <v-card-text>
-            <v-data-table :items="items" :headers="headers" :search="search">
+            <v-data-table
+              :items="items"
+              :headers="headers"
+              :search="search"
+              :items-per-page="5"
+            >
             </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="12" md="6">
+        <v-card>
+          <v-card-title class="text-uppercase font-weight-black">{{
+            $translate('text.budget')
+          }}</v-card-title>
+          <v-card-text>
+            <doughnut-chart
+              ref="dchart"
+              :chartdata="budgets"
+              :options="chartoptions"
+            ></doughnut-chart>
           </v-card-text>
         </v-card>
       </v-col>
@@ -59,22 +151,50 @@
 </template>
 
 <script>
+import DoughnutChart from '~/components/DoughnutChart.vue'
 export default {
+  components: {
+    DoughnutChart
+  },
   data() {
     return {
       alert: false,
       success: false,
       messages: '',
       search: '',
-      summary: [],
+      loading: {
+        summaryUser: false,
+        summaryRequest: false,
+        summarySubmission: false,
+        summaryPetty: false,
+        chartData: false
+      },
+      summary: {
+        user: {
+          name: 'user',
+          value: null,
+          icon: 'mdi-account'
+        },
+        request: {
+          name: 'request',
+          value: null,
+          icon: 'mdi-newspaper'
+        },
+        submission: {
+          name: 'submission',
+          value: null,
+          icon: 'mdi-newspaper-variant-multiple'
+        },
+        petty: {
+          name: 'petty_cash',
+          value: null,
+          icon: 'mdi-cash-multiple'
+        }
+      },
       headers: [
         {
           text: `${this.$translate('text.name', 'capitalize')}`,
           value: 'name'
-        },
-        {
-          text: `${this.$translate('text.username', 'capitalize')}`,
-          value: 'username'
         },
         {
           text: `${this.$translate('text.email', 'capitalize')}`,
@@ -85,25 +205,82 @@ export default {
           value: 'division'
         }
       ],
-      items: []
+      items: [],
+      budgets: {
+        labels: [],
+        name: [],
+        datasets: [
+          {
+            backgroundColor: [],
+            borderColor: [],
+            data: []
+          }
+        ]
+      },
+      chartoptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        tooltips: {
+          enabled: true,
+          callbacks: {
+            beforeLabel: ({ index }, data) => {
+              return data.name[index]
+            },
+            label: ({ index }, data) => {
+              return data.labels[index]
+            },
+            footer: (tooltipsItem, data) => {
+              return 'Rp ' + data.datasets[0].data[tooltipsItem[0].index]
+            }
+          }
+        }
+      }
     }
   },
   mounted() {
+    this.getBudgets()
     this.getFormRequestCount()
     this.getFormSubmissionCount()
     this.getFormPettyCashCount()
     this.getAllUsers()
   },
   methods: {
+    randomColor() {
+      const letters = '0123456789ABCDEF'
+      let color = '#'
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)]
+      }
+      return color
+    },
+    async getBudgets() {
+      try {
+        this.loading.chartData = true
+        const response = await this.$api('budget', 'index').finally(() => {
+          this.loading.chartData = false
+        })
+        for (let i = 0; i < response.length; i++) {
+          this.budgets.labels.push(response[i].code)
+          this.budgets.name.push(response[i].name)
+          this.budgets.datasets[0].backgroundColor.push(this.randomColor())
+          this.budgets.datasets[0].borderColor.push('rgba(0, 0, 0, 0.0)')
+          this.budgets.datasets[0].data.push(response[i].balance)
+        }
+        this.$refs.dchart.update()
+      } catch (e) {
+        this.success = false
+        this.messages = `${this.$translate('alert.error')}` + e.toString()
+        this.alert = true
+      }
+    },
     async getAllUsers() {
       try {
-        const { users } = await this.$api('user', 'all')
-        this.items = users
-        this.summary.push({
-          name: 'user',
-          value: users.length,
-          icon: 'mdi-account-circle'
+        this.loading.summaryUser = true
+        const response = await this.$api('user', 'all').finally(() => {
+          this.loading.summaryUser = false
         })
+        this.items = response.users
+        this.summary.user.value = response.users.length
       } catch (e) {
         this.success = false
         this.messages = `${this.$translate('alert.error')}` + e.toString()
@@ -112,12 +289,11 @@ export default {
     },
     async getFormRequestCount() {
       try {
-        const response = await this.$api('request', 'count')
-        this.summary.push({
-          name: 'request',
-          value: response.form_request_count,
-          icon: 'mdi-newspaper'
+        this.loading.summaryRequest = true
+        const response = await this.$api('request', 'count').finally(() => {
+          this.loading.summaryRequest = false
         })
+        this.summary.request.value = response.form_request_count
       } catch (e) {
         this.success = false
         this.messages = `${this.$translate('alert.error')}` + e.toString()
@@ -126,12 +302,11 @@ export default {
     },
     async getFormSubmissionCount() {
       try {
-        const response = await this.$api('submission', 'count')
-        this.summary.push({
-          name: 'submission',
-          value: response.form_submission_count,
-          icon: 'mdi-newspaper-variant-multiple'
+        this.loading.summarySubmission = true
+        const response = await this.$api('submission', 'count').finally(() => {
+          this.loading.summarySubmission = false
         })
+        this.summary.submission.value = response.form_submission_count
       } catch (e) {
         this.success = false
         this.messages = `${this.$translate('alert.error')}` + e.toString()
@@ -140,12 +315,11 @@ export default {
     },
     async getFormPettyCashCount() {
       try {
-        const response = await this.$api('petty', 'count')
-        this.summary.push({
-          name: 'petty_cash',
-          value: response.form_petty_cash_count,
-          icon: 'mdi-cash-multiple'
+        this.loading.summaryPetty = true
+        const response = await this.$api('petty', 'count').finally(() => {
+          this.loading.summaryPetty = false
         })
+        this.summary.petty.value = response.form_petty_cash_count
       } catch (e) {
         this.success = false
         this.messages = `${this.$translate('alert.error')}` + e.toString()

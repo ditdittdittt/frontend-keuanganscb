@@ -216,12 +216,12 @@
           <v-icon small>mdi-cog</v-icon>
         </v-btn>
       </v-app-bar>
-      <v-content>
+      <v-main>
         <div class="spacing-medium"></div>
         <v-container>
           <nuxt />
         </v-container>
-      </v-content>
+      </v-main>
     </v-app>
   </v-theme-provider>
 </template>

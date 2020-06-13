@@ -16,7 +16,7 @@
       </v-row>
       <v-row justify="center" align="center">
         <v-col cols="12" class="text-center">
-          <v-btn color="primary" @click="$router.go(0)">
+          <v-btn small color="primary" @click="$router.go(0)">
             RELOAD
           </v-btn>
         </v-col>

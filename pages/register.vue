@@ -60,7 +60,7 @@
                     :label="preffix + generatedEmail"
                     type="email"
                     counter
-                    :rules="[rules.required, rules.email]"
+                    :rules="[rules.required, rules.min3, rules.email]"
                     :hint="$translate('helper.email', 'capitalize')"
                   ></v-text-field>
                 </v-col>
@@ -108,7 +108,7 @@
                     :label="preffix + generatedDivision"
                     type="text"
                     counter
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.toolong, rules.min3]"
                     :hint="$translate('helper.division', 'capitalize')"
                   ></v-text-field>
                 </v-col>
@@ -211,7 +211,10 @@ export default {
         email: (value) =>
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
             value
-          ) || `${this.$translate('helper.wrong_email', 'capitalize')}`
+          ) || `${this.$translate('helper.wrong_email', 'capitalize')}`,
+        toolong: (value) =>
+          value.length <= 20 ||
+          `${this.$translate('alert.validation.textTooLong')} maximum 20`
       },
       errors: {
         data: {

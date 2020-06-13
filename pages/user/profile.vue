@@ -34,6 +34,7 @@
                       dense
                       :type="'text'"
                       autofocus
+                      :rules="[rules.required, rules.min3, rules.alphabetic]"
                       :placeholder="$translate('text.name', 'capitalize')"
                     ></v-text-field>
                   </v-list-item-subtitle>
@@ -79,6 +80,7 @@
                       dense
                       :type="'text'"
                       autofocus
+                      :rules="[rules.required, rules.min3, rules.alphabetic]"
                       :placeholder="$translate('text.username', 'capitalize')"
                     ></v-text-field>
                   </v-list-item-subtitle>
@@ -124,6 +126,7 @@
                       dense
                       :type="'email'"
                       autofocus
+                      :rules="[rules.required, rules.min3, rules.email]"
                       :placeholder="$translate('text.email', 'capitalize')"
                     ></v-text-field>
                   </v-list-item-subtitle>
@@ -179,7 +182,7 @@
                       :type="'text'"
                       autofocus
                       counter
-                      :rules="[rules.toolong]"
+                      :rules="[rules.required, rules.toolong, rules.min3]"
                       :placeholder="$translate('text.division', 'capitalize')"
                     ></v-text-field>
                   </v-list-item-subtitle>
@@ -298,7 +301,20 @@ export default {
         roles_list: []
       },
       rules: {
-        required: (value) => !!value || `${this.$translate('text.required')}`,
+        required: (value) =>
+          !!value || `${this.$translate('text.required', 'capitalize')}`,
+        confirm: (value) =>
+          value === this.input.password ||
+          `${this.$translate('helper.different_password', 'capitalize')}`,
+        min6: (value) => (!!value && value.length >= 6) || 'Minimum 6',
+        min3: (value) => (!!value && value.length >= 3) || 'Minimum 3',
+        alphabetic: (value) =>
+          /^[a-zA-Z0-9]+$/.test(value) ||
+          `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
+        email: (value) =>
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+            value
+          ) || `${this.$translate('helper.wrong_email', 'capitalize')}`,
         toolong: (value) =>
           value.length <= 20 ||
           `${this.$translate('alert.validation.textTooLong')} maximum 20`

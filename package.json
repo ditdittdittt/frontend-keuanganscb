@@ -28,9 +28,11 @@
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
     "chance": "^1.1.6",
+    "chart.js": "^2.9.3",
     "nodemon": "^2.0.4",
     "nuxt": "^2.0.0",
     "nuxt-i18n": "^6.12.2",
+    "vue-chartjs": "^3.5.0",
     "vue-signature-pad": "^2.0.2"
   },
   "devDependencies": {
