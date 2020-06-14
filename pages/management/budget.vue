@@ -235,7 +235,13 @@
             <v-card-title class="text-capitalize">
               <span>Detail</span>
               <v-spacer></v-spacer>
-              <v-btn icon small @click.stop="modal.log = false"
+              <v-btn
+                fab
+                elevation="0"
+                dark
+                x-small
+                color="red"
+                @click.stop="modal.log = false"
                 ><v-icon>mdi-close</v-icon></v-btn
               >
             </v-card-title>
@@ -301,6 +307,7 @@
                         hide-details
                         dense
                       ></v-text-field>
+                      <div class="spacing-xsmall"></div>
                       <v-data-table
                         :headers="headersBudgetLog"
                         :items="currentBudgetLog"
@@ -550,6 +557,7 @@ export default {
         this.success = false
         this.messages = `${this.$translate('alert.error', 'capitalize')}` + e
         this.alert = true
+        this.loading.budgetLog = false
       }
     },
     async updateBalance(budgetCode, index = null) {

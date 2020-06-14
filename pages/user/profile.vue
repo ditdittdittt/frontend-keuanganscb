@@ -3,7 +3,7 @@
     <v-card raised>
       <v-row justify="center" class="ma-0">
         <v-col cols="12">
-          <v-form ref="form">
+          <v-form ref="form" v-model="valid">
             <v-list two-line subheader>
               <v-subheader class="primary--text caption text-capitalize">
                 {{ $translate('text.account') }}
@@ -23,11 +23,9 @@
                       >{{ $translate('text.name') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle
-                    v-if="!edit.name"
-                    class="text-capitalize"
-                    >{{ input.name }}</v-list-item-subtitle
-                  >
+                  <v-list-item-subtitle v-if="!edit.name" class="py-2">{{
+                    input.name
+                  }}</v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.name"
@@ -44,14 +42,15 @@
                     v-if="!edit.name"
                     text
                     small
+                    :disabled="!valid"
                     @click.stop="edit.name = true"
                     >Edit</v-btn
                   >
                   <v-btn
                     v-else
-                    dark
                     color="secondary"
                     small
+                    :disabled="!valid"
                     @click.stop="edit.name = false"
                     >{{ $translate('components.button.done') }}</v-btn
                   >
@@ -71,7 +70,7 @@
                       >{{ $translate('text.username') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.username">
+                  <v-list-item-subtitle v-if="!edit.username" class="py-2">
                     {{ input.username }}
                   </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
@@ -80,7 +79,7 @@
                       dense
                       :type="'text'"
                       autofocus
-                      :rules="[rules.required, rules.min3, rules.alphabetic]"
+                      :rules="[rules.required, rules.min3, rules.username]"
                       :placeholder="$translate('text.username', 'capitalize')"
                     ></v-text-field>
                   </v-list-item-subtitle>
@@ -90,14 +89,15 @@
                     v-if="!edit.username"
                     text
                     small
+                    :disabled="!valid"
                     @click.stop="edit.username = true"
                     >Edit</v-btn
                   >
                   <v-btn
                     v-else
-                    dark
                     color="secondary"
                     small
+                    :disabled="!valid"
                     @click.stop="edit.username = false"
                     >{{ $translate('components.button.done') }}</v-btn
                   >
@@ -117,7 +117,7 @@
                       >{{ $translate('text.email') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle v-if="!edit.email">
+                  <v-list-item-subtitle v-if="!edit.email" class="py-2">
                     {{ input.email }}
                   </v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
@@ -136,14 +136,15 @@
                     v-if="!edit.email"
                     text
                     small
+                    :disabled="!valid"
                     @click.stop="edit.email = true"
                     >Edit</v-btn
                   >
                   <v-btn
                     v-else
-                    dark
                     color="secondary"
                     small
+                    :disabled="!valid"
                     @click.stop="edit.email = false"
                     >{{ $translate('components.button.done') }}</v-btn
                   >
@@ -170,11 +171,9 @@
                       >{{ $translate('text.division') }}</v-badge
                     >
                   </v-list-item-title>
-                  <v-list-item-subtitle
-                    v-if="!edit.division"
-                    class="text-capitalize"
-                    >{{ input.division }}</v-list-item-subtitle
-                  >
+                  <v-list-item-subtitle v-if="!edit.division" class="py-2">{{
+                    input.division
+                  }}</v-list-item-subtitle>
                   <v-list-item-subtitle v-else>
                     <v-text-field
                       v-model="input.division"
@@ -192,14 +191,15 @@
                     v-if="!edit.division"
                     text
                     small
+                    :disabled="!valid"
                     @click.stop="edit.division = true"
                     >Edit</v-btn
                   >
                   <v-btn
                     v-else
-                    dark
                     color="secondary"
                     small
+                    :disabled="!valid"
                     @click.stop="edit.division = false"
                     >{{ $translate('components.button.done') }}</v-btn
                   >
@@ -212,7 +212,7 @@
                   <v-list-item-title class="overline font-weight-bold">
                     {{ $translate('text.role') }}
                   </v-list-item-title>
-                  <v-list-item-subtitle class="text-uppercase">
+                  <v-list-item-subtitle class="text-uppercase py-2">
                     {{ roleList }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
@@ -233,7 +233,12 @@
                 </v-btn>
               </v-col>
               <v-col>
-                <v-btn dark color="secondary" block @click.stop="updateUser()">
+                <v-btn
+                  color="secondary"
+                  block
+                  :disabled="notInEdit"
+                  @click.stop="updateUser()"
+                >
                   {{ $translate('components.button.save') }}
                 </v-btn>
               </v-col>
@@ -300,6 +305,7 @@ export default {
         division: '',
         roles_list: []
       },
+      valid: false,
       rules: {
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`,
@@ -309,14 +315,17 @@ export default {
         min6: (value) => (!!value && value.length >= 6) || 'Minimum 6',
         min3: (value) => (!!value && value.length >= 3) || 'Minimum 3',
         alphabetic: (value) =>
-          /^[a-zA-Z0-9]+$/.test(value) ||
+          /^[a-zA-Z0-9\s]+$/.test(value) ||
+          `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
+        username: (value) =>
+          /^[a-zA-Z0-9_-]+$/.test(value) ||
           `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
         email: (value) =>
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
             value
           ) || `${this.$translate('helper.wrong_email', 'capitalize')}`,
         toolong: (value) =>
-          value.length <= 20 ||
+          (!!value && value.length <= 20) ||
           `${this.$translate('alert.validation.textTooLong')} maximum 20`
       }
     }
@@ -325,10 +334,17 @@ export default {
     roleList() {
       if (this.input.roles_list) return this.input.roles_list.join(', ')
       else return null
+    },
+    notInEdit() {
+      return (
+        this.edit.name ||
+        this.edit.username ||
+        this.edit.email ||
+        this.edit.division
+      )
     }
   },
   mounted() {
-    this.getUser()
     this.initValue()
   },
   methods: {
@@ -342,24 +358,17 @@ export default {
     reset() {
       this.input = this.$copy(this.user)
     },
-    async getUser() {
-      try {
-        await this.$api('user', 'show')
-      } catch (e) {
-        this.success = false
-        this.messages =
-          `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
-        this.alert = true
-      }
-    },
     async updateUser() {
       try {
         this.loading.updateProfile = true
-        const result = await this.$api('user', 'update', this.input).finally(
-          () => {
-            this.loading.updateProfile = false
-          }
-        )
+        const result = await this.$api(
+          'user',
+          'update',
+          this.input,
+          this.user
+        ).finally(() => {
+          this.loading.updateProfile = false
+        })
         if (result.status === 200) {
           const tmpRoles = this.$copy(this.user.roles_list)
           this.user = this.$copy(result.data.user)
@@ -367,7 +376,6 @@ export default {
           this.success = true
           this.messages = `${this.$translate('alert.update.success')}`
           this.alert = true
-          this.getUser()
         } else {
           this.success = false
           this.messages = `${this.$translate('alert.update.error')}`
@@ -375,9 +383,9 @@ export default {
         }
       } catch (e) {
         this.success = false
-        this.messages =
-          `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString()
         this.alert = true
+        this.loading.updateProfile = false
       }
     },
     logOut() {
@@ -386,9 +394,9 @@ export default {
         this.$api('user', 'logout').finally(() => (this.loading.logOut = false))
       } catch (e) {
         this.success = false
-        this.messages =
-          `${this.$translate('alert.error')}` + e.toString().slice(0, 10)
+        this.messages = `${this.$translate('alert.error')}` + e.toString()
         this.alert = true
+        this.loading.logOut = true
       }
     }
   }

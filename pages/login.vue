@@ -19,31 +19,53 @@
           </v-card-title>
           <v-card-subtitle class="caption text-center">
             <div class="pt-5">
-              Masukan akun yang telah terdaftar di
-              <a href="https://www.cendekiabaznas.sch.id/">website SCB</a> atau
-              akun yang telah terdaftar di sistem ini.
+              Masukan akun yang telah terdaftar di sistem ini.
             </div>
           </v-card-subtitle>
           <v-card-text>
+            <v-radio-group v-model="way" row hide-details dense>
+              <v-radio value="email">
+                <template v-slot:label>
+                  <span class="caption">Email</span>
+                </template>
+              </v-radio>
+              <v-radio value="username">
+                <template v-slot:label>
+                  <span class="caption">Username</span>
+                </template>
+              </v-radio>
+            </v-radio-group>
             <v-form ref="form">
               <v-row>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
+                  <div class="caption primary--text text-capitalize py-1">
                     {{ $translate('text.email') }}
                   </div>
-                  <v-text-field
-                    v-model="input.email"
-                    prepend-inner-icon="mdi-account"
-                    solo
-                    :label="$translate('text.email', 'capitalize')"
-                    counter
-                    :rules="[rules.required, rules.email]"
-                    autofocus
-                    @keyup.enter="login()"
-                  ></v-text-field>
+                  <template v-if="way === 'email'">
+                    <v-text-field
+                      v-model="input.email"
+                      prepend-inner-icon="mdi-email"
+                      solo
+                      :label="$translate('text.email', 'capitalize')"
+                      counter
+                      :rules="[rules.required, rules.email]"
+                      @keyup.enter="login()"
+                    ></v-text-field>
+                  </template>
+                  <template v-if="way === 'username'">
+                    <v-text-field
+                      v-model="input.username"
+                      prepend-inner-icon="mdi-account"
+                      solo
+                      :label="$translate('text.username', 'capitalize')"
+                      counter
+                      :rules="[rules.required, rules.min3, rules.username]"
+                      @keyup.enter="login()"
+                    ></v-text-field>
+                  </template>
                 </v-col>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize">
+                  <div class="caption primary--text text-capitalize py-1">
                     {{ $translate('text.password') }}
                   </div>
                   <v-text-field
@@ -63,7 +85,7 @@
                   <div class="caption primary--text text-capitalize">
                     Login dengan menggunakan ?
                   </div>
-                  <v-radio-group v-model="strategy" row>
+                  <v-radio-group v-model="strategy" row hide-details dense>
                     <!--
                       Code dibawah ini digunakan untuk mengaktifkan
                       Single Sign On dari website SCB. Hanya saja, fitur
@@ -90,6 +112,11 @@
                 </v-col>
               </v-row>
             </v-form>
+            <v-alert v-if="numTries > 2" prominent type="warning">
+              <span style="color: #fefefe">{{
+                $translate('helper.login_keep_fail')
+              }}</span>
+            </v-alert>
           </v-card-text>
           <v-card-actions>
             <template v-if="loading.logIn">
@@ -137,6 +164,8 @@ export default {
       alert: false,
       success: false,
       messages: '',
+      way: 'email',
+      numTries: 0,
       loading: {
         logIn: false
       },
@@ -149,7 +178,11 @@ export default {
       rules: {
         required: (value) =>
           !!value || `${this.$translate('text.required', 'capitalize')}`,
+        username: (value) =>
+          /^[a-zA-Z0-9_-]+$/.test(value) ||
+          `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
         min: (value) => (!!value && value.length >= 6) || 'Minimum 6',
+        min3: (value) => (!!value && value.length >= 3) || 'Minimum 3',
         email: (value) =>
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
             value
@@ -157,9 +190,8 @@ export default {
       }
     }
   },
-  mounted() {},
   methods: {
-    login() {
+    async login() {
       if (this.strategy == null) this.strategy = 'local'
       if (!this.$refs.form.validate()) {
         this.success = false
@@ -172,13 +204,16 @@ export default {
       }
       try {
         this.loading.logIn = true
-        this.$api('user', 'login', this.input, this.strategy).finally(
+        this.numTries++
+        await this.$api('user', 'login', this.input, this.strategy).finally(
           () => (this.loading.logIn = false)
         )
       } catch (e) {
         this.success = false
-        this.messages = `${this.$translate('alert.error')}` + e.toString()
+        this.messages =
+          `${this.$translate('alert.error')}` + e.data.error.toString()
         this.alert = true
+        this.loading.logIn = false
       }
     }
   }

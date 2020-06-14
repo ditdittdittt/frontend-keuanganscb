@@ -59,11 +59,16 @@
                       {{ $translate('text.payment_type') }}
                     </div>
                     <div class="spacing-xssmall"></div>
-                    <v-btn v-if="input.method === 'cash'" disabled small>
+                    <v-chip
+                      v-if="input.method === 'cash'"
+                      label
+                      color="accent"
+                      class="text-uppercase caption"
+                    >
                       {{
                         input.method || $vuetify.lang.t('$vuetify.noDataText')
                       }}
-                    </v-btn>
+                    </v-chip>
                     <v-btn
                       v-if="input.method === 'transfer'"
                       color="secondary"
@@ -374,9 +379,22 @@
       <v-row justify="center">
         <v-dialog v-model="dialogSureVerify" persistent max-width="600">
           <v-card>
-            <v-card-title class="title text-capitalize">{{
-              $translate('text.sure_verify_head')
-            }}</v-card-title>
+            <v-card-title class="title text-capitalize">
+              <span>
+                {{ $translate('text.sure_verify_head') }}
+              </span>
+              <v-spacer></v-spacer>
+              <v-btn
+                fab
+                elevation="0"
+                dark
+                x-small
+                color="red"
+                @click="closeDialogSureVerify()"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-card-title>
             <v-card-text class="overline">{{
               $translate('text.sure_verify_body')
             }}</v-card-text>
@@ -790,6 +808,7 @@ export default {
           this.messages =
             `${this.$translate('alert.error', 'capitalize')}` + e.toString()
           this.alert = true
+          this.loading.saveSignature = false
         }
       }
       this.verifyRole = ''
@@ -808,6 +827,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.rejectForm = false
       }
     },
     confirmIfRequestFormNeedSubmission() {
@@ -816,8 +836,8 @@ export default {
         this.$api('request', 'confirmneedsubmission', this.input).finally(
           async () => {
             await this.getRequestForm()
-            this.dialogSureNeedSubmission = false
             this.loading.confirmationSubmission = false
+            this.dialogSureNeedSubmission = false
           }
         )
       } catch (e) {
@@ -825,6 +845,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.confirmationSubmission = false
       }
     },
     confirmIfRequestFormNoNeedSubmission() {
@@ -833,8 +854,8 @@ export default {
         this.$api('request', 'confirmnoneedsubmission', this.input).finally(
           async () => {
             await this.getRequestForm()
-            this.dialogSureNeedSubmission = false
             this.loading.confirmationSubmission = false
+            this.dialogSureNeedSubmission = false
           }
         )
       } catch (e) {
@@ -842,6 +863,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.confirmationSubmission = false
       }
     },
     cancelRequestForm() {
@@ -856,6 +878,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.cancelForm = false
       }
     },
     checkVerifyPic() {

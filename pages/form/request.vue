@@ -22,17 +22,14 @@
                   v-model="input.budgets[i].code"
                   prepend-inner-icon="mdi-newspaper-plus"
                   :items="data.budgetList"
+                  item-text="code"
                   solo
                   :rules="[rules.required]"
                   :label="$translate('text.budget', 'capitalize')"
                   clearable
-                  auto-select-first
                   cache-items
                   :loading="loading.detailBudget"
                 >
-                  <template v-slot:item="{ item }">{{
-                    item.code + ' - ' + item.name
-                  }}</template>
                   <template v-slot:selection="{ item }">{{
                     item.code + ' - ' + item.name
                   }}</template>
@@ -306,6 +303,7 @@ export default {
     calculateSum() {
       let sum = 0
       for (let i = 0; i < this.input.budgets.length; i++) {
+        if (isNaN(this.input.budgets[i].nominal)) continue
         sum += parseInt(this.input.budgets[i].nominal)
       }
       this.input.amount = sum
@@ -313,6 +311,9 @@ export default {
     },
     addBudget() {
       this.input.budgets.push({ code: null, nominal: null })
+      console.log(this.input.budgets)
+      console.log(this.data.budgetList)
+      console.log()
     },
     deleteBudget() {
       if (this.input.budgets.length > 1) {
@@ -330,6 +331,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.allRekening = true
       }
     },
     async storeRequest() {
@@ -371,6 +373,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.buttonStore = true
       }
     },
     async getBudgetList() {
@@ -384,6 +387,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.detailBudget = true
       }
     },
     checkIfBudgetNominalBelowBudgeBalance(budget) {

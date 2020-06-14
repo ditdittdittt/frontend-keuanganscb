@@ -45,7 +45,7 @@
                     :label="preffix + generatedUsername"
                     type="text"
                     counter
-                    :rules="[rules.required, rules.alphabetic, rules.min3]"
+                    :rules="[rules.required, rules.min3, rules.username]"
                     :hint="$translate('helper.username', 'capitalize')"
                   ></v-text-field>
                 </v-col>
@@ -206,14 +206,17 @@ export default {
         min6: (value) => (!!value && value.length >= 6) || 'Minimum 6',
         min3: (value) => (!!value && value.length >= 3) || 'Minimum 3',
         alphabetic: (value) =>
-          /^[a-zA-Z0-9]+$/.test(value) ||
+          /^[a-zA-Z0-9\s]+$/.test(value) ||
+          `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
+        username: (value) =>
+          /^[a-zA-Z0-9_-]+$/.test(value) ||
           `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
         email: (value) =>
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
             value
           ) || `${this.$translate('helper.wrong_email', 'capitalize')}`,
         toolong: (value) =>
-          value.length <= 20 ||
+          (!!value && value.length <= 20) ||
           `${this.$translate('alert.validation.textTooLong')} maximum 20`
       },
       errors: {

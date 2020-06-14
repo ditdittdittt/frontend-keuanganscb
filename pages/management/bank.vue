@@ -25,7 +25,7 @@
                     prepend-inner-icon="mdi-cash"
                     clearable
                     solo
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.alphabetic]"
                     :label="$translate('text.bank_name', 'capitalize')"
                   ></v-text-field>
                 </v-col>
@@ -38,7 +38,7 @@
                     prepend-inner-icon="mdi-cash"
                     clearable
                     solo
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.alphabetic]"
                     :label="$translate('text.bank_code', 'capitalize')"
                   ></v-text-field>
                 </v-col>
@@ -51,7 +51,7 @@
                     prepend-inner-icon="mdi-cash"
                     clearable
                     solo
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.alphabetic]"
                     :label="$translate('text.account_number', 'capitalize')"
                   ></v-text-field>
                 </v-col>
@@ -64,7 +64,7 @@
                     prepend-inner-icon="mdi-cash"
                     clearable
                     solo
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.alphabetic]"
                     :label="$translate('text.account_owner', 'capitalize')"
                   ></v-text-field>
                 </v-col>
@@ -89,7 +89,6 @@
           </v-card-actions>
         </v-card>
       </v-col>
-
       <!-- All budget list -->
       <v-col cols="12" sm="6" md="8">
         <v-card color="primary" dark class="mx-5 py-5 front-card" raised>
@@ -138,7 +137,7 @@
                   color="secondary"
                   small
                   text
-                  @click.stop="deleteRekening(item.id)"
+                  @click.stop="popupDelete(item.id)"
                   >Delete</v-btn
                 >
               </template>
@@ -152,6 +151,16 @@
         ></snackbar-alert>
       </v-col>
     </v-row>
+    <dialog-alert
+      v-model="dialogDelete"
+      :title="$translate('text.sure_delete_bank_head')"
+      :message="$translate('text.sure_delete_bank_body')"
+      :load="loading.onDelete"
+      @no="dialogDelete = false"
+      @yes="deleteRekening(currentId)"
+    >
+      <circular-loading></circular-loading>
+    </dialog-alert>
     <!-- Raw Data -->
     <v-dialog
       v-model="rawData"
@@ -204,13 +213,16 @@ export default {
       search: '',
       today: null,
       valid: true,
+      dialogDelete: false,
+      currentId: null,
       input: {
         code: null,
         name: null,
         balance: null
       },
       loading: {
-        buttonStore: false
+        buttonStore: false,
+        onDelete: false
       },
       modal: {
         date: false
@@ -241,6 +253,9 @@ export default {
       ],
       items: [],
       rules: {
+        alphabetic: (value) =>
+          /^[a-zA-Z0-9\s]+$/.test(value) ||
+          `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
         positive: (value) =>
           value >= 0 || `${this.$translate('text.positive', 'capitalize')}`,
         required: (value) =>
@@ -252,6 +267,10 @@ export default {
     this.getAllRekening()
   },
   methods: {
+    popupDelete(id) {
+      this.dialogDelete = true
+      this.currentId = id
+    },
     getAllRekening() {
       try {
         this.$api('rekening', 'index', null).then((response) => {
@@ -261,9 +280,9 @@ export default {
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.buttonStore = false
       }
     },
     async storeRekening() {
@@ -278,7 +297,11 @@ export default {
       }
       try {
         this.loading.buttonStore = true
-        const result = await this.$api('rekening', 'store', this.input)
+        const result = await this.$api('rekening', 'store', this.input).finally(
+          () => {
+            this.loading.buttonStore = false
+          }
+        )
         if (result.status === 201) {
           this.success = true
           this.messages = `${this.$translate(
@@ -292,14 +315,18 @@ export default {
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.buttonStore = false
       }
     },
     async deleteRekening(id) {
       try {
-        const result = await this.$api('rekening', 'delete', id)
+        this.loading.onDelete = true
+        const result = await this.$api('rekening', 'delete', id).finally(() => {
+          this.loading.onDelete = false
+          this.dialogDelete = false
+        })
         if (result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(
@@ -312,9 +339,9 @@ export default {
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` +
-          e.toString().slice(0, 10)
+          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.onDelete = false
       }
     }
   }

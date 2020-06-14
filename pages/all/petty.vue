@@ -113,7 +113,11 @@
   </v-container>
 </template>
 <script>
-import { Terbayarkan, MenungguSubmisi, VerifikasiSubmisi } from '~/plugins/constant'
+import {
+  Terbayarkan,
+  MenungguSubmisi,
+  VerifikasiSubmisi
+} from '~/plugins/constant'
 export default {
   filters: {
     currency(value) {
@@ -224,6 +228,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.onDelete = true
       }
     }
   }

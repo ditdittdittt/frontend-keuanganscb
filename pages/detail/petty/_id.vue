@@ -282,25 +282,39 @@
         <v-dialog v-model="dialogSureVerify" persistent max-width="600">
           <v-card>
             <v-card-title class="title text-capitalize">
-              {{ $translate('text.sure_verify_head') }}
+              <span>
+                {{ $translate('text.sure_verify_head') }}
+              </span>
+              <v-spacer></v-spacer>
+              <v-btn
+                fab
+                elevation="0"
+                dark
+                x-small
+                color="red"
+                @click="closeDialogSureVerify()"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </v-card-title>
             <v-card-text class="overline">
               {{ $translate('text.sure_verify_body') }}
             </v-card-text>
             <v-card-text>
-              <signature-pad :key="key" v-model="signature"></signature-pad>
-            </v-card-text>
-            <v-card-text>
-              <span v-if="signature.isEmpty">
-                <v-alert prominent type="error" class="subtitle">
-                  {{ $translate('text.no_signature_yet', 'capitalize') }}
-                </v-alert>
-              </span>
-              <span v-else>
-                <v-alert prominent type="success" class="subtitle">
-                  {{ $translate('text.signature_is_ready', 'capitalize') }}
-                </v-alert>
-              </span>
+              <signature-pad :key="key" v-model="signature">
+                <template v-if="!loading.saveSignature">
+                  <span v-if="signature.isEmpty">
+                    <v-alert prominent type="error" class="subtitle">
+                      {{ $translate('text.no_signature_yet', 'capitalize') }}
+                    </v-alert>
+                  </span>
+                  <span v-else>
+                    <v-alert prominent type="success" class="subtitle">
+                      {{ $translate('text.signature_is_ready', 'capitalize') }}
+                    </v-alert>
+                  </span>
+                </template>
+              </signature-pad>
             </v-card-text>
             <v-card-actions>
               <v-row class="mx-0">
@@ -486,6 +500,7 @@ export default {
           this.messages =
             `${this.$translate('alert.error', 'capitalize')}` + e.toString()
           this.alert = true
+          this.loading.saveSignature = false
         }
       }
       this.verifyRole = ''
@@ -504,6 +519,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.rejectForm = false
       }
     },
     alreadyPaidPettyCashForm() {
@@ -519,6 +535,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.surePaid = false
       }
     },
     cancelPettyCashForm() {
@@ -533,6 +550,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.cancelForm = false
       }
     },
     checkVerifyPic() {

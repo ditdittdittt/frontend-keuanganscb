@@ -223,14 +223,11 @@ export default {
         tooltips: {
           enabled: true,
           callbacks: {
-            beforeLabel: ({ index }, data) => {
-              return data.name[index]
-            },
             label: ({ index }, data) => {
               return data.labels[index]
             },
             footer: (tooltipsItem, data) => {
-              return 'Rp ' + data.datasets[0].data[tooltipsItem[0].index]
+              return data.name[tooltipsItem[0].index]
             }
           }
         }

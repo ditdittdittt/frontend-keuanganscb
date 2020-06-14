@@ -2,15 +2,19 @@
   <v-container>
     <v-snackbar
       v-model="show"
-      :timeout="timeout"
+      :timeout="success ? timeout.success : timeout.error"
       top
       multi-line
       :color="success ? color.success : color.error"
     >
-      <span class="caption font-weigth-light">{{ messages }}</span>
-      <v-btn text @click="close()">{{
-        $translate('components.button.close')
-      }}</v-btn>
+      <span class="caption font-weigth-light text-capitalize">{{
+        messages
+      }}</span>
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="close()">
+          {{ $translate('components.button.close') }}
+        </v-btn>
+      </template>
     </v-snackbar>
   </v-container>
 </template>
@@ -31,7 +35,10 @@ export default {
   data() {
     return {
       show: this.$props.value,
-      timeout: 10000,
+      timeout: {
+        success: 3000,
+        error: 6000
+      },
       color: {
         success: 'green darken-1',
         error: 'red darken-1'
@@ -41,6 +48,9 @@ export default {
   watch: {
     value(value) {
       this.show = value
+    },
+    show(value) {
+      this.$emit('input', value)
     }
   },
   methods: {

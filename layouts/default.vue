@@ -418,7 +418,7 @@ export default {
         this.$auth.user.roles_list.includes('manager_ops')
       ) {
         this.menu.push({
-          icon: 'mdi-cash-usd',
+          icon: 'mdi-bank',
           title: 'Management Bank',
           to: '/management/bank'
         })

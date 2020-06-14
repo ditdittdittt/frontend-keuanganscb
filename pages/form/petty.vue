@@ -38,6 +38,7 @@
                   v-model="input.budgets[i].code"
                   prepend-inner-icon="mdi-newspaper-plus"
                   :items="data.budgetList"
+                  item-text="code"
                   solo
                   :rules="[rules.required]"
                   :label="$translate('text.budget_code', 'capitalize')"
@@ -46,12 +47,9 @@
                   cache-items
                   :loading="loading.detailBudget"
                 >
-                  <template v-slot:item="{ item }">{{
-                    item.code + ' - ' + item.name
-                  }}</template>
-                  <template v-slot:selection="{ item }">{{
-                    item.code + ' - ' + item.name
-                  }}</template>
+                  <template v-slot:selection="{ item }">
+                    <span>{{ item.code + ' - ' + item.name }}</span>
+                  </template>
                 </v-combobox>
               </v-col>
               <v-col cols="12" md="6" sm="6">
@@ -234,6 +232,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.buttonStore = false
       }
     },
     async getBudgetList() {

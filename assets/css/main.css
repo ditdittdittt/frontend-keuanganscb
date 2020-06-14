@@ -50,3 +50,11 @@
 .back-card {
   top: -96px;
 }
+
+.v-card__title,
+.v-card__title * {
+  overflow-wrap: anywhere !important;
+  word-wrap: break-word !important;
+  word-break: normal !important;
+  hyphens: auto !important;
+}

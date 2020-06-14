@@ -64,111 +64,141 @@
           <v-switch v-model="state.edit"></v-switch>
         </v-card-title>
         <v-card-text>
-          <v-simple-table>
-            <template v-slot:default>
-              <colgroup>
-                <col span="1" style="width: 30%;" />
-                <col span="1" style="width: 70%;" />
-              </colgroup>
-              <tbody>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    <v-badge
-                      :value="different(user.name, input.name)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.name') }}</v-badge
-                    >
-                  </td>
-                  <td v-if="state.edit">
-                    <v-text-field v-model="input.name" dense></v-text-field>
-                  </td>
-                  <td v-else>{{ user.name }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    <v-badge
-                      :value="different(user.username, input.username)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.username') }}</v-badge
-                    >
-                  </td>
-                  <td v-if="state.edit">
-                    <v-text-field v-model="input.username" dense></v-text-field>
-                  </td>
-                  <td v-else>{{ user.username }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    <v-badge
-                      :value="different(user.email, input.email)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.email') }}</v-badge
-                    >
-                  </td>
-                  <td v-if="state.edit">
-                    <v-text-field v-model="input.email" dense></v-text-field>
-                  </td>
-                  <td v-else>{{ user.email }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    <v-badge
-                      :value="different(user.division, input.division)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.division') }}</v-badge
-                    >
-                  </td>
-                  <td v-if="state.edit">
-                    <v-text-field v-model="input.division" dense></v-text-field>
-                  </td>
-                  <td v-else>{{ user.division }}</td>
-                </tr>
-                <tr>
-                  <td class="caption font-weight-bold text-capitalize">
-                    <v-badge
-                      :value="different(user.role, input.role)"
-                      dot
-                      color="red"
-                      :offset-x="-4"
-                      :offset-y="8"
-                      >{{ $translate('text.role') }}</v-badge
-                    >
-                  </td>
-                  <td v-if="state.edit">
-                    <v-select
-                      v-model="input.roles"
-                      cache-items
-                      item-text="name"
-                      item-value="name"
-                      :items="roles"
-                      multiple
-                      class="caption"
-                      dense
-                      return-object
-                    ></v-select>
-                  </td>
-                  <td v-else class="overline">
-                    <template v-for="(role, i) in user.roles">
-                      <span :key="'role' + i">{{ role.name }}</span>
-                      <br :key="'br' + i" />
-                    </template>
-                  </td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
+          <v-form v-model="state.valid">
+            <v-simple-table>
+              <template v-slot:default>
+                <colgroup>
+                  <col span="1" style="width: 30%;" />
+                  <col span="1" style="width: 70%;" />
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      <v-badge
+                        :value="different(user.name, input.name)"
+                        dot
+                        color="red"
+                        :offset-x="-4"
+                        :offset-y="8"
+                        >{{ $translate('text.name') }}</v-badge
+                      >
+                    </td>
+                    <td v-if="state.edit">
+                      <v-text-field
+                        v-model="input.name"
+                        dense
+                        class="caption"
+                        hide-details
+                        :rules="[rules.required, rules.min3, rules.alphabetic]"
+                      ></v-text-field>
+                    </td>
+                    <td v-else class="caption">{{ user.name }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      <v-badge
+                        :value="different(user.username, input.username)"
+                        dot
+                        color="red"
+                        :offset-x="-4"
+                        :offset-y="8"
+                        >{{ $translate('text.username') }}</v-badge
+                      >
+                    </td>
+                    <td v-if="state.edit">
+                      <v-text-field
+                        v-model="input.username"
+                        dense
+                        class="caption"
+                        hide-details
+                        :rules="[rules.required, rules.min3, rules.username]"
+                      ></v-text-field>
+                    </td>
+                    <td v-else class="caption">{{ user.username }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      <v-badge
+                        :value="different(user.email, input.email)"
+                        dot
+                        color="red"
+                        :offset-x="-4"
+                        :offset-y="8"
+                        >{{ $translate('text.email') }}</v-badge
+                      >
+                    </td>
+                    <td v-if="state.edit">
+                      <v-text-field
+                        v-model="input.email"
+                        dense
+                        class="caption"
+                        hide-details
+                        :rules="[rules.required, rules.min3, rules.email]"
+                      ></v-text-field>
+                    </td>
+                    <td v-else class="caption">{{ user.email }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      <v-badge
+                        :value="different(user.division, input.division)"
+                        dot
+                        color="red"
+                        :offset-x="-4"
+                        :offset-y="8"
+                        >{{ $translate('text.division') }}</v-badge
+                      >
+                    </td>
+                    <td v-if="state.edit">
+                      <v-text-field
+                        v-model="input.division"
+                        dense
+                        class="caption"
+                        hide-details
+                        :rules="[rules.required, rules.min3, rules.toolong]"
+                      ></v-text-field>
+                    </td>
+                    <td v-else class="caption">{{ user.division }}</td>
+                  </tr>
+                  <tr>
+                    <td class="caption font-weight-bold text-capitalize">
+                      <v-badge
+                        :value="different(user.role, input.role)"
+                        dot
+                        color="red"
+                        :offset-x="-4"
+                        :offset-y="8"
+                        >{{ $translate('text.role') }}</v-badge
+                      >
+                    </td>
+                    <td v-if="state.edit">
+                      <v-select
+                        v-model="input.roles"
+                        cache-items
+                        item-text="name"
+                        item-value="name"
+                        :items="roles"
+                        multiple
+                        return-object
+                        dense
+                        class="caption"
+                        hide-details
+                      ></v-select>
+                    </td>
+                    <td v-else class="caption">
+                      <div class="py-1">
+                        <template v-for="(role, i) in user.roles">
+                          <div :key="'role' + i" class="py-1">
+                            <span>{{ role.name }}</span>
+                          </div>
+                        </template>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-row v-if="state.edit" class="ma-0">
@@ -186,9 +216,13 @@
                 >
               </v-col>
               <v-col>
-                <v-btn dark color="secondary" block @click.stop="updateUser">{{
-                  $translate('components.button.update')
-                }}</v-btn>
+                <v-btn
+                  color="secondary"
+                  block
+                  :disabled="!state.valid"
+                  @click.stop="updateUser"
+                  >{{ $translate('components.button.update') }}</v-btn
+                >
               </v-col>
             </template>
           </v-row>
@@ -283,7 +317,8 @@ export default {
         user: false
       },
       state: {
-        edit: false
+        edit: false,
+        valid: true
       },
       user: {
         name: null,
@@ -298,6 +333,28 @@ export default {
         email: null,
         division: null,
         role: null
+      },
+      rules: {
+        required: (value) =>
+          !!value || `${this.$translate('text.required', 'capitalize')}`,
+        confirm: (value) =>
+          value === this.input.password ||
+          `${this.$translate('helper.different_password', 'capitalize')}`,
+        min6: (value) => (!!value && value.length >= 6) || 'Minimum 6',
+        min3: (value) => (!!value && value.length >= 3) || 'Minimum 3',
+        alphabetic: (value) =>
+          /^[a-zA-Z0-9\s]+$/.test(value) ||
+          `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
+        username: (value) =>
+          /^[a-zA-Z0-9_-]+$/.test(value) ||
+          `${this.$translate('alert.validation.alphabetic', 'capitalize')}`,
+        email: (value) =>
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+            value
+          ) || `${this.$translate('helper.wrong_email', 'capitalize')}`,
+        toolong: (value) =>
+          (!!value && value.length <= 20) ||
+          `${this.$translate('alert.validation.textTooLong')} maximum 20`
       }
     }
   },
@@ -318,11 +375,19 @@ export default {
     async updateUser() {
       try {
         this.loading.editUser = true
-        const result = await this.$api('user', 'update', this.input)
-        this.$api('user', 'changeroles', this.input).then(() => {
-          this.loading.editUser = false
-          this.modal.user = false
+        const result = await this.$api(
+          'user',
+          'update',
+          this.input,
+          this.user
+        ).finally(() => {
+          this.$api('user', 'changeroles', this.input).finally(() => {
+            this.getAllUsers()
+            this.loading.editUser = false
+            this.modal.user = false
+          })
         })
+
         if (result.status === 200) {
           this.success = true
           this.messages = `${this.$translate(
@@ -331,12 +396,13 @@ export default {
           )}`
           this.alert = true
         }
-        this.getAllUsers()
       } catch (e) {
         this.success = false
         this.messages =
-          `${this.$translate('alert.error', 'capitalize')}` + e.toString()
+          `${this.$translate('alert.error', 'capitalize')}` +
+          e.data.error.messages.toString()
         this.alert = true
+        this.loading.editUser = false
       }
     },
     async deleteUser(id) {
@@ -369,18 +435,21 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.editUser = false
       }
     },
     getAllUsers() {
       try {
         this.$api('user', 'all').then(({ users }) => {
           this.items = users
+          this.modal.user = false
         })
       } catch (e) {
         this.success = false
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.modal.user = false
       }
     },
     async getRoles() {

@@ -306,9 +306,22 @@
       <v-row justify="center">
         <v-dialog v-model="dialogSureVerify" persistent max-width="600">
           <v-card>
-            <v-card-title class="title text-capitalize">{{
-              $translate('text.sure_verify_head')
-            }}</v-card-title>
+            <v-card-title class="title text-capitalize">
+              <span>
+                {{ $translate('text.sure_verify_head') }}
+              </span>
+              <v-spacer></v-spacer>
+              <v-btn
+                fab
+                elevation="0"
+                dark
+                x-small
+                color="red"
+                @click="closeDialogSureVerify()"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-card-title>
             <v-card-text class="overline">{{
               $translate('text.sure_verify_body')
             }}</v-card-text>
@@ -594,6 +607,7 @@ export default {
           this.messages =
             `${this.$translate('alert.error', 'capitalize')}` + e.toString()
           this.alert = true
+          this.loading.saveSignature = false
         }
       }
       this.verifyRole = ''
@@ -612,6 +626,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.rejectForm = false
       }
     },
     alreadyPaidSubmissionForm() {
@@ -627,6 +642,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.surePaid = false
       }
     },
     cancelSubmissionForm() {
@@ -641,6 +657,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.cancelForm = false
       }
     },
     checkVerifyPic() {

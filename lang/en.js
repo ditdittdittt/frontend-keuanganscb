@@ -183,7 +183,10 @@ export default {
     account_owner: 'account owner',
     status: 'status',
     sure_delete_head: 'delete this form?',
-    sure_delete_body: 'after deleted, this form cannot be restored',
+    sure_delete_bank_head: 'delete this bank account?',
+    sure_delete_body: 'after deleted, this bank account cannot be restored',
+    sure_delete_bank_body:
+      'after deleted, this bank account cannot be restored',
     sure_verify_head: 'verify this form?',
     sure_verify_body: 'this form cannot be modified after verified',
     current_file: 'Current file',
@@ -210,7 +213,7 @@ export default {
     history_log: 'history log',
     no_log: 'there is no log',
     no_signature_yet: 'no signature yet',
-    signature_is_ready: 'signature is ready to save'
+    signature_is_ready: 'signature is ready to save, click yes button to save'
   },
   helper: {
     messages: {
@@ -230,7 +233,9 @@ export default {
     nik: 'identity number in your id card',
     address: 'your residential address',
     multiple_bank: 'separate with commas for multiple data',
-    need_more_detail_in_table: 'if you need more detail, see it at table view'
+    need_more_detail_in_table: 'if you need more detail, see it at table view',
+    login_keep_fail:
+      'If login keep fail, please check the inputed data, internet connection, and server connection'
   },
   export: {
     pdf: 'export to PDF',

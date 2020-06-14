@@ -22,7 +22,7 @@
                 prepend-inner-icon="mdi-newspaper-plus"
                 append-outer-icon="mdi-eye"
                 :items="form.request"
-                item-text="number"
+                item-text="allocation"
                 item-value="number"
                 solo
                 :rules="[rules.required]"
@@ -91,13 +91,11 @@
                     {{ '[' + (i + 1) + '] ' + $translate('text.balance') }}
                   </div>
                   <v-text-field
-                    :value="input.budgets[i].balance"
+                    :value="input.budgets[i].balance | currency"
                     solo
-                    type="number"
                     prepend-inner-icon="mdi-cash"
                     :label="$translate('text.balance', 'capitalize')"
-                    :messages="input.budgets[i].balance | currency"
-                    :hint="$translate('helper.messages.auto', 'capitalize')"
+                    :messages="$translate('helper.messages.auto', 'capitalize')"
                     readonly
                   ></v-text-field>
                 </v-col>
@@ -106,19 +104,17 @@
             </v-row>
           </template>
           <!-- Total -->
-          <v-row>
+          <v-row class="flex">
             <v-col cols="12" md="6">
               <div class="caption primary--text text-capitalize">
                 {{ 'total ' + $translate('text.use') }}
               </div>
               <v-text-field
-                :value="input.use"
+                :value="input.use | currency"
                 prepend-inner-icon="mdi-cash"
-                prefix="Rp"
                 solo
                 :label="$translate('text.use', 'capitalize')"
-                :hint="input.use | currency"
-                type="number"
+                :messages="$translate('helper.messages.auto', 'capitalize')"
                 readonly
               ></v-text-field>
             </v-col>
@@ -147,13 +143,11 @@
                 {{ 'total ' + $translate('text.balance') }}
               </div>
               <v-text-field
-                :value="input.balance"
+                :value="input.balance | currency"
                 prepend-inner-icon="mdi-cash-multiple"
-                prefix="Rp"
                 solo
                 :label="$translate('text.balance', 'capitalize')"
-                :hint="input.balance | currency"
-                type="number"
+                :messages="$translate('helper.messages.auto', 'capitalize')"
                 readonly
               ></v-text-field>
             </v-col>
@@ -215,9 +209,9 @@
     </v-card>
     <v-dialog v-model="modal.request" max-width="600" persistent>
       <v-card>
-        <v-card-title class="text-uppercase title">{{
-          $translate('components.form.title.request')
-        }}</v-card-title>
+        <v-card-title class="text-uppercase title">
+          <span>{{ $translate('components.form.title.request') }}</span>
+        </v-card-title>
         <v-card-text>
           <div class="spacing-xsmall"></div>
           <div class="caption primary--text text-capitalize">
@@ -230,7 +224,7 @@
                   <td class="caption font-weight-bold text-capitalize">
                     {{ $translate('text.allocation') }}
                   </td>
-                  <td class="text-capitalize">
+                  <td class="caption text-uppercase">
                     {{ currentRequest.allocation }}
                   </td>
                 </tr>
@@ -238,13 +232,17 @@
                   <td class="caption font-weight-bold text-capitalize">
                     {{ $translate('text.payment_type') }}
                   </td>
-                  <td>{{ currentRequest.method }}</td>
+                  <td class="caption text-uppercase">
+                    {{ currentRequest.method }}
+                  </td>
                 </tr>
                 <tr>
                   <td class="caption font-weight-bold text-capitalize">
                     {{ $translate('text.amount') }}
                   </td>
-                  <td>{{ currentRequest.amount | currency }}</td>
+                  <td class="caption text-uppercase">
+                    {{ currentRequest.amount | currency }}
+                  </td>
                 </tr>
               </tbody>
             </template>
@@ -259,9 +257,15 @@
               <tbody>
                 <template v-for="(detail, i) in currentRequest.details">
                   <tr :key="'detail' + i">
-                    <td>{{ detail.budget_code.code }}</td>
-                    <td>{{ detail.budget_code.name }}</td>
-                    <td>{{ detail.nominal }}</td>
+                    <td class="caption text-uppercase">
+                      {{ detail.budget_code.code }}
+                    </td>
+                    <td class="caption text-uppercase">
+                      {{ detail.budget_code.name }}
+                    </td>
+                    <td class="caption text-uppercase">
+                      {{ detail.nominal | currency }}
+                    </td>
                   </tr>
                 </template>
               </tbody>
@@ -331,6 +335,7 @@ export default {
         budgets: [{ id: null, nominal: null, balance: null }],
         request: {
           number: null,
+          allocation: null,
           details: []
         },
         allocation: null,
@@ -443,6 +448,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.buttonStore = false
       }
     },
     async getAllRequestForms() {
@@ -459,6 +465,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.formRequest = false
       }
     }
   }

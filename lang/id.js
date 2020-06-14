@@ -183,7 +183,10 @@ export default {
     account_owner: 'pemilik rekening',
     status: 'status',
     sure_delete_head: 'hapus form ini?',
+    sure_delete_bank_head: 'hapus akun bank ini?',
     sure_delete_body: 'form ini tidak dapat dipulihkan setelah di buang',
+    sure_delete_bank_body:
+      'akun bank ini tidak dapat dipulihkan setelah di buang',
     sure_verify_head: 'verifikasi form ini?',
     sure_verify_body: 'form ini tidak bisa diubah setelah diverifikasi',
     current_file: 'berkas saat ini',
@@ -210,7 +213,8 @@ export default {
     history_log: 'pencatatan',
     no_log: 'tidak ada log',
     no_signature_yet: 'belum ada tanda tangan',
-    signature_is_ready: 'tanda tangan siap disimpan'
+    signature_is_ready:
+      'tanda tangan siap disimpan, tekan tombol ya untuk menyimpan'
   },
   helper: {
     messages: {
@@ -231,7 +235,9 @@ export default {
     address: 'alamat tempat tinggal',
     multiple_bank: 'pisahkan dengan koma untuk data yang lebih dari satu',
     need_more_detail_in_table:
-      'jika ingin melihat lebih lengkap, pilih table view'
+      'jika ingin melihat lebih lengkap, pilih table view',
+    login_keep_fail:
+      'Apabila gagal melakukan login terus menerus, tolong periksa data yang diinput, sambungan internet, dan koneksi pada server'
   },
   export: {
     pdf: 'ekspor ke PDF',

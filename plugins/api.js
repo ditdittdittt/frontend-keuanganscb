@@ -27,7 +27,7 @@ export default ({ app }, inject) => {
           case 'show':
             return User.show()
           case 'update':
-            return User.update(data)
+            return User.update(data, other)
           case 'all':
             return User.getAll()
           case 'roles':
@@ -245,14 +245,12 @@ export default ({ app }, inject) => {
         })
     },
     show() {},
-    update(data) {
+    update(data, old) {
       const body = new FormData()
-      if (data.name) body.append('name', data.name)
-      if (data.username) body.append('username', data.username)
-      if (data.email) body.append('email', data.email)
-      if (data.division) body.append('division', data.division)
-      if (data.nik) body.append('nik', data.nik)
-      if (data.address) body.append('address', data.address)
+      if (data.name !== old.name) body.append('name', data.name)
+      if (data.username !== old.username) body.append('username', data.username)
+      if (data.email !== old.email) body.append('email', data.email)
+      if (data.division !== old.division) body.append('division', data.division)
       return app
         .$axios({
           method: 'post',

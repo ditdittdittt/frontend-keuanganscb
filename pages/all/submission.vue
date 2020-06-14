@@ -228,6 +228,7 @@ export default {
         this.messages =
           `${this.$translate('alert.error', 'capitalize')}` + e.toString()
         this.alert = true
+        this.loading.onDelete = false
       }
     }
   }
