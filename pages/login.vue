@@ -38,10 +38,10 @@
             <v-form ref="form">
               <v-row>
                 <v-col cols="12">
-                  <div class="caption primary--text text-capitalize py-1">
-                    {{ $translate('text.email') }}
-                  </div>
                   <template v-if="way === 'email'">
+                    <div class="caption primary--text text-capitalize py-1">
+                      {{ $translate('text.email') }}
+                    </div>
                     <v-text-field
                       v-model="input.email"
                       prepend-inner-icon="mdi-email"
@@ -53,6 +53,9 @@
                     ></v-text-field>
                   </template>
                   <template v-if="way === 'username'">
+                    <div class="caption primary--text text-capitalize py-1">
+                      {{ $translate('text.username') }}
+                    </div>
                     <v-text-field
                       v-model="input.username"
                       prepend-inner-icon="mdi-account"
