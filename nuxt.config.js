@@ -67,6 +67,25 @@ export default {
     '@nuxtjs/auth',
     'nuxt-i18n'
   ],
+  /**
+   * Nuxt.js PWA config
+   */
+  pwa: {
+    meta: {
+      title: 'Keuangan SCB',
+      author: 'Kelompok Divisi Keuangan Ilmu Komputer IPB',
+      description: 'Website Aplikasi dari Divisi Keuangan SCB'
+    },
+    manifest: {
+      name: 'Webapp Divisi Keuangan  SCB',
+      short_name: 'Keuangan Webapp',
+      lang: 'en'
+    },
+    workbox: {
+      /* workbox options uses all default */
+    }
+  },
+
   /*
    ** Nuxt i18n configuration
    ** See https://nuxt-community.github.io/nuxt-i18n/
@@ -138,6 +157,7 @@ export default {
       }
     }
   },
+
   router: {
     middleware: 'auth'
   },
